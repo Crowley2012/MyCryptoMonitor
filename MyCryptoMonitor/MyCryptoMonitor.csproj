@@ -49,6 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Coin.cs" />
+    <Compile Include="CoinLine.cs" />
+    <Compile Include="LoadCoin.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
