@@ -29,11 +29,11 @@ namespace MyCryptoMonitor
             _start = true;
 
             coins = new List<LoadCoin> {
-                new LoadCoin { coin = "BTC", bought = (decimal) 0.0028856, paid = 50},
-                new LoadCoin { coin = "ETH", bought = (decimal) 0.0676444, paid = 50},
-                new LoadCoin { coin = "LTC", bought = (decimal) 0.15087371, paid = 50},
-                new LoadCoin { coin = "XRP", bought = (decimal) 293.406, paid = 250},
-                new LoadCoin { coin = "XLM", bought = (decimal) 349.64, paid = 100}
+                new LoadCoin { coin = "BTC", bought =  0, paid = 0},
+                new LoadCoin { coin = "ETH", bought =  0, paid = 0},
+                new LoadCoin { coin = "LTC", bought =  0, paid = 0},
+                new LoadCoin { coin = "XRP", bought = (decimal) 433.116, paid = 400},
+                new LoadCoin { coin = "XLM", bought = (decimal) 349.69, paid = 100}
             };
 
             _mainThread = new Thread(() => LoadCoinCapData());
