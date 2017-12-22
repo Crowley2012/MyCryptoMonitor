@@ -11,22 +11,18 @@ namespace MyCryptoMonitor
     public partial class MainForm : Form
     {
         private Thread _mainThread;
-        private decimal _startBtc;
-        private decimal _startEth;
-        private decimal _startLtc;
-        private decimal _startXlm;
-        private decimal _startXrp;
-        private bool _refresh;
-        private bool _start;
+        private bool _reaload;
+        private bool _loadLines;
         private int _refreshCount;
         private List<LoadCoin> coins;
+        private List<CoinLine> coinLines;
 
         public MainForm()
         {
             InitializeComponent();
 
-            _refresh = true;
-            _start = true;
+            _reaload = false;
+            _loadLines = true;
 
             coins = new List<LoadCoin> {
                 new LoadCoin { coin = "BTC", bought =  0, paid = 0},
@@ -35,6 +31,8 @@ namespace MyCryptoMonitor
                 new LoadCoin { coin = "XRP", bought = (decimal) 608.79, paid = 650},
                 new LoadCoin { coin = "XLM", bought = (decimal) 1238.73999, paid = 350}
             };
+
+            coinLines = new List<CoinLine>();
 
             _mainThread = new Thread(() => LoadCoinCapData());
             _mainThread.Start();
@@ -54,116 +52,93 @@ namespace MyCryptoMonitor
             var response = webClient.DownloadString("http://coincap.io/front");
             var downloadedCoins = JsonConvert.DeserializeObject<List<Coin>>(response);
 
+            decimal totalPaid = 0;
+            decimal totalProfits = 0;
 
-            List<Coin> coinObj = new List<Coin>();
-            int j = 0;
+            int lineIndex = 0;
+
             foreach(LoadCoin coin in coins)
             {
-                Coin test = downloadedCoins.Single(c => c.shortName == coin.coin);
-                //test.CoinLine = new CoinLine(j);
+                Coin downloadedCoin = downloadedCoins.Single(c => c.shortName == coin.coin);
 
-                if (_start)
+                if (_loadLines)
                 {
-                    //Controls.Add(test.CoinLine);
-                    //Controls.Add(coin.CoinLine.priceLabel);
-                    //Controls.Add(coin.CoinLine.boughtTextBox);
-                    //Controls.Add(coin.CoinLine.totalLabel);
-                    //Controls.Add(coin.CoinLine.paidTextBox);
-                    //Controls.Add(coin.CoinLine.profitLabel);
-                    //Controls.Add(coin.CoinLine.changeDollarLabel);
-                    //Controls.Add(coin.CoinLine.changePercentLabel);
-                }
+                    coin.StartupPrice = downloadedCoin.price;
 
-                if (_start)
-                {
-                    for (int i = 0; i < coins.Count; i++)
-                    {
-                        test.original = test.price;
+                    CoinLine newLine = new CoinLine(downloadedCoin.shortName, lineIndex);
 
-                        invoke = delegate
+                    newLine.boughtTextBox.Text = coin.bought.ToString();
+                    newLine.paidTextBox.Text = coin.paid.ToString();
+
+                    invoke = delegate
                         {
-                            Controls.Add(test.CoinLine.coinLabel);
-                            Controls.Add(test.CoinLine.priceLabel);
-                            Controls.Add(test.CoinLine.boughtTextBox);
-                            Controls.Add(test.CoinLine.totalLabel);
-                            Controls.Add(test.CoinLine.paidTextBox);
-                            Controls.Add(test.CoinLine.profitLabel);
-                            Controls.Add(test.CoinLine.changeDollarLabel);
-                            Controls.Add(test.CoinLine.changePercentLabel);
+                            Controls.Add(newLine.coinLabel);
+                            Controls.Add(newLine.priceLabel);
+                            Controls.Add(newLine.boughtTextBox);
+                            Controls.Add(newLine.totalLabel);
+                            Controls.Add(newLine.paidTextBox);
+                            Controls.Add(newLine.profitLabel);
+                            Controls.Add(newLine.changeDollarLabel);
+                            Controls.Add(newLine.changePercentLabel);
                         };
-                        Invoke(invoke);
-                    }
+                    Invoke(invoke);
+
+                    coinLines.Add(newLine);
                 }
 
-                decimal total = coin.bought * test.price;
+                CoinLine line = (from x in coinLines where x.Coin == downloadedCoin.shortName select x).First();
+
+                if (_reaload)
+                {
+                    invoke = delegate
+                    {
+                        coin.StartupPrice = downloadedCoin.price;
+                        line.boughtTextBox.Text = coin.bought.ToString();
+                        line.paidTextBox.Text = coin.paid.ToString();
+                    };
+                    Invoke(invoke);
+                }
+
+                decimal bought = Convert.ToDecimal(line.boughtTextBox.Text);
+                decimal paid = Convert.ToDecimal(line.paidTextBox.Text);
+                decimal total = bought * downloadedCoin.price;
+                decimal profit = total - paid;
+                decimal changeDollar = downloadedCoin.price - coin.StartupPrice;
+                decimal changePercent = ((downloadedCoin.price - coin.StartupPrice) / coin.StartupPrice) * 100;
+
+                totalPaid += paid;
+                totalProfits += paid + profit;
 
                 invoke = delegate
                 {
-                    test.CoinLine.coinLabel.Text = test.shortName;
-                    test.CoinLine.priceLabel.Text = $"${test.price:0.00}";
-                    test.CoinLine.boughtTextBox.Text = coin.bought.ToString();
-                    test.CoinLine.totalLabel.Text = $"${total:0.00}";
-                    test.CoinLine.paidTextBox.Text = coin.paid.ToString();
-                    test.CoinLine.profitLabel.Text = $"${total - Convert.ToDecimal(coin.paid):0.00}";
-                    //test.CoinLine.changeDollarLabel.Text = $"${(test.price - test.original):0.000000}"; ;
-                    //test.CoinLine.changePercentLabel.Text = $"{((test.price - test.original) / test.original) * 100:0.00}%";
+                    line.coinLabel.Text = downloadedCoin.shortName;
+                    line.priceLabel.Text = $"${downloadedCoin.price:0.00}";
+                    line.totalLabel.Text = $"${total:0.00}";
+                    line.profitLabel.Text = $"${profit:0.00}";
+                    line.changeDollarLabel.Text = $"${changeDollar:0.000000}";
+                    line.changePercentLabel.Text = $"{changePercent:0.00}%";
                 };
                 Invoke(invoke);
 
-                coinObj.Add(test);
-
-                j++;
+                lineIndex++;
             }
-
-
-            //Parse coins
-            Coin btc = downloadedCoins.Single(c => c.shortName == "BTC");
-            Coin eth = downloadedCoins.Single(c => c.shortName == "ETH");
-            Coin ltc = downloadedCoins.Single(c => c.shortName == "LTC");
-            Coin xrp = downloadedCoins.Single(c => c.shortName == "XRP");
-            Coin xlm = downloadedCoins.Single(c => c.shortName == "XLM");
-
-            //Set startup price of coins
-            if (_start)
-            {
-                _startBtc = btc.price;
-                _startEth = eth.price;
-                _startLtc = ltc.price;
-                _startXrp = xrp.price;
-                _startXlm = xlm.price;
-                _start = false;
-            }
-
-            //Calculations
-            _refreshCount++;
-            //decimal btcTotal = Convert.ToDecimal(btcBoughtLabel.Text) * btc.price;
-            //decimal ethTotal = Convert.ToDecimal(ethBoughtLabel.Text) * eth.price;
-            //decimal ltcTotal = Convert.ToDecimal(ltcBoughtLabel.Text) * ltc.price;
-            //decimal xrpTotal = Convert.ToDecimal(xrpBoughtLabel.Text) * xrp.price;
-            //decimal xlmTotal = Convert.ToDecimal(xlmBoughtLabel.Text) * xlm.price;
-            //decimal profit = btcTotal + ethTotal + ltcTotal + xrpTotal + xlmTotal;
-            //decimal profitChange = profit - (Convert.ToDecimal(btcPaid.Text) + Convert.ToDecimal(ethPaid.Text) + Convert.ToDecimal(ltcPaid.Text) + Convert.ToDecimal(xlmPaid.Text) + Convert.ToDecimal(xrpPaid.Text));
 
             invoke = delegate
             {
-                //Totals
-                //totalProfit.Text = $"${profit:#.00}";
-                //totalProfitChange.Text = $"(${profitChange:#.00})";
+                totalProfit.Text = $"${totalProfits:0.00}";
+                totalProfitChange.Text = $"(${totalProfits - totalPaid:0.00})";
 
-                //Status
                 statusLabel.Text = "Status: Sleeping";
                 refreshLabel.Text = $"Refreshes: {_refreshCount}";
             };
-
-            //Update UI
             Invoke(invoke);
 
             //Sleep and rerun
-            if (_refresh)
-            {
-                Thread.Sleep(5000);
-                //LoadCoinCapData();
-            }
+            _loadLines = false;
+            _reaload = false;
+            _refreshCount++;
+            Thread.Sleep(5000);
+            LoadCoinCapData();
         }
 
         private void Reset_Click(object sender, EventArgs e)
@@ -174,7 +149,20 @@ namespace MyCryptoMonitor
             totalProfit.Text = "$0.00";
             totalProfitChange.Text = "($0.00)";
 
-            _start = true;
+            MethodInvoker invoke = delegate
+            {
+                foreach (LoadCoin coin in coins)
+                {
+                    CoinLine line = (from x in coinLines where x.Coin == coin.coin select x).First();
+
+                    line.profitLabel.Text = $"$0.00";
+                    line.changeDollarLabel.Text = $"$0.000000";
+                    line.changePercentLabel.Text = $"0.00%";
+                }
+            };
+            Invoke(invoke);
+
+            _reaload = true;
         }
     }
 }

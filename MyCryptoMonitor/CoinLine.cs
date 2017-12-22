@@ -4,6 +4,7 @@ namespace MyCryptoMonitor
 {
     public class CoinLine
     {
+        public string Coin;
         public Label coinLabel;
         public Label priceLabel;
         public Label totalLabel;
@@ -13,10 +14,10 @@ namespace MyCryptoMonitor
         public TextBox boughtTextBox;
         public TextBox paidTextBox;
 
-        public Coin coin { get; set; }
-
-        public CoinLine(int index)
+        public CoinLine(string coin, int index)
         {
+            Coin = coin;
+
             coinLabel = new Label();
             priceLabel = new Label();
             boughtTextBox = new TextBox();
