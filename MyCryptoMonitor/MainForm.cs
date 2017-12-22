@@ -32,8 +32,8 @@ namespace MyCryptoMonitor
                 new LoadCoin { coin = "BTC", bought =  0, paid = 0},
                 new LoadCoin { coin = "ETH", bought =  0, paid = 0},
                 new LoadCoin { coin = "LTC", bought =  0, paid = 0},
-                new LoadCoin { coin = "XRP", bought = (decimal) 433.116, paid = 400},
-                new LoadCoin { coin = "XLM", bought = (decimal) 349.69, paid = 100}
+                new LoadCoin { coin = "XRP", bought = (decimal) 608.79, paid = 650},
+                new LoadCoin { coin = "XLM", bought = (decimal) 1238.73999, paid = 350}
             };
 
             _mainThread = new Thread(() => LoadCoinCapData());
