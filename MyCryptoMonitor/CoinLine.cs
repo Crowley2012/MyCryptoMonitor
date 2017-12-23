@@ -2,7 +2,7 @@
 
 namespace MyCryptoMonitor
 {
-    public class CoinLine
+    public class CoinGuiLine
     {
         public string Coin;
         public Label coinLabel;
@@ -14,7 +14,7 @@ namespace MyCryptoMonitor
         public TextBox boughtTextBox;
         public TextBox paidTextBox;
 
-        public CoinLine(string coin, int index)
+        public CoinGuiLine(string coin, int index)
         {
             Coin = coin;
 

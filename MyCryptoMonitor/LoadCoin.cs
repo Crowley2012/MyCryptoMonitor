@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyCryptoMonitor
 {
-    public class LoadCoin
+    public class CoinConfig
     {
         public string coin { get; set; }
         public decimal bought { get; set; }

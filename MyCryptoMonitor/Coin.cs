@@ -2,7 +2,7 @@
 
 namespace MyCryptoMonitor
 {
-    public class Coin
+    public class CoinData
     {
         public float cap24hrChange { get; set; }
         [JsonProperty("long")]
