@@ -76,20 +76,21 @@ namespace MyCryptoMonitor
                     CoinGuiLine newLine = new CoinGuiLine(downloadedCoin.shortName, index);
 
                     //Set the bought and paid amounts
-                    newLine.boughtTextBox.Text = coin.bought.ToString();
-                    newLine.paidTextBox.Text = coin.paid.ToString();
+                    newLine.BoughtTextBox.Text = coin.bought.ToString();
+                    newLine.PaidTextBox.Text = coin.paid.ToString();
 
                     //Add the line elements to gui
                     invoke = delegate
                     {
-                        Controls.Add(newLine.coinLabel);
-                        Controls.Add(newLine.priceLabel);
-                        Controls.Add(newLine.boughtTextBox);
-                        Controls.Add(newLine.totalLabel);
-                        Controls.Add(newLine.paidTextBox);
-                        Controls.Add(newLine.profitLabel);
-                        Controls.Add(newLine.changeDollarLabel);
-                        Controls.Add(newLine.changePercentLabel);
+                        Height += 25;
+                        Controls.Add(newLine.CoinLabel);
+                        Controls.Add(newLine.PriceLabel);
+                        Controls.Add(newLine.BoughtTextBox);
+                        Controls.Add(newLine.TotalLabel);
+                        Controls.Add(newLine.PaidTextBox);
+                        Controls.Add(newLine.ProfitLabel);
+                        Controls.Add(newLine.ChangeDollarLabel);
+                        Controls.Add(newLine.ChangePercentLabel);
                     };
                     Invoke(invoke);
 
@@ -98,11 +99,11 @@ namespace MyCryptoMonitor
                 }
 
                 //Get the gui line for coin
-                CoinGuiLine line = (from c in _coinGuiLines where c.Coin.Equals(downloadedCoin.shortName) select c).First();
+                CoinGuiLine line = (from c in _coinGuiLines where c.CoinName.Equals(downloadedCoin.shortName) select c).First();
 
                 //Calculate
-                decimal bought = Convert.ToDecimal(line.boughtTextBox.Text);
-                decimal paid = Convert.ToDecimal(line.paidTextBox.Text);
+                decimal bought = Convert.ToDecimal(line.BoughtTextBox.Text);
+                decimal paid = Convert.ToDecimal(line.PaidTextBox.Text);
                 decimal total = bought * downloadedCoin.price;
                 decimal profit = total - paid;
                 decimal changeDollar = downloadedCoin.price - coin.StartupPrice;
@@ -115,12 +116,12 @@ namespace MyCryptoMonitor
                 //Update gui
                 invoke = delegate
                 {
-                    line.coinLabel.Text = downloadedCoin.shortName;
-                    line.priceLabel.Text = $"${downloadedCoin.price:0.00}";
-                    line.totalLabel.Text = $"${total:0.00}";
-                    line.profitLabel.Text = $"${profit:0.00}";
-                    line.changeDollarLabel.Text = $"${changeDollar:0.000000}";
-                    line.changePercentLabel.Text = $"{changePercent:0.00}%";
+                    line.CoinLabel.Text = downloadedCoin.shortName;
+                    line.PriceLabel.Text = $"${downloadedCoin.price:0.00}";
+                    line.TotalLabel.Text = $"${total:0.00}";
+                    line.ProfitLabel.Text = $"${profit:0.00}";
+                    line.ChangeDollarLabel.Text = $"${changeDollar:0.000000}";
+                    line.ChangePercentLabel.Text = $"{changePercent:0.00}%";
                 };
                 Invoke(invoke);
 
@@ -165,23 +166,28 @@ namespace MyCryptoMonitor
                 foreach (CoinConfig coin in _coinConfigs)
                 {
                     //Get the selected coin line
-                    CoinGuiLine line = (from c in _coinGuiLines where c.Coin.Equals(coin.coin) select c).First();
+                    CoinGuiLine line = (from c in _coinGuiLines where c.CoinName.Equals(coin.coin) select c).First();
 
                     //Reset labels
-                    line.profitLabel.Text = $"$0.00";
-                    line.changeDollarLabel.Text = $"$0.000000";
-                    line.changePercentLabel.Text = $"0.00%";
+                    line.ProfitLabel.Text = $"$0.00";
+                    line.ChangeDollarLabel.Text = $"$0.000000";
+                    line.ChangePercentLabel.Text = $"0.00%";
 
                     //Parse the selected coin
                     CoinData downloadedCoin = coins.Single(c => c.shortName == coin.coin);
 
                     //Reset elements
                     coin.StartupPrice = downloadedCoin.price;
-                    line.boughtTextBox.Text = coin.bought.ToString();
-                    line.paidTextBox.Text = coin.paid.ToString();
+                    line.BoughtTextBox.Text = coin.bought.ToString();
+                    line.PaidTextBox.Text = coin.paid.ToString();
                 }
             };
             Invoke(invoke);
+        }
+
+        private void Exit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

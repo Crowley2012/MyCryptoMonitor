@@ -18,10 +18,5 @@ namespace MyCryptoMonitor
         public float volume { get; set; }
         public float vwapData { get; set; }
         public float vwapDataBTC { get; set; }
-
-        //public decimal original { get; set; }
-
-        //private CoinLine coinLine;
-        //public CoinLine CoinLine { get { return coinLine; } set { coinLine = value; } }
     }
 }
