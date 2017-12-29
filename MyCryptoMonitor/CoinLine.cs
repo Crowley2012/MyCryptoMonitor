@@ -11,6 +11,7 @@ namespace MyCryptoMonitor
         public Label ProfitLabel;
         public Label ChangeDollarLabel;
         public Label ChangePercentLabel;
+        public Label Change24HrPercentLabel;
         public TextBox BoughtTextBox;
         public TextBox PaidTextBox;
 
@@ -24,6 +25,7 @@ namespace MyCryptoMonitor
             ProfitLabel = new Label();
             ChangeDollarLabel = new Label();
             ChangePercentLabel = new Label();
+            Change24HrPercentLabel = new Label();
 
             CoinName = coin;
             int yindex = index * 25;
@@ -34,6 +36,7 @@ namespace MyCryptoMonitor
             ProfitLabel.AutoSize = true;
             ChangeDollarLabel.AutoSize = true;
             ChangePercentLabel.AutoSize = true;
+            Change24HrPercentLabel.AutoSize = true;
 
             CoinLabel.Size = new System.Drawing.Size(28, 13);
             PriceLabel.Size = new System.Drawing.Size(34, 13);
@@ -43,6 +46,7 @@ namespace MyCryptoMonitor
             ProfitLabel.Size = new System.Drawing.Size(34, 13);
             ChangeDollarLabel.Size = new System.Drawing.Size(58, 13);
             ChangePercentLabel.Size = new System.Drawing.Size(36, 13);
+            Change24HrPercentLabel.Size = new System.Drawing.Size(36, 13);
 
             CoinLabel.Location = new System.Drawing.Point(12, 116 + yindex);
             PriceLabel.Location = new System.Drawing.Point(57, 116 + yindex);
@@ -52,6 +56,7 @@ namespace MyCryptoMonitor
             ProfitLabel.Location = new System.Drawing.Point(370, 116 + yindex);
             ChangeDollarLabel.Location = new System.Drawing.Point(427, 116 + yindex);
             ChangePercentLabel.Location = new System.Drawing.Point(510, 116 + yindex);
+            Change24HrPercentLabel.Location = new System.Drawing.Point(593, 116 + yindex);
         }
     }
 }

@@ -28,7 +28,9 @@ namespace MyCryptoMonitor
                 new CoinConfig { coin = "ETH", bought =  0, paid = 0},
                 new CoinConfig { coin = "LTC", bought =  0, paid = 0},
                 new CoinConfig { coin = "XRP", bought = (decimal) 630.592988, paid = 675},
-                new CoinConfig { coin = "XLM", bought = (decimal) 1238.73999, paid = 350}
+                new CoinConfig { coin = "XLM", bought = (decimal) 1238.73999, paid = 350},
+                new CoinConfig { coin = "ADA", bought =  0, paid = 0},
+                new CoinConfig { coin = "TRX", bought =  0, paid = 0}
             };
 
             //List of gui coin fields
@@ -93,6 +95,7 @@ namespace MyCryptoMonitor
                             Controls.Add(newLine.ProfitLabel);
                             Controls.Add(newLine.ChangeDollarLabel);
                             Controls.Add(newLine.ChangePercentLabel);
+                            Controls.Add(newLine.Change24HrPercentLabel);
                         };
                         Invoke(invoke);
 
@@ -124,6 +127,7 @@ namespace MyCryptoMonitor
                         line.ProfitLabel.Text = $"${profit:0.00}";
                         line.ChangeDollarLabel.Text = $"${changeDollar:0.000000}";
                         line.ChangePercentLabel.Text = $"{changePercent:0.00}%";
+                        line.Change24HrPercentLabel.Text = $"{downloadedCoin.cap24hrChange}%";
                     };
                     Invoke(invoke);
 
