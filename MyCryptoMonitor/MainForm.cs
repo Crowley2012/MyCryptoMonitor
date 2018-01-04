@@ -5,6 +5,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Linq;
 using System;
+using System.IO;
 
 namespace MyCryptoMonitor
 {
@@ -23,6 +24,7 @@ namespace MyCryptoMonitor
             _loadGuiLines = true;
 
             //TODO: Move to serialized file
+            /*
             _coinConfigs = new List<CoinConfig> {
                 new CoinConfig { coin = "BTC", bought =  0, paid = 0},
                 new CoinConfig { coin = "ETH", bought =  0, paid = 0},
@@ -32,6 +34,14 @@ namespace MyCryptoMonitor
                 new CoinConfig { coin = "ADA", bought =  0, paid = 0},
                 new CoinConfig { coin = "TRX", bought =  0, paid = 0}
             };
+            */
+
+            string readText = string.Empty;
+
+            if(File.Exists("portfolio1"))
+                readText = File.ReadAllText("portfolio1");
+
+            _coinConfigs = JsonConvert.DeserializeObject<List<CoinConfig>>(readText);
 
             //List of gui coin fields
             _coinGuiLines = new List<CoinGuiLine>();
@@ -208,6 +218,31 @@ namespace MyCryptoMonitor
         private void Exit_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void addToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _coinConfigs.Add(new CoinConfig { coin = "XRP", bought = 20, paid = 1, StartupPrice = 0 });
+        }
+
+        private void removeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void portfolio1ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var test = JsonConvert.SerializeObject(new List<CoinConfig> {
+                new CoinConfig { coin = "BTC", bought =  0, paid = 0},
+                new CoinConfig { coin = "ETH", bought =  0, paid = 0},
+                new CoinConfig { coin = "LTC", bought =  0, paid = 0},
+                new CoinConfig { coin = "XRP", bought = (decimal) 630.592988, paid = 675},
+                new CoinConfig { coin = "XLM", bought = (decimal) 1238.73999, paid = 350},
+                new CoinConfig { coin = "ADA", bought =  0, paid = 0},
+                new CoinConfig { coin = "TRX", bought =  0, paid = 0}
+            });
+
+            File.WriteAllText("portfolio1", test);
         }
     }
 }
