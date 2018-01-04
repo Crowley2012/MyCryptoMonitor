@@ -111,6 +111,9 @@ namespace MyCryptoMonitor
 
                         //Add line to list
                         _coinGuiLines.Add(newLine);
+
+                        //Incremenet coin line index
+                        index++;
                     }
 
                     //Get the gui line for coin
@@ -140,9 +143,6 @@ namespace MyCryptoMonitor
                         line.Change24HrPercentLabel.Text = $"{downloadedCoin.cap24hrChange}%";
                     };
                     Invoke(invoke);
-
-                    //Incremenet coin line index
-                    index++;
                 }
 
                 //Update gui
@@ -161,12 +161,12 @@ namespace MyCryptoMonitor
                 Thread.Sleep(5000);
                 LoadCoinCapData();
             }
-            catch(Exception)
+            catch(Exception e)
             {
                 //Display status
                 MethodInvoker invoke = delegate
                 {
-                    statusLabel.Text = "Status: Failed";
+                    statusLabel.Text = $"Status: Failed - {e.Message}";
                 };
                 Invoke(invoke);
 
@@ -176,6 +176,7 @@ namespace MyCryptoMonitor
             }
         }
 
+        #region Events
         private void Reset_Click(object sender, EventArgs e)
         {
             //Set status
@@ -220,17 +221,82 @@ namespace MyCryptoMonitor
             Application.Exit();
         }
 
-        private void addToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AddCoin(string coinstring)
         {
-            _coinConfigs.Add(new CoinConfig { coin = "XRP", bought = 20, paid = 1, StartupPrice = 0 });
+            //Download coin data from CoinCap
+            var webClient = new WebClient();
+            var response = webClient.DownloadString("http://coincap.io/front");
+            var coins = JsonConvert.DeserializeObject<List<CoinData>>(response);
+
+            var coin = new CoinConfig { coin = coinstring, bought = 0, paid = 0, StartupPrice = 0 };
+
+            if (!coins.Any(c => c.shortName == coin.coin))
+                return;
+
+            CoinData downloadedCoin = coins.Single(c => c.shortName == coin.coin);
+
+            //Store the intial coin price at startup
+            coin.StartupPrice = downloadedCoin.price;
+
+            //Create the gui line
+            CoinGuiLine newLine = new CoinGuiLine(downloadedCoin.shortName, _coinConfigs.Count);
+
+            //Set the bought and paid amounts
+            newLine.BoughtTextBox.Text = coin.bought.ToString();
+            newLine.PaidTextBox.Text = coin.paid.ToString();
+
+            //Add the line elements to gui
+            MethodInvoker invoke = delegate
+            {
+                Height += 25;
+                Controls.Add(newLine.CoinLabel);
+                Controls.Add(newLine.PriceLabel);
+                Controls.Add(newLine.BoughtTextBox);
+                Controls.Add(newLine.TotalLabel);
+                Controls.Add(newLine.PaidTextBox);
+                Controls.Add(newLine.ProfitLabel);
+                Controls.Add(newLine.ChangeDollarLabel);
+                Controls.Add(newLine.ChangePercentLabel);
+                Controls.Add(newLine.Change24HrPercentLabel);
+            };
+            Invoke(invoke);
+
+            //Add line to list
+            _coinGuiLines.Add(newLine);
+            _coinConfigs.Add(coin);
         }
 
-        private void removeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AddCoin_Click(object sender, EventArgs e)
         {
+            InputForm form = new InputForm();
+            var result = form.ShowDialog();
 
+            if (result == DialogResult.OK)
+            {
+                if (!_coinConfigs.Any(a => a.coin.Equals(form.InputText.ToUpper())))
+                    AddCoin(form.InputText.ToUpper());
+                else
+                    MessageBox.Show("Coin already exists!");
+            }
         }
 
-        private void portfolio1ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void RemoveCoin_Click(object sender, EventArgs e)
+        {
+            InputForm form = new InputForm();
+            var result = form.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                if (!_coinConfigs.Any(a => a.coin.Equals(form.InputText.ToUpper())))
+                {
+                    //_coinGuiLines.Remove(_coinGuiLines.Select(a => a.CoinName.Equals(form.InputText.ToUpper())));
+                    //_coinConfigs.Remove(coin);
+                }
+            }
+        }
+
+        //Load portfolios
+        private void LoadPortfolio1_Click(object sender, EventArgs e)
         {
             var test = JsonConvert.SerializeObject(new List<CoinConfig> {
                 new CoinConfig { coin = "BTC", bought =  0, paid = 0},
@@ -239,10 +305,37 @@ namespace MyCryptoMonitor
                 new CoinConfig { coin = "XRP", bought = (decimal) 630.592988, paid = 675},
                 new CoinConfig { coin = "XLM", bought = (decimal) 1238.73999, paid = 350},
                 new CoinConfig { coin = "ADA", bought =  0, paid = 0},
-                new CoinConfig { coin = "TRX", bought =  0, paid = 0}
+                new CoinConfig { coin = "TRX", bought =  (decimal) 3731.265, paid = 250}
             });
 
             File.WriteAllText("portfolio1", test);
         }
+
+        private void LoadPortfolio2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void LoadPortfolio3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        //Save portfolios
+        private void SavePortfolio1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void SavePortfolio2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void SavePortfolio3_Click(object sender, EventArgs e)
+        {
+
+        }
+        #endregion
     }
 }
