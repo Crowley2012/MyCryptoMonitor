@@ -12,6 +12,11 @@ namespace MyCryptoMonitor
             InitializeComponent();
         }
 
+        public void SetSubmitLabel(string label)
+        {
+            btnSubmit.Text = label;
+        }
+
         private void Submit_Click(object sender, EventArgs e)
         {
             InputText = txtInput.Text;

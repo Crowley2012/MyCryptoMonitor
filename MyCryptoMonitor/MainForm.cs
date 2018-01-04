@@ -23,19 +23,6 @@ namespace MyCryptoMonitor
             //Setup gui
             _loadGuiLines = true;
 
-            //TODO: Move to serialized file
-            /*
-            _coinConfigs = new List<CoinConfig> {
-                new CoinConfig { coin = "BTC", bought =  0, paid = 0},
-                new CoinConfig { coin = "ETH", bought =  0, paid = 0},
-                new CoinConfig { coin = "LTC", bought =  0, paid = 0},
-                new CoinConfig { coin = "XRP", bought = (decimal) 630.592988, paid = 675},
-                new CoinConfig { coin = "XLM", bought = (decimal) 1238.73999, paid = 350},
-                new CoinConfig { coin = "ADA", bought =  0, paid = 0},
-                new CoinConfig { coin = "TRX", bought =  0, paid = 0}
-            };
-            */
-
             string readText = string.Empty;
 
             if(File.Exists("portfolio1"))
@@ -269,6 +256,7 @@ namespace MyCryptoMonitor
         private void AddCoin_Click(object sender, EventArgs e)
         {
             InputForm form = new InputForm();
+            form.SetSubmitLabel("Add");
             var result = form.ShowDialog();
 
             if (result == DialogResult.OK)
@@ -283,18 +271,40 @@ namespace MyCryptoMonitor
         private void RemoveCoin_Click(object sender, EventArgs e)
         {
             InputForm form = new InputForm();
+            form.SetSubmitLabel("Remove");
             var result = form.ShowDialog();
 
             if (result == DialogResult.OK)
             {
-                if (!_coinConfigs.Any(a => a.coin.Equals(form.InputText.ToUpper())))
+                if (_coinConfigs.Any(a => a.coin.Equals(form.InputText.ToUpper())))
                 {
-                    //_coinGuiLines.Remove(_coinGuiLines.Select(a => a.CoinName.Equals(form.InputText.ToUpper())));
-                    //_coinConfigs.Remove(coin);
+                    foreach (var test in _coinGuiLines)
+                    {
+                        //Add the line elements to gui
+                        MethodInvoker invoke = delegate
+                        {
+                            Height -= 25;
+                            Controls.Remove(test.CoinLabel);
+                            Controls.Remove(test.PriceLabel);
+                            Controls.Remove(test.BoughtTextBox);
+                            Controls.Remove(test.TotalLabel);
+                            Controls.Remove(test.PaidTextBox);
+                            Controls.Remove(test.ProfitLabel);
+                            Controls.Remove(test.ChangeDollarLabel);
+                            Controls.Remove(test.ChangePercentLabel);
+                            Controls.Remove(test.Change24HrPercentLabel);
+                        };
+                        Invoke(invoke);
+                    }
+
+                    _coinGuiLines.RemoveAll(x => x.CoinLabel.Equals(form.InputText.ToUpper()));
+                    _coinConfigs.RemoveAll(x => x.coin.Equals(form.InputText.ToUpper()));
+
+                    _loadGuiLines = true;
                 }
             }
         }
-
+        
         //Load portfolios
         private void LoadPortfolio1_Click(object sender, EventArgs e)
         {
