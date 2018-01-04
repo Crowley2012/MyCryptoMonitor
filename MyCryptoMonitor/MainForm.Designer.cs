@@ -388,21 +388,21 @@
             // portfolio1ToolStripMenuItem1
             // 
             this.portfolio1ToolStripMenuItem1.Name = "portfolio1ToolStripMenuItem1";
-            this.portfolio1ToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.portfolio1ToolStripMenuItem1.Size = new System.Drawing.Size(129, 22);
             this.portfolio1ToolStripMenuItem1.Text = "Portfolio 1";
             this.portfolio1ToolStripMenuItem1.Click += new System.EventHandler(this.SavePortfolio1_Click);
             // 
             // portfolio2ToolStripMenuItem1
             // 
             this.portfolio2ToolStripMenuItem1.Name = "portfolio2ToolStripMenuItem1";
-            this.portfolio2ToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.portfolio2ToolStripMenuItem1.Size = new System.Drawing.Size(129, 22);
             this.portfolio2ToolStripMenuItem1.Text = "Portfolio 2";
             this.portfolio2ToolStripMenuItem1.Click += new System.EventHandler(this.SavePortfolio2_Click);
             // 
             // portfolio3ToolStripMenuItem1
             // 
             this.portfolio3ToolStripMenuItem1.Name = "portfolio3ToolStripMenuItem1";
-            this.portfolio3ToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.portfolio3ToolStripMenuItem1.Size = new System.Drawing.Size(129, 22);
             this.portfolio3ToolStripMenuItem1.Text = "Portfolio 3";
             this.portfolio3ToolStripMenuItem1.Click += new System.EventHandler(this.SavePortfolio3_Click);
             // 
@@ -438,6 +438,7 @@
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "My Crypto Monitor";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
