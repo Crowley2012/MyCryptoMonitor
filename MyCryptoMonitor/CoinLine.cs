@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Drawing;
+using System.Windows.Forms;
 
 namespace MyCryptoMonitor
 {
@@ -38,25 +39,25 @@ namespace MyCryptoMonitor
             ChangePercentLabel.AutoSize = true;
             Change24HrPercentLabel.AutoSize = true;
 
-            CoinLabel.Size = new System.Drawing.Size(28, 13);
-            PriceLabel.Size = new System.Drawing.Size(34, 13);
-            BoughtTextBox.Size = new System.Drawing.Size(66, 20);
-            TotalLabel.Size = new System.Drawing.Size(34, 13);
-            PaidTextBox.Size = new System.Drawing.Size(66, 20);
-            ProfitLabel.Size = new System.Drawing.Size(34, 13);
-            ChangeDollarLabel.Size = new System.Drawing.Size(58, 13);
-            ChangePercentLabel.Size = new System.Drawing.Size(36, 13);
-            Change24HrPercentLabel.Size = new System.Drawing.Size(36, 13);
+            CoinLabel.Size = new Size(28, 13);
+            PriceLabel.Size = new Size(34, 13);
+            BoughtTextBox.Size = new Size(66, 20);
+            TotalLabel.Size = new Size(34, 13);
+            PaidTextBox.Size = new Size(66, 20);
+            ProfitLabel.Size = new Size(34, 13);
+            ChangeDollarLabel.Size = new Size(58, 13);
+            ChangePercentLabel.Size = new Size(36, 13);
+            Change24HrPercentLabel.Size = new Size(36, 13);
 
-            CoinLabel.Location = new System.Drawing.Point(12, 116 + yindex);
-            PriceLabel.Location = new System.Drawing.Point(57, 116 + yindex);
-            BoughtTextBox.Location = new System.Drawing.Point(130, 113 + yindex);
-            TotalLabel.Location = new System.Drawing.Point(216, 116 + yindex);
-            PaidTextBox.Location = new System.Drawing.Point(283, 113 + yindex);
-            ProfitLabel.Location = new System.Drawing.Point(370, 116 + yindex);
-            ChangeDollarLabel.Location = new System.Drawing.Point(427, 116 + yindex);
-            ChangePercentLabel.Location = new System.Drawing.Point(510, 116 + yindex);
-            Change24HrPercentLabel.Location = new System.Drawing.Point(593, 116 + yindex);
+            CoinLabel.Location = new Point(12, 116 + yindex);
+            PriceLabel.Location = new Point(57, 116 + yindex);
+            BoughtTextBox.Location = new Point(130, 113 + yindex);
+            TotalLabel.Location = new Point(216, 116 + yindex);
+            PaidTextBox.Location = new Point(283, 113 + yindex);
+            ProfitLabel.Location = new Point(370, 116 + yindex);
+            ChangeDollarLabel.Location = new Point(427, 116 + yindex);
+            ChangePercentLabel.Location = new Point(510, 116 + yindex);
+            Change24HrPercentLabel.Location = new Point(593, 116 + yindex);
         }
     }
 }
