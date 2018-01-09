@@ -25,13 +25,16 @@ namespace MyCryptoMonitor
         private void MainForm_Load(object sender, EventArgs e)
         {
             _coinGuiLines = new List<CoinGuiLine>();
+            _coinConfigs = new List<CoinConfig>();
             _loadGuiLines = true;
 
-            //Load portfolio
-            if (File.Exists("portfolio1"))
+            //Attempt to load portfolio on startup
+            if(File.Exists("portfolio1"))
                 _coinConfigs = JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText("portfolio1") ?? string.Empty);
-            else
-                _coinConfigs = new List<CoinConfig>();
+            else if (File.Exists("portfolio2"))
+                _coinConfigs = JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText("portfolio2") ?? string.Empty);
+            else if (File.Exists("portfolio3"))
+                _coinConfigs = JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText("portfolio3") ?? string.Empty);
 
             //Update status
             UpdateStatusDelegate updateStatus = new UpdateStatusDelegate(UpdateStatus);
@@ -234,7 +237,6 @@ namespace MyCryptoMonitor
             }
 
             _coinGuiLines = new List<CoinGuiLine>();
-
             _loadGuiLines = true;
         }
         #endregion
@@ -270,6 +272,26 @@ namespace MyCryptoMonitor
 
             //Add line to list
             _coinGuiLines.Add(newLine);
+        }
+
+        private void SavePortfolio(string portfolio)
+        {
+            if (_coinGuiLines.Count <= 0)
+                return;
+
+            List<CoinConfig> newCoinConfigs = new List<CoinConfig>();
+
+            foreach (var coinLine in _coinGuiLines)
+            {
+                newCoinConfigs.Add(new CoinConfig
+                {
+                    coin = coinLine.CoinLabel.Text,
+                    bought = Convert.ToDecimal(coinLine.BoughtTextBox.Text),
+                    paid = Convert.ToDecimal(coinLine.PaidTextBox.Text)
+                });
+            }
+
+            File.WriteAllText(portfolio, JsonConvert.SerializeObject(newCoinConfigs));
         }
         #endregion
 
@@ -330,49 +352,28 @@ namespace MyCryptoMonitor
             }
         }
         
-        //Load portfolios
+        //Save portfolios
         private void SavePortfolio1_Click(object sender, EventArgs e)
         {
-            var test = JsonConvert.SerializeObject(new List<CoinConfig> {
-                new CoinConfig { coin = "BTC", bought =  0, paid = 0},
-                new CoinConfig { coin = "ETH", bought =  0, paid = 0},
-                new CoinConfig { coin = "LTC", bought =  0, paid = 0},
-                new CoinConfig { coin = "XRP", bought = (decimal) 630.592988, paid = 675},
-                new CoinConfig { coin = "XLM", bought = (decimal) 1575.40299, paid = 675},
-                new CoinConfig { coin = "ADA", bought =  0, paid = 0},
-                new CoinConfig { coin = "TRX", bought =  (decimal) 5657.337, paid = 575}
-            });
-
-            File.WriteAllText("portfolio1", test);
+            SavePortfolio("portfolio1");
         }
 
         private void SavePortfolio2_Click(object sender, EventArgs e)
         {
-            var test = JsonConvert.SerializeObject(new List<CoinConfig> {
-                new CoinConfig { coin = "XRP", bought = (decimal) 630.592988, paid = 675},
-                new CoinConfig { coin = "XLM", bought = (decimal) 1575.40299, paid = 675},
-                new CoinConfig { coin = "TRX", bought =  (decimal) 5657.337, paid = 575}
-            });
-
-            File.WriteAllText("portfolio2", test);
+            SavePortfolio("portfolio2");
         }
 
         private void SavePortfolio3_Click(object sender, EventArgs e)
         {
-            var test = JsonConvert.SerializeObject(new List<CoinConfig> {
-                new CoinConfig { coin = "BTC", bought =  0, paid = 0},
-                new CoinConfig { coin = "ETH", bought =  0, paid = 0},
-                new CoinConfig { coin = "LTC", bought =  0, paid = 0},
-                new CoinConfig { coin = "XRP", bought = (decimal) 630.592988, paid = 675},
-                new CoinConfig { coin = "XLM", bought = (decimal) 1575.40299, paid = 675},
-                new CoinConfig { coin = "TRX", bought =  (decimal) 5657.337, paid = 575}
-            });
-
-            File.WriteAllText("portfolio3", test);
+            SavePortfolio("portfolio3");
         }
 
+        //Load portfolios
         private void LoadPortfolio1_Click(object sender, EventArgs e)
         {
+            if (!File.Exists("portfolio1"))
+                return;
+
             _coinConfigs = JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText("portfolio1") ?? string.Empty);
 
             RemoveDelegate remove = new RemoveDelegate(Remove);
@@ -381,6 +382,9 @@ namespace MyCryptoMonitor
 
         private void LoadPortfolio2_Click(object sender, EventArgs e)
         {
+            if (!File.Exists("portfolio2"))
+                return;
+
             _coinConfigs = JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText("portfolio2") ?? string.Empty);
 
             RemoveDelegate remove = new RemoveDelegate(Remove);
@@ -389,6 +393,9 @@ namespace MyCryptoMonitor
 
         private void LoadPortfolio3_Click(object sender, EventArgs e)
         {
+            if (!File.Exists("portfolio3"))
+                return;
+
             _coinConfigs = JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText("portfolio3") ?? string.Empty);
 
             RemoveDelegate remove = new RemoveDelegate(Remove);
