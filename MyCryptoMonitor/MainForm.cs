@@ -11,10 +11,13 @@ namespace MyCryptoMonitor
 {
     public partial class MainForm : Form
     {
+        #region Private Variables
         private List<CoinConfig> _coinConfigs;
         private List<CoinGuiLine> _coinGuiLines;
         private bool _loadGuiLines;
         private int _refreshCount;
+        private string _selectedPortfolio;
+        #endregion
 
         #region Load
         public MainForm()
@@ -29,19 +32,19 @@ namespace MyCryptoMonitor
             _loadGuiLines = true;
 
             //Attempt to load portfolio on startup
-            if(File.Exists("portfolio1"))
-                _coinConfigs = JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText("portfolio1") ?? string.Empty);
-            else if (File.Exists("portfolio2"))
-                _coinConfigs = JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText("portfolio2") ?? string.Empty);
-            else if (File.Exists("portfolio3"))
-                _coinConfigs = JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText("portfolio3") ?? string.Empty);
+            if(File.Exists("Portfolio1"))
+                _coinConfigs = JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText("Portfolio1") ?? string.Empty);
+            else if (File.Exists("Portfolio2"))
+                _coinConfigs = JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText("Portfolio2") ?? string.Empty);
+            else if (File.Exists("Portfolio3"))
+                _coinConfigs = JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText("Portfolio3") ?? string.Empty);
 
             //Update status
             UpdateStatusDelegate updateStatus = new UpdateStatusDelegate(UpdateStatus);
             BeginInvoke(updateStatus, "Loading");
 
             //Update refreshes
-            UpdateRefreshesDelegate updateRefreshes = new UpdateRefreshesDelegate(UpdateStatus);
+            UpdateRefreshesDelegate updateRefreshes = new UpdateRefreshesDelegate(UpdateRefreshes);
             BeginInvoke(updateRefreshes);
 
             //Start thread
@@ -72,7 +75,7 @@ namespace MyCryptoMonitor
             BeginInvoke(updateStatus, "Sleeping");
 
             //Update refreshes
-            UpdateRefreshesDelegate updateRefreshes = new UpdateRefreshesDelegate(UpdateStatus);
+            UpdateRefreshesDelegate updateRefreshes = new UpdateRefreshesDelegate(UpdateRefreshes);
             BeginInvoke(updateRefreshes);
 
             //Sleep and refresh
@@ -84,11 +87,11 @@ namespace MyCryptoMonitor
         #region Delegates
         //Update refresh label
         private delegate void UpdateRefreshesDelegate();
-        public void UpdateStatus()
+        public void UpdateRefreshes()
         {
             if (InvokeRequired)
             {
-                Invoke(new UpdateRefreshesDelegate(UpdateStatus));
+                Invoke(new UpdateRefreshesDelegate(UpdateRefreshes));
                 return;
             }
 
@@ -128,9 +131,11 @@ namespace MyCryptoMonitor
             //Loop through all coins from config
             foreach (CoinConfig coin in _coinConfigs)
             {
+                //Parse coins
                 var coins = JsonConvert.DeserializeObject<List<CoinData>>(response);
                 CoinData downloadedCoin = coins.Single(c => c.shortName == coin.coin);
 
+                //Check if gui lines need to be loaded
                 if (_loadGuiLines)
                     AddCoin(coin, downloadedCoin, index);
 
@@ -192,23 +197,8 @@ namespace MyCryptoMonitor
             totalProfit.Text = "$0.00";
             totalProfitChange.Text = "($0.00)";
 
-            foreach (CoinConfig coin in _coinConfigs)
-            {
-                //Get the selected coin line
-                CoinGuiLine line = (from c in _coinGuiLines where c.CoinName.Equals(coin.coin) select c).First();
-
-                //Reset labels
-                line.PriceLabel.Text = "$0.00";
-                line.TotalLabel.Text = "$0.00";
-                line.ProfitLabel.Text = "$0.00";
-                line.ChangeDollarLabel.Text = "$0.000000";
-                line.ChangePercentLabel.Text = "0.00%";
-                line.Change24HrPercentLabel.Text = "0.00%";
-
-                //Reset inputs
-                line.BoughtTextBox.Text = coin.bought.ToString();
-                line.PaidTextBox.Text = coin.paid.ToString();
-            }
+            //Reload portfolio
+            LoadPortfolio(_selectedPortfolio);
         }
 
         //Remove lines
@@ -281,6 +271,7 @@ namespace MyCryptoMonitor
 
             List<CoinConfig> newCoinConfigs = new List<CoinConfig>();
 
+            //Create new list of gui lines
             foreach (var coinLine in _coinGuiLines)
             {
                 newCoinConfigs.Add(new CoinConfig
@@ -291,14 +282,27 @@ namespace MyCryptoMonitor
                 });
             }
 
+            //Serialize lines to file
             File.WriteAllText(portfolio, JsonConvert.SerializeObject(newCoinConfigs));
+        }
+
+        private void LoadPortfolio(string portfolio)
+        {
+            if (!File.Exists(portfolio))
+                return;
+
+            //Load portfolio from file
+            _coinConfigs = JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText(portfolio) ?? string.Empty);
+            _selectedPortfolio = portfolio;
+
+            RemoveDelegate remove = new RemoveDelegate(Remove);
+            BeginInvoke(remove);
         }
         #endregion
 
         #region Events
         private void Reset_Click(object sender, EventArgs e)
         {
-            //Update refreshes
             ReloadDelegate reload = new ReloadDelegate(Reload);
             BeginInvoke(reload);
         }
@@ -310,15 +314,17 @@ namespace MyCryptoMonitor
 
         private void AddCoin_Click(object sender, EventArgs e)
         {
+            //Get coin to add
             InputForm form = new InputForm();
             form.SetSubmitLabel("Add");
-            var result = form.ShowDialog();
 
-            if (result != DialogResult.OK)
+            if (form.ShowDialog() != DialogResult.OK)
                 return;
 
+            //Check if coin exists
             if (!_coinConfigs.Any(a => a.coin.Equals(form.InputText.ToUpper())))
             {
+                //Add config
                 _coinConfigs.Add(new CoinConfig { coin = form.InputText.ToUpper(), bought = 0, paid = 0, StartupPrice = 0 });
 
                 RemoveDelegate remove = new RemoveDelegate(Remove);
@@ -332,15 +338,17 @@ namespace MyCryptoMonitor
 
         private void RemoveCoin_Click(object sender, EventArgs e)
         {
+            //Get coin to remove
             InputForm form = new InputForm();
             form.SetSubmitLabel("Remove");
-            var result = form.ShowDialog();
 
-            if (result != DialogResult.OK)
+            if (form.ShowDialog() != DialogResult.OK)
                 return;
 
+            //Check if coin exists
             if (_coinConfigs.Any(a => a.coin.Equals(form.InputText.ToUpper())))
             {
+                //Remove config
                 _coinConfigs.RemoveAll(a => a.coin.Equals(form.InputText.ToUpper()));
 
                 RemoveDelegate remove = new RemoveDelegate(Remove);
@@ -352,54 +360,14 @@ namespace MyCryptoMonitor
             }
         }
         
-        //Save portfolios
-        private void SavePortfolio1_Click(object sender, EventArgs e)
+        private void SavePortfolio_Click(object sender, EventArgs e)
         {
-            SavePortfolio("portfolio1");
+            SavePortfolio(((ToolStripMenuItem)sender).Tag.ToString());
         }
 
-        private void SavePortfolio2_Click(object sender, EventArgs e)
+        private void LoadPortfolio_Click(object sender, EventArgs e)
         {
-            SavePortfolio("portfolio2");
-        }
-
-        private void SavePortfolio3_Click(object sender, EventArgs e)
-        {
-            SavePortfolio("portfolio3");
-        }
-
-        //Load portfolios
-        private void LoadPortfolio1_Click(object sender, EventArgs e)
-        {
-            if (!File.Exists("portfolio1"))
-                return;
-
-            _coinConfigs = JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText("portfolio1") ?? string.Empty);
-
-            RemoveDelegate remove = new RemoveDelegate(Remove);
-            BeginInvoke(remove);
-        }
-
-        private void LoadPortfolio2_Click(object sender, EventArgs e)
-        {
-            if (!File.Exists("portfolio2"))
-                return;
-
-            _coinConfigs = JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText("portfolio2") ?? string.Empty);
-
-            RemoveDelegate remove = new RemoveDelegate(Remove);
-            BeginInvoke(remove);
-        }
-
-        private void LoadPortfolio3_Click(object sender, EventArgs e)
-        {
-            if (!File.Exists("portfolio3"))
-                return;
-
-            _coinConfigs = JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText("portfolio3") ?? string.Empty);
-
-            RemoveDelegate remove = new RemoveDelegate(Remove);
-            BeginInvoke(remove);
+            LoadPortfolio(((ToolStripMenuItem)sender).Tag.ToString());
         }
         #endregion
     }

@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace MyCryptoMonitor
@@ -58,6 +59,55 @@ namespace MyCryptoMonitor
             ChangeDollarLabel.Location = new Point(427, 116 + yindex);
             ChangePercentLabel.Location = new Point(510, 116 + yindex);
             Change24HrPercentLabel.Location = new Point(593, 116 + yindex);
+
+            ChangePercentLabel.TextChanged += new EventHandler(ChangePercentLabel_TextChanged);
+            Change24HrPercentLabel.TextChanged += new EventHandler(Change24HrPercentLabel_TextChanged);
+        }
+
+        private void Change24HrPercentLabel_TextChanged(object sender, EventArgs e)
+        {
+            decimal change24HrPercent = Convert.ToDecimal(((Label)sender).Text.Replace("%", string.Empty));
+
+            //Set color
+            if (change24HrPercent >= 0)
+                Change24HrPercentLabel.ForeColor = Color.Green;
+            else
+                Change24HrPercentLabel.ForeColor = Color.Red;
+
+            //Set weight
+            if (change24HrPercent >= 10 || change24HrPercent <= -10)
+                Change24HrPercentLabel.Font = new Font(Change24HrPercentLabel.Font, FontStyle.Bold);
+            else
+                Change24HrPercentLabel.Font = new Font(Change24HrPercentLabel.Font, FontStyle.Regular);
+        }
+
+        private void ChangePercentLabel_TextChanged(object sender, EventArgs e)
+        {
+            decimal changePercent = Convert.ToDecimal(((Label)sender).Text.Replace("%", string.Empty));
+
+            //Set color
+            if (changePercent >= 0)
+            {
+                ChangeDollarLabel.ForeColor = Color.Green;
+                ChangePercentLabel.ForeColor = Color.Green;
+            }
+            else
+            {
+                ChangeDollarLabel.ForeColor = Color.Red;
+                ChangePercentLabel.ForeColor = Color.Red;
+            }
+
+            //Set weight
+            if (changePercent >= 10 || changePercent <= -10)
+            {
+                ChangeDollarLabel.Font = new Font(ChangeDollarLabel.Font, FontStyle.Bold);
+                ChangePercentLabel.Font = new Font(ChangePercentLabel.Font, FontStyle.Bold);
+            }
+            else
+            {
+                ChangeDollarLabel.Font = new Font(ChangeDollarLabel.Font, FontStyle.Regular);
+                ChangePercentLabel.Font = new Font(ChangePercentLabel.Font, FontStyle.Regular);
+            }
         }
     }
 }
