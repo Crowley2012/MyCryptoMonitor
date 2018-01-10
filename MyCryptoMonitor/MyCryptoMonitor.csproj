@@ -51,8 +51,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Coin.cs" />
-    <Compile Include="CoinLine.cs" />
+    <Compile Include="CoinData.cs" />
+    <Compile Include="CoinGuiLine.cs" />
     <Compile Include="InputForm.cs">
       <SubType>Form</SubType>
     </Compile>

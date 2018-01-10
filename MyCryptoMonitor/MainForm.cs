@@ -160,7 +160,7 @@ namespace MyCryptoMonitor
                 //Update gui
                 line.CoinLabel.Show();
                 line.CoinLabel.Text = downloadedCoin.shortName;
-                line.PriceLabel.Text = $"${downloadedCoin.price:0.00}";
+                line.PriceLabel.Text = $"${downloadedCoin.price}";
                 line.TotalLabel.Text = $"${total:0.00}";
                 line.ProfitLabel.Text = $"${profit:0.00}";
                 line.ChangeDollarLabel.Text = $"${changeDollar:0.000000}";
