@@ -32,12 +32,21 @@ namespace MyCryptoMonitor
             _loadGuiLines = true;
 
             //Attempt to load portfolio on startup
-            if(File.Exists("Portfolio1"))
+            if (File.Exists("Portfolio1"))
+            {
                 _coinConfigs = JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText("Portfolio1") ?? string.Empty);
+                _selectedPortfolio = "Portfolio1";
+            }
             else if (File.Exists("Portfolio2"))
+            {
                 _coinConfigs = JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText("Portfolio2") ?? string.Empty);
+                _selectedPortfolio = "Portfolio2";
+            }
             else if (File.Exists("Portfolio3"))
+            {
                 _coinConfigs = JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText("Portfolio3") ?? string.Empty);
+                _selectedPortfolio = "Portfolio3";
+            }
 
             //Update status
             UpdateStatusDelegate updateStatus = new UpdateStatusDelegate(UpdateStatus);
@@ -179,41 +188,27 @@ namespace MyCryptoMonitor
             _refreshCount++;
         }
 
-        //Reset
-        private delegate void ReloadDelegate();
-        public void Reload()
-        {
-            if (InvokeRequired)
-            {
-                Invoke(new ReloadDelegate(Reload));
-                return;
-            }
-            
-            //Set status
-            statusLabel.Text = "Status: Reloading";
-            _refreshCount = 0;
-
-            //Reset totals
-            totalProfit.Text = "$0.00";
-            totalProfitChange.Text = "($0.00)";
-
-            //Reload portfolio
-            LoadPortfolio(_selectedPortfolio);
-        }
-
         //Remove lines
         private delegate void RemoveDelegate();
         public void Remove()
         {
             if (InvokeRequired)
             {
-                Invoke(new ReloadDelegate(Reload));
+                Invoke(new RemoveDelegate(Remove));
                 return;
             }
 
+            //Set status
+            statusLabel.Text = "Status: Loading";
+            _refreshCount = 0;
+
+            //Reset totals
+            totalProfit.Text = "$0.00";
+            totalProfitChange.Text = "($0.00)";
+
+            //Remove the line elements from gui
             foreach (var coin in _coinGuiLines)
             {
-                //Add the line elements to gui
                 Height -= 25;
                 Controls.Remove(coin.CoinLabel);
                 Controls.Remove(coin.PriceLabel);
@@ -303,8 +298,7 @@ namespace MyCryptoMonitor
         #region Events
         private void Reset_Click(object sender, EventArgs e)
         {
-            ReloadDelegate reload = new ReloadDelegate(Reload);
-            BeginInvoke(reload);
+            LoadPortfolio(_selectedPortfolio);
         }
 
         private void Exit_Click(object sender, EventArgs e)
