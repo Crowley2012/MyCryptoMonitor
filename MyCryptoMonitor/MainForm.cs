@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Linq;
 using System;
 using System.IO;
+using System.Reflection;
 
 namespace MyCryptoMonitor
 {
@@ -315,18 +316,31 @@ namespace MyCryptoMonitor
             if (form.ShowDialog() != DialogResult.OK)
                 return;
 
-            //Check if coin exists
-            if (!_coinConfigs.Any(a => a.coin.Equals(form.InputText.ToUpper())))
+            using (var webClient = new WebClient())
             {
-                //Add config
-                _coinConfigs.Add(new CoinConfig { coin = form.InputText.ToUpper(), bought = 0, paid = 0, StartupPrice = 0 });
+                //Download coin data from CoinCap
+                string response = webClient.DownloadString("http://coincap.io/front");
+                var coins = JsonConvert.DeserializeObject<List<CoinData>>(response);
 
-                RemoveDelegate remove = new RemoveDelegate(Remove);
-                BeginInvoke(remove);
-            }
-            else
-            {
-                MessageBox.Show("Coin already exist!");
+                if(!coins.Any(c => c.shortName == form.InputText.ToUpper()))
+                {
+                    MessageBox.Show("Coin does not exist.");
+                    return;
+                }
+
+                //Check if coin exists
+                if (!_coinConfigs.Any(a => a.coin.Equals(form.InputText.ToUpper())))
+                {
+                    //Add config
+                    _coinConfigs.Add(new CoinConfig { coin = form.InputText.ToUpper(), bought = 0, paid = 0, StartupPrice = 0 });
+
+                    RemoveDelegate remove = new RemoveDelegate(Remove);
+                    BeginInvoke(remove);
+                }
+                else
+                {
+                    MessageBox.Show("Coin already added.");
+                }
             }
         }
 
@@ -350,10 +364,18 @@ namespace MyCryptoMonitor
             }
             else
             {
-                MessageBox.Show("Coin doesn't exist!");
+                MessageBox.Show("Coin does not exist.");
             }
         }
-        
+
+        private void RemoveAllCoins_Click(object sender, EventArgs e)
+        {
+            //Remove coin configs
+            _coinConfigs = new List<CoinConfig>();
+            RemoveDelegate remove = new RemoveDelegate(Remove);
+            BeginInvoke(remove);
+        }
+
         private void SavePortfolio_Click(object sender, EventArgs e)
         {
             SavePortfolio(((ToolStripMenuItem)sender).Tag.ToString());
@@ -362,6 +384,11 @@ namespace MyCryptoMonitor
         private void LoadPortfolio_Click(object sender, EventArgs e)
         {
             LoadPortfolio(((ToolStripMenuItem)sender).Tag.ToString());
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show($"Created by Sean Crowley\nVersion: {Assembly.GetExecutingAssembly().GetName().Version.ToString()}");
         }
         #endregion
     }

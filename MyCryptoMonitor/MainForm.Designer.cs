@@ -62,6 +62,8 @@
             this.portfolio2ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.portfolio3ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.label2 = new System.Windows.Forms.Label();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -290,7 +292,8 @@
             this.fileToolStripMenuItem,
             this.coinsToolStripMenuItem,
             this.savePortfolioToolStripMenuItem,
-            this.loadPortfolioToolStripMenuItem});
+            this.loadPortfolioToolStripMenuItem,
+            this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
@@ -325,7 +328,8 @@
             // 
             this.coinsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addToolStripMenuItem,
-            this.removeToolStripMenuItem});
+            this.removeToolStripMenuItem,
+            this.removeAllToolStripMenuItem});
             this.coinsToolStripMenuItem.Name = "coinsToolStripMenuItem";
             this.coinsToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
             this.coinsToolStripMenuItem.Text = "Coins";
@@ -333,14 +337,14 @@
             // addToolStripMenuItem
             // 
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-            this.addToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.addToolStripMenuItem.Text = "Add Coin";
             this.addToolStripMenuItem.Click += new System.EventHandler(this.AddCoin_Click);
             // 
             // removeToolStripMenuItem
             // 
             this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.removeToolStripMenuItem.Text = "Remove Coin";
             this.removeToolStripMenuItem.Click += new System.EventHandler(this.RemoveCoin_Click);
             // 
@@ -357,7 +361,7 @@
             // portfolio1ToolStripMenuItem
             // 
             this.portfolio1ToolStripMenuItem.Name = "portfolio1ToolStripMenuItem";
-            this.portfolio1ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.portfolio1ToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.portfolio1ToolStripMenuItem.Tag = "Portfolio1";
             this.portfolio1ToolStripMenuItem.Text = "Portfolio 1";
             this.portfolio1ToolStripMenuItem.Click += new System.EventHandler(this.SavePortfolio_Click);
@@ -365,7 +369,7 @@
             // portfolio2ToolStripMenuItem
             // 
             this.portfolio2ToolStripMenuItem.Name = "portfolio2ToolStripMenuItem";
-            this.portfolio2ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.portfolio2ToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.portfolio2ToolStripMenuItem.Tag = "Portfolio2";
             this.portfolio2ToolStripMenuItem.Text = "Portfolio 2";
             this.portfolio2ToolStripMenuItem.Click += new System.EventHandler(this.SavePortfolio_Click);
@@ -373,7 +377,7 @@
             // portfolio3ToolStripMenuItem
             // 
             this.portfolio3ToolStripMenuItem.Name = "portfolio3ToolStripMenuItem";
-            this.portfolio3ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.portfolio3ToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.portfolio3ToolStripMenuItem.Tag = "Portfolio3";
             this.portfolio3ToolStripMenuItem.Text = "Portfolio 3";
             this.portfolio3ToolStripMenuItem.Click += new System.EventHandler(this.SavePortfolio_Click);
@@ -391,7 +395,7 @@
             // portfolio1ToolStripMenuItem1
             // 
             this.portfolio1ToolStripMenuItem1.Name = "portfolio1ToolStripMenuItem1";
-            this.portfolio1ToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.portfolio1ToolStripMenuItem1.Size = new System.Drawing.Size(129, 22);
             this.portfolio1ToolStripMenuItem1.Tag = "Portfolio1";
             this.portfolio1ToolStripMenuItem1.Text = "Portfolio 1";
             this.portfolio1ToolStripMenuItem1.Click += new System.EventHandler(this.LoadPortfolio_Click);
@@ -399,7 +403,7 @@
             // portfolio2ToolStripMenuItem1
             // 
             this.portfolio2ToolStripMenuItem1.Name = "portfolio2ToolStripMenuItem1";
-            this.portfolio2ToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.portfolio2ToolStripMenuItem1.Size = new System.Drawing.Size(129, 22);
             this.portfolio2ToolStripMenuItem1.Tag = "Portfolio2";
             this.portfolio2ToolStripMenuItem1.Text = "Portfolio 2";
             this.portfolio2ToolStripMenuItem1.Click += new System.EventHandler(this.LoadPortfolio_Click);
@@ -407,7 +411,7 @@
             // portfolio3ToolStripMenuItem1
             // 
             this.portfolio3ToolStripMenuItem1.Name = "portfolio3ToolStripMenuItem1";
-            this.portfolio3ToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.portfolio3ToolStripMenuItem1.Size = new System.Drawing.Size(129, 22);
             this.portfolio3ToolStripMenuItem1.Tag = "Portfolio3";
             this.portfolio3ToolStripMenuItem1.Text = "Portfolio 3";
             this.portfolio3ToolStripMenuItem1.Click += new System.EventHandler(this.LoadPortfolio_Click);
@@ -421,6 +425,20 @@
             this.label2.Size = new System.Drawing.Size(59, 13);
             this.label2.TabIndex = 47;
             this.label2.Text = "24/hr (%)";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // removeAllToolStripMenuItem
+            // 
+            this.removeAllToolStripMenuItem.Name = "removeAllToolStripMenuItem";
+            this.removeAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.removeAllToolStripMenuItem.Text = "Remove All";
+            this.removeAllToolStripMenuItem.Click += new System.EventHandler(this.RemoveAllCoins_Click);
             // 
             // MainForm
             // 
@@ -493,6 +511,8 @@
         private System.Windows.Forms.ToolStripMenuItem portfolio1ToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem portfolio2ToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem portfolio3ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeAllToolStripMenuItem;
     }
 }
 
