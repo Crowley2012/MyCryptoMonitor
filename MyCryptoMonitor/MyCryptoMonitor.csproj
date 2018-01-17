@@ -99,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CoinImage.ico" />
+    <Content Include="ToDo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

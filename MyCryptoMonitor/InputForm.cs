@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace MyCryptoMonitor
@@ -7,16 +8,18 @@ namespace MyCryptoMonitor
     {
         public string InputText { get; set; }
 
-        public InputForm()
+        public InputForm(string submitLabel)
         {
             InitializeComponent();
+            btnSubmit.Text = submitLabel;
         }
 
-        public void SetSubmitLabel(string label)
+        public InputForm(string submitLabel, List<string> coins)
         {
-            btnSubmit.Text = label;
+            InitializeComponent();
+            btnSubmit.Text = submitLabel;
+            cbCoins.DataSource = coins;
         }
-
 
         private void Submit_Click(object sender, EventArgs e)
         {

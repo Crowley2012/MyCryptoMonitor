@@ -28,16 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.totalProfit = new System.Windows.Forms.Label();
+            this.lblTotalProfit = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.totalProfitChange = new System.Windows.Forms.Label();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.statusLabel = new System.Windows.Forms.Label();
-            this.refreshLabel = new System.Windows.Forms.Label();
+            this.lblResetTime = new System.Windows.Forms.Label();
+            this.lblRefreshTime = new System.Windows.Forms.Label();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblTotalProfitChange = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -53,6 +53,7 @@
             this.coinsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.savePortfolioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.portfolio1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.portfolio2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,29 +62,29 @@
             this.portfolio1ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.portfolio2ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.portfolio3ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.label2 = new System.Windows.Forms.Label();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.removeAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label2 = new System.Windows.Forms.Label();
+            this.toolTips = new System.Windows.Forms.ToolTip(this.components);
             this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
-            this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // totalProfit
+            // lblTotalProfit
             // 
-            this.totalProfit.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.lblTotalProfit.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.totalProfit.AutoSize = true;
-            this.totalProfit.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.totalProfit.Location = new System.Drawing.Point(3, 0);
-            this.totalProfit.Name = "totalProfit";
-            this.totalProfit.Size = new System.Drawing.Size(118, 22);
-            this.totalProfit.TabIndex = 0;
-            this.totalProfit.Text = "$0.00";
-            this.totalProfit.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.lblTotalProfit.AutoSize = true;
+            this.lblTotalProfit.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalProfit.Location = new System.Drawing.Point(3, 0);
+            this.lblTotalProfit.Name = "lblTotalProfit";
+            this.lblTotalProfit.Size = new System.Drawing.Size(118, 27);
+            this.lblTotalProfit.TabIndex = 0;
+            this.lblTotalProfit.Text = "$0.00";
+            this.lblTotalProfit.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.toolTips.SetToolTip(this.lblTotalProfit, "Total Paid + Total Profits");
             // 
             // tableLayoutPanel1
             // 
@@ -93,73 +94,14 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel5, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel4, 0, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 28);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(642, 50);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(642, 60);
             this.tableLayoutPanel1.TabIndex = 2;
-            // 
-            // tableLayoutPanel5
-            // 
-            this.tableLayoutPanel5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel5.ColumnCount = 2;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(389, 3);
-            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 1;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(250, 44);
-            this.tableLayoutPanel5.TabIndex = 45;
-            // 
-            // tableLayoutPanel3
-            // 
-            this.tableLayoutPanel3.ColumnCount = 1;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Controls.Add(this.totalProfit, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.totalProfitChange, 0, 1);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(259, 3);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 2;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(124, 44);
-            this.tableLayoutPanel3.TabIndex = 2;
-            // 
-            // totalProfitChange
-            // 
-            this.totalProfitChange.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.totalProfitChange.AutoSize = true;
-            this.totalProfitChange.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.totalProfitChange.Location = new System.Drawing.Point(3, 22);
-            this.totalProfitChange.Name = "totalProfitChange";
-            this.totalProfitChange.Size = new System.Drawing.Size(118, 22);
-            this.totalProfitChange.TabIndex = 1;
-            this.totalProfitChange.Text = "($0.00)";
-            this.totalProfitChange.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // tableLayoutPanel4
-            // 
-            this.tableLayoutPanel4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel4.ColumnCount = 1;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel2, 0, 0);
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 1;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(250, 44);
-            this.tableLayoutPanel4.TabIndex = 3;
             // 
             // tableLayoutPanel2
             // 
@@ -167,42 +109,80 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel2.ColumnCount = 1;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Controls.Add(this.statusLabel, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.refreshLabel, 0, 0);
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.lblResetTime, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblRefreshTime, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.lblStatus, 0, 2);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 2;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(244, 38);
+            this.tableLayoutPanel2.RowCount = 3;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33332F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(250, 54);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
-            // statusLabel
+            // lblResetTime
             // 
-            this.statusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.statusLabel.AutoSize = true;
-            this.statusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.statusLabel.Location = new System.Drawing.Point(3, 19);
-            this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(69, 19);
-            this.statusLabel.TabIndex = 8;
-            this.statusLabel.Text = "Status: Loading";
-            this.statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblResetTime.AutoSize = true;
+            this.lblResetTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblResetTime.Location = new System.Drawing.Point(3, 0);
+            this.lblResetTime.Name = "lblResetTime";
+            this.lblResetTime.Size = new System.Drawing.Size(100, 12);
+            this.lblResetTime.TabIndex = 18;
+            this.lblResetTime.Text = "Time since reset: 00:00";
+            this.lblResetTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // refreshLabel
+            // lblRefreshTime
             // 
-            this.refreshLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.refreshLabel.AutoSize = true;
-            this.refreshLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.refreshLabel.Location = new System.Drawing.Point(3, 0);
-            this.refreshLabel.Name = "refreshLabel";
-            this.refreshLabel.Size = new System.Drawing.Size(58, 19);
-            this.refreshLabel.TabIndex = 18;
-            this.refreshLabel.Text = "Refreshes: 0";
-            this.refreshLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblRefreshTime.AutoSize = true;
+            this.lblRefreshTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRefreshTime.Location = new System.Drawing.Point(3, 17);
+            this.lblRefreshTime.Name = "lblRefreshTime";
+            this.lblRefreshTime.Size = new System.Drawing.Size(108, 12);
+            this.lblRefreshTime.TabIndex = 19;
+            this.lblRefreshTime.Text = "Time since refresh: 00:00";
+            this.lblRefreshTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStatus.Location = new System.Drawing.Point(3, 35);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(69, 12);
+            this.lblStatus.TabIndex = 8;
+            this.lblStatus.Text = "Status: Loading";
+            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 1;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Controls.Add(this.lblTotalProfit, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.lblTotalProfitChange, 0, 1);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(259, 3);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 2;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(124, 54);
+            this.tableLayoutPanel3.TabIndex = 2;
+            // 
+            // lblTotalProfitChange
+            // 
+            this.lblTotalProfitChange.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTotalProfitChange.AutoSize = true;
+            this.lblTotalProfitChange.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalProfitChange.Location = new System.Drawing.Point(3, 27);
+            this.lblTotalProfitChange.Name = "lblTotalProfitChange";
+            this.lblTotalProfitChange.Size = new System.Drawing.Size(118, 27);
+            this.lblTotalProfitChange.TabIndex = 1;
+            this.lblTotalProfitChange.Text = "($0.00)";
+            this.lblTotalProfitChange.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.toolTips.SetToolTip(this.lblTotalProfitChange, "Total Profits");
             // 
             // label7
             // 
@@ -213,6 +193,7 @@
             this.label7.Size = new System.Drawing.Size(32, 13);
             this.label7.TabIndex = 18;
             this.label7.Text = "Coin";
+            this.toolTips.SetToolTip(this.label7, "Coin short code");
             // 
             // label8
             // 
@@ -223,16 +204,18 @@
             this.label8.Size = new System.Drawing.Size(36, 13);
             this.label8.TabIndex = 19;
             this.label8.Text = "Price";
+            this.toolTips.SetToolTip(this.label8, "Current price of coin");
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(127, 91);
+            this.label9.Location = new System.Drawing.Point(132, 91);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(47, 13);
             this.label9.TabIndex = 20;
             this.label9.Text = "Bought";
+            this.toolTips.SetToolTip(this.label9, "Amount of coin bought");
             // 
             // label10
             // 
@@ -243,6 +226,7 @@
             this.label10.Size = new System.Drawing.Size(36, 13);
             this.label10.TabIndex = 21;
             this.label10.Text = "Total";
+            this.toolTips.SetToolTip(this.label10, "Price x Bought");
             // 
             // label1
             // 
@@ -253,6 +237,7 @@
             this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 32;
             this.label1.Text = "Paid";
+            this.toolTips.SetToolTip(this.label1, "The amount of fiat paid");
             // 
             // label16
             // 
@@ -263,6 +248,7 @@
             this.label16.Size = new System.Drawing.Size(37, 13);
             this.label16.TabIndex = 33;
             this.label16.Text = "Profit";
+            this.toolTips.SetToolTip(this.label16, "Total - Paid");
             // 
             // label17
             // 
@@ -273,6 +259,7 @@
             this.label17.Size = new System.Drawing.Size(69, 13);
             this.label17.TabIndex = 39;
             this.label17.Text = "Change ($)";
+            this.toolTips.SetToolTip(this.label17, "Change in dollars since reset");
             // 
             // label18
             // 
@@ -283,6 +270,7 @@
             this.label18.Size = new System.Drawing.Size(71, 13);
             this.label18.TabIndex = 45;
             this.label18.Text = "Change (%)";
+            this.toolTips.SetToolTip(this.label18, "Change in percent since reset");
             // 
             // menuStrip1
             // 
@@ -337,16 +325,23 @@
             // addToolStripMenuItem
             // 
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-            this.addToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.addToolStripMenuItem.Text = "Add Coin";
             this.addToolStripMenuItem.Click += new System.EventHandler(this.AddCoin_Click);
             // 
             // removeToolStripMenuItem
             // 
             this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.removeToolStripMenuItem.Text = "Remove Coin";
             this.removeToolStripMenuItem.Click += new System.EventHandler(this.RemoveCoin_Click);
+            // 
+            // removeAllToolStripMenuItem
+            // 
+            this.removeAllToolStripMenuItem.Name = "removeAllToolStripMenuItem";
+            this.removeAllToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.removeAllToolStripMenuItem.Text = "Remove All";
+            this.removeAllToolStripMenuItem.Click += new System.EventHandler(this.RemoveAllCoins_Click);
             // 
             // savePortfolioToolStripMenuItem
             // 
@@ -416,6 +411,13 @@
             this.portfolio3ToolStripMenuItem1.Text = "Portfolio 3";
             this.portfolio3ToolStripMenuItem1.Click += new System.EventHandler(this.LoadPortfolio_Click);
             // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -425,20 +427,7 @@
             this.label2.Size = new System.Drawing.Size(59, 13);
             this.label2.TabIndex = 47;
             this.label2.Text = "24/hr (%)";
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
-            this.aboutToolStripMenuItem.Text = "About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // removeAllToolStripMenuItem
-            // 
-            this.removeAllToolStripMenuItem.Name = "removeAllToolStripMenuItem";
-            this.removeAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.removeAllToolStripMenuItem.Text = "Remove All";
-            this.removeAllToolStripMenuItem.Click += new System.EventHandler(this.RemoveAllCoins_Click);
+            this.toolTips.SetToolTip(this.label2, "Change in percent for last 24 hours");
             // 
             // MainForm
             // 
@@ -464,11 +453,10 @@
             this.Text = "My Crypto Monitor";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel3.ResumeLayout(false);
-            this.tableLayoutPanel3.PerformLayout();
-            this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -478,10 +466,10 @@
 
         #endregion
 
-        private System.Windows.Forms.Label totalProfit;
+        private System.Windows.Forms.Label lblTotalProfit;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label statusLabel;
-        private System.Windows.Forms.Label refreshLabel;
+        private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.Label lblResetTime;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
@@ -491,9 +479,7 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.Label totalProfitChange;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
+        private System.Windows.Forms.Label lblTotalProfitChange;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
@@ -513,6 +499,8 @@
         private System.Windows.Forms.ToolStripMenuItem portfolio3ToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removeAllToolStripMenuItem;
+        private System.Windows.Forms.Label lblRefreshTime;
+        private System.Windows.Forms.ToolTip toolTips;
     }
 }
 

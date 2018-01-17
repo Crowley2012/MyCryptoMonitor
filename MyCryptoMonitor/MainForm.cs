@@ -15,8 +15,9 @@ namespace MyCryptoMonitor
         #region Private Variables
         private List<CoinConfig> _coinConfigs;
         private List<CoinGuiLine> _coinGuiLines;
+        private DateTime _resetTime;
+        private DateTime _refreshTime;
         private bool _loadGuiLines;
-        private int _refreshCount;
         private string _selectedPortfolio;
         #endregion
 
@@ -30,6 +31,8 @@ namespace MyCryptoMonitor
         {
             _coinGuiLines = new List<CoinGuiLine>();
             _coinConfigs = new List<CoinConfig>();
+            _resetTime = DateTime.Now;
+            _refreshTime = DateTime.Now;
             _loadGuiLines = true;
 
             //Attempt to load portfolio on startup
@@ -53,13 +56,13 @@ namespace MyCryptoMonitor
             UpdateStatusDelegate updateStatus = new UpdateStatusDelegate(UpdateStatus);
             BeginInvoke(updateStatus, "Loading");
 
-            //Update refreshes
-            UpdateRefreshesDelegate updateRefreshes = new UpdateRefreshesDelegate(UpdateRefreshes);
-            BeginInvoke(updateRefreshes);
+            //Start thread
+            Thread mainThread = new Thread(() => DownloadDataThread());
+            mainThread.Start();
 
             //Start thread
-            Thread thread = new Thread(() => DownloadDataThread());
-            thread.Start();
+            Thread timeThread = new Thread(() => Timer());
+            timeThread.Start();
         }
         #endregion
 
@@ -84,31 +87,24 @@ namespace MyCryptoMonitor
             updateStatus = new UpdateStatusDelegate(UpdateStatus);
             BeginInvoke(updateStatus, "Sleeping");
 
-            //Update refreshes
-            UpdateRefreshesDelegate updateRefreshes = new UpdateRefreshesDelegate(UpdateRefreshes);
-            BeginInvoke(updateRefreshes);
-
             //Sleep and refresh
             Thread.Sleep(5000);
             DownloadDataThread();
         }
+
+        private void Timer()
+        {
+            //Update times
+            UpdateTimesDelegate updateTimes = new UpdateTimesDelegate(UpdateTimes);
+            BeginInvoke(updateTimes);
+
+            //Sleep and refresh
+            Thread.Sleep(500);
+            Timer();
+        }
         #endregion
 
         #region Delegates
-        //Update refresh label
-        private delegate void UpdateRefreshesDelegate();
-        public void UpdateRefreshes()
-        {
-            if (InvokeRequired)
-            {
-                Invoke(new UpdateRefreshesDelegate(UpdateRefreshes));
-                return;
-            }
-
-            refreshLabel.Text = $"Refreshes: {_refreshCount}";
-        }
-
-        //Update status label
         private delegate void UpdateStatusDelegate(string status);
         public void UpdateStatus(string status)
         {
@@ -118,10 +114,28 @@ namespace MyCryptoMonitor
                 return;
             }
 
-            statusLabel.Text = $"Status: {status}";
+            //Update status
+            lblStatus.Text = $"Status: {status}";
         }
 
-        //Update coin
+        private delegate void UpdateTimesDelegate();
+        public void UpdateTimes()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new UpdateTimesDelegate(UpdateTimes));
+                return;
+            }
+
+            //Update reset time
+            TimeSpan spanRefresh = DateTime.Now.Subtract(_refreshTime);
+            lblRefreshTime.Text = $"Time since refresh: {spanRefresh.Minutes}:{spanRefresh.Seconds:00}";
+
+            //Update reset time
+            TimeSpan spanReset = DateTime.Now.Subtract(_resetTime);
+            lblResetTime.Text = $"Time since reset: {spanReset.Hours}:{spanReset.Minutes:00}:{spanReset.Seconds:00}";
+        }
+
         private delegate void UpdateCoinDelegates(string response);
         public void UpdateCoins(string response)
         {
@@ -151,6 +165,14 @@ namespace MyCryptoMonitor
 
                 //Incremenet coin line index
                 index++;
+                
+                //Check if coinguiline exists for coinConfig
+                if (!_coinGuiLines.Any(cg => cg.CoinName.Equals(downloadedCoin.shortName)))
+                {
+                    RemoveDelegate remove = new RemoveDelegate(Remove);
+                    BeginInvoke(remove);
+                    return;
+                }
 
                 //Get the gui line for coin
                 CoinGuiLine line = (from c in _coinGuiLines where c.CoinName.Equals(downloadedCoin.shortName) select c).First();
@@ -179,17 +201,15 @@ namespace MyCryptoMonitor
             }
 
             //Update gui
-            totalProfit.Text = $"${totalProfits:0.00}";
-            totalProfitChange.Text = $"(${totalProfits - totalPaid:0.00})";
-            statusLabel.Text = "Status: Sleeping";
-            refreshLabel.Text = $"Refreshes: {_refreshCount}";
+            lblTotalProfit.Text = $"${totalProfits:0.00}";
+            lblTotalProfitChange.Text = $"(${totalProfits - totalPaid:0.00})";
+            lblStatus.Text = "Status: Sleeping";
+            _refreshTime = DateTime.Now;
 
             //Sleep and rerun
             _loadGuiLines = false;
-            _refreshCount++;
         }
 
-        //Remove lines
         private delegate void RemoveDelegate();
         public void Remove()
         {
@@ -200,12 +220,11 @@ namespace MyCryptoMonitor
             }
 
             //Set status
-            statusLabel.Text = "Status: Loading";
-            _refreshCount = 0;
+            lblStatus.Text = "Status: Loading";
 
             //Reset totals
-            totalProfit.Text = "$0.00";
-            totalProfitChange.Text = "($0.00)";
+            lblTotalProfit.Text = "$0.00";
+            lblTotalProfitChange.Text = "($0.00)";
 
             //Remove the line elements from gui
             foreach (var coin in _coinGuiLines)
@@ -299,6 +318,7 @@ namespace MyCryptoMonitor
         #region Events
         private void Reset_Click(object sender, EventArgs e)
         {
+            _resetTime = DateTime.Now;
             LoadPortfolio(_selectedPortfolio);
         }
 
@@ -309,18 +329,17 @@ namespace MyCryptoMonitor
 
         private void AddCoin_Click(object sender, EventArgs e)
         {
-            //Get coin to add
-            InputForm form = new InputForm();
-            form.SetSubmitLabel("Add");
-
-            if (form.ShowDialog() != DialogResult.OK)
-                return;
-
             using (var webClient = new WebClient())
             {
                 //Download coin data from CoinCap
                 string response = webClient.DownloadString("http://coincap.io/front");
                 var coins = JsonConvert.DeserializeObject<List<CoinData>>(response);
+
+                //Get coin to add
+                InputForm form = new InputForm("Add", coins.Select(a => a.shortName).ToList());
+
+                if (form.ShowDialog() != DialogResult.OK)
+                    return;
 
                 if(!coins.Any(c => c.shortName == form.InputText.ToUpper()))
                 {
@@ -347,8 +366,7 @@ namespace MyCryptoMonitor
         private void RemoveCoin_Click(object sender, EventArgs e)
         {
             //Get coin to remove
-            InputForm form = new InputForm();
-            form.SetSubmitLabel("Remove");
+            InputForm form = new InputForm("Remove");
 
             if (form.ShowDialog() != DialogResult.OK)
                 return;
@@ -356,7 +374,7 @@ namespace MyCryptoMonitor
             //Check if coin exists
             if (_coinConfigs.Any(a => a.coin.Equals(form.InputText.ToUpper())))
             {
-                //Remove config
+                //Remove coin config
                 _coinConfigs.RemoveAll(a => a.coin.Equals(form.InputText.ToUpper()));
 
                 RemoveDelegate remove = new RemoveDelegate(Remove);
