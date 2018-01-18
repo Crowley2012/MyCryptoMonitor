@@ -1,7 +1,7 @@
 # MyCryptoMonitor
 
 ## Summary
-The goal of this application to have a quick, easy and lightweight method of monitoring your crypto investments. The current API used it coincap.io, but I plan on adding multiple APIs to choose from.
+The goal of this application is to have a quick, easy and lightweight method of monitoring your crypto investments. The current API used is coincap.io, but I plan on adding multiple APIs in the future to choose from.
 
 Main features of the application:
 - Save and load portfolios
