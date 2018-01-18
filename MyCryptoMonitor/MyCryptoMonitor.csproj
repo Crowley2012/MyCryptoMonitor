@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="CoinData.cs" />
     <Compile Include="CoinGuiLine.cs" />
+    <Compile Include="GitHubRelease.cs" />
     <Compile Include="InputForm.cs">
       <SubType>Form</SubType>
     </Compile>

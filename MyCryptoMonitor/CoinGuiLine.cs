@@ -44,7 +44,7 @@ namespace MyCryptoMonitor
 
             CoinLabel.Size = new Size(28, 13);
             PriceLabel.Size = new Size(34, 13);
-            BoughtTextBox.Size = new Size(66, 20);
+            BoughtTextBox.Size = new Size(90, 20);
             TotalLabel.Size = new Size(34, 13);
             PaidTextBox.Size = new Size(66, 20);
             ProfitLabel.Size = new Size(34, 13);
@@ -55,12 +55,12 @@ namespace MyCryptoMonitor
             CoinLabel.Location = new Point(12, _startY + yindex);
             PriceLabel.Location = new Point(57, _startY + yindex);
             BoughtTextBox.Location = new Point(135, _startY - 3 + yindex);
-            TotalLabel.Location = new Point(216, _startY + yindex);
-            PaidTextBox.Location = new Point(283, _startY - 3 + yindex);
-            ProfitLabel.Location = new Point(370, _startY + yindex);
-            ChangeDollarLabel.Location = new Point(427, _startY + yindex);
-            ChangePercentLabel.Location = new Point(510, _startY + yindex);
-            Change24HrPercentLabel.Location = new Point(593, _startY + yindex);
+            TotalLabel.Location = new Point(240, _startY + yindex);
+            PaidTextBox.Location = new Point(307, _startY - 3 + yindex);
+            ProfitLabel.Location = new Point(394, _startY + yindex);
+            ChangeDollarLabel.Location = new Point(451, _startY + yindex);
+            ChangePercentLabel.Location = new Point(534, _startY + yindex);
+            Change24HrPercentLabel.Location = new Point(617, _startY + yindex);
 
             ChangePercentLabel.TextChanged += new EventHandler(ChangePercentLabel_TextChanged);
             Change24HrPercentLabel.TextChanged += new EventHandler(Change24HrPercentLabel_TextChanged);

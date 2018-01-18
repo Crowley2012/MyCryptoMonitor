@@ -100,7 +100,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(642, 60);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(665, 60);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // tableLayoutPanel2
@@ -119,7 +119,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33332F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(250, 54);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(261, 54);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
             // lblResetTime
@@ -161,7 +161,7 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.Controls.Add(this.lblTotalProfit, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.lblTotalProfitChange, 0, 1);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(259, 3);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(270, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -221,7 +221,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(216, 91);
+            this.label10.Location = new System.Drawing.Point(240, 91);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(36, 13);
             this.label10.TabIndex = 21;
@@ -232,7 +232,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(280, 91);
+            this.label1.Location = new System.Drawing.Point(304, 91);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 32;
@@ -243,7 +243,7 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(370, 91);
+            this.label16.Location = new System.Drawing.Point(394, 91);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(37, 13);
             this.label16.TabIndex = 33;
@@ -254,7 +254,7 @@
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(427, 91);
+            this.label17.Location = new System.Drawing.Point(451, 91);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(69, 13);
             this.label17.TabIndex = 39;
@@ -265,7 +265,7 @@
             // 
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(510, 91);
+            this.label18.Location = new System.Drawing.Point(534, 91);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(71, 13);
             this.label18.TabIndex = 45;
@@ -285,7 +285,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(666, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(689, 24);
             this.menuStrip1.TabIndex = 46;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -422,7 +422,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(593, 91);
+            this.label2.Location = new System.Drawing.Point(617, 91);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(59, 13);
             this.label2.TabIndex = 47;
@@ -433,7 +433,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(666, 124);
+            this.ClientSize = new System.Drawing.Size(689, 124);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label18);
             this.Controls.Add(this.label17);

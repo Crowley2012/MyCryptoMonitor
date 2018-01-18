@@ -56,18 +56,24 @@ namespace MyCryptoMonitor
             UpdateStatusDelegate updateStatus = new UpdateStatusDelegate(UpdateStatus);
             BeginInvoke(updateStatus, "Loading");
 
-            //Start thread
-            Thread mainThread = new Thread(() => DownloadDataThread());
+            //Start main thread
+            Thread mainThread = new Thread(() => DownloadData());
             mainThread.Start();
 
-            //Start thread
+            //Start time thread
             Thread timeThread = new Thread(() => Timer());
             timeThread.Start();
+            
+            #if !DEBUG
+            //Start check update thread
+            Thread checkUpdateThread = new Thread(() => CheckUpdate());
+            checkUpdateThread.Start();
+            #endif
         }
         #endregion
 
         #region Threads
-        private void DownloadDataThread()
+        private void DownloadData()
         {
             //Update status
             UpdateStatusDelegate updateStatus = new UpdateStatusDelegate(UpdateStatus);
@@ -89,7 +95,7 @@ namespace MyCryptoMonitor
 
             //Sleep and refresh
             Thread.Sleep(5000);
-            DownloadDataThread();
+            DownloadData();
         }
 
         private void Timer()
@@ -101,6 +107,27 @@ namespace MyCryptoMonitor
             //Sleep and refresh
             Thread.Sleep(500);
             Timer();
+        }
+
+        private void CheckUpdate()
+        {
+            using (var webClient = new WebClient())
+            {
+                //Github api requires a user agent
+                webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2;)");
+
+                //Download lastest release data from GitHub
+                string response = webClient.DownloadString("https://api.github.com/repos/Crowley2012/MyCryptoMonitor/releases/latest");
+                GitHubRelease release = JsonConvert.DeserializeObject<GitHubRelease>(response);
+
+                //Check if running version matches github version
+                if (!release.tag_name.Equals(Assembly.GetExecutingAssembly().GetName().Version.ToString()))
+                {
+                    //Ask if user wants to open github page
+                    if (MessageBox.Show($"Download new version?\n\nCurrent Version: {Assembly.GetExecutingAssembly().GetName().Version.ToString()}\nNew Version {release.tag_name}", "Update Available", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
+                        System.Diagnostics.Process.Start("https://github.com/Crowley2012/MyCryptoMonitor/releases/latest");
+                }
+            }
         }
         #endregion
 
@@ -336,7 +363,7 @@ namespace MyCryptoMonitor
                 var coins = JsonConvert.DeserializeObject<List<CoinData>>(response);
 
                 //Get coin to add
-                InputForm form = new InputForm("Add", coins.Select(a => a.shortName).ToList());
+                InputForm form = new InputForm("Add", coins.OrderBy(c => c.shortName).Select(c => c.shortName).ToList());
 
                 if (form.ShowDialog() != DialogResult.OK)
                     return;
@@ -366,7 +393,7 @@ namespace MyCryptoMonitor
         private void RemoveCoin_Click(object sender, EventArgs e)
         {
             //Get coin to remove
-            InputForm form = new InputForm("Remove");
+            InputForm form = new InputForm("Remove", _coinConfigs.OrderBy(c => c.coin).Select(c => c.coin).ToList());
 
             if (form.ShowDialog() != DialogResult.OK)
                 return;

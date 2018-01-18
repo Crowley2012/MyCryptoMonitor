@@ -23,7 +23,7 @@ namespace MyCryptoMonitor
 
         private void Submit_Click(object sender, EventArgs e)
         {
-            InputText = txtInput.Text;
+            InputText = cbCoins.Text;
             DialogResult = DialogResult.OK;
         }
     }

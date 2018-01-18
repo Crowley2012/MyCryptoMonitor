@@ -29,18 +29,10 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InputForm));
-            this.txtInput = new System.Windows.Forms.TextBox();
             this.btnSubmit = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.cbCoins = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
-            // 
-            // txtInput
-            // 
-            this.txtInput.Location = new System.Drawing.Point(15, 35);
-            this.txtInput.Name = "txtInput";
-            this.txtInput.Size = new System.Drawing.Size(176, 20);
-            this.txtInput.TabIndex = 0;
             // 
             // btnSubmit
             // 
@@ -64,7 +56,7 @@
             // cbCoins
             // 
             this.cbCoins.FormattingEnabled = true;
-            this.cbCoins.Location = new System.Drawing.Point(15, 58);
+            this.cbCoins.Location = new System.Drawing.Point(12, 35);
             this.cbCoins.Name = "cbCoins";
             this.cbCoins.Size = new System.Drawing.Size(176, 21);
             this.cbCoins.TabIndex = 4;
@@ -74,11 +66,10 @@
             this.AcceptButton = this.btnSubmit;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 91);
+            this.ClientSize = new System.Drawing.Size(284, 67);
             this.Controls.Add(this.cbCoins);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnSubmit);
-            this.Controls.Add(this.txtInput);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "InputForm";
             this.Text = "Add Coin";
@@ -88,8 +79,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox txtInput;
         private System.Windows.Forms.Button btnSubmit;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cbCoins;

@@ -1,7 +1,4 @@
-﻿Add version check
-	https://api.github.com/repos/Crowley2012/MyCryptoMonitor/releases/latest
-Add coin dropdown
-Remove coin and sort buttons
+﻿Remove coin and sort buttons
 Add coinmarketcap api
 Last hour price
 Alerts
