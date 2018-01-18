@@ -15,6 +15,7 @@ namespace MyCryptoMonitor
         #region Private Variables
         private List<CoinConfig> _coinConfigs;
         private List<CoinGuiLine> _coinGuiLines;
+        private List<string> _coinNames;
         private DateTime _resetTime;
         private DateTime _refreshTime;
         private bool _loadGuiLines;
@@ -31,6 +32,7 @@ namespace MyCryptoMonitor
         {
             _coinGuiLines = new List<CoinGuiLine>();
             _coinConfigs = new List<CoinConfig>();
+            _coinNames = new List<string>();
             _resetTime = DateTime.Now;
             _refreshTime = DateTime.Now;
             _loadGuiLines = true;
@@ -58,17 +60,18 @@ namespace MyCryptoMonitor
 
             //Start main thread
             Thread mainThread = new Thread(() => DownloadData());
+            mainThread.IsBackground = true;
             mainThread.Start();
 
             //Start time thread
             Thread timeThread = new Thread(() => Timer());
+            timeThread.IsBackground = true;
             timeThread.Start();
             
-            #if !DEBUG
             //Start check update thread
             Thread checkUpdateThread = new Thread(() => CheckUpdate());
+            checkUpdateThread.IsBackground = true;
             checkUpdateThread.Start();
-            #endif
         }
         #endregion
 
@@ -79,19 +82,28 @@ namespace MyCryptoMonitor
             UpdateStatusDelegate updateStatus = new UpdateStatusDelegate(UpdateStatus);
             BeginInvoke(updateStatus, "Refreshing");
 
-            using (var webClient = new WebClient())
+            try
             {
-                //Download coin data from CoinCap
-                string response = webClient.DownloadString("http://coincap.io/front");
+                using (var webClient = new WebClient())
+                {
+                    //Download coin data from CoinCap
+                    string response = webClient.DownloadString("http://coincap.io/front");
 
-                //Update coins
-                UpdateCoinDelegates updateCoins = new UpdateCoinDelegates(UpdateCoins);
-                BeginInvoke(updateCoins, response);
+                    //Update coins
+                    UpdateCoinDelegates updateCoins = new UpdateCoinDelegates(UpdateCoins);
+                    BeginInvoke(updateCoins, response);
+
+                    //Update status
+                    updateStatus = new UpdateStatusDelegate(UpdateStatus);
+                    BeginInvoke(updateStatus, "Sleeping");
+                }
             }
-
-            //Update status
-            updateStatus = new UpdateStatusDelegate(UpdateStatus);
-            BeginInvoke(updateStatus, "Sleeping");
+            catch (WebException)
+            {
+                //Update status
+                updateStatus = new UpdateStatusDelegate(UpdateStatus);
+                BeginInvoke(updateStatus, "No internet connection");
+            }
 
             //Sleep and refresh
             Thread.Sleep(5000);
@@ -111,22 +123,36 @@ namespace MyCryptoMonitor
 
         private void CheckUpdate()
         {
-            using (var webClient = new WebClient())
+            try
             {
-                //Github api requires a user agent
-                webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2;)");
-
-                //Download lastest release data from GitHub
-                string response = webClient.DownloadString("https://api.github.com/repos/Crowley2012/MyCryptoMonitor/releases/latest");
-                GitHubRelease release = JsonConvert.DeserializeObject<GitHubRelease>(response);
-
-                //Check if running version matches github version
-                if (!release.tag_name.Equals(Assembly.GetExecutingAssembly().GetName().Version.ToString()))
+                using (var webClient = new WebClient())
                 {
-                    //Ask if user wants to open github page
-                    if (MessageBox.Show($"Download new version?\n\nCurrent Version: {Assembly.GetExecutingAssembly().GetName().Version.ToString()}\nNew Version {release.tag_name}", "Update Available", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
-                        System.Diagnostics.Process.Start("https://github.com/Crowley2012/MyCryptoMonitor/releases/latest");
+                    //Github api requires a user agent
+                    webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2;)");
+
+                    //Download lastest release data from GitHub
+                    string response = webClient.DownloadString("https://api.github.com/repos/Crowley2012/MyCryptoMonitor/releases/latest");
+                    GitHubRelease release = JsonConvert.DeserializeObject<GitHubRelease>(response);
+
+                    //Parse versions
+                    Version currentVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString());
+                    Version latestVersion = new Version(release.tag_name);
+
+                    //Check if latest is newer than current
+                    if (currentVersion.CompareTo(latestVersion) < 0)
+                    {
+                        //Ask if user wants to open github page
+                        if (MessageBox.Show($"Download new version?\n\nCurrent Version: {currentVersion}\nLatest Version {latestVersion}", "Update Available", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
+                            System.Diagnostics.Process.Start("https://github.com/Crowley2012/MyCryptoMonitor/releases/latest");
+                    }
                 }
+            }
+            catch (WebException)
+            {
+                //Update status
+                UpdateStatusDelegate updateStatus = new UpdateStatusDelegate(UpdateStatus);
+                BeginInvoke(updateStatus, "No internet connection");
+                CheckUpdate();
             }
         }
         #endregion
@@ -185,6 +211,10 @@ namespace MyCryptoMonitor
                 //Parse coins
                 var coins = JsonConvert.DeserializeObject<List<CoinData>>(response);
                 CoinData downloadedCoin = coins.Single(c => c.shortName == coin.coin);
+
+                //Create list of coin names
+                if (_coinNames.Count <= 0)
+                    _coinNames = coins.OrderBy(c => c.shortName).Select(c => c.shortName).ToList();
 
                 //Check if gui lines need to be loaded
                 if (_loadGuiLines)
@@ -356,37 +386,57 @@ namespace MyCryptoMonitor
 
         private void AddCoin_Click(object sender, EventArgs e)
         {
-            using (var webClient = new WebClient())
+            //Check if coin list has been downloaded
+            while(_coinNames.Count <= 0)
             {
-                //Download coin data from CoinCap
-                string response = webClient.DownloadString("http://coincap.io/front");
-                var coins = JsonConvert.DeserializeObject<List<CoinData>>(response);
-
-                //Get coin to add
-                InputForm form = new InputForm("Add", coins.OrderBy(c => c.shortName).Select(c => c.shortName).ToList());
-
-                if (form.ShowDialog() != DialogResult.OK)
+                if (MessageBox.Show("Please wait while coin list is being downloaded.", "Loading", MessageBoxButtons.RetryCancel) == DialogResult.Cancel)
                     return;
+            }
 
-                if(!coins.Any(c => c.shortName == form.InputText.ToUpper()))
+            try
+            {
+                using (var webClient = new WebClient())
                 {
-                    MessageBox.Show("Coin does not exist.");
-                    return;
-                }
+                    //Get coin to add
+                    InputForm form = new InputForm("Add", _coinNames.Except(_coinConfigs.Select(c => c.coin).ToList()).ToList());
 
-                //Check if coin exists
-                if (!_coinConfigs.Any(a => a.coin.Equals(form.InputText.ToUpper())))
-                {
-                    //Add config
-                    _coinConfigs.Add(new CoinConfig { coin = form.InputText.ToUpper(), bought = 0, paid = 0, StartupPrice = 0 });
+                    if (form.ShowDialog() != DialogResult.OK)
+                        return;
 
-                    RemoveDelegate remove = new RemoveDelegate(Remove);
-                    BeginInvoke(remove);
+                    if (!_coinNames.Contains(form.InputText.ToUpper()))
+                    {
+                        MessageBox.Show("Coin does not exist.");
+                        return;
+                    }
+
+                    //Check if coin exists
+                    if (!_coinConfigs.Any(a => a.coin.Equals(form.InputText.ToUpper())))
+                    {
+                        //Update coin configs based on changed values
+                        foreach (var coinGuiLine in _coinGuiLines)
+                        {
+                            var coinConfig = _coinConfigs.Single(c => c.coin == coinGuiLine.CoinName);
+                            coinConfig.bought = Convert.ToDecimal(coinGuiLine.BoughtTextBox.Text);
+                            coinConfig.paid = Convert.ToDecimal(coinGuiLine.PaidTextBox.Text);
+                        }
+
+                        //Add config
+                        _coinConfigs.Add(new CoinConfig { coin = form.InputText.ToUpper(), bought = 0, paid = 0, StartupPrice = 0 });
+
+                        RemoveDelegate remove = new RemoveDelegate(Remove);
+                        BeginInvoke(remove);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Coin already added.");
+                    }
                 }
-                else
-                {
-                    MessageBox.Show("Coin already added.");
-                }
+            }
+            catch (WebException)
+            {
+                //Update status
+                UpdateStatusDelegate updateStatus = new UpdateStatusDelegate(UpdateStatus);
+                BeginInvoke(updateStatus, "No internet connection");
             }
         }
 
@@ -401,6 +451,14 @@ namespace MyCryptoMonitor
             //Check if coin exists
             if (_coinConfigs.Any(a => a.coin.Equals(form.InputText.ToUpper())))
             {
+                //Update coin configs based on changed values
+                foreach (var coinGuiLine in _coinGuiLines)
+                {
+                    var coinConfig = _coinConfigs.Single(c => c.coin == coinGuiLine.CoinName);
+                    coinConfig.bought = Convert.ToDecimal(coinGuiLine.BoughtTextBox.Text);
+                    coinConfig.paid = Convert.ToDecimal(coinGuiLine.PaidTextBox.Text);
+                }
+
                 //Remove coin config
                 _coinConfigs.RemoveAll(a => a.coin.Equals(form.InputText.ToUpper()));
 

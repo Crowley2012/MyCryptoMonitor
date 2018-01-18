@@ -2,4 +2,3 @@
 Add coinmarketcap api
 Last hour price
 Alerts
-Add multiple same coin

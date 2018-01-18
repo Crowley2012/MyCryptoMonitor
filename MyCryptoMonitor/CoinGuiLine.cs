@@ -6,7 +6,8 @@ namespace MyCryptoMonitor
 {
     public class CoinGuiLine
     {
-        private const int _startY = 116;
+        private const int StartY = 116;
+        private const int Spacing = 18;
 
         public string CoinName;
         public Label CoinLabel;
@@ -32,7 +33,7 @@ namespace MyCryptoMonitor
             Change24HrPercentLabel = new Label();
 
             CoinName = coin;
-            int yindex = index * 25;
+            int yindex = StartY + index * 25;
 
             CoinLabel.AutoSize = true;
             PriceLabel.AutoSize = true;
@@ -43,24 +44,24 @@ namespace MyCryptoMonitor
             Change24HrPercentLabel.AutoSize = true;
 
             CoinLabel.Size = new Size(28, 13);
-            PriceLabel.Size = new Size(34, 13);
-            BoughtTextBox.Size = new Size(90, 20);
-            TotalLabel.Size = new Size(34, 13);
-            PaidTextBox.Size = new Size(66, 20);
-            ProfitLabel.Size = new Size(34, 13);
+            PriceLabel.Size = new Size(58, 13);
+            BoughtTextBox.Size = new Size(80, 20);
+            TotalLabel.Size = new Size(58, 13);
+            PaidTextBox.Size = new Size(80, 20);
+            ProfitLabel.Size = new Size(58, 13);
             ChangeDollarLabel.Size = new Size(58, 13);
-            ChangePercentLabel.Size = new Size(36, 13);
-            Change24HrPercentLabel.Size = new Size(36, 13);
+            ChangePercentLabel.Size = new Size(54, 13);
+            Change24HrPercentLabel.Size = new Size(52, 13);
 
-            CoinLabel.Location = new Point(12, _startY + yindex);
-            PriceLabel.Location = new Point(57, _startY + yindex);
-            BoughtTextBox.Location = new Point(135, _startY - 3 + yindex);
-            TotalLabel.Location = new Point(240, _startY + yindex);
-            PaidTextBox.Location = new Point(307, _startY - 3 + yindex);
-            ProfitLabel.Location = new Point(394, _startY + yindex);
-            ChangeDollarLabel.Location = new Point(451, _startY + yindex);
-            ChangePercentLabel.Location = new Point(534, _startY + yindex);
-            Change24HrPercentLabel.Location = new Point(617, _startY + yindex);
+            CoinLabel.Location = new Point(12, yindex);
+            PriceLabel.Location = new Point(CoinLabel.Location.X + CoinLabel.Width + Spacing, yindex);
+            BoughtTextBox.Location = new Point(PriceLabel.Location.X + PriceLabel.Width + Spacing, yindex -3);
+            TotalLabel.Location = new Point(BoughtTextBox.Location.X + BoughtTextBox.Width + Spacing, yindex);
+            PaidTextBox.Location = new Point(TotalLabel.Location.X + TotalLabel.Width + Spacing, yindex - 3);
+            ProfitLabel.Location = new Point(PaidTextBox.Location.X + PaidTextBox.Width + Spacing, yindex);
+            ChangeDollarLabel.Location = new Point(ProfitLabel.Location.X + ProfitLabel.Width + Spacing, yindex);
+            ChangePercentLabel.Location = new Point(ChangeDollarLabel.Location.X + ChangeDollarLabel.Width + Spacing, yindex);
+            Change24HrPercentLabel.Location = new Point(ChangePercentLabel.Location.X + ChangePercentLabel.Width + Spacing, yindex);
 
             ChangePercentLabel.TextChanged += new EventHandler(ChangePercentLabel_TextChanged);
             Change24HrPercentLabel.TextChanged += new EventHandler(Change24HrPercentLabel_TextChanged);
