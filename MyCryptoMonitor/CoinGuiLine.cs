@@ -42,7 +42,7 @@ namespace MyCryptoMonitor
             ChangeDollarLabel.AutoSize = true;
             ChangePercentLabel.AutoSize = true;
             Change24HrPercentLabel.AutoSize = true;
-
+            
             CoinLabel.Size = new Size(28, 13);
             PriceLabel.Size = new Size(58, 13);
             BoughtTextBox.Size = new Size(80, 20);
@@ -52,7 +52,7 @@ namespace MyCryptoMonitor
             ChangeDollarLabel.Size = new Size(58, 13);
             ChangePercentLabel.Size = new Size(54, 13);
             Change24HrPercentLabel.Size = new Size(52, 13);
-
+            
             CoinLabel.Location = new Point(12, yindex);
             PriceLabel.Location = new Point(CoinLabel.Location.X + CoinLabel.Width + Spacing, yindex);
             BoughtTextBox.Location = new Point(PriceLabel.Location.X + PriceLabel.Width + Spacing, yindex -3);

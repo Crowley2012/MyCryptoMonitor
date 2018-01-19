@@ -6,5 +6,6 @@
         public decimal bought { get; set; }
         public decimal paid { get; set; }
         public decimal StartupPrice { get; set; }
+        public bool SetStartupPrice { get; set; } = true;
     }
 }

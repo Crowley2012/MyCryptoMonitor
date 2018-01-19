@@ -307,7 +307,8 @@ namespace MyCryptoMonitor
         private void AddCoin(CoinConfig coin, CoinData downloadedCoin, int index)
         {
             //Store the intial coin price at startup
-            coin.StartupPrice = downloadedCoin.price;
+            if(coin.SetStartupPrice)
+                coin.StartupPrice = downloadedCoin.price;
 
             //Create the gui line
             CoinGuiLine newLine = new CoinGuiLine(downloadedCoin.shortName, index);
@@ -356,6 +357,7 @@ namespace MyCryptoMonitor
 
             //Serialize lines to file
             File.WriteAllText(portfolio, JsonConvert.SerializeObject(newCoinConfigs));
+            _selectedPortfolio = portfolio;
         }
 
         private void LoadPortfolio(string portfolio)
@@ -418,10 +420,11 @@ namespace MyCryptoMonitor
                             var coinConfig = _coinConfigs.Single(c => c.coin == coinGuiLine.CoinName);
                             coinConfig.bought = Convert.ToDecimal(coinGuiLine.BoughtTextBox.Text);
                             coinConfig.paid = Convert.ToDecimal(coinGuiLine.PaidTextBox.Text);
+                            coinConfig.SetStartupPrice = false;
                         }
 
                         //Add config
-                        _coinConfigs.Add(new CoinConfig { coin = form.InputText.ToUpper(), bought = 0, paid = 0, StartupPrice = 0 });
+                        _coinConfigs.Add(new CoinConfig { coin = form.InputText.ToUpper(), bought = 0, paid = 0, StartupPrice = 0, SetStartupPrice = true });
 
                         RemoveDelegate remove = new RemoveDelegate(Remove);
                         BeginInvoke(remove);
@@ -457,6 +460,7 @@ namespace MyCryptoMonitor
                     var coinConfig = _coinConfigs.Single(c => c.coin == coinGuiLine.CoinName);
                     coinConfig.bought = Convert.ToDecimal(coinGuiLine.BoughtTextBox.Text);
                     coinConfig.paid = Convert.ToDecimal(coinGuiLine.PaidTextBox.Text);
+                    coinConfig.SetStartupPrice = false;
                 }
 
                 //Remove coin config
@@ -489,9 +493,15 @@ namespace MyCryptoMonitor
             LoadPortfolio(((ToolStripMenuItem)sender).Tag.ToString());
         }
 
+        private void donateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Donate form = new Donate();
+            form.Show();
+        }
+
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show($"Created by Sean Crowley\nVersion: {Assembly.GetExecutingAssembly().GetName().Version.ToString()}");
+            MessageBox.Show($"Created by Sean Crowley\n\nVersion: {Assembly.GetExecutingAssembly().GetName().Version.ToString()}");
         }
         #endregion
     }

@@ -1,4 +1,5 @@
-﻿Remove coin and sort buttons
+﻿New UI
+Remove coin and sort buttons
 Add coinmarketcap api
 Last hour price
 Alerts
