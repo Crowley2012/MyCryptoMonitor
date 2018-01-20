@@ -112,6 +112,7 @@
     <Content Include="Resources\CoinImage.ico" />
     <Content Include="Resources\Down Arrow.png" />
     <Content Include="Resources\RipplePublicQR.png" />
+    <None Include="Resources\StellarPublicQR.png" />
     <Content Include="Resources\Up Arrow.png" />
     <Content Include="ToDo.txt" />
   </ItemGroup>
