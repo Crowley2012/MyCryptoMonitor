@@ -205,16 +205,18 @@ namespace MyCryptoMonitor
             //Index of coin gui line
             int index = 0;
 
+            //List of coins
+            var coins = JsonConvert.DeserializeObject<List<CoinData>>(response);
+
+            //Create list of coin names
+            if (_coinNames.Count <= 0)
+                _coinNames = coins.OrderBy(c => c.shortName).Select(c => c.shortName).ToList();
+
             //Loop through all coins from config
             foreach (CoinConfig coin in _coinConfigs)
             {
                 //Parse coins
-                var coins = JsonConvert.DeserializeObject<List<CoinData>>(response);
                 CoinData downloadedCoin = coins.Single(c => c.shortName == coin.coin);
-
-                //Create list of coin names
-                if (_coinNames.Count <= 0)
-                    _coinNames = coins.OrderBy(c => c.shortName).Select(c => c.shortName).ToList();
 
                 //Check if gui lines need to be loaded
                 if (_loadGuiLines)
