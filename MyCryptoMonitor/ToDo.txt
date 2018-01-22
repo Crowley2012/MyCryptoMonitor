@@ -1,5 +1,10 @@
-﻿New UI
-Remove coin and sort buttons
+﻿Seperate portion for purchased coins and mined coins
+Price bought coin at / Average bought price
+Dynamic portfolios
+New UI
+Remove coin / sort buttons
 Add coinmarketcap api
 Last hour price
+Resizeable window
 Alerts
+Mobile / Web version
