@@ -1,10 +1,17 @@
 ﻿Seperate portion for purchased coins and mined coins
-Price bought coin at / Average bought price
+Last hour price
 Dynamic portfolios
+Total negative profits | Total positive profits
+Price bought coin at / Average bought price
+User settings
+	Select fiat currency
+	Selected API
+
 New UI
 Remove coin / sort buttons
-Add coinmarketcap api
-Last hour price
 Resizeable window
 Alerts
 Mobile / Web version
+
+Running Change log
+**[FEATURE]** Choose API (CoinMarketCap.com or CoinCap.io)

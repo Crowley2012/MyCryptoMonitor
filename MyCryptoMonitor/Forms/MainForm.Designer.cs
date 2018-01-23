@@ -62,10 +62,13 @@
             this.portfolio1ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.portfolio2ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.portfolio3ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.aPIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuCoinMarketCap = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuCoinCap = new System.Windows.Forms.ToolStripMenuItem();
+            this.donateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label2 = new System.Windows.Forms.Label();
             this.toolTips = new System.Windows.Forms.ToolTip(this.components);
-            this.donateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -282,6 +285,7 @@
             this.coinsToolStripMenuItem,
             this.savePortfolioToolStripMenuItem,
             this.loadPortfolioToolStripMenuItem,
+            this.aPIToolStripMenuItem,
             this.donateToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -413,6 +417,38 @@
             this.portfolio3ToolStripMenuItem1.Text = "Portfolio 3";
             this.portfolio3ToolStripMenuItem1.Click += new System.EventHandler(this.LoadPortfolio_Click);
             // 
+            // aPIToolStripMenuItem
+            // 
+            this.aPIToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuCoinMarketCap,
+            this.mnuCoinCap});
+            this.aPIToolStripMenuItem.Name = "aPIToolStripMenuItem";
+            this.aPIToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.aPIToolStripMenuItem.Text = "API";
+            // 
+            // mnuCoinMarketCap
+            // 
+            this.mnuCoinMarketCap.Checked = true;
+            this.mnuCoinMarketCap.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.mnuCoinMarketCap.Name = "mnuCoinMarketCap";
+            this.mnuCoinMarketCap.Size = new System.Drawing.Size(163, 22);
+            this.mnuCoinMarketCap.Text = "Coin Market Cap";
+            this.mnuCoinMarketCap.Click += new System.EventHandler(this.mnuCoinMarketCap_Click);
+            // 
+            // mnuCoinCap
+            // 
+            this.mnuCoinCap.Name = "mnuCoinCap";
+            this.mnuCoinCap.Size = new System.Drawing.Size(163, 22);
+            this.mnuCoinCap.Text = "Coin Cap";
+            this.mnuCoinCap.Click += new System.EventHandler(this.mnuCoinCap_Click);
+            // 
+            // donateToolStripMenuItem
+            // 
+            this.donateToolStripMenuItem.Name = "donateToolStripMenuItem";
+            this.donateToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
+            this.donateToolStripMenuItem.Text = "Donate";
+            this.donateToolStripMenuItem.Click += new System.EventHandler(this.donateToolStripMenuItem_Click);
+            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
@@ -430,13 +466,6 @@
             this.label2.TabIndex = 47;
             this.label2.Text = "24/hr (%)";
             this.toolTips.SetToolTip(this.label2, "Change in percent for last 24 hours");
-            // 
-            // donateToolStripMenuItem
-            // 
-            this.donateToolStripMenuItem.Name = "donateToolStripMenuItem";
-            this.donateToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
-            this.donateToolStripMenuItem.Text = "Donate";
-            this.donateToolStripMenuItem.Click += new System.EventHandler(this.donateToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -511,6 +540,9 @@
         private System.Windows.Forms.Label lblRefreshTime;
         private System.Windows.Forms.ToolTip toolTips;
         private System.Windows.Forms.ToolStripMenuItem donateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aPIToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mnuCoinMarketCap;
+        private System.Windows.Forms.ToolStripMenuItem mnuCoinCap;
     }
 }
 

@@ -13,6 +13,9 @@ namespace MyCryptoMonitor
     public partial class MainForm : Form
     {
         #region Private Variables
+        private const string API_COIN_MARKET_CAP = "https://api.coinmarketcap.com/v1/ticker/";
+        private const string API_COIN_CAP = "http://coincap.io/front";
+
         private List<CoinConfig> _coinConfigs;
         private List<CoinGuiLine> _coinGuiLines;
         private List<string> _coinNames;
@@ -20,6 +23,7 @@ namespace MyCryptoMonitor
         private DateTime _refreshTime;
         private bool _loadGuiLines;
         private string _selectedPortfolio;
+        private string _api;
         #endregion
 
         #region Load
@@ -86,8 +90,11 @@ namespace MyCryptoMonitor
             {
                 using (var webClient = new WebClient())
                 {
-                    //Download coin data from CoinCap
-                    string response = webClient.DownloadString("http://coincap.io/front");
+                    //Set api
+                    _api = mnuCoinMarketCap.Checked ? API_COIN_MARKET_CAP : API_COIN_CAP;
+
+                    //Download coin data from API
+                    string response = webClient.DownloadString(_api);
 
                     //Update coins
                     UpdateCoinDelegates updateCoins = new UpdateCoinDelegates(UpdateCoins);
@@ -132,7 +139,7 @@ namespace MyCryptoMonitor
 
                     //Download lastest release data from GitHub
                     string response = webClient.DownloadString("https://api.github.com/repos/Crowley2012/MyCryptoMonitor/releases/latest");
-                    GitHubRelease release = JsonConvert.DeserializeObject<GitHubRelease>(response);
+                    ApiGithub release = JsonConvert.DeserializeObject<ApiGithub>(response);
 
                     //Parse versions
                     Version currentVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString());
@@ -205,18 +212,30 @@ namespace MyCryptoMonitor
             //Index of coin gui line
             int index = 0;
 
-            //List of coins
-            var coins = JsonConvert.DeserializeObject<List<CoinData>>(response);
+            List<CoinData> coins = new List<CoinData>();
+
+            //Deserialize response and map to generic coin
+            switch (_api)
+            {
+                case API_COIN_MARKET_CAP:
+                    var coinsCoinMarketCap = JsonConvert.DeserializeObject<List<ApiCoinMarketCap>>(response);
+                    coins = coinsCoinMarketCap.Select(c => Mappings.MapCoinMarketCap(c)).ToList();
+                    break;
+                case API_COIN_CAP:
+                    var coinsCoinCap = JsonConvert.DeserializeObject<List<ApiCoinCap>>(response);
+                    coins = coinsCoinCap.Select(c => Mappings.MapCoinCap(c)).ToList();
+                    break;
+            }
 
             //Create list of coin names
             if (_coinNames.Count <= 0)
-                _coinNames = coins.OrderBy(c => c.shortName).Select(c => c.shortName).ToList();
+                _coinNames = coins.OrderBy(c => c.ShortName).Select(c => c.ShortName).ToList();
 
             //Loop through all coins from config
             foreach (CoinConfig coin in _coinConfigs)
             {
                 //Parse coins
-                CoinData downloadedCoin = coins.Single(c => c.shortName == coin.coin);
+                CoinData downloadedCoin = coins.Single(c => c.ShortName == coin.coin);
 
                 //Check if gui lines need to be loaded
                 if (_loadGuiLines)
@@ -226,7 +245,7 @@ namespace MyCryptoMonitor
                 index++;
                 
                 //Check if coinguiline exists for coinConfig
-                if (!_coinGuiLines.Any(cg => cg.CoinName.Equals(downloadedCoin.shortName)))
+                if (!_coinGuiLines.Any(cg => cg.CoinName.Equals(downloadedCoin.ShortName)))
                 {
                     RemoveDelegate remove = new RemoveDelegate(Remove);
                     BeginInvoke(remove);
@@ -234,15 +253,15 @@ namespace MyCryptoMonitor
                 }
 
                 //Get the gui line for coin
-                CoinGuiLine line = (from c in _coinGuiLines where c.CoinName.Equals(downloadedCoin.shortName) select c).First();
+                CoinGuiLine line = (from c in _coinGuiLines where c.CoinName.Equals(downloadedCoin.ShortName) select c).First();
 
                 //Calculate
                 decimal bought = Convert.ToDecimal(line.BoughtTextBox.Text);
                 decimal paid = Convert.ToDecimal(line.PaidTextBox.Text);
-                decimal total = bought * downloadedCoin.price;
+                decimal total = bought * downloadedCoin.Price;
                 decimal profit = total - paid;
-                decimal changeDollar = downloadedCoin.price - coin.StartupPrice;
-                decimal changePercent = ((downloadedCoin.price - coin.StartupPrice) / coin.StartupPrice) * 100;
+                decimal changeDollar = downloadedCoin.Price - coin.StartupPrice;
+                decimal changePercent = ((downloadedCoin.Price - coin.StartupPrice) / coin.StartupPrice) * 100;
 
                 //Add to totals
                 totalPaid += paid;
@@ -250,13 +269,13 @@ namespace MyCryptoMonitor
 
                 //Update gui
                 line.CoinLabel.Show();
-                line.CoinLabel.Text = downloadedCoin.shortName;
-                line.PriceLabel.Text = $"${downloadedCoin.price}";
+                line.CoinLabel.Text = downloadedCoin.ShortName;
+                line.PriceLabel.Text = $"${downloadedCoin.Price}";
                 line.TotalLabel.Text = $"${total:0.00}";
                 line.ProfitLabel.Text = $"${profit:0.00}";
                 line.ChangeDollarLabel.Text = $"${changeDollar:0.000000}";
                 line.ChangePercentLabel.Text = $"{changePercent:0.00}%";
-                line.Change24HrPercentLabel.Text = $"{downloadedCoin.cap24hrChange}%";
+                line.Change24HrPercentLabel.Text = $"{downloadedCoin.Change24HourPercent}%";
             }
 
             //Update gui
@@ -310,10 +329,10 @@ namespace MyCryptoMonitor
         {
             //Store the intial coin price at startup
             if(coin.SetStartupPrice)
-                coin.StartupPrice = downloadedCoin.price;
+                coin.StartupPrice = downloadedCoin.Price;
 
             //Create the gui line
-            CoinGuiLine newLine = new CoinGuiLine(downloadedCoin.shortName, index);
+            CoinGuiLine newLine = new CoinGuiLine(downloadedCoin.ShortName, index);
 
             //Set the bought and paid amounts
             newLine.BoughtTextBox.Text = coin.bought.ToString();
@@ -504,6 +523,20 @@ namespace MyCryptoMonitor
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show($"Created by Sean Crowley\n\nVersion: {Assembly.GetExecutingAssembly().GetName().Version.ToString()}");
+        }
+
+        private void mnuCoinMarketCap_Click(object sender, EventArgs e)
+        {
+            //Check menu item
+            mnuCoinMarketCap.Checked = true;
+            mnuCoinCap.Checked = false;
+        }
+
+        private void mnuCoinCap_Click(object sender, EventArgs e)
+        {
+            //Check menu item
+            mnuCoinMarketCap.Checked = false;
+            mnuCoinCap.Checked = true;
         }
         #endregion
     }

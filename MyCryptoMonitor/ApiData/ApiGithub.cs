@@ -2,7 +2,7 @@
 
 namespace MyCryptoMonitor
 {
-    public class GitHubRelease
+    public class ApiGithub
     {
         public string url { get; set; }
         public string assets_url { get; set; }

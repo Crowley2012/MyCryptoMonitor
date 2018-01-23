@@ -51,37 +51,40 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CoinData.cs" />
-    <Compile Include="CoinGuiLine.cs" />
-    <Compile Include="Donate.cs">
+    <Compile Include="ApiData\ApiCoinCap.cs" />
+    <Compile Include="ApiData\ApiCoinMarketCap.cs" />
+    <Compile Include="Coin\CoinGuiLine.cs" />
+    <Compile Include="Forms\Donate.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Donate.Designer.cs">
+    <Compile Include="Forms\Donate.Designer.cs">
       <DependentUpon>Donate.cs</DependentUpon>
     </Compile>
-    <Compile Include="GitHubRelease.cs" />
-    <Compile Include="InputForm.cs">
+    <Compile Include="Coin\CoinData.cs" />
+    <Compile Include="ApiData\ApiGithub.cs" />
+    <Compile Include="Forms\InputForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputForm.Designer.cs">
+    <Compile Include="Forms\InputForm.Designer.cs">
       <DependentUpon>InputForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="CoinConfig.cs" />
-    <Compile Include="MainForm.cs">
+    <Compile Include="Coin\CoinConfig.cs" />
+    <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ApiData\Mappings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Donate.resx">
+    <EmbeddedResource Include="Forms\Donate.resx">
       <DependentUpon>Donate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InputForm.resx">
+    <EmbeddedResource Include="Forms\InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
