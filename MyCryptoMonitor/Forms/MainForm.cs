@@ -13,8 +13,8 @@ namespace MyCryptoMonitor
     public partial class MainForm : Form
     {
         #region Private Variables
-        private const string API_COIN_MARKET_CAP = "https://api.coinmarketcap.com/v1/ticker/";
-        private const string API_COIN_CAP = "http://coincap.io/front";
+        private const string API_COIN_MARKET_CAP = "https://api.coinmarketcap.com/v1/ticker/?limit=9999";
+        private const string API_COIN_CAP = "https://coincap.io/front";
 
         private List<CoinConfig> _coinConfigs;
         private List<CoinGuiLine> _coinGuiLines;
@@ -214,28 +214,39 @@ namespace MyCryptoMonitor
 
             List<CoinData> coins = new List<CoinData>();
 
+            //Deserialize settings
+            JsonSerializerSettings settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+
             //Deserialize response and map to generic coin
             switch (_api)
             {
                 case API_COIN_MARKET_CAP:
-                    var coinsCoinMarketCap = JsonConvert.DeserializeObject<List<ApiCoinMarketCap>>(response);
+                    var coinsCoinMarketCap = JsonConvert.DeserializeObject<List<ApiCoinMarketCap>>(response, settings);
                     coins = coinsCoinMarketCap.Select(c => Mappings.MapCoinMarketCap(c)).ToList();
                     break;
                 case API_COIN_CAP:
-                    var coinsCoinCap = JsonConvert.DeserializeObject<List<ApiCoinCap>>(response);
+                    var coinsCoinCap = JsonConvert.DeserializeObject<List<ApiCoinCap>>(response, settings);
                     coins = coinsCoinCap.Select(c => Mappings.MapCoinCap(c)).ToList();
                     break;
             }
 
             //Create list of coin names
-            if (_coinNames.Count <= 0)
-                _coinNames = coins.OrderBy(c => c.ShortName).Select(c => c.ShortName).ToList();
+            _coinNames = coins.OrderBy(c => c.ShortName).Select(c => c.ShortName).ToList();
 
             //Loop through all coins from config
             foreach (CoinConfig coin in _coinConfigs)
             {
-                //Parse coins
-                CoinData downloadedCoin = coins.Single(c => c.ShortName == coin.coin);
+                CoinData downloadedCoin;
+
+                //Parse coins, if coin doesnt exist set to 0
+                if (coins.Any(c => c.ShortName == coin.coin))
+                    downloadedCoin = coins.Single(c => c.ShortName == coin.coin);
+                else
+                    downloadedCoin = new CoinData { ShortName = coin.coin, Change1HourPercent = 0, Change24HourPercent = 0, Price = 0 };
 
                 //Check if gui lines need to be loaded
                 if (_loadGuiLines)
@@ -279,8 +290,8 @@ namespace MyCryptoMonitor
             }
 
             //Update gui
-            lblTotalProfit.Text = $"${totalProfits:0.00}";
-            lblTotalProfitChange.Text = $"(${totalProfits - totalPaid:0.00})";
+            lblTotal.Text = $"${totalProfits:0.00}";
+            lblTotalProfit.Text = $"${totalProfits - totalPaid:0.00}";
             lblStatus.Text = "Status: Sleeping";
             _refreshTime = DateTime.Now;
 
@@ -301,8 +312,8 @@ namespace MyCryptoMonitor
             lblStatus.Text = "Status: Loading";
 
             //Reset totals
-            lblTotalProfit.Text = "$0.00";
-            lblTotalProfitChange.Text = "($0.00)";
+            lblTotal.Text = "$0.00";
+            lblTotalProfit.Text = "($0.00)";
 
             //Remove the line elements from gui
             foreach (var coin in _coinGuiLines)
