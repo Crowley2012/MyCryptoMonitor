@@ -1,7 +1,6 @@
 ﻿Seperate portion for purchased coins and mined coins
 Last hour price
 Dynamic portfolios
-Total negative profits | Total positive profits
 Price bought coin at / Average bought price
 User settings
 	Select fiat currency

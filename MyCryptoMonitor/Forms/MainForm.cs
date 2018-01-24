@@ -7,6 +7,7 @@ using System.Linq;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Drawing;
 
 namespace MyCryptoMonitor
 {
@@ -207,7 +208,9 @@ namespace MyCryptoMonitor
 
             //Overall values
             decimal totalPaid = 0;
-            decimal totalProfits = 0;
+            decimal overallTotal = 0;
+            decimal totalNegativeProfits = 0;
+            decimal totalPostivieProfits = 0;
 
             //Index of coin gui line
             int index = 0;
@@ -274,9 +277,14 @@ namespace MyCryptoMonitor
                 decimal changeDollar = downloadedCoin.Price - coin.StartupPrice;
                 decimal changePercent = ((downloadedCoin.Price - coin.StartupPrice) / coin.StartupPrice) * 100;
 
+                if (profit >= 0)
+                    totalPostivieProfits += profit;
+                else
+                    totalNegativeProfits += profit;
+
                 //Add to totals
                 totalPaid += paid;
-                totalProfits += paid + profit;
+                overallTotal += paid + profit;
 
                 //Update gui
                 line.CoinLabel.Show();
@@ -290,8 +298,11 @@ namespace MyCryptoMonitor
             }
 
             //Update gui
-            lblTotal.Text = $"${totalProfits:0.00}";
-            lblTotalProfit.Text = $"${totalProfits - totalPaid:0.00}";
+            lblOverallTotal.Text = $"${overallTotal:0.00}";
+            lblTotalProfit.ForeColor = overallTotal - totalPaid >= 0 ? Color.Green : Color.Red;
+            lblTotalProfit.Text = $"${overallTotal - totalPaid:0.00}";
+            lblTotalNegativeProfit.Text = $"${totalNegativeProfits}";
+            lblTotalPositiveProfit.Text = $"${totalPostivieProfits}";
             lblStatus.Text = "Status: Sleeping";
             _refreshTime = DateTime.Now;
 
@@ -312,7 +323,7 @@ namespace MyCryptoMonitor
             lblStatus.Text = "Status: Loading";
 
             //Reset totals
-            lblTotal.Text = "$0.00";
+            lblOverallTotal.Text = "$0.00";
             lblTotalProfit.Text = "($0.00)";
 
             //Remove the line elements from gui

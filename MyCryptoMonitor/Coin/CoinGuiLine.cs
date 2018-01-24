@@ -6,7 +6,7 @@ namespace MyCryptoMonitor
 {
     public class CoinGuiLine
     {
-        private const int StartY = 116;
+        private const int StartY = 122;
         private const int Spacing = 18;
 
         public string CoinName;
