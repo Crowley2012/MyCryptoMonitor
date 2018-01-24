@@ -301,8 +301,8 @@ namespace MyCryptoMonitor
             lblOverallTotal.Text = $"${overallTotal:0.00}";
             lblTotalProfit.ForeColor = overallTotal - totalPaid >= 0 ? Color.Green : Color.Red;
             lblTotalProfit.Text = $"${overallTotal - totalPaid:0.00}";
-            lblTotalNegativeProfit.Text = $"${totalNegativeProfits}";
-            lblTotalPositiveProfit.Text = $"${totalPostivieProfits}";
+            lblTotalNegativeProfit.Text = $"${totalNegativeProfits:0.00}";
+            lblTotalPositiveProfit.Text = $"${totalPostivieProfits:0.00}";
             lblStatus.Text = "Status: Sleeping";
             _refreshTime = DateTime.Now;
 
