@@ -1,5 +1,4 @@
 ﻿Seperate portion for purchased coins and mined coins
-Last hour price
 Dynamic portfolios
 Price bought coin at / Average bought price
 User settings

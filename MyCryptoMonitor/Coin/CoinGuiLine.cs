@@ -16,6 +16,7 @@ namespace MyCryptoMonitor
         public Label ProfitLabel;
         public Label ChangeDollarLabel;
         public Label ChangePercentLabel;
+        public Label Change1HrPercentLabel;
         public Label Change24HrPercentLabel;
         public TextBox BoughtTextBox;
         public TextBox PaidTextBox;
@@ -30,6 +31,7 @@ namespace MyCryptoMonitor
             ProfitLabel = new Label();
             ChangeDollarLabel = new Label();
             ChangePercentLabel = new Label();
+            Change1HrPercentLabel = new Label();
             Change24HrPercentLabel = new Label();
 
             CoinName = coin;
@@ -41,6 +43,7 @@ namespace MyCryptoMonitor
             ProfitLabel.AutoSize = true;
             ChangeDollarLabel.AutoSize = true;
             ChangePercentLabel.AutoSize = true;
+            Change1HrPercentLabel.AutoSize = true;
             Change24HrPercentLabel.AutoSize = true;
             
             CoinLabel.Size = new Size(28, 13);
@@ -51,6 +54,7 @@ namespace MyCryptoMonitor
             ProfitLabel.Size = new Size(58, 13);
             ChangeDollarLabel.Size = new Size(58, 13);
             ChangePercentLabel.Size = new Size(54, 13);
+            Change1HrPercentLabel.Size = new Size(52, 13);
             Change24HrPercentLabel.Size = new Size(52, 13);
             
             CoinLabel.Location = new Point(12, yindex);
@@ -61,10 +65,29 @@ namespace MyCryptoMonitor
             ProfitLabel.Location = new Point(PaidTextBox.Location.X + PaidTextBox.Width + Spacing, yindex);
             ChangeDollarLabel.Location = new Point(ProfitLabel.Location.X + ProfitLabel.Width + Spacing, yindex);
             ChangePercentLabel.Location = new Point(ChangeDollarLabel.Location.X + ChangeDollarLabel.Width + Spacing, yindex);
-            Change24HrPercentLabel.Location = new Point(ChangePercentLabel.Location.X + ChangePercentLabel.Width + Spacing, yindex);
+            Change1HrPercentLabel.Location = new Point(ChangePercentLabel.Location.X + ChangePercentLabel.Width + Spacing, yindex);
+            Change24HrPercentLabel.Location = new Point(Change1HrPercentLabel.Location.X + Change1HrPercentLabel.Width + Spacing, yindex);
 
             ChangePercentLabel.TextChanged += new EventHandler(ChangePercentLabel_TextChanged);
+            Change1HrPercentLabel.TextChanged += new EventHandler(Change1HrPercentLabel_TextChanged);
             Change24HrPercentLabel.TextChanged += new EventHandler(Change24HrPercentLabel_TextChanged);
+        }
+
+        private void Change1HrPercentLabel_TextChanged(object sender, EventArgs e)
+        {
+            decimal change1HrPercent = Convert.ToDecimal(((Label)sender).Text.Replace("%", string.Empty));
+
+            //Set color
+            if (change1HrPercent >= 0)
+                Change1HrPercentLabel.ForeColor = Color.Green;
+            else
+                Change1HrPercentLabel.ForeColor = Color.Red;
+
+            //Set weight
+            if (change1HrPercent >= 10 || change1HrPercent <= -10)
+                Change1HrPercentLabel.Font = new Font(Change1HrPercentLabel.Font, FontStyle.Bold);
+            else
+                Change1HrPercentLabel.Font = new Font(Change1HrPercentLabel.Font, FontStyle.Regular);
         }
 
         private void Change24HrPercentLabel_TextChanged(object sender, EventArgs e)

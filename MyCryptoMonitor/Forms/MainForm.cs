@@ -294,7 +294,8 @@ namespace MyCryptoMonitor
                 line.ProfitLabel.Text = $"${profit:0.00}";
                 line.ChangeDollarLabel.Text = $"${changeDollar:0.000000}";
                 line.ChangePercentLabel.Text = $"{changePercent:0.00}%";
-                line.Change24HrPercentLabel.Text = $"{downloadedCoin.Change24HourPercent}%";
+                line.Change1HrPercentLabel.Text = $"{downloadedCoin.Change1HourPercent:0.00}%";
+                line.Change24HrPercentLabel.Text = $"{downloadedCoin.Change24HourPercent:0.00}%";
             }
 
             //Update gui
@@ -338,6 +339,7 @@ namespace MyCryptoMonitor
                 Controls.Remove(coin.ProfitLabel);
                 Controls.Remove(coin.ChangeDollarLabel);
                 Controls.Remove(coin.ChangePercentLabel);
+                Controls.Remove(coin.Change1HrPercentLabel);
                 Controls.Remove(coin.Change24HrPercentLabel);
             }
 
@@ -372,6 +374,7 @@ namespace MyCryptoMonitor
                 Controls.Add(newLine.ProfitLabel);
                 Controls.Add(newLine.ChangeDollarLabel);
                 Controls.Add(newLine.ChangePercentLabel);
+                Controls.Add(newLine.Change1HrPercentLabel);
                 Controls.Add(newLine.Change24HrPercentLabel);
             };
             Invoke(invoke);
