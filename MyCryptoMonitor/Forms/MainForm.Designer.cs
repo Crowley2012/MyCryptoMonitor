@@ -74,6 +74,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.toolTips = new System.Windows.Forms.ToolTip(this.components);
             this.label3 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -88,7 +89,7 @@
             this.lblOverallTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblOverallTotal.Location = new System.Drawing.Point(3, 0);
             this.lblOverallTotal.Name = "lblOverallTotal";
-            this.lblOverallTotal.Size = new System.Drawing.Size(163, 24);
+            this.lblOverallTotal.Size = new System.Drawing.Size(336, 24);
             this.lblOverallTotal.TabIndex = 0;
             this.lblOverallTotal.Text = "$0.00";
             this.lblOverallTotal.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -100,7 +101,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 175F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 348F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 1, 0);
@@ -108,7 +109,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(733, 67);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(836, 67);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // tableLayoutPanel2
@@ -127,7 +128,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33332F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(273, 61);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(238, 61);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
             // lblResetTime
@@ -173,13 +174,13 @@
             this.tableLayoutPanel3.Controls.Add(this.lblTotalProfit, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.lblOverallTotal, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 2);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(282, 3);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(247, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 3;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(169, 61);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(342, 61);
             this.tableLayoutPanel3.TabIndex = 2;
             // 
             // lblTotalProfit
@@ -189,7 +190,7 @@
             this.lblTotalProfit.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalProfit.Location = new System.Drawing.Point(3, 26);
             this.lblTotalProfit.Name = "lblTotalProfit";
-            this.lblTotalProfit.Size = new System.Drawing.Size(163, 13);
+            this.lblTotalProfit.Size = new System.Drawing.Size(336, 13);
             this.lblTotalProfit.TabIndex = 1;
             this.lblTotalProfit.Text = "$0.00";
             this.lblTotalProfit.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -211,7 +212,7 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(163, 13);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(336, 13);
             this.tableLayoutPanel4.TabIndex = 48;
             // 
             // lblTotalPositiveProfit
@@ -220,10 +221,10 @@
             this.lblTotalPositiveProfit.AutoSize = true;
             this.lblTotalPositiveProfit.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalPositiveProfit.ForeColor = System.Drawing.Color.Green;
-            this.lblTotalPositiveProfit.Location = new System.Drawing.Point(89, 0);
+            this.lblTotalPositiveProfit.Location = new System.Drawing.Point(175, 0);
             this.lblTotalPositiveProfit.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.lblTotalPositiveProfit.Name = "lblTotalPositiveProfit";
-            this.lblTotalPositiveProfit.Size = new System.Drawing.Size(71, 13);
+            this.lblTotalPositiveProfit.Size = new System.Drawing.Size(158, 13);
             this.lblTotalPositiveProfit.TabIndex = 50;
             this.lblTotalPositiveProfit.Text = "$0.00";
             this.lblTotalPositiveProfit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -238,7 +239,7 @@
             this.lblTotalNegativeProfit.Location = new System.Drawing.Point(3, 0);
             this.lblTotalNegativeProfit.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.lblTotalNegativeProfit.Name = "lblTotalNegativeProfit";
-            this.lblTotalNegativeProfit.Size = new System.Drawing.Size(71, 13);
+            this.lblTotalNegativeProfit.Size = new System.Drawing.Size(157, 13);
             this.lblTotalNegativeProfit.TabIndex = 48;
             this.lblTotalNegativeProfit.Text = "$0.00";
             this.lblTotalNegativeProfit.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -249,7 +250,7 @@
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(77, 0);
+            this.label4.Location = new System.Drawing.Point(163, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(9, 13);
             this.label4.TabIndex = 49;
@@ -294,7 +295,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(230, 98);
+            this.label10.Location = new System.Drawing.Point(326, 98);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(36, 13);
             this.label10.TabIndex = 21;
@@ -305,7 +306,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(304, 98);
+            this.label1.Location = new System.Drawing.Point(400, 98);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 32;
@@ -316,7 +317,7 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(406, 98);
+            this.label16.Location = new System.Drawing.Point(502, 98);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(37, 13);
             this.label16.TabIndex = 33;
@@ -327,7 +328,7 @@
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(481, 98);
+            this.label17.Location = new System.Drawing.Point(577, 98);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(69, 13);
             this.label17.TabIndex = 39;
@@ -338,7 +339,7 @@
             // 
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(555, 98);
+            this.label18.Location = new System.Drawing.Point(651, 98);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(71, 13);
             this.label18.TabIndex = 45;
@@ -360,7 +361,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(757, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(860, 24);
             this.menuStrip1.TabIndex = 46;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -529,29 +530,42 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(629, 98);
+            this.label2.Location = new System.Drawing.Point(725, 98);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(52, 13);
             this.label2.TabIndex = 47;
             this.label2.Text = "1/hr (%)";
-            this.toolTips.SetToolTip(this.label2, "Change in percent for last 24 hours");
+            this.toolTips.SetToolTip(this.label2, "Change in percent for last hour");
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(687, 98);
+            this.label3.Location = new System.Drawing.Point(783, 98);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(59, 13);
             this.label3.TabIndex = 48;
             this.label3.Text = "24/hr (%)";
             this.toolTips.SetToolTip(this.label3, "Change in percent for last 24 hours");
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(230, 98);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(80, 13);
+            this.label5.TabIndex = 49;
+            this.label5.Text = "Bought Price";
+            this.toolTips.SetToolTip(this.label5, "Price coin was bought at. If multiple payments, this will be average bought price" +
+        ". (Paid / Bought)");
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(757, 123);
+            this.ClientSize = new System.Drawing.Size(860, 123);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label18);
@@ -631,6 +645,7 @@
         private System.Windows.Forms.Label lblTotalPositiveProfit;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label5;
     }
 }
 

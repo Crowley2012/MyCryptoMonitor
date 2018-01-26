@@ -272,6 +272,7 @@ namespace MyCryptoMonitor
                 //Calculate
                 decimal bought = Convert.ToDecimal(line.BoughtTextBox.Text);
                 decimal paid = Convert.ToDecimal(line.PaidTextBox.Text);
+                decimal boughtPrice = paid / bought;
                 decimal total = bought * downloadedCoin.Price;
                 decimal profit = total - paid;
                 decimal changeDollar = downloadedCoin.Price - coin.StartupPrice;
@@ -290,6 +291,7 @@ namespace MyCryptoMonitor
                 line.CoinLabel.Show();
                 line.CoinLabel.Text = downloadedCoin.ShortName;
                 line.PriceLabel.Text = $"${downloadedCoin.Price}";
+                line.BoughtPriceLabel.Text = $"${boughtPrice:0.000000}";
                 line.TotalLabel.Text = $"${total:0.00}";
                 line.ProfitLabel.Text = $"${profit:0.00}";
                 line.ChangeDollarLabel.Text = $"${changeDollar:0.000000}";
@@ -334,6 +336,7 @@ namespace MyCryptoMonitor
                 Controls.Remove(coin.CoinLabel);
                 Controls.Remove(coin.PriceLabel);
                 Controls.Remove(coin.BoughtTextBox);
+                Controls.Remove(coin.BoughtPriceLabel);
                 Controls.Remove(coin.TotalLabel);
                 Controls.Remove(coin.PaidTextBox);
                 Controls.Remove(coin.ProfitLabel);
@@ -369,6 +372,7 @@ namespace MyCryptoMonitor
                 Controls.Add(newLine.CoinLabel);
                 Controls.Add(newLine.PriceLabel);
                 Controls.Add(newLine.BoughtTextBox);
+                Controls.Add(newLine.BoughtPriceLabel);
                 Controls.Add(newLine.TotalLabel);
                 Controls.Add(newLine.PaidTextBox);
                 Controls.Add(newLine.ProfitLabel);

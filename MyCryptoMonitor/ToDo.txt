@@ -1,15 +1,20 @@
 ﻿Seperate portion for purchased coins and mined coins
-Dynamic portfolios
-Price bought coin at / Average bought price
 User settings
 	Select fiat currency
 	Selected API
-
+	
 New UI
-Remove coin / sort buttons
+Portfolio Manager
+	Naming
+	Unlimited portfolios
+Remove coin button
+Sort buttons
 Resizeable window
 Alerts
 Mobile / Web version
 
 Running Change log
 **[FEATURE]** Choose API (CoinMarketCap.com or CoinCap.io)
+**[FEATURE]** Total negative profit and total positive profit displayed
+**[FEATURE]** New column, Change % in last hour (Only works with Coin Market Cap API)
+**[FEATURE]** New column, Bought Price (Price / Bought) shows the price the coin was bought at. If multiple payments this will show the average buy price

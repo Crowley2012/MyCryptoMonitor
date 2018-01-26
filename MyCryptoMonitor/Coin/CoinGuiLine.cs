@@ -12,6 +12,7 @@ namespace MyCryptoMonitor
         public string CoinName;
         public Label CoinLabel;
         public Label PriceLabel;
+        public Label BoughtPriceLabel;
         public Label TotalLabel;
         public Label ProfitLabel;
         public Label ChangeDollarLabel;
@@ -26,6 +27,7 @@ namespace MyCryptoMonitor
             CoinLabel = new Label();
             PriceLabel = new Label();
             BoughtTextBox = new TextBox();
+            BoughtPriceLabel = new Label();
             TotalLabel = new Label();
             PaidTextBox = new TextBox();
             ProfitLabel = new Label();
@@ -39,6 +41,7 @@ namespace MyCryptoMonitor
 
             CoinLabel.AutoSize = true;
             PriceLabel.AutoSize = true;
+            BoughtPriceLabel.AutoSize = true;
             TotalLabel.AutoSize = true;
             ProfitLabel.AutoSize = true;
             ChangeDollarLabel.AutoSize = true;
@@ -49,18 +52,20 @@ namespace MyCryptoMonitor
             CoinLabel.Size = new Size(28, 13);
             PriceLabel.Size = new Size(58, 13);
             BoughtTextBox.Size = new Size(80, 20);
+            BoughtPriceLabel.Size = new Size(78, 13);
             TotalLabel.Size = new Size(58, 13);
             PaidTextBox.Size = new Size(80, 20);
             ProfitLabel.Size = new Size(58, 13);
             ChangeDollarLabel.Size = new Size(58, 13);
             ChangePercentLabel.Size = new Size(54, 13);
-            Change1HrPercentLabel.Size = new Size(52, 13);
+            Change1HrPercentLabel.Size = new Size(42, 13);
             Change24HrPercentLabel.Size = new Size(52, 13);
             
             CoinLabel.Location = new Point(12, yindex);
             PriceLabel.Location = new Point(CoinLabel.Location.X + CoinLabel.Width + Spacing, yindex);
             BoughtTextBox.Location = new Point(PriceLabel.Location.X + PriceLabel.Width + Spacing, yindex -3);
-            TotalLabel.Location = new Point(BoughtTextBox.Location.X + BoughtTextBox.Width + Spacing, yindex);
+            BoughtPriceLabel.Location = new Point(BoughtTextBox.Location.X + BoughtTextBox.Width + Spacing, yindex);
+            TotalLabel.Location = new Point(BoughtPriceLabel.Location.X + BoughtPriceLabel.Width + Spacing, yindex);
             PaidTextBox.Location = new Point(TotalLabel.Location.X + TotalLabel.Width + Spacing, yindex - 3);
             ProfitLabel.Location = new Point(PaidTextBox.Location.X + PaidTextBox.Width + Spacing, yindex);
             ChangeDollarLabel.Location = new Point(ProfitLabel.Location.X + ProfitLabel.Width + Spacing, yindex);
