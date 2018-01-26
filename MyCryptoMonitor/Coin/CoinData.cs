@@ -5,6 +5,8 @@
         public string ShortName { get; set; }
         public string LongName { get; set; }
 
+        public int CoinIndex { get; set; }
+
         public decimal Change1HourPercent { get; set; }
         public decimal Change24HourPercent { get; set; }
         public decimal MarketCap { get; set; }

@@ -249,7 +249,7 @@ namespace MyCryptoMonitor
                 if (coins.Any(c => c.ShortName == coin.coin))
                     downloadedCoin = coins.Single(c => c.ShortName == coin.coin);
                 else
-                    downloadedCoin = new CoinData { ShortName = coin.coin, Change1HourPercent = 0, Change24HourPercent = 0, Price = 0 };
+                    downloadedCoin = new CoinData { ShortName = coin.coin, CoinIndex = coin.coinIndex, Change1HourPercent = 0, Change24HourPercent = 0, Price = 0 };
 
                 //Check if gui lines need to be loaded
                 if (_loadGuiLines)
@@ -267,12 +267,12 @@ namespace MyCryptoMonitor
                 }
 
                 //Get the gui line for coin
-                CoinGuiLine line = (from c in _coinGuiLines where c.CoinName.Equals(downloadedCoin.ShortName) select c).First();
+                CoinGuiLine line = (from c in _coinGuiLines where c.CoinName.Equals(downloadedCoin.ShortName) && c.CoinIndex == coin.coinIndex select c).First();
 
                 //Calculate
                 decimal bought = Convert.ToDecimal(line.BoughtTextBox.Text);
                 decimal paid = Convert.ToDecimal(line.PaidTextBox.Text);
-                decimal boughtPrice = paid / bought;
+                decimal boughtPrice = bought == 0 ? 0 : paid / bought;
                 decimal total = bought * downloadedCoin.Price;
                 decimal profit = total - paid;
                 decimal changeDollar = downloadedCoin.Price - coin.StartupPrice;
@@ -359,7 +359,7 @@ namespace MyCryptoMonitor
                 coin.StartupPrice = downloadedCoin.Price;
 
             //Create the gui line
-            CoinGuiLine newLine = new CoinGuiLine(downloadedCoin.ShortName, index);
+            CoinGuiLine newLine = new CoinGuiLine(downloadedCoin.ShortName, coin.coinIndex, index);
 
             //Set the bought and paid amounts
             newLine.BoughtTextBox.Text = coin.bought.ToString();
@@ -400,6 +400,7 @@ namespace MyCryptoMonitor
                 newCoinConfigs.Add(new CoinConfig
                 {
                     coin = coinLine.CoinLabel.Text,
+                    coinIndex = newCoinConfigs.Count(c => c.coin.Equals(coinLine.CoinName)),
                     bought = Convert.ToDecimal(coinLine.BoughtTextBox.Text),
                     paid = Convert.ToDecimal(coinLine.PaidTextBox.Text)
                 });
@@ -450,7 +451,7 @@ namespace MyCryptoMonitor
                 using (var webClient = new WebClient())
                 {
                     //Get coin to add
-                    InputForm form = new InputForm("Add", _coinNames.Except(_coinConfigs.Select(c => c.coin).ToList()).ToList());
+                    InputForm form = new InputForm("Add", _coinNames.ToList());
 
                     if (form.ShowDialog() != DialogResult.OK)
                         return;
@@ -462,27 +463,27 @@ namespace MyCryptoMonitor
                     }
 
                     //Check if coin exists
-                    if (!_coinConfigs.Any(a => a.coin.Equals(form.InputText.ToUpper())))
-                    {
+                    //if (!_coinConfigs.Any(a => a.coin.Equals(form.InputText.ToUpper())))
+                    //{
                         //Update coin configs based on changed values
                         foreach (var coinGuiLine in _coinGuiLines)
                         {
-                            var coinConfig = _coinConfigs.Single(c => c.coin == coinGuiLine.CoinName);
+                            var coinConfig = _coinConfigs.Single(c => c.coin == coinGuiLine.CoinName && c.coinIndex == coinGuiLine.CoinIndex);
                             coinConfig.bought = Convert.ToDecimal(coinGuiLine.BoughtTextBox.Text);
                             coinConfig.paid = Convert.ToDecimal(coinGuiLine.PaidTextBox.Text);
                             coinConfig.SetStartupPrice = false;
                         }
 
                         //Add config
-                        _coinConfigs.Add(new CoinConfig { coin = form.InputText.ToUpper(), bought = 0, paid = 0, StartupPrice = 0, SetStartupPrice = true });
+                        _coinConfigs.Add(new CoinConfig { coin = form.InputText.ToUpper(), coinIndex = _coinConfigs.Count(c => c.coin.Equals(form.InputText.ToUpper())), bought = 0, paid = 0, StartupPrice = 0, SetStartupPrice = true });
 
                         RemoveDelegate remove = new RemoveDelegate(Remove);
                         BeginInvoke(remove);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Coin already added.");
-                    }
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show("Coin already added.");
+                    //}
                 }
             }
             catch (WebException)

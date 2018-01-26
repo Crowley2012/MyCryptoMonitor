@@ -10,6 +10,7 @@ namespace MyCryptoMonitor
         private const int Spacing = 18;
 
         public string CoinName;
+        public int CoinIndex;
         public Label CoinLabel;
         public Label PriceLabel;
         public Label BoughtPriceLabel;
@@ -22,7 +23,7 @@ namespace MyCryptoMonitor
         public TextBox BoughtTextBox;
         public TextBox PaidTextBox;
 
-        public CoinGuiLine(string coin, int index)
+        public CoinGuiLine(string coin, int coinIndex, int index)
         {
             CoinLabel = new Label();
             PriceLabel = new Label();
@@ -37,6 +38,7 @@ namespace MyCryptoMonitor
             Change24HrPercentLabel = new Label();
 
             CoinName = coin;
+            CoinIndex = coinIndex;
             int yindex = StartY + index * 25;
 
             CoinLabel.AutoSize = true;

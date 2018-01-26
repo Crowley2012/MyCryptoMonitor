@@ -1,12 +1,12 @@
 ﻿Seperate portion for purchased coins and mined coins
-User settings
-	Select fiat currency
-	Selected API
 	
 New UI
 Portfolio Manager
 	Naming
 	Unlimited portfolios
+User settings
+	Select fiat currency
+	Selected API
 Remove coin button
 Sort buttons
 Resizeable window
