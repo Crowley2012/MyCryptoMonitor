@@ -51,7 +51,7 @@ namespace MyCryptoMonitor
             Change1HrPercentLabel.AutoSize = true;
             Change24HrPercentLabel.AutoSize = true;
             
-            CoinLabel.Size = new Size(28, 13);
+            CoinLabel.Size = new Size(38, 13);
             PriceLabel.Size = new Size(58, 13);
             BoughtTextBox.Size = new Size(80, 20);
             BoughtPriceLabel.Size = new Size(78, 13);

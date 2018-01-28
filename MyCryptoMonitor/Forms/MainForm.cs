@@ -276,7 +276,7 @@ namespace MyCryptoMonitor
                 decimal total = bought * downloadedCoin.Price;
                 decimal profit = total - paid;
                 decimal changeDollar = downloadedCoin.Price - coin.StartupPrice;
-                decimal changePercent = ((downloadedCoin.Price - coin.StartupPrice) / coin.StartupPrice) * 100;
+                decimal changePercent = coin.StartupPrice == 0 ? 0 : ((downloadedCoin.Price - coin.StartupPrice) / coin.StartupPrice) * 100;
 
                 if (profit >= 0)
                     totalPostivieProfits += profit;
@@ -289,6 +289,7 @@ namespace MyCryptoMonitor
 
                 //Update gui
                 line.CoinLabel.Show();
+                //line.CoinLabel.Text = _coinConfigs.Count(c => c.coin == downloadedCoin.ShortName) > 1 ? $"{downloadedCoin.ShortName} ({coin.coinIndex})" : downloadedCoin.ShortName;
                 line.CoinLabel.Text = downloadedCoin.ShortName;
                 line.PriceLabel.Text = $"${downloadedCoin.Price}";
                 line.BoughtPriceLabel.Text = $"${boughtPrice:0.000000}";
@@ -423,6 +424,46 @@ namespace MyCryptoMonitor
             RemoveDelegate remove = new RemoveDelegate(Remove);
             BeginInvoke(remove);
         }
+
+        private void RecountCoins()
+        {
+            List<string> coinsChecked = new List<string>();
+
+
+            foreach (CoinConfig config in _coinConfigs)
+                config.coinIndex = 0;
+
+            //Temp clean this shite
+            foreach (CoinConfig config in _coinConfigs)
+            {
+                int index = 0;
+                if(_coinConfigs.Count(c => c.coin == config.coin) > 0)
+                {
+                    foreach(CoinConfig coin in _coinConfigs.Where(c => c.coin == config.coin).ToList())
+                    {
+                        coin.coinIndex = index;
+                        index++;
+                    }
+                }
+
+
+                /*
+                int index = 0;
+
+                if (coinsChecked.Contains(config.coin))
+                    continue;
+
+                config.coinIndex = index;
+                coinsChecked.Add(config.coin);
+
+                foreach (CoinConfig coin in _coinConfigs.Where(c => c.coin == config.coin).ToList())
+                {
+                    index++;
+                    coin.coinIndex = index;
+                }
+                */
+            }
+        }
         #endregion
 
         #region Events
@@ -497,25 +538,27 @@ namespace MyCryptoMonitor
         private void RemoveCoin_Click(object sender, EventArgs e)
         {
             //Get coin to remove
-            InputForm form = new InputForm("Remove", _coinConfigs.OrderBy(c => c.coin).Select(c => c.coin).ToList());
+            InputForm form = new InputForm("Remove", _coinConfigs.OrderBy(c => c.coin).Select(c => c.coin).Distinct().ToList(), _coinConfigs);
 
             if (form.ShowDialog() != DialogResult.OK)
                 return;
 
             //Check if coin exists
-            if (_coinConfigs.Any(a => a.coin.Equals(form.InputText.ToUpper())))
+            if (_coinConfigs.Any(a => a.coin.Equals(form.InputText.ToUpper()) && a.coinIndex == form.CoinIndex))
             {
-                //Update coin configs based on changed values
+                //Update coin configs with new bought and paid values
                 foreach (var coinGuiLine in _coinGuiLines)
                 {
-                    var coinConfig = _coinConfigs.Single(c => c.coin == coinGuiLine.CoinName);
+                    var coinConfig = _coinConfigs.Single(c => c.coin == coinGuiLine.CoinName && c.coinIndex == coinGuiLine.CoinIndex);
                     coinConfig.bought = Convert.ToDecimal(coinGuiLine.BoughtTextBox.Text);
                     coinConfig.paid = Convert.ToDecimal(coinGuiLine.PaidTextBox.Text);
                     coinConfig.SetStartupPrice = false;
                 }
 
                 //Remove coin config
-                _coinConfigs.RemoveAll(a => a.coin.Equals(form.InputText.ToUpper()));
+                _coinConfigs.RemoveAll(a => a.coin.Equals(form.InputText.ToUpper()) && a.coinIndex == form.CoinIndex);
+
+                RecountCoins();
 
                 RemoveDelegate remove = new RemoveDelegate(Remove);
                 BeginInvoke(remove);
