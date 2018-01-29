@@ -10,41 +10,55 @@ namespace MyCryptoMonitor
         public string InputText { get; set; }
         public int CoinIndex { get; set; }
 
-        public List<CoinConfig> coinConfigs { get; set; }
+        private List<CoinConfig> _coinConfigs { get; set; }
 
         public InputForm(string submitLabel, List<string> coins)
         {
             InitializeComponent();
+
+            //Setup labels
             Text = $"{submitLabel} Coin";
             btnSubmit.Text = submitLabel;
-            cbCoins.DataSource = coins;
+
+            //Disable coin index selection
             cbCoinIndex.Enabled = false;
+
+            //Set data sources
+            cbCoins.DataSource = coins;
         }
 
-        public InputForm(string submitLabel, List<string> coins, List<CoinConfig> coinsConfig)
+        public InputForm(string submitLabel, List<CoinConfig> coinsConfig)
         {
             InitializeComponent();
+
+            //Setup labels
             Text = $"{submitLabel} Coin";
             btnSubmit.Text = submitLabel;
-            cbCoins.DataSource = coins;
-            coinConfigs = coinsConfig;
-            cbCoinIndex.DataSource = (from c in coinConfigs where c.coin == cbCoins.Text select c.coinIndex + 1).ToList();
+
+            //Set coin configs
+            _coinConfigs = coinsConfig;
+
+            //Set data sources
+            cbCoins.DataSource = coinsConfig.OrderBy(c => c.coin).Select(c => c.coin).Distinct().ToList();
+            cbCoinIndex.DataSource = (from c in _coinConfigs where c.coin == cbCoins.Text select c.coinIndex + 1).ToList();
         }
 
         private void Submit_Click(object sender, EventArgs e)
         {
             InputText = cbCoins.Text;
+
             if(!string.IsNullOrEmpty(cbCoinIndex.Text))
                 CoinIndex = Convert.ToInt32(cbCoinIndex.Text) - 1;
+
             DialogResult = DialogResult.OK;
         }
 
         private void cbCoins_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (coinConfigs == null)
+            if (_coinConfigs == null)
                 return;
 
-            cbCoinIndex.DataSource = (from c in coinConfigs where c.coin == cbCoins.Text select c.coinIndex + 1).ToList();
+            cbCoinIndex.DataSource = (from c in _coinConfigs where c.coin == cbCoins.Text select c.coinIndex + 1).ToList();
         }
     }
 }

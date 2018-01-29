@@ -26,8 +26,12 @@ namespace MyCryptoMonitor
 
         public CoinGuiLine(string coin, int coinIndex, int index)
         {
-            CoinLabel = new Label();
+            CoinName = coin;
+            CoinIndex = coinIndex;
+            int yindex = StartY + index * 25;
+
             CoinIndexLabel = new Label();
+            CoinLabel = new Label();
             PriceLabel = new Label();
             BoughtTextBox = new TextBox();
             BoughtPriceLabel = new Label();
@@ -39,12 +43,8 @@ namespace MyCryptoMonitor
             Change1HrPercentLabel = new Label();
             Change24HrPercentLabel = new Label();
 
-            CoinName = coin;
-            CoinIndex = coinIndex;
-            int yindex = StartY + index * 25;
-
-            CoinLabel.AutoSize = true;
             CoinIndexLabel.AutoSize = true;
+            CoinLabel.AutoSize = true;
             PriceLabel.AutoSize = true;
             BoughtPriceLabel.AutoSize = true;
             TotalLabel.AutoSize = true;
@@ -55,9 +55,9 @@ namespace MyCryptoMonitor
             Change24HrPercentLabel.AutoSize = true;
 
             CoinIndexLabel.Font = new Font(CoinIndexLabel.Font.FontFamily, 6f);
-            
-            CoinLabel.Size = new Size(38, 13);
+
             CoinIndexLabel.Size = new Size(15, 13);
+            CoinLabel.Size = new Size(38, 13);
             PriceLabel.Size = new Size(58, 13);
             BoughtTextBox.Size = new Size(80, 20);
             BoughtPriceLabel.Size = new Size(78, 13);

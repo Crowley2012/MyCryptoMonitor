@@ -13,10 +13,12 @@ namespace MyCryptoMonitor
 {
     public partial class MainForm : Form
     {
-        #region Private Variables
+        #region Constant Variables
         private const string API_COIN_MARKET_CAP = "https://api.coinmarketcap.com/v1/ticker/?limit=9999";
         private const string API_COIN_CAP = "https://coincap.io/front";
+        #endregion
 
+        #region Private Variables
         private List<CoinConfig> _coinConfigs;
         private List<CoinGuiLine> _coinGuiLines;
         private List<string> _coinNames;
@@ -215,8 +217,6 @@ namespace MyCryptoMonitor
             //Index of coin gui line
             int index = 0;
 
-            List<CoinData> coins = new List<CoinData>();
-
             //Deserialize settings
             JsonSerializerSettings settings = new JsonSerializerSettings
             {
@@ -225,6 +225,7 @@ namespace MyCryptoMonitor
             };
 
             //Deserialize response and map to generic coin
+            List<CoinData> coins = new List<CoinData>();
             switch (_api)
             {
                 case API_COIN_MARKET_CAP:
@@ -246,10 +247,9 @@ namespace MyCryptoMonitor
                 CoinData downloadedCoin;
 
                 //Parse coins, if coin doesnt exist set to 0
-                if (coins.Any(c => c.ShortName == coin.coin))
-                    downloadedCoin = coins.Single(c => c.ShortName == coin.coin);
-                else
-                    downloadedCoin = new CoinData { ShortName = coin.coin, CoinIndex = coin.coinIndex, Change1HourPercent = 0, Change24HourPercent = 0, Price = 0 };
+                downloadedCoin = coins.Any(c => c.ShortName == coin.coin) 
+                    ? coins.Single(c => c.ShortName == coin.coin) 
+                    : new CoinData { ShortName = coin.coin, CoinIndex = coin.coinIndex, Change1HourPercent = 0, Change24HourPercent = 0, Price = 0 };
 
                 //Check if gui lines need to be loaded
                 if (_loadGuiLines)
@@ -278,6 +278,7 @@ namespace MyCryptoMonitor
                 decimal changeDollar = downloadedCoin.Price - coin.StartupPrice;
                 decimal changePercent = coin.StartupPrice == 0 ? 0 : ((downloadedCoin.Price - coin.StartupPrice) / coin.StartupPrice) * 100;
 
+                //Update total profits
                 if (profit >= 0)
                     totalPostivieProfits += profit;
                 else
@@ -427,25 +428,17 @@ namespace MyCryptoMonitor
             BeginInvoke(remove);
         }
 
-        private void RecountCoins()
+        private void ResetCoinIndex()
         {
-            List<string> coinsChecked = new List<string>();
-
-
-            foreach (CoinConfig config in _coinConfigs)
-                config.coinIndex = 0;
-
-            //Temp clean this shite
+            //Reset the coin index
             foreach (CoinConfig config in _coinConfigs)
             {
                 int index = 0;
-                if(_coinConfigs.Count(c => c.coin == config.coin) > 0)
+
+                foreach(CoinConfig coin in _coinConfigs.Where(c => c.coin == config.coin).ToList())
                 {
-                    foreach(CoinConfig coin in _coinConfigs.Where(c => c.coin == config.coin).ToList())
-                    {
-                        coin.coinIndex = index;
-                        index++;
-                    }
+                    coin.coinIndex = index;
+                    index++;
                 }
             }
         }
@@ -472,86 +465,65 @@ namespace MyCryptoMonitor
                     return;
             }
 
-            try
+            //Get coin to add
+            InputForm form = new InputForm("Add", _coinNames.ToList());
+            if (form.ShowDialog() != DialogResult.OK)
+                return;
+
+            //Check if coin exists
+            if (!_coinNames.Contains(form.InputText.ToUpper()))
             {
-                using (var webClient = new WebClient())
-                {
-                    //Get coin to add
-                    InputForm form = new InputForm("Add", _coinNames.ToList());
-
-                    if (form.ShowDialog() != DialogResult.OK)
-                        return;
-
-                    if (!_coinNames.Contains(form.InputText.ToUpper()))
-                    {
-                        MessageBox.Show("Coin does not exist.");
-                        return;
-                    }
-
-                    //Check if coin exists
-                    //if (!_coinConfigs.Any(a => a.coin.Equals(form.InputText.ToUpper())))
-                    //{
-                        //Update coin configs based on changed values
-                        foreach (var coinGuiLine in _coinGuiLines)
-                        {
-                            var coinConfig = _coinConfigs.Single(c => c.coin == coinGuiLine.CoinName && c.coinIndex == coinGuiLine.CoinIndex);
-                            coinConfig.bought = Convert.ToDecimal(coinGuiLine.BoughtTextBox.Text);
-                            coinConfig.paid = Convert.ToDecimal(coinGuiLine.PaidTextBox.Text);
-                            coinConfig.SetStartupPrice = false;
-                        }
-
-                        //Add config
-                        _coinConfigs.Add(new CoinConfig { coin = form.InputText.ToUpper(), coinIndex = _coinConfigs.Count(c => c.coin.Equals(form.InputText.ToUpper())), bought = 0, paid = 0, StartupPrice = 0, SetStartupPrice = true });
-
-                        RemoveDelegate remove = new RemoveDelegate(Remove);
-                        BeginInvoke(remove);
-                    //}
-                    //else
-                    //{
-                    //    MessageBox.Show("Coin already added.");
-                    //}
-                }
+                MessageBox.Show("Coin does not exist.");
+                return;
             }
-            catch (WebException)
+
+            //Update coin config bought and paid values
+            foreach (var coinGuiLine in _coinGuiLines)
             {
-                //Update status
-                UpdateStatusDelegate updateStatus = new UpdateStatusDelegate(UpdateStatus);
-                BeginInvoke(updateStatus, "No internet connection");
+                var coinConfig = _coinConfigs.Single(c => c.coin == coinGuiLine.CoinName && c.coinIndex == coinGuiLine.CoinIndex);
+                coinConfig.bought = Convert.ToDecimal(coinGuiLine.BoughtTextBox.Text);
+                coinConfig.paid = Convert.ToDecimal(coinGuiLine.PaidTextBox.Text);
+                coinConfig.SetStartupPrice = false;
             }
+
+            //Add coin config
+            _coinConfigs.Add(new CoinConfig { coin = form.InputText.ToUpper(), coinIndex = _coinConfigs.Count(c => c.coin.Equals(form.InputText.ToUpper())), bought = 0, paid = 0, StartupPrice = 0, SetStartupPrice = true });
+
+            RemoveDelegate remove = new RemoveDelegate(Remove);
+            BeginInvoke(remove);
         }
 
         private void RemoveCoin_Click(object sender, EventArgs e)
         {
             //Get coin to remove
-            InputForm form = new InputForm("Remove", _coinConfigs.OrderBy(c => c.coin).Select(c => c.coin).Distinct().ToList(), _coinConfigs);
-
+            InputForm form = new InputForm("Remove", _coinConfigs);
             if (form.ShowDialog() != DialogResult.OK)
                 return;
 
             //Check if coin exists
-            if (_coinConfigs.Any(a => a.coin.Equals(form.InputText.ToUpper()) && a.coinIndex == form.CoinIndex))
-            {
-                //Update coin configs with new bought and paid values
-                foreach (var coinGuiLine in _coinGuiLines)
-                {
-                    var coinConfig = _coinConfigs.Single(c => c.coin == coinGuiLine.CoinName && c.coinIndex == coinGuiLine.CoinIndex);
-                    coinConfig.bought = Convert.ToDecimal(coinGuiLine.BoughtTextBox.Text);
-                    coinConfig.paid = Convert.ToDecimal(coinGuiLine.PaidTextBox.Text);
-                    coinConfig.SetStartupPrice = false;
-                }
-
-                //Remove coin config
-                _coinConfigs.RemoveAll(a => a.coin.Equals(form.InputText.ToUpper()) && a.coinIndex == form.CoinIndex);
-
-                RecountCoins();
-
-                RemoveDelegate remove = new RemoveDelegate(Remove);
-                BeginInvoke(remove);
-            }
-            else
+            if (!_coinConfigs.Any(a => a.coin.Equals(form.InputText.ToUpper()) && a.coinIndex == form.CoinIndex))
             {
                 MessageBox.Show("Coin does not exist.");
+                return;
             }
+
+            //Update coin config bought and paid values
+            foreach (var coinGuiLine in _coinGuiLines)
+            {
+                var coinConfig = _coinConfigs.Single(c => c.coin == coinGuiLine.CoinName && c.coinIndex == coinGuiLine.CoinIndex);
+                coinConfig.bought = Convert.ToDecimal(coinGuiLine.BoughtTextBox.Text);
+                coinConfig.paid = Convert.ToDecimal(coinGuiLine.PaidTextBox.Text);
+                coinConfig.SetStartupPrice = false;
+            }
+
+            //Remove coin config
+            _coinConfigs.RemoveAll(a => a.coin.Equals(form.InputText.ToUpper()) && a.coinIndex == form.CoinIndex);
+
+            //Reset coin indexes
+            ResetCoinIndex();
+
+            RemoveDelegate remove = new RemoveDelegate(Remove);
+            BeginInvoke(remove);
         }
 
         private void RemoveAllCoins_Click(object sender, EventArgs e)
