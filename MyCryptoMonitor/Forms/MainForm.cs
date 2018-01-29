@@ -289,7 +289,7 @@ namespace MyCryptoMonitor
 
                 //Update gui
                 line.CoinLabel.Show();
-                //line.CoinLabel.Text = _coinConfigs.Count(c => c.coin == downloadedCoin.ShortName) > 1 ? $"{downloadedCoin.ShortName} ({coin.coinIndex})" : downloadedCoin.ShortName;
+                line.CoinIndexLabel.Text = _coinConfigs.Count(c => c.coin.Equals(coin.coin)) > 1 ? $"[{coin.coinIndex + 1}]" : string.Empty;
                 line.CoinLabel.Text = downloadedCoin.ShortName;
                 line.PriceLabel.Text = $"${downloadedCoin.Price}";
                 line.BoughtPriceLabel.Text = $"${boughtPrice:0.000000}";
@@ -335,6 +335,7 @@ namespace MyCryptoMonitor
             {
                 Height -= 25;
                 Controls.Remove(coin.CoinLabel);
+                Controls.Remove(coin.CoinIndexLabel);
                 Controls.Remove(coin.PriceLabel);
                 Controls.Remove(coin.BoughtTextBox);
                 Controls.Remove(coin.BoughtPriceLabel);
@@ -370,6 +371,7 @@ namespace MyCryptoMonitor
             MethodInvoker invoke = delegate
             {
                 Height += 25;
+                Controls.Add(newLine.CoinIndexLabel);
                 Controls.Add(newLine.CoinLabel);
                 Controls.Add(newLine.PriceLabel);
                 Controls.Add(newLine.BoughtTextBox);
@@ -445,23 +447,6 @@ namespace MyCryptoMonitor
                         index++;
                     }
                 }
-
-
-                /*
-                int index = 0;
-
-                if (coinsChecked.Contains(config.coin))
-                    continue;
-
-                config.coinIndex = index;
-                coinsChecked.Add(config.coin);
-
-                foreach (CoinConfig coin in _coinConfigs.Where(c => c.coin == config.coin).ToList())
-                {
-                    index++;
-                    coin.coinIndex = index;
-                }
-                */
             }
         }
         #endregion

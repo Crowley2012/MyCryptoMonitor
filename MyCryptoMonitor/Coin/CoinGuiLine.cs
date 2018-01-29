@@ -12,6 +12,7 @@ namespace MyCryptoMonitor
         public string CoinName;
         public int CoinIndex;
         public Label CoinLabel;
+        public Label CoinIndexLabel;
         public Label PriceLabel;
         public Label BoughtPriceLabel;
         public Label TotalLabel;
@@ -26,6 +27,7 @@ namespace MyCryptoMonitor
         public CoinGuiLine(string coin, int coinIndex, int index)
         {
             CoinLabel = new Label();
+            CoinIndexLabel = new Label();
             PriceLabel = new Label();
             BoughtTextBox = new TextBox();
             BoughtPriceLabel = new Label();
@@ -42,6 +44,7 @@ namespace MyCryptoMonitor
             int yindex = StartY + index * 25;
 
             CoinLabel.AutoSize = true;
+            CoinIndexLabel.AutoSize = true;
             PriceLabel.AutoSize = true;
             BoughtPriceLabel.AutoSize = true;
             TotalLabel.AutoSize = true;
@@ -50,8 +53,11 @@ namespace MyCryptoMonitor
             ChangePercentLabel.AutoSize = true;
             Change1HrPercentLabel.AutoSize = true;
             Change24HrPercentLabel.AutoSize = true;
+
+            CoinIndexLabel.Font = new Font(CoinIndexLabel.Font.FontFamily, 6f);
             
             CoinLabel.Size = new Size(38, 13);
+            CoinIndexLabel.Size = new Size(15, 13);
             PriceLabel.Size = new Size(58, 13);
             BoughtTextBox.Size = new Size(80, 20);
             BoughtPriceLabel.Size = new Size(78, 13);
@@ -62,7 +68,8 @@ namespace MyCryptoMonitor
             ChangePercentLabel.Size = new Size(54, 13);
             Change1HrPercentLabel.Size = new Size(42, 13);
             Change24HrPercentLabel.Size = new Size(52, 13);
-            
+
+            CoinIndexLabel.Location = new Point(3, yindex + 2);
             CoinLabel.Location = new Point(12, yindex);
             PriceLabel.Location = new Point(CoinLabel.Location.X + CoinLabel.Width + Spacing, yindex);
             BoughtTextBox.Location = new Point(PriceLabel.Location.X + PriceLabel.Width + Spacing, yindex -3);

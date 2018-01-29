@@ -18,6 +18,7 @@ namespace MyCryptoMonitor
             Text = $"{submitLabel} Coin";
             btnSubmit.Text = submitLabel;
             cbCoins.DataSource = coins;
+            cbCoinIndex.Enabled = false;
         }
 
         public InputForm(string submitLabel, List<string> coins, List<CoinConfig> coinsConfig)
@@ -27,14 +28,14 @@ namespace MyCryptoMonitor
             btnSubmit.Text = submitLabel;
             cbCoins.DataSource = coins;
             coinConfigs = coinsConfig;
-            cbCoinIndex.DataSource = (from c in coinConfigs where c.coin == cbCoins.Text select c.coinIndex).ToList();
+            cbCoinIndex.DataSource = (from c in coinConfigs where c.coin == cbCoins.Text select c.coinIndex + 1).ToList();
         }
 
         private void Submit_Click(object sender, EventArgs e)
         {
             InputText = cbCoins.Text;
             if(!string.IsNullOrEmpty(cbCoinIndex.Text))
-                CoinIndex = Convert.ToInt32(cbCoinIndex.Text);
+                CoinIndex = Convert.ToInt32(cbCoinIndex.Text) - 1;
             DialogResult = DialogResult.OK;
         }
 
@@ -43,7 +44,7 @@ namespace MyCryptoMonitor
             if (coinConfigs == null)
                 return;
 
-            cbCoinIndex.DataSource = (from c in coinConfigs where c.coin == cbCoins.Text select c.coinIndex).ToList();
+            cbCoinIndex.DataSource = (from c in coinConfigs where c.coin == cbCoins.Text select c.coinIndex + 1).ToList();
         }
     }
 }
