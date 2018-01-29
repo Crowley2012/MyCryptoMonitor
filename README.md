@@ -9,7 +9,7 @@ Main features of the application:
 - Monitor profits
 - Coin stats
 
-![Program](https://i.imgur.com/6RmZ8rP.png)
+![Program](https://i.imgur.com/FuPMgW9.png)
 
 ## Install
 - Download the latest Release.zip [https://github.com/Crowley2012/MyCryptoMonitor/releases/latest]
