@@ -1,4 +1,10 @@
 ﻿New UI
+	Fancy
+	Simple
+	Compressed
+Themes
+	Light
+	Dark
 Portfolio Manager
 	Naming
 	Unlimited portfolios
@@ -12,8 +18,3 @@ Alerts
 Mobile / Web version
 
 Running Change log
-**[FEATURE]** Choose API (CoinMarketCap.com or CoinCap.io)
-**[FEATURE]** Add multiple of the same coin (Allows monitoring of different purchase prices or mined coins)
-**[FEATURE]** Total negative profit and total positive profit displayed
-**[FEATURE]** New column, Change % in last hour (Only works with Coin Market Cap API)
-**[FEATURE]** New column, Bought Price (Price / Bought) shows the price the coin was bought at. If multiple payments this will show the average buy price
