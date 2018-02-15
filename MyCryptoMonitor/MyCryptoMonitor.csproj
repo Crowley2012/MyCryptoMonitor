@@ -54,6 +54,13 @@
     <Compile Include="ApiData\ApiCoinCap.cs" />
     <Compile Include="ApiData\ApiCoinMarketCap.cs" />
     <Compile Include="Coin\CoinGuiLine.cs" />
+    <Compile Include="DataSources\AlertDataSource.cs" />
+    <Compile Include="Forms\Alerts.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Alerts.Designer.cs">
+      <DependentUpon>Alerts.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Donate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,6 +91,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\Alerts.resx">
+      <DependentUpon>Alerts.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Donate.resx">
       <DependentUpon>Donate.cs</DependentUpon>
     </EmbeddedResource>
@@ -107,6 +117,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\MyCryptoMonitor.DataSources.AlertDataSourceList.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

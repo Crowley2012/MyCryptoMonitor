@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace MyCryptoMonitor
+namespace MyCryptoMonitor.Forms
 {
     public partial class Donate : Form
     {

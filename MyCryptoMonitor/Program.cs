@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyCryptoMonitor.Forms;
+using System;
 using System.Windows.Forms;
 
 namespace MyCryptoMonitor
@@ -13,7 +14,7 @@ namespace MyCryptoMonitor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new NewUI());
+            Application.Run(new MainForm());
         }
     }
 }

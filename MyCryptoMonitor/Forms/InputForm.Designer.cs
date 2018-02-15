@@ -1,4 +1,4 @@
-﻿namespace MyCryptoMonitor
+﻿namespace MyCryptoMonitor.Forms
 {
     partial class InputForm
     {

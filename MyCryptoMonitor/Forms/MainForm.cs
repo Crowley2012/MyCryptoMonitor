@@ -8,8 +8,9 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Drawing;
+using MyCryptoMonitor.Forms;
 
-namespace MyCryptoMonitor
+namespace MyCryptoMonitor.Forms
 {
     public partial class MainForm : Form
     {
@@ -567,6 +568,12 @@ namespace MyCryptoMonitor
             //Check menu item
             mnuCoinMarketCap.Checked = false;
             mnuCoinCap.Checked = true;
+        }
+
+        private void alertsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Alerts form = new Alerts();
+            form.Show();
         }
         #endregion
     }
