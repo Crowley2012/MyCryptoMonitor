@@ -270,6 +270,12 @@ namespace MyCryptoMonitor.Forms
                 //Get the gui line for coin
                 CoinGuiLine line = (from c in _coinGuiLines where c.CoinName.Equals(downloadedCoin.ShortName) && c.CoinIndex == coin.coinIndex select c).First();
 
+                if (string.IsNullOrEmpty(line.BoughtTextBox.Text))
+                    line.BoughtTextBox.Text = "0";
+
+                if (string.IsNullOrEmpty(line.PaidTextBox.Text))
+                    line.PaidTextBox.Text = "0";
+
                 //Calculate
                 decimal bought = Convert.ToDecimal(line.BoughtTextBox.Text);
                 decimal paid = Convert.ToDecimal(line.PaidTextBox.Text);
