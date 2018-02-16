@@ -62,6 +62,9 @@
             // 
             // grdAlerts
             // 
+            this.grdAlerts.AllowUserToAddRows = false;
+            this.grdAlerts.AllowUserToDeleteRows = false;
+            this.grdAlerts.AllowUserToResizeRows = false;
             this.grdAlerts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -73,19 +76,24 @@
             this.priceDataGridViewTextBoxColumn});
             this.grdAlerts.DataSource = this.bsAlerts;
             this.grdAlerts.Location = new System.Drawing.Point(6, 52);
+            this.grdAlerts.MultiSelect = false;
             this.grdAlerts.Name = "grdAlerts";
-            this.grdAlerts.Size = new System.Drawing.Size(1126, 411);
+            this.grdAlerts.RowHeadersVisible = false;
+            this.grdAlerts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.grdAlerts.Size = new System.Drawing.Size(913, 263);
             this.grdAlerts.TabIndex = 0;
+            this.grdAlerts.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdAlerts_CellEndEdit);
             // 
             // cmbCoins
             // 
             this.cmbCoins.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbCoins.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCoins.FormattingEnabled = true;
             this.cmbCoins.Location = new System.Drawing.Point(40, 3);
             this.cmbCoins.Name = "cmbCoins";
-            this.cmbCoins.Size = new System.Drawing.Size(258, 21);
+            this.cmbCoins.Size = new System.Drawing.Size(174, 21);
             this.cmbCoins.TabIndex = 1;
             // 
             // txtPrice
@@ -93,9 +101,9 @@
             this.txtPrice.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPrice.Location = new System.Drawing.Point(661, 3);
+            this.txtPrice.Location = new System.Drawing.Point(494, 3);
             this.txtPrice.Name = "txtPrice";
-            this.txtPrice.Size = new System.Drawing.Size(255, 20);
+            this.txtPrice.Size = new System.Drawing.Size(172, 20);
             this.txtPrice.TabIndex = 2;
             // 
             // cmbOperator
@@ -103,35 +111,40 @@
             this.cmbOperator.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbOperator.DisplayMember = "Description";
+            this.cmbOperator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbOperator.FormattingEnabled = true;
-            this.cmbOperator.Location = new System.Drawing.Point(363, 3);
+            this.cmbOperator.Location = new System.Drawing.Point(279, 3);
             this.cmbOperator.Name = "cmbOperator";
-            this.cmbOperator.Size = new System.Drawing.Size(255, 21);
+            this.cmbOperator.Size = new System.Drawing.Size(172, 21);
             this.cmbOperator.TabIndex = 3;
+            this.cmbOperator.ValueMember = "value";
             // 
             // btnDelete
             // 
             this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDelete.Location = new System.Drawing.Point(922, 3);
+            this.btnDelete.Location = new System.Drawing.Point(672, 3);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(94, 21);
             this.btnDelete.TabIndex = 4;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnAdd
             // 
             this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAdd.Location = new System.Drawing.Point(1022, 3);
+            this.btnAdd.Location = new System.Drawing.Point(772, 3);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(101, 21);
+            this.btnAdd.Size = new System.Drawing.Size(138, 21);
             this.btnAdd.TabIndex = 5;
             this.btnAdd.Text = "Add";
             this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // txtContactAddress
             // 
@@ -140,7 +153,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtContactAddress.Location = new System.Drawing.Point(84, 3);
             this.txtContactAddress.Name = "txtContactAddress";
-            this.txtContactAddress.Size = new System.Drawing.Size(537, 20);
+            this.txtContactAddress.Size = new System.Drawing.Size(408, 20);
             this.txtContactAddress.TabIndex = 6;
             // 
             // cmbContactType
@@ -148,23 +161,34 @@
             this.cmbContactType.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbContactType.DisplayMember = "Description";
+            this.cmbContactType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbContactType.FormattingEnabled = true;
-            this.cmbContactType.Location = new System.Drawing.Point(664, 3);
+            this.cmbContactType.Items.AddRange(new object[] {
+            "Email",
+            "Verizon",
+            "AT&T",
+            "Sprint",
+            "Boost",
+            "Virgin"});
+            this.cmbContactType.Location = new System.Drawing.Point(535, 3);
             this.cmbContactType.Name = "cmbContactType";
-            this.cmbContactType.Size = new System.Drawing.Size(356, 21);
+            this.cmbContactType.Size = new System.Drawing.Size(270, 21);
             this.cmbContactType.TabIndex = 7;
+            this.cmbContactType.ValueMember = "value";
             // 
             // btnSet
             // 
             this.btnSet.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSet.Location = new System.Drawing.Point(1026, 3);
+            this.btnSet.Location = new System.Drawing.Point(811, 3);
             this.btnSet.Name = "btnSet";
-            this.btnSet.Size = new System.Drawing.Size(97, 21);
+            this.btnSet.Size = new System.Drawing.Size(99, 21);
             this.btnSet.TabIndex = 8;
             this.btnSet.Text = "Set";
             this.btnSet.UseVisualStyleBackColor = true;
+            this.btnSet.Click += new System.EventHandler(this.btnSet_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -175,7 +199,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 37F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 103F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 105F));
             this.tableLayoutPanel1.Controls.Add(this.btnSet, 4, 0);
             this.tableLayoutPanel1.Controls.Add(this.cmbContactType, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.txtContactAddress, 1, 0);
@@ -185,7 +209,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1126, 27);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(913, 27);
             this.tableLayoutPanel1.TabIndex = 9;
             // 
             // label1
@@ -194,7 +218,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(627, 0);
+            this.label1.Location = new System.Drawing.Point(498, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(31, 27);
             this.label1.TabIndex = 9;
@@ -226,7 +250,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 37F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.22148F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 105F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 142F));
             this.tableLayoutPanel2.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnAdd, 7, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnDelete, 6, 0);
@@ -239,7 +263,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1126, 27);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(913, 27);
             this.tableLayoutPanel2.TabIndex = 10;
             // 
             // label3
@@ -261,7 +285,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(304, 0);
+            this.label4.Location = new System.Drawing.Point(220, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(53, 27);
             this.label4.TabIndex = 12;
@@ -274,7 +298,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(624, 0);
+            this.label5.Location = new System.Drawing.Point(457, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(31, 27);
             this.label5.TabIndex = 13;
@@ -288,7 +312,7 @@
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Location = new System.Drawing.Point(9, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1138, 57);
+            this.groupBox1.Size = new System.Drawing.Size(925, 57);
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Contact Information";
@@ -302,7 +326,7 @@
             this.groupBox2.Controls.Add(this.grdAlerts);
             this.groupBox2.Location = new System.Drawing.Point(9, 75);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1138, 469);
+            this.groupBox2.Size = new System.Drawing.Size(925, 321);
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Alerts";
@@ -313,6 +337,7 @@
             this.coinDataGridViewTextBoxColumn.DataPropertyName = "Coin";
             this.coinDataGridViewTextBoxColumn.HeaderText = "Coin";
             this.coinDataGridViewTextBoxColumn.Name = "coinDataGridViewTextBoxColumn";
+            this.coinDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // operatorDataGridViewTextBoxColumn
             // 
@@ -320,6 +345,7 @@
             this.operatorDataGridViewTextBoxColumn.DataPropertyName = "Operator";
             this.operatorDataGridViewTextBoxColumn.HeaderText = "Operator";
             this.operatorDataGridViewTextBoxColumn.Name = "operatorDataGridViewTextBoxColumn";
+            this.operatorDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // priceDataGridViewTextBoxColumn
             // 
@@ -336,12 +362,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1159, 556);
+            this.ClientSize = new System.Drawing.Size(946, 408);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Alerts";
             this.Text = "Alerts";
+            this.Load += new System.EventHandler(this.Alerts_Load);
             ((System.ComponentModel.ISupportInitialize)(this.grdAlerts)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
@@ -368,9 +395,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.BindingSource bsAlerts;
-        private System.Windows.Forms.DataGridViewTextBoxColumn coinDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn operatorDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn priceDataGridViewTextBoxColumn;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -378,5 +402,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn coinDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn operatorDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn priceDataGridViewTextBoxColumn;
     }
 }

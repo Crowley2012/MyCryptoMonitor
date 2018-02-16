@@ -578,7 +578,7 @@ namespace MyCryptoMonitor.Forms
 
         private void alertsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Alerts form = new Alerts();
+            Alerts form = new Alerts(_coinNames);
             form.Show();
         }
         #endregion
