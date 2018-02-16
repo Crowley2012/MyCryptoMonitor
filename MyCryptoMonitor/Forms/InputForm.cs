@@ -12,7 +12,7 @@ namespace MyCryptoMonitor.Forms
 
         private List<CoinConfig> _coinConfigs { get; set; }
 
-        public InputForm(string submitLabel, List<string> coins)
+        public InputForm(string submitLabel, List<CoinData> coins)
         {
             InitializeComponent();
 
@@ -24,7 +24,7 @@ namespace MyCryptoMonitor.Forms
             cbCoinIndex.Enabled = false;
 
             //Set data sources
-            cbCoins.DataSource = coins;
+            cbCoins.DataSource = coins.Select(c => c.ShortName).ToList();
         }
 
         public InputForm(string submitLabel, List<CoinConfig> coinsConfig)

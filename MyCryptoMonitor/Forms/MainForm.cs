@@ -8,7 +8,6 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Drawing;
-using MyCryptoMonitor.Forms;
 
 namespace MyCryptoMonitor.Forms
 {
@@ -22,7 +21,7 @@ namespace MyCryptoMonitor.Forms
         #region Private Variables
         private List<CoinConfig> _coinConfigs;
         private List<CoinGuiLine> _coinGuiLines;
-        private List<string> _coinNames;
+        private List<CoinData> _coins;
         private DateTime _resetTime;
         private DateTime _refreshTime;
         private bool _loadGuiLines;
@@ -40,7 +39,7 @@ namespace MyCryptoMonitor.Forms
         {
             _coinGuiLines = new List<CoinGuiLine>();
             _coinConfigs = new List<CoinConfig>();
-            _coinNames = new List<string>();
+            _coins = new List<CoinData>();
             _resetTime = DateTime.Now;
             _refreshTime = DateTime.Now;
             _loadGuiLines = true;
@@ -240,7 +239,7 @@ namespace MyCryptoMonitor.Forms
             }
 
             //Create list of coin names
-            _coinNames = coins.OrderBy(c => c.ShortName).Select(c => c.ShortName).ToList();
+            _coins = coins.OrderBy(c => c.ShortName).ToList();
 
             //Loop through all coins from config
             foreach (CoinConfig coin in _coinConfigs)
@@ -466,19 +465,19 @@ namespace MyCryptoMonitor.Forms
         private void AddCoin_Click(object sender, EventArgs e)
         {
             //Check if coin list has been downloaded
-            while(_coinNames.Count <= 0)
+            while(_coins.Count <= 0)
             {
                 if (MessageBox.Show("Please wait while coin list is being downloaded.", "Loading", MessageBoxButtons.RetryCancel) == DialogResult.Cancel)
                     return;
             }
 
             //Get coin to add
-            InputForm form = new InputForm("Add", _coinNames.ToList());
+            InputForm form = new InputForm("Add", _coins);
             if (form.ShowDialog() != DialogResult.OK)
                 return;
 
             //Check if coin exists
-            if (!_coinNames.Contains(form.InputText.ToUpper()))
+            if (!_coins.Any(c => c.ShortName.Equals(form.InputText.ToUpper())))
             {
                 MessageBox.Show("Coin does not exist.");
                 return;
@@ -578,7 +577,7 @@ namespace MyCryptoMonitor.Forms
 
         private void alertsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Alerts form = new Alerts(_coinNames);
+            Alerts form = new Alerts(_coins);
             form.Show();
         }
         #endregion
