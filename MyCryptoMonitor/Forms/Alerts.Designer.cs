@@ -31,19 +31,13 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Alerts));
             this.grdAlerts = new System.Windows.Forms.DataGridView();
-            this.coinDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Current = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.operatorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bsAlerts = new System.Windows.Forms.BindingSource(this.components);
             this.cmbCoins = new System.Windows.Forms.ComboBox();
             this.txtPrice = new System.Windows.Forms.TextBox();
             this.cmbOperator = new System.Windows.Forms.ComboBox();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.txtContactAddress = new System.Windows.Forms.TextBox();
-            this.cmbContactType = new System.Windows.Forms.ComboBox();
-            this.btnSet = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -55,12 +49,17 @@
             this.txtCurrent = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cmbContactType = new System.Windows.Forms.ComboBox();
+            this.coinDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.operatorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bsAlerts = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.grdAlerts)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bsAlerts)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bsAlerts)).BeginInit();
             this.SuspendLayout();
             // 
             // grdAlerts
@@ -86,15 +85,8 @@
             this.grdAlerts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.grdAlerts.Size = new System.Drawing.Size(913, 263);
             this.grdAlerts.TabIndex = 0;
+            this.grdAlerts.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.grdAlerts_CellBeginEdit);
             this.grdAlerts.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdAlerts_CellEndEdit);
-            // 
-            // coinDataGridViewTextBoxColumn
-            // 
-            this.coinDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.coinDataGridViewTextBoxColumn.DataPropertyName = "Coin";
-            this.coinDataGridViewTextBoxColumn.HeaderText = "Coin";
-            this.coinDataGridViewTextBoxColumn.Name = "coinDataGridViewTextBoxColumn";
-            this.coinDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // Current
             // 
@@ -103,25 +95,6 @@
             this.Current.HeaderText = "Current";
             this.Current.Name = "Current";
             this.Current.ReadOnly = true;
-            // 
-            // operatorDataGridViewTextBoxColumn
-            // 
-            this.operatorDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.operatorDataGridViewTextBoxColumn.DataPropertyName = "Operator";
-            this.operatorDataGridViewTextBoxColumn.HeaderText = "Operator";
-            this.operatorDataGridViewTextBoxColumn.Name = "operatorDataGridViewTextBoxColumn";
-            this.operatorDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // priceDataGridViewTextBoxColumn
-            // 
-            this.priceDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.priceDataGridViewTextBoxColumn.DataPropertyName = "Price";
-            this.priceDataGridViewTextBoxColumn.HeaderText = "Price";
-            this.priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
-            // 
-            // bsAlerts
-            // 
-            this.bsAlerts.DataSource = typeof(MyCryptoMonitor.DataSources.AlertDataSourceList);
             // 
             // cmbCoins
             // 
@@ -195,51 +168,15 @@
             this.txtContactAddress.Size = new System.Drawing.Size(408, 20);
             this.txtContactAddress.TabIndex = 6;
             // 
-            // cmbContactType
-            // 
-            this.cmbContactType.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbContactType.DisplayMember = "Description";
-            this.cmbContactType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbContactType.FormattingEnabled = true;
-            this.cmbContactType.Items.AddRange(new object[] {
-            "Email",
-            "Verizon",
-            "AT&T",
-            "Sprint",
-            "Boost",
-            "Virgin"});
-            this.cmbContactType.Location = new System.Drawing.Point(535, 3);
-            this.cmbContactType.Name = "cmbContactType";
-            this.cmbContactType.Size = new System.Drawing.Size(270, 21);
-            this.cmbContactType.TabIndex = 7;
-            this.cmbContactType.ValueMember = "value";
-            // 
-            // btnSet
-            // 
-            this.btnSet.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSet.Location = new System.Drawing.Point(811, 3);
-            this.btnSet.Name = "btnSet";
-            this.btnSet.Size = new System.Drawing.Size(99, 21);
-            this.btnSet.TabIndex = 8;
-            this.btnSet.Text = "Set";
-            this.btnSet.UseVisualStyleBackColor = true;
-            this.btnSet.Click += new System.EventHandler(this.btnSet_Click);
-            // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel1.ColumnCount = 5;
+            this.tableLayoutPanel1.ColumnCount = 4;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 81F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 37F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 105F));
-            this.tableLayoutPanel1.Controls.Add(this.btnSet, 4, 0);
             this.tableLayoutPanel1.Controls.Add(this.cmbContactType, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.txtContactAddress, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 2, 0);
@@ -398,6 +335,54 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Alerts";
             // 
+            // cmbContactType
+            // 
+            this.cmbContactType.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbContactType.DisplayMember = "Description";
+            this.cmbContactType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbContactType.FormattingEnabled = true;
+            this.cmbContactType.Items.AddRange(new object[] {
+            "Email",
+            "Verizon",
+            "AT&T",
+            "Sprint",
+            "Boost",
+            "Virgin"});
+            this.cmbContactType.Location = new System.Drawing.Point(535, 3);
+            this.cmbContactType.Name = "cmbContactType";
+            this.cmbContactType.Size = new System.Drawing.Size(375, 21);
+            this.cmbContactType.TabIndex = 7;
+            this.cmbContactType.ValueMember = "value";
+            // 
+            // coinDataGridViewTextBoxColumn
+            // 
+            this.coinDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.coinDataGridViewTextBoxColumn.DataPropertyName = "Coin";
+            this.coinDataGridViewTextBoxColumn.HeaderText = "Coin";
+            this.coinDataGridViewTextBoxColumn.Name = "coinDataGridViewTextBoxColumn";
+            this.coinDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // operatorDataGridViewTextBoxColumn
+            // 
+            this.operatorDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.operatorDataGridViewTextBoxColumn.DataPropertyName = "Operator";
+            this.operatorDataGridViewTextBoxColumn.HeaderText = "Operator";
+            this.operatorDataGridViewTextBoxColumn.Name = "operatorDataGridViewTextBoxColumn";
+            this.operatorDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // priceDataGridViewTextBoxColumn
+            // 
+            this.priceDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.priceDataGridViewTextBoxColumn.DataPropertyName = "Price";
+            this.priceDataGridViewTextBoxColumn.HeaderText = "Price";
+            this.priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
+            // 
+            // bsAlerts
+            // 
+            this.bsAlerts.DataSource = typeof(MyCryptoMonitor.DataSources.AlertDataSourceList);
+            // 
             // Alerts
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -408,15 +393,16 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Alerts";
             this.Text = "Alerts";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Alerts_FormClosed);
             this.Load += new System.EventHandler(this.Alerts_Load);
             ((System.ComponentModel.ISupportInitialize)(this.grdAlerts)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bsAlerts)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.bsAlerts)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -430,8 +416,6 @@
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.TextBox txtContactAddress;
-        private System.Windows.Forms.ComboBox cmbContactType;
-        private System.Windows.Forms.Button btnSet;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.BindingSource bsAlerts;
@@ -448,5 +432,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Current;
         private System.Windows.Forms.DataGridViewTextBoxColumn operatorDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn priceDataGridViewTextBoxColumn;
+        private System.Windows.Forms.ComboBox cmbContactType;
     }
 }
