@@ -12,8 +12,10 @@ namespace MyCryptoMonitor.Forms
         public enum Types {[Description("Email")] Email, [Description("Version")] Version, [Description("AT&T")] ATT, [Description("Sprint")] Sprint, [Description("Boost")] Boost, [Description("Mobile")] Mobile }
         public enum Operators {[Description("Greater Than")] GreaterThan, [Description("Less Than")] LessThan }
 
+        #region Private Variables
         private List<CoinData> _coins;
         private List<AlertDataSource> _alerts;
+        #endregion
 
         #region Constructor
         public Alerts(List<CoinData> coins)
@@ -21,6 +23,13 @@ namespace MyCryptoMonitor.Forms
             InitializeComponent();
 
             _coins = coins;
+        }
+        #endregion
+
+        #region Methods
+        private void Save()
+        {
+
         }
         #endregion
 
@@ -75,13 +84,12 @@ namespace MyCryptoMonitor.Forms
 
         private void grdAlerts_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
+            if (grdAlerts.SelectedCells.Count <= 0 || grdAlerts.SelectedCells[0].Value != null)
+                return;
 
+            _alerts.Remove((AlertDataSource)grdAlerts.SelectedCells[0].OwningRow.DataBoundItem);
+            bsAlerts.ResetBindings(false);
         }
-
-        private void cmbCoins_TextChanged(object sender, EventArgs e)
-        {
-        }
-        #endregion
 
         private void cmbCoins_Validated(object sender, EventArgs e)
         {
@@ -95,5 +103,6 @@ namespace MyCryptoMonitor.Forms
 
             txtCurrent.Text = _coins.Where(c => c.ShortName.Equals(cmbCoins.Text)).Select(c => c.Price).FirstOrDefault().ToString();
         }
+        #endregion
     }
 }
