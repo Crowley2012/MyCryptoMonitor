@@ -56,6 +56,7 @@
     <Compile Include="Coin\CoinGuiLine.cs" />
     <Compile Include="DataSources\AlertConfig.cs" />
     <Compile Include="DataSources\AlertDataSource.cs" />
+    <Compile Include="DataSources\UserConfig.cs" />
     <Compile Include="Forms\Alerts.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -70,6 +71,12 @@
     </Compile>
     <Compile Include="Coin\CoinData.cs" />
     <Compile Include="ApiData\ApiGithub.cs" />
+    <Compile Include="Forms\Encrypt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Encrypt.Designer.cs">
+      <DependentUpon>Encrypt.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\InputForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,6 +97,15 @@
     <Compile Include="Forms\NewUI.Designer.cs">
       <DependentUpon>NewUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Password.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Password.Designer.cs">
+      <DependentUpon>Password.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\AESEncrypt.cs" />
+    <Compile Include="Functions\Globals.cs" />
+    <Compile Include="Functions\Manage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\Alerts.resx">
@@ -97,6 +113,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Donate.resx">
       <DependentUpon>Donate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Encrypt.resx">
+      <DependentUpon>Encrypt.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>
@@ -106,6 +125,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\NewUI.resx">
       <DependentUpon>NewUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Password.resx">
+      <DependentUpon>Password.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -58,6 +58,7 @@
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.alertsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.savePortfolioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.portfolio1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.portfolio2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,7 +76,7 @@
             this.toolTips = new System.Windows.Forms.ToolTip(this.components);
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.alertsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.encryptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -357,6 +358,7 @@
             this.alertsToolStripMenuItem,
             this.savePortfolioToolStripMenuItem,
             this.loadPortfolioToolStripMenuItem,
+            this.encryptToolStripMenuItem,
             this.aPIToolStripMenuItem,
             this.donateToolStripMenuItem,
             this.aboutToolStripMenuItem});
@@ -420,6 +422,13 @@
             this.removeAllToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.removeAllToolStripMenuItem.Text = "Remove All";
             this.removeAllToolStripMenuItem.Click += new System.EventHandler(this.RemoveAllCoins_Click);
+            // 
+            // alertsToolStripMenuItem
+            // 
+            this.alertsToolStripMenuItem.Name = "alertsToolStripMenuItem";
+            this.alertsToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
+            this.alertsToolStripMenuItem.Text = "Alerts";
+            this.alertsToolStripMenuItem.Click += new System.EventHandler(this.alertsToolStripMenuItem_Click);
             // 
             // savePortfolioToolStripMenuItem
             // 
@@ -562,12 +571,12 @@
             this.toolTips.SetToolTip(this.label5, "Price coin was bought at. If multiple payments, this will be average bought price" +
         ". (Paid / Bought)");
             // 
-            // alertsToolStripMenuItem
+            // encryptToolStripMenuItem
             // 
-            this.alertsToolStripMenuItem.Name = "alertsToolStripMenuItem";
-            this.alertsToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
-            this.alertsToolStripMenuItem.Text = "Alerts";
-            this.alertsToolStripMenuItem.Click += new System.EventHandler(this.alertsToolStripMenuItem_Click);
+            this.encryptToolStripMenuItem.Name = "encryptToolStripMenuItem";
+            this.encryptToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
+            this.encryptToolStripMenuItem.Text = "Encrypt";
+            this.encryptToolStripMenuItem.Click += new System.EventHandler(this.encryptToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -656,6 +665,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ToolStripMenuItem alertsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem encryptToolStripMenuItem;
     }
 }
 
