@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Password));
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.btnUnlock = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -52,11 +53,13 @@
             // 
             // Password
             // 
+            this.AcceptButton = this.btnUnlock;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(355, 46);
             this.Controls.Add(this.btnUnlock);
             this.Controls.Add(this.txtPassword);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Password";
             this.Text = "Encryption Password";
             this.ResumeLayout(false);

@@ -104,8 +104,7 @@
       <DependentUpon>Password.cs</DependentUpon>
     </Compile>
     <Compile Include="Functions\AESEncrypt.cs" />
-    <Compile Include="Functions\Globals.cs" />
-    <Compile Include="Functions\Manage.cs" />
+    <Compile Include="Functions\Management.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\Alerts.resx">

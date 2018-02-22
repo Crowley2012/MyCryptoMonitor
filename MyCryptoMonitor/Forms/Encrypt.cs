@@ -1,5 +1,4 @@
-﻿using MyCryptoMonitor.DataSources;
-using MyCryptoMonitor.Functions;
+﻿using MyCryptoMonitor.Functions;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -12,81 +11,69 @@ namespace MyCryptoMonitor.Forms
         public Encrypt()
         {
             InitializeComponent();
-
-            if(Globals.UserConfig.Encryption)
-                cbEnableEncryption.Checked = true;
         }
 
-        private void txtPassword_TextChanged(object sender, EventArgs e)
+        private void Encrypt_Load(object sender, EventArgs e)
         {
-            if (cbEnableEncryption.Checked && AESEncrypt.AesDecryptString(File.ReadAllText("Encryption"), txtPassword.Text).Equals("Success"))
-            {
-                cbEnableEncryption.Enabled = true;
-            }
-            else if (cbEnableEncryption.Checked && !AESEncrypt.AesDecryptString(File.ReadAllText("Encryption"), txtPassword.Text).Equals("Success"))
-            {
-                cbEnableEncryption.Enabled = false;
-            }
-            else if(!string.IsNullOrEmpty(txtPassword.Text))
-            {
-                cbEnableEncryption.Enabled = true;
-            }
-            else
-            {
-                cbEnableEncryption.Enabled = false;
-            }
+            cbEnableEncryption.Checked = Management.UserConfig.Encryption;
+            btnEncrypt.Text = Management.UserConfig.Encryption ? "Decrypt" : "Encrypt";
+            lblInstructions.Text = Management.UserConfig.Encryption ? "Type in your password to disable encryption." : "Type in a password to enable encryption.";
         }
 
-        private void cbEnableEncryption_CheckedChanged(object sender, EventArgs e)
+        private void btnEncrypt_Click(object sender, EventArgs e)
         {
-            if (cbEnableEncryption.Checked)
+            if (string.IsNullOrEmpty(txtPassword.Text))
+                return;
+
+            if (Management.UserConfig.Encryption && Management.CheckPassword(txtPassword.Text))
             {
-                if (Globals.UserConfig.Encryption)
-                    return;
+                Management.UserConfig.Encryption = false;
+                cbEnableEncryption.Checked = false;
+                btnEncrypt.Text = "Encrypt";
+                lblInstructions.Text = "Type in a password to enable encryption.";
 
-                Globals.UserConfig.Encryption = true;
-
-                File.WriteAllText("Encryption", AESEncrypt.AESEncryptString("Success", txtPassword.Text));
-                File.WriteAllText("UserConfig", JsonConvert.SerializeObject(Globals.UserConfig));
-
-                AESEncrypt.Password = txtPassword.Text;
-
-                EncryptPortfolios();
-            }
-            else
-            {
-                Globals.UserConfig.Encryption = false;
                 File.Delete("Encryption");
-                File.WriteAllText("UserConfig", JsonConvert.SerializeObject(Globals.UserConfig));
-
-                AESEncrypt.Password = string.Empty;
+                File.WriteAllText("UserConfig", JsonConvert.SerializeObject(Management.UserConfig));
 
                 DecryptPortfolios();
+            }
+            else if (!Management.UserConfig.Encryption)
+            {
+                Management.Password = txtPassword.Text;
+                Management.UserConfig.Encryption = true;
+                cbEnableEncryption.Checked = true;
+                btnEncrypt.Text = "Decrypt";
+                lblInstructions.Text = "Type in your password to disable encryption.";
+
+                File.WriteAllText("Encryption", AESEncrypt.AesEncryptString("Success"));
+                File.WriteAllText("UserConfig", JsonConvert.SerializeObject(Management.UserConfig));
+
+                EncryptPortfolios();
             }
         }
 
         private void EncryptPortfolios()
         {
             if (File.Exists("portfolio1"))
-                File.WriteAllText("portfolio1", AESEncrypt.AESEncryptString(JsonConvert.SerializeObject(Manage.LoadPortfolioUnencrypted("portfolio1")), txtPassword.Text));
+                File.WriteAllText("portfolio1", AESEncrypt.AesEncryptString(JsonConvert.SerializeObject(Management.LoadPortfolioUnencrypted("portfolio1"))));
 
             if (File.Exists("portfolio2"))
-                File.WriteAllText("portfolio2", AESEncrypt.AESEncryptString(JsonConvert.SerializeObject(Manage.LoadPortfolioUnencrypted("portfolio2")), txtPassword.Text));
+                File.WriteAllText("portfolio2", AESEncrypt.AesEncryptString(JsonConvert.SerializeObject(Management.LoadPortfolioUnencrypted("portfolio2"))));
 
             if (File.Exists("portfolio3"))
-                File.WriteAllText("portfolio3", AESEncrypt.AESEncryptString(JsonConvert.SerializeObject(Manage.LoadPortfolioUnencrypted("portfolio3")), txtPassword.Text));
+                File.WriteAllText("portfolio3", AESEncrypt.AesEncryptString(JsonConvert.SerializeObject(Management.LoadPortfolioUnencrypted("portfolio3"))));
         }
 
         private void DecryptPortfolios()
         {
             if (File.Exists("portfolio1"))
-                File.WriteAllText("portfolio1", JsonConvert.SerializeObject(Manage.LoadPortfolioEncrypted("portfolio1")));
+                File.WriteAllText("portfolio1", JsonConvert.SerializeObject(Management.LoadPortfolioEncrypted("portfolio1")));
 
             if (File.Exists("portfolio2"))
-                File.WriteAllText("portfolio2", JsonConvert.SerializeObject(Manage.LoadPortfolioEncrypted("portfolio2")));
+                File.WriteAllText("portfolio2", JsonConvert.SerializeObject(Management.LoadPortfolioEncrypted("portfolio2")));
 
             if (File.Exists("portfolio3"))
-                File.WriteAllText("portfolio3", JsonConvert.SerializeObject(Manage.LoadPortfolioEncrypted("portfolio3")));
+                File.WriteAllText("portfolio3", JsonConvert.SerializeObject(Management.LoadPortfolioEncrypted("portfolio3")));
         }
     }
 }

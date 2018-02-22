@@ -32,8 +32,8 @@
             this.lblDetails = new System.Windows.Forms.Label();
             this.cbEnableEncryption = new System.Windows.Forms.CheckBox();
             this.txtPassword = new System.Windows.Forms.TextBox();
-            this.lblEnableEncryption = new System.Windows.Forms.Label();
-            this.lblDisableEncryption = new System.Windows.Forms.Label();
+            this.lblInstructions = new System.Windows.Forms.Label();
+            this.btnEncrypt = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblDetails
@@ -48,56 +48,57 @@
             // 
             // cbEnableEncryption
             // 
+            this.cbEnableEncryption.AutoCheck = false;
             this.cbEnableEncryption.AutoSize = true;
-            this.cbEnableEncryption.Enabled = false;
             this.cbEnableEncryption.Location = new System.Drawing.Point(16, 83);
             this.cbEnableEncryption.Name = "cbEnableEncryption";
-            this.cbEnableEncryption.Size = new System.Drawing.Size(112, 17);
+            this.cbEnableEncryption.Size = new System.Drawing.Size(76, 17);
             this.cbEnableEncryption.TabIndex = 1;
-            this.cbEnableEncryption.Text = "Enable Encryption";
+            this.cbEnableEncryption.Text = "Encryption";
             this.cbEnableEncryption.UseVisualStyleBackColor = true;
-            this.cbEnableEncryption.CheckedChanged += new System.EventHandler(this.cbEnableEncryption_CheckedChanged);
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(134, 81);
+            this.txtPassword.Location = new System.Drawing.Point(98, 81);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '•';
-            this.txtPassword.Size = new System.Drawing.Size(258, 20);
+            this.txtPassword.Size = new System.Drawing.Size(213, 20);
             this.txtPassword.TabIndex = 2;
-            this.txtPassword.TextChanged += new System.EventHandler(this.txtPassword_TextChanged);
             // 
-            // lblEnableEncryption
+            // lblInstructions
             // 
-            this.lblEnableEncryption.AutoSize = true;
-            this.lblEnableEncryption.Location = new System.Drawing.Point(13, 57);
-            this.lblEnableEncryption.Name = "lblEnableEncryption";
-            this.lblEnableEncryption.Size = new System.Drawing.Size(201, 13);
-            this.lblEnableEncryption.TabIndex = 3;
-            this.lblEnableEncryption.Text = "Type in a password to enable encryption.";
+            this.lblInstructions.AutoSize = true;
+            this.lblInstructions.Location = new System.Drawing.Point(13, 57);
+            this.lblInstructions.Name = "lblInstructions";
+            this.lblInstructions.Size = new System.Drawing.Size(201, 13);
+            this.lblInstructions.TabIndex = 3;
+            this.lblInstructions.Text = "Type in a password to enable encryption.";
             // 
-            // lblDisableEncryption
+            // btnEncrypt
             // 
-            this.lblDisableEncryption.AutoSize = true;
-            this.lblDisableEncryption.Location = new System.Drawing.Point(13, 57);
-            this.lblDisableEncryption.Name = "lblDisableEncryption";
-            this.lblDisableEncryption.Size = new System.Drawing.Size(216, 13);
-            this.lblDisableEncryption.TabIndex = 4;
-            this.lblDisableEncryption.Text = "Type in your password to disable encryption.";
+            this.btnEncrypt.Location = new System.Drawing.Point(317, 79);
+            this.btnEncrypt.Name = "btnEncrypt";
+            this.btnEncrypt.Size = new System.Drawing.Size(75, 23);
+            this.btnEncrypt.TabIndex = 5;
+            this.btnEncrypt.Text = "Encrypt";
+            this.btnEncrypt.UseVisualStyleBackColor = true;
+            this.btnEncrypt.Click += new System.EventHandler(this.btnEncrypt_Click);
             // 
             // Encrypt
             // 
+            this.AcceptButton = this.btnEncrypt;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(404, 117);
-            this.Controls.Add(this.lblDisableEncryption);
-            this.Controls.Add(this.lblEnableEncryption);
+            this.Controls.Add(this.btnEncrypt);
+            this.Controls.Add(this.lblInstructions);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.cbEnableEncryption);
             this.Controls.Add(this.lblDetails);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Encrypt";
             this.Text = "Encrypt";
+            this.Load += new System.EventHandler(this.Encrypt_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -108,7 +109,7 @@
         private System.Windows.Forms.Label lblDetails;
         private System.Windows.Forms.CheckBox cbEnableEncryption;
         private System.Windows.Forms.TextBox txtPassword;
-        private System.Windows.Forms.Label lblEnableEncryption;
-        private System.Windows.Forms.Label lblDisableEncryption;
+        private System.Windows.Forms.Label lblInstructions;
+        private System.Windows.Forms.Button btnEncrypt;
     }
 }

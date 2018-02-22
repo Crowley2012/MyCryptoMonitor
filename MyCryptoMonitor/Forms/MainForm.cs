@@ -24,7 +24,6 @@ namespace MyCryptoMonitor.Forms
         private List<CoinConfig> _coinConfigs;
         private List<CoinGuiLine> _coinGuiLines;
         private List<CoinData> _coins;
-        private Manage _manage;
         private DateTime _resetTime;
         private DateTime _refreshTime;
         private bool _loadGuiLines;
@@ -49,18 +48,19 @@ namespace MyCryptoMonitor.Forms
             //User config
             if (File.Exists("UserConfig"))
             {
-                Globals.UserConfig = JsonConvert.DeserializeObject<UserConfig>(File.ReadAllText("UserConfig"));
+                Management.UserConfig = JsonConvert.DeserializeObject<UserConfig>(File.ReadAllText("UserConfig"));
             }
             else
             {
-                Globals.UserConfig = new UserConfig();
-                File.WriteAllText("UserConfig", JsonConvert.SerializeObject(Globals.UserConfig));
+                Management.UserConfig = new UserConfig();
+                File.WriteAllText("UserConfig", JsonConvert.SerializeObject(Management.UserConfig));
             }
 
-            CheckPassword();
+            //Unlock if encryption is enabled
+            Management.Unlock();
 
             //Attempt to load portfolio on startup
-            _coinConfigs = Manage.LoadPortfolio();
+            _coinConfigs = Management.LoadFirstPortfolio();
 
             //Update status
             UpdateStatusDelegate updateStatus = new UpdateStatusDelegate(UpdateStatus);
@@ -362,38 +362,6 @@ namespace MyCryptoMonitor.Forms
         #endregion
 
         #region Methods
-        private void CheckPassword()
-        {
-            if (Globals.UserConfig.Encryption)
-            {
-                using (Password form = new Password())
-                {
-                    if (form.ShowDialog() == DialogResult.OK)
-                    {
-                        try
-                        {
-                            if (AESEncrypt.AesDecryptString(File.ReadAllText("Encryption"), form.PasswordInput).Equals("Success"))
-                            {
-                                AESEncrypt.Password = form.PasswordInput;
-                            }
-                            else
-                            {
-                                CheckPassword();
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            CheckPassword();
-                        }
-                    }
-                    else
-                    {
-                        Application.Exit();
-                    }
-                }
-            }
-        }
-
         private void AddCoin(CoinConfig coin, CoinData downloadedCoin, int index)
         {
             //Store the intial coin price at startup
@@ -435,23 +403,22 @@ namespace MyCryptoMonitor.Forms
             if (_coinGuiLines.Count <= 0)
                 return;
 
-            List<CoinConfig> newCoinConfigs = new List<CoinConfig>();
+            List<CoinConfig> coinConfigs = new List<CoinConfig>();
 
             //Create new list of gui lines
             foreach (var coinLine in _coinGuiLines)
             {
-                newCoinConfigs.Add(new CoinConfig
+                coinConfigs.Add(new CoinConfig
                 {
                     coin = coinLine.CoinLabel.Text,
-                    coinIndex = newCoinConfigs.Count(c => c.coin.Equals(coinLine.CoinName)),
+                    coinIndex = coinConfigs.Count(c => c.coin.Equals(coinLine.CoinName)),
                     bought = Convert.ToDecimal(coinLine.BoughtTextBox.Text),
                     paid = Convert.ToDecimal(coinLine.PaidTextBox.Text)
                 });
             }
 
-            //Serialize lines to file
-            File.WriteAllText(portfolio, JsonConvert.SerializeObject(newCoinConfigs));
-            Manage.SelectedPortfolio = portfolio;
+            //Save portfolio
+            Management.SavePortfolio(portfolio, coinConfigs);
         }
 
         private void LoadPortfolio(string portfolio)
@@ -459,9 +426,8 @@ namespace MyCryptoMonitor.Forms
             if (!File.Exists(portfolio))
                 return;
 
-            //Load portfolio from file
-            _coinConfigs = JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText(portfolio) ?? string.Empty);
-            Manage.SelectedPortfolio = portfolio;
+            //Load portfolio
+            _coinConfigs = Management.LoadPortfolio(portfolio);
 
             RemoveDelegate remove = new RemoveDelegate(Remove);
             BeginInvoke(remove);
@@ -487,7 +453,7 @@ namespace MyCryptoMonitor.Forms
         private void Reset_Click(object sender, EventArgs e)
         {
             _resetTime = DateTime.Now;
-            LoadPortfolio(Manage.SelectedPortfolio);
+            LoadPortfolio(Management.SelectedPortfolio);
         }
 
         private void Exit_Click(object sender, EventArgs e)

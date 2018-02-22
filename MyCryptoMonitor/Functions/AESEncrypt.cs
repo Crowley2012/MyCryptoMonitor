@@ -11,21 +11,22 @@ namespace MyCryptoMonitor.Functions
 {
     public static class AESEncrypt
     {
-        private const string Salt = "QM4436DL3A259EFXYNZEW4TCVVY5QZJG9CXFEKFW";
+        #region Constants
+        private const string SALT = "QM4436DL3A259EFXYNZEW4TCVVY5QZJG9CXFEKFW";
+        #endregion
 
-        public static string Password { get; set; }
-
-        public static string AESEncryptString(string clearText)
+        #region Encrypt
+        public static string AesEncryptString(string clearText)
         {
-            return AESEncryptString(clearText, Password, Salt);
+            return AesEncryptString(clearText, Management.Password, SALT);
         }
 
-        public static string AESEncryptString(string clearText, string passText)
+        public static string AesEncryptString(string clearText, string passText)
         {
-            return AESEncryptString(clearText, passText, Salt);
+            return AesEncryptString(clearText, passText, SALT);
         }
 
-        public static string AESEncryptString(string clearText, string passText, string saltText)
+        public static string AesEncryptString(string clearText, string passText, string saltText)
         {
             try
             {
@@ -34,32 +35,6 @@ namespace MyCryptoMonitor.Functions
                 byte[] saltBytes = Encoding.UTF8.GetBytes(saltText);
 
                 return Convert.ToBase64String(AESEncryptBytes(clearBytes, passBytes, saltBytes));
-            }
-            catch (Exception)
-            {
-                return string.Empty;
-            }
-        }
-
-        public static string AesDecryptString(string cryptText)
-        {
-            return AesDecryptString(cryptText, Password, Salt);
-        }
-
-        public static string AesDecryptString(string cryptText, string passText)
-        {
-            return AesDecryptString(cryptText, passText, Salt);
-        }
-
-        public static string AesDecryptString(string cryptText, string passText, string saltText)
-        {
-            try
-            {
-                byte[] cryptBytes = Convert.FromBase64String(cryptText);
-                byte[] passBytes = Encoding.UTF8.GetBytes(passText);
-                byte[] saltBytes = Encoding.UTF8.GetBytes(saltText);
-
-                return Encoding.UTF8.GetString(AESDecryptBytes(cryptBytes, passBytes, saltBytes));
             }
             catch (Exception)
             {
@@ -90,6 +65,34 @@ namespace MyCryptoMonitor.Functions
             }
             return encryptedBytes;
         }
+        #endregion
+
+        #region Decrypt
+        public static string AesDecryptString(string cryptText)
+        {
+            return AesDecryptString(cryptText, Management.Password, SALT);
+        }
+
+        public static string AesDecryptString(string cryptText, string passText)
+        {
+            return AesDecryptString(cryptText, passText, SALT);
+        }
+
+        public static string AesDecryptString(string cryptText, string passText, string saltText)
+        {
+            try
+            {
+                byte[] cryptBytes = Convert.FromBase64String(cryptText);
+                byte[] passBytes = Encoding.UTF8.GetBytes(passText);
+                byte[] saltBytes = Encoding.UTF8.GetBytes(saltText);
+
+                return Encoding.UTF8.GetString(AESDecryptBytes(cryptBytes, passBytes, saltBytes));
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+        }
 
         public static byte[] AESDecryptBytes(byte[] cryptBytes, byte[] passBytes, byte[] saltBytes)
         {
@@ -114,5 +117,6 @@ namespace MyCryptoMonitor.Functions
             }
             return clearBytes;
         }
+        #endregion
     }
 }
