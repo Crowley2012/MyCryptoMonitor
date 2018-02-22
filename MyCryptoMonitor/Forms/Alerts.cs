@@ -5,7 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using MyCryptoMonitor.DataSources;
 using System.IO;
-using Newtonsoft.Json;
+using MyCryptoMonitor.Functions;
 
 namespace MyCryptoMonitor.Forms
 {
@@ -17,7 +17,6 @@ namespace MyCryptoMonitor.Forms
         #region Private Variables
         private List<CoinData> _coins;
         private List<AlertDataSource> _alerts;
-        private const string AlertsConfigFile = "Alerts";
         private decimal _oldCheckPrice;
         #endregion
 
@@ -33,40 +32,46 @@ namespace MyCryptoMonitor.Forms
         #region Methods
         private void LoadAlerts()
         {
-            if (!File.Exists(AlertsConfigFile))
+            if (!File.Exists("Alerts"))
                 return;
+            
+            AlertConfig alertConfig = Management.LoadAlerts();
+            txtEmailAddress.Text = alertConfig.EmailAddress;
+            txtPassword.Text = alertConfig.Password;
+            txtContactAddress.Text = alertConfig.ContactAddress;
+            cmbContactType.Text = alertConfig.ContactType;
 
-            try
+            //Get the current price of coin
+            foreach(AlertDataSource alert in alertConfig.Alerts)
+                alert.Current = _coins.Where(c => c.ShortName.Equals(alert.Coin)).Select(c => c.Price).First();
+
+            bsAlerts.DataSource = alertConfig.Alerts;
+
+            if (!Management.UserConfig.Encryption)
             {
-                //Deserialize the config
-                AlertConfig alertConfig = JsonConvert.DeserializeObject<AlertConfig>(File.ReadAllText(AlertsConfigFile) ?? string.Empty);
-                txtContactAddress.Text = alertConfig.ContactAddress;
-                cmbContactType.Text = alertConfig.ContactType;
-
-                //Get the current price of coin
-                foreach(AlertDataSource alert in alertConfig.Alerts)
-                    alert.Current = _coins.Where(c => c.ShortName.Equals(alert.Coin)).Select(c => c.Price).First();
-
-                bsAlerts.DataSource = alertConfig.Alerts;
+                txtEmailAddress.Text = string.Empty;
+                txtPassword.Text = string.Empty;
+                tblEmailInput.Enabled = false;
+                grpContact.Enabled = false;
             }
-            catch (Exception)
-            {
-                MessageBox.Show("Failed to load alerts, config reset.");
-                File.Delete(AlertsConfigFile);
-            }
+
+            if (string.IsNullOrEmpty(txtEmailAddress.Text) || string.IsNullOrEmpty(txtPassword.Text))
+                grpContact.Enabled = false;
         }
 
         private void SaveAlerts()
         {
             AlertConfig alertConfig = new AlertConfig
             {
+                EmailAddress = txtEmailAddress.Text,
+                Password = txtPassword.Text,
                 ContactAddress = txtContactAddress.Text,
                 ContactType = cmbContactType.Text,
                 Alerts = bsAlerts.DataSource as List<AlertDataSource>
             };
 
             //Save config
-            File.WriteAllText(AlertsConfigFile, JsonConvert.SerializeObject(alertConfig));
+            Management.SaveAlerts(alertConfig);
         }
 
         private bool CheckValid(decimal currentPrice, decimal checkPrice, Operators op)
@@ -119,6 +124,22 @@ namespace MyCryptoMonitor.Forms
             SaveAlerts();
         }
 
+        private void btnSet_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtEmailAddress.Text) || string.IsNullOrEmpty(txtPassword.Text))
+            {
+                txtEmailAddress.Text = string.Empty;
+                txtPassword.Text = string.Empty;
+                grpContact.Enabled = false;
+            }
+            else
+            {
+                grpContact.Enabled = true;
+            }
+
+            SaveAlerts();
+        }
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
             if (!Decimal.TryParse(txtPrice.Text, out decimal value) || string.IsNullOrEmpty(cmbCoins.Text))
@@ -133,6 +154,12 @@ namespace MyCryptoMonitor.Forms
                 return;
 
             bsAlerts.Add(new AlertDataSource { Coin = cmbCoins.Text, Current = Convert.ToDecimal(txtCurrent.Text), Operator = cmbOperator.Text, Price = Convert.ToDecimal(txtPrice.Text) });
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (grdAlerts.SelectedCells.Count > 0)
+                bsAlerts.Remove((AlertDataSource)grdAlerts.SelectedCells[0].OwningRow.DataBoundItem);
         }
 
         private void grdAlerts_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
@@ -153,12 +180,6 @@ namespace MyCryptoMonitor.Forms
             }
 
             bsAlerts.Remove((AlertDataSource)grdAlerts.SelectedCells[0].OwningRow.DataBoundItem);
-        }
-
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            if (grdAlerts.SelectedCells.Count > 0)
-                bsAlerts.Remove((AlertDataSource)grdAlerts.SelectedCells[0].OwningRow.DataBoundItem);
         }
 
         private void cmbCoins_Validated(object sender, EventArgs e)

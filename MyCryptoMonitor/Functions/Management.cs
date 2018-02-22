@@ -30,6 +30,41 @@ namespace MyCryptoMonitor.Functions
         }
         #endregion
 
+        #region Encryption Management
+        public static bool CheckPassword(string password)
+        {
+            if (AESEncrypt.AesDecryptString(File.ReadAllText("Encryption"), password).Equals("Success"))
+            {
+                Password = password;
+                return true;
+            }
+            else
+            {
+                MessageBox.Show("Wrong password.");
+                return false;
+            }
+        }
+
+        public static void Unlock()
+        {
+            if (!UserConfig.Encryption)
+                return;
+
+            using (Password form = new Password())
+            {
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    if (!CheckPassword(form.PasswordInput))
+                        Unlock();
+                }
+                else
+                {
+                    Application.Exit();
+                }
+            }
+        }
+        #endregion
+
         #region Portfolio Management
         public static List<CoinConfig> LoadFirstPortfolio()
         {
@@ -55,14 +90,14 @@ namespace MyCryptoMonitor.Functions
                 return LoadPortfolioUnencrypted(portfolio);
         }
 
-        public static List<CoinConfig> LoadPortfolioUnencrypted(string portfolio)
-        {
-            return JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText(portfolio));
-        }
-
         public static List<CoinConfig> LoadPortfolioEncrypted(string portfolio)
         {
             return JsonConvert.DeserializeObject<List<CoinConfig>>(AESEncrypt.AesDecryptString(File.ReadAllText(portfolio)));
+        }
+
+        public static List<CoinConfig> LoadPortfolioUnencrypted(string portfolio)
+        {
+            return JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText(portfolio));
         }
 
         public static void SavePortfolio(string portfolio, List<CoinConfig> coinConfigs)
@@ -73,49 +108,52 @@ namespace MyCryptoMonitor.Functions
                 SavePortfolioUnencrypted(portfolio, coinConfigs);
         }
 
-        public static void SavePortfolioUnencrypted(string portfolio, List<CoinConfig> coinConfigs)
-        {
-            File.WriteAllText(portfolio, JsonConvert.SerializeObject(coinConfigs));
-        }
-
         public static void SavePortfolioEncrypted(string portfolio, List<CoinConfig> coinConfigs)
         {
             File.WriteAllText(portfolio, AESEncrypt.AesEncryptString(JsonConvert.SerializeObject(coinConfigs)));
         }
+
+        public static void SavePortfolioUnencrypted(string portfolio, List<CoinConfig> coinConfigs)
+        {
+            File.WriteAllText(portfolio, JsonConvert.SerializeObject(coinConfigs));
+        }
         #endregion
 
-        #region Encryption Management
-        public static bool CheckPassword(string password)
+        #region Alert Management
+        public static AlertConfig LoadAlerts()
         {
-            if(AESEncrypt.AesDecryptString(File.ReadAllText("Encryption"), password).Equals("Success"))
-            {
-                Password = password;
-                return true;
-            }
+            if (UserConfig.Encryption)
+                return LoadAlertsEncrypted();
             else
-            {
-                MessageBox.Show("Wrong password.");
-                return false;
-            }
+                return LoadAlertsUnencrypted();
         }
 
-        public static void Unlock()
+        public static AlertConfig LoadAlertsEncrypted()
         {
-            if (!Management.UserConfig.Encryption)
-                return;
+            return JsonConvert.DeserializeObject<AlertConfig>(AESEncrypt.AesDecryptString(File.ReadAllText("Alerts")));
+        }
 
-            using (Password form = new Password())
-            {
-                if (form.ShowDialog() == DialogResult.OK)
-                {
-                    if (!CheckPassword(form.PasswordInput))
-                        Unlock();
-                }
-                else
-                {
-                    Application.Exit();
-                }
-            }
+        public static AlertConfig LoadAlertsUnencrypted()
+        {
+            return JsonConvert.DeserializeObject<AlertConfig>(File.ReadAllText("Alerts"));
+        }
+
+        public static void SaveAlerts(AlertConfig alertConfig)
+        {
+            if (UserConfig.Encryption)
+                SaveAlertsEncrypted(alertConfig);
+            else
+                SaveAlertsUnencrypted(alertConfig);
+        }
+
+        public static void SaveAlertsEncrypted(AlertConfig alertConfig)
+        {
+            File.WriteAllText("Alerts", AESEncrypt.AesEncryptString(JsonConvert.SerializeObject(alertConfig)));
+        }
+
+        public static void SaveAlertsUnencrypted(AlertConfig alertConfig)
+        {
+            File.WriteAllText("Alerts", JsonConvert.SerializeObject(alertConfig));
         }
         #endregion
     }

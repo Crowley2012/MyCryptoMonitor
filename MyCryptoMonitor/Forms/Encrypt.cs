@@ -36,6 +36,7 @@ namespace MyCryptoMonitor.Forms
                 File.WriteAllText("UserConfig", JsonConvert.SerializeObject(Management.UserConfig));
 
                 DecryptPortfolios();
+                DecryptAlerts();
             }
             else if (!Management.UserConfig.Encryption)
             {
@@ -49,31 +50,44 @@ namespace MyCryptoMonitor.Forms
                 File.WriteAllText("UserConfig", JsonConvert.SerializeObject(Management.UserConfig));
 
                 EncryptPortfolios();
+                EncryptAlerts();
             }
-        }
-
-        private void EncryptPortfolios()
-        {
-            if (File.Exists("portfolio1"))
-                File.WriteAllText("portfolio1", AESEncrypt.AesEncryptString(JsonConvert.SerializeObject(Management.LoadPortfolioUnencrypted("portfolio1"))));
-
-            if (File.Exists("portfolio2"))
-                File.WriteAllText("portfolio2", AESEncrypt.AesEncryptString(JsonConvert.SerializeObject(Management.LoadPortfolioUnencrypted("portfolio2"))));
-
-            if (File.Exists("portfolio3"))
-                File.WriteAllText("portfolio3", AESEncrypt.AesEncryptString(JsonConvert.SerializeObject(Management.LoadPortfolioUnencrypted("portfolio3"))));
         }
 
         private void DecryptPortfolios()
         {
-            if (File.Exists("portfolio1"))
-                File.WriteAllText("portfolio1", JsonConvert.SerializeObject(Management.LoadPortfolioEncrypted("portfolio1")));
+            if (File.Exists("Portfolio1"))
+                File.WriteAllText("Portfolio1", JsonConvert.SerializeObject(Management.LoadPortfolioEncrypted("Portfolio1")));
 
-            if (File.Exists("portfolio2"))
-                File.WriteAllText("portfolio2", JsonConvert.SerializeObject(Management.LoadPortfolioEncrypted("portfolio2")));
+            if (File.Exists("Portfolio2"))
+                File.WriteAllText("Portfolio2", JsonConvert.SerializeObject(Management.LoadPortfolioEncrypted("Portfolio2")));
 
-            if (File.Exists("portfolio3"))
-                File.WriteAllText("portfolio3", JsonConvert.SerializeObject(Management.LoadPortfolioEncrypted("portfolio3")));
+            if (File.Exists("Portfolio3"))
+                File.WriteAllText("Portfolio3", JsonConvert.SerializeObject(Management.LoadPortfolioEncrypted("Portfolio3")));
+        }
+
+        private void DecryptAlerts()
+        {
+            if (File.Exists("Alerts"))
+                File.WriteAllText("Alerts", JsonConvert.SerializeObject(Management.LoadAlertsEncrypted()));
+        }
+
+        private void EncryptPortfolios()
+        {
+            if (File.Exists("Portfolio1"))
+                File.WriteAllText("Portfolio1", AESEncrypt.AesEncryptString(JsonConvert.SerializeObject(Management.LoadPortfolioUnencrypted("Portfolio1"))));
+
+            if (File.Exists("Portfolio2"))
+                File.WriteAllText("Portfolio2", AESEncrypt.AesEncryptString(JsonConvert.SerializeObject(Management.LoadPortfolioUnencrypted("Portfolio2"))));
+
+            if (File.Exists("Portfolio3"))
+                File.WriteAllText("Portfolio3", AESEncrypt.AesEncryptString(JsonConvert.SerializeObject(Management.LoadPortfolioUnencrypted("Portfolio3"))));
+        }
+
+        private void EncryptAlerts()
+        {
+            if (File.Exists("Alerts"))
+                File.WriteAllText("Alerts", AESEncrypt.AesEncryptString(JsonConvert.SerializeObject(Management.LoadAlertsUnencrypted())));
         }
     }
 }

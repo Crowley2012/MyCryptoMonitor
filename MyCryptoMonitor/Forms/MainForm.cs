@@ -56,6 +56,9 @@ namespace MyCryptoMonitor.Forms
                 File.WriteAllText("UserConfig", JsonConvert.SerializeObject(Management.UserConfig));
             }
 
+            //Load user config
+            Management.LoadUserConfig();
+
             //Unlock if encryption is enabled
             Management.Unlock();
 
