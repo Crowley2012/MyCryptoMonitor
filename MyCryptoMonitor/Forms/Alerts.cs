@@ -32,27 +32,26 @@ namespace MyCryptoMonitor.Forms
         #region Methods
         private void LoadAlerts()
         {
-            if (!File.Exists("Alerts"))
-                return;
-            
-            AlertConfig alertConfig = Management.LoadAlerts();
-            txtEmailAddress.Text = alertConfig.EmailAddress;
-            txtPassword.Text = alertConfig.Password;
-            txtContactAddress.Text = alertConfig.ContactAddress;
-            cmbContactType.Text = alertConfig.ContactType;
+            if (File.Exists("Alerts"))
+            {
+                AlertConfig alertConfig = Management.LoadAlerts();
+                txtEmailAddress.Text = alertConfig.EmailAddress;
+                txtPassword.Text = alertConfig.Password;
+                txtContactAddress.Text = alertConfig.ContactAddress;
+                cmbContactType.Text = alertConfig.ContactType;
 
-            //Get the current price of coin
-            foreach(AlertDataSource alert in alertConfig.Alerts)
-                alert.Current = _coins.Where(c => c.ShortName.Equals(alert.Coin)).Select(c => c.Price).First();
+                //Get the current price of coin
+                foreach(AlertDataSource alert in alertConfig.Alerts)
+                    alert.Current = _coins.Where(c => c.ShortName.Equals(alert.Coin)).Select(c => c.Price).First();
 
-            bsAlerts.DataSource = alertConfig.Alerts;
+                bsAlerts.DataSource = alertConfig.Alerts;
+            }
 
             if (!Management.UserConfig.Encryption)
             {
                 txtEmailAddress.Text = string.Empty;
                 txtPassword.Text = string.Empty;
                 tblEmailInput.Enabled = false;
-                grpContact.Enabled = false;
             }
 
             if (string.IsNullOrEmpty(txtEmailAddress.Text) || string.IsNullOrEmpty(txtPassword.Text))

@@ -45,17 +45,6 @@ namespace MyCryptoMonitor.Forms
             _refreshTime = DateTime.Now;
             _loadGuiLines = true;
 
-            //User config
-            if (File.Exists("UserConfig"))
-            {
-                Management.UserConfig = JsonConvert.DeserializeObject<UserConfig>(File.ReadAllText("UserConfig"));
-            }
-            else
-            {
-                Management.UserConfig = new UserConfig();
-                File.WriteAllText("UserConfig", JsonConvert.SerializeObject(Management.UserConfig));
-            }
-
             //Load user config
             Management.LoadUserConfig();
 
@@ -339,24 +328,13 @@ namespace MyCryptoMonitor.Forms
 
             //Reset totals
             lblOverallTotal.Text = "$0.00";
-            lblTotalProfit.Text = "($0.00)";
+            lblTotalProfit.Text = "$0.00";
 
             //Remove the line elements from gui
             foreach (var coin in _coinGuiLines)
             {
                 Height -= 25;
-                Controls.Remove(coin.CoinLabel);
-                Controls.Remove(coin.CoinIndexLabel);
-                Controls.Remove(coin.PriceLabel);
-                Controls.Remove(coin.BoughtTextBox);
-                Controls.Remove(coin.BoughtPriceLabel);
-                Controls.Remove(coin.TotalLabel);
-                Controls.Remove(coin.PaidTextBox);
-                Controls.Remove(coin.ProfitLabel);
-                Controls.Remove(coin.ChangeDollarLabel);
-                Controls.Remove(coin.ChangePercentLabel);
-                Controls.Remove(coin.Change1HrPercentLabel);
-                Controls.Remove(coin.Change24HrPercentLabel);
+                coin.Dispose();
             }
 
             _coinGuiLines = new List<CoinGuiLine>();

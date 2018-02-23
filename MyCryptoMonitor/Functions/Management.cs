@@ -15,18 +15,21 @@ namespace MyCryptoMonitor.Functions
         public static string Password { get; set; } = string.Empty;
         #endregion
 
-        #region User Config
+        #region User Config Management
         public static void LoadUserConfig()
         {
             if (File.Exists("UserConfig"))
-            {
                 UserConfig = JsonConvert.DeserializeObject<UserConfig>(File.ReadAllText("UserConfig"));
-            }
             else
-            {
-                UserConfig = new UserConfig();
+                SaveUserConfig();
+        }
+
+        public static void SaveUserConfig()
+        {
+            if(UserConfig != null)
                 File.WriteAllText("UserConfig", JsonConvert.SerializeObject(UserConfig));
-            }
+            else
+                File.WriteAllText("UserConfig", JsonConvert.SerializeObject(new UserConfig()));
         }
         #endregion
 
@@ -40,7 +43,7 @@ namespace MyCryptoMonitor.Functions
             }
             else
             {
-                MessageBox.Show("Wrong password.");
+                MessageBox.Show("Incorrect password.");
                 return false;
             }
         }
@@ -52,9 +55,18 @@ namespace MyCryptoMonitor.Functions
 
             using (Password form = new Password())
             {
-                if (form.ShowDialog() == DialogResult.OK)
+                var result = form.ShowDialog();
+
+                if (result == DialogResult.OK)
                 {
                     if (!CheckPassword(form.PasswordInput))
+                        Unlock();
+                }
+                else if(result == DialogResult.Abort)
+                {
+                    if (MessageBox.Show($"This will delete all saved files (portfolios, alerts, etc) and remove encryption. Do you want to continue?", "Forgot Password", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
+                        ResetEncryption();
+                    else
                         Unlock();
                 }
                 else
@@ -62,6 +74,57 @@ namespace MyCryptoMonitor.Functions
                     Application.Exit();
                 }
             }
+        }
+
+        public static void EncryptFiles(string password)
+        {
+            Password = password;
+            UserConfig.Encryption = true;
+
+            CreateEncryptionFile();
+            SaveUserConfig();
+            EncryptPortfolios();
+            EncryptAlerts();
+        }
+
+        public static void DecryptFiles()
+        {
+            UserConfig.Encryption = false;
+
+            RemoveEncryptionFile();
+            SaveUserConfig();
+            DecryptPortfolios();
+            DecryptAlerts();
+        }
+
+        public static void CreateEncryptionFile()
+        {
+            File.WriteAllText("Encryption", AESEncrypt.AesEncryptString("Success"));
+        }
+
+        public static void RemoveEncryptionFile()
+        {
+            File.Delete("Encryption");
+        }
+
+        public static void ResetEncryption()
+        {
+            if (File.Exists("Portfolio1"))
+                File.Delete("Portfolio1");
+
+            if (File.Exists("Portfolio2"))
+                File.Delete("Portfolio2");
+
+            if (File.Exists("Portfolio3"))
+                File.Delete("Portfolio3");
+
+            if (File.Exists("Alerts"))
+                File.Delete("Alerts");
+
+            if (File.Exists("Encryption"))
+                File.Delete("Encryption");
+
+            UserConfig.Encryption = false;
         }
         #endregion
 
@@ -117,6 +180,30 @@ namespace MyCryptoMonitor.Functions
         {
             File.WriteAllText(portfolio, JsonConvert.SerializeObject(coinConfigs));
         }
+
+        public static void EncryptPortfolios()
+        {
+            if (File.Exists("Portfolio1"))
+                File.WriteAllText("Portfolio1", AESEncrypt.AesEncryptString(JsonConvert.SerializeObject(LoadPortfolioUnencrypted("Portfolio1"))));
+
+            if (File.Exists("Portfolio2"))
+                File.WriteAllText("Portfolio2", AESEncrypt.AesEncryptString(JsonConvert.SerializeObject(LoadPortfolioUnencrypted("Portfolio2"))));
+
+            if (File.Exists("Portfolio3"))
+                File.WriteAllText("Portfolio3", AESEncrypt.AesEncryptString(JsonConvert.SerializeObject(LoadPortfolioUnencrypted("Portfolio3"))));
+        }
+
+        public static void DecryptPortfolios()
+        {
+            if (File.Exists("Portfolio1"))
+                File.WriteAllText("Portfolio1", JsonConvert.SerializeObject(LoadPortfolioEncrypted("Portfolio1")));
+
+            if (File.Exists("Portfolio2"))
+                File.WriteAllText("Portfolio2", JsonConvert.SerializeObject(LoadPortfolioEncrypted("Portfolio2")));
+
+            if (File.Exists("Portfolio3"))
+                File.WriteAllText("Portfolio3", JsonConvert.SerializeObject(LoadPortfolioEncrypted("Portfolio3")));
+        }
         #endregion
 
         #region Alert Management
@@ -135,7 +222,11 @@ namespace MyCryptoMonitor.Functions
 
         public static AlertConfig LoadAlertsUnencrypted()
         {
-            return JsonConvert.DeserializeObject<AlertConfig>(File.ReadAllText("Alerts"));
+            AlertConfig alertConfig = JsonConvert.DeserializeObject<AlertConfig>(File.ReadAllText("Alerts"));
+            alertConfig.EmailAddress = string.Empty;
+            alertConfig.Password = string.Empty;
+
+            return alertConfig;
         }
 
         public static void SaveAlerts(AlertConfig alertConfig)
@@ -153,7 +244,21 @@ namespace MyCryptoMonitor.Functions
 
         public static void SaveAlertsUnencrypted(AlertConfig alertConfig)
         {
+            alertConfig.EmailAddress = string.Empty;
+            alertConfig.Password = string.Empty;
             File.WriteAllText("Alerts", JsonConvert.SerializeObject(alertConfig));
+        }
+
+        public static void EncryptAlerts()
+        {
+            if (File.Exists("Alerts"))
+                File.WriteAllText("Alerts", AESEncrypt.AesEncryptString(JsonConvert.SerializeObject(LoadAlertsUnencrypted())));
+        }
+
+        public static void DecryptAlerts()
+        {
+            if (File.Exists("Alerts"))
+                File.WriteAllText("Alerts", JsonConvert.SerializeObject(LoadAlertsEncrypted()));
         }
         #endregion
     }

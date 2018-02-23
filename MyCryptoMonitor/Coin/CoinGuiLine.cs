@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace MyCryptoMonitor
 {
-    public class CoinGuiLine
+    public sealed class CoinGuiLine : IDisposable
     {
         private const int StartY = 122;
         private const int Spacing = 18;
@@ -85,6 +85,22 @@ namespace MyCryptoMonitor
             ChangePercentLabel.TextChanged += new EventHandler(ChangePercentLabel_TextChanged);
             Change1HrPercentLabel.TextChanged += new EventHandler(Change1HrPercentLabel_TextChanged);
             Change24HrPercentLabel.TextChanged += new EventHandler(Change24HrPercentLabel_TextChanged);
+        }
+
+        public void Dispose()
+        {
+            CoinIndexLabel.Dispose();
+            CoinLabel.Dispose();
+            PriceLabel.Dispose();
+            BoughtTextBox.Dispose();
+            BoughtPriceLabel.Dispose();
+            TotalLabel.Dispose();
+            PaidTextBox.Dispose();
+            ProfitLabel.Dispose();
+            ChangeDollarLabel.Dispose();
+            ChangePercentLabel.Dispose();
+            Change1HrPercentLabel.Dispose();
+            Change24HrPercentLabel.Dispose();
         }
 
         private void Change1HrPercentLabel_TextChanged(object sender, EventArgs e)

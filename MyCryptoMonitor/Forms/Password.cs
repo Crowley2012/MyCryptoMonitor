@@ -15,5 +15,10 @@ namespace MyCryptoMonitor.Forms
         {
             DialogResult = DialogResult.OK;
         }
+
+        private void btnForgot_Click(object sender, System.EventArgs e)
+        {
+            DialogResult = DialogResult.Abort;
+        }
     }
 }

@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Password));
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.btnUnlock = new System.Windows.Forms.Button();
+            this.btnForgot = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtPassword
@@ -51,12 +52,23 @@
             this.btnUnlock.UseVisualStyleBackColor = true;
             this.btnUnlock.Click += new System.EventHandler(this.btnUnlock_Click);
             // 
+            // btnForgot
+            // 
+            this.btnForgot.Location = new System.Drawing.Point(348, 11);
+            this.btnForgot.Name = "btnForgot";
+            this.btnForgot.Size = new System.Drawing.Size(105, 23);
+            this.btnForgot.TabIndex = 2;
+            this.btnForgot.Text = "Forgot Password";
+            this.btnForgot.UseVisualStyleBackColor = true;
+            this.btnForgot.Click += new System.EventHandler(this.btnForgot_Click);
+            // 
             // Password
             // 
             this.AcceptButton = this.btnUnlock;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(355, 46);
+            this.ClientSize = new System.Drawing.Size(465, 46);
+            this.Controls.Add(this.btnForgot);
             this.Controls.Add(this.btnUnlock);
             this.Controls.Add(this.txtPassword);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -71,5 +83,6 @@
 
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Button btnUnlock;
+        private System.Windows.Forms.Button btnForgot;
     }
 }
