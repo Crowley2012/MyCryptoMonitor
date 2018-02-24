@@ -3,6 +3,9 @@ using MyCryptoMonitor.Forms;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
+using System.Net.Mail;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Functions
@@ -11,6 +14,7 @@ namespace MyCryptoMonitor.Functions
     {
         #region Public Variables
         public static UserConfig UserConfig { get; set; }
+        public static AlertConfig CachedAlertConfig { get; set; }
         public static string SelectedPortfolio { get; set; }
         public static string Password { get; set; } = string.Empty;
         #endregion
@@ -231,6 +235,9 @@ namespace MyCryptoMonitor.Functions
 
         public static void SaveAlerts(AlertConfig alertConfig)
         {
+            //Update the cached alerts
+            CachedAlertConfig = alertConfig;
+
             if (UserConfig.Encryption)
                 SaveAlertsEncrypted(alertConfig);
             else
@@ -259,6 +266,50 @@ namespace MyCryptoMonitor.Functions
         {
             if (File.Exists("Alerts"))
                 File.WriteAllText("Alerts", JsonConvert.SerializeObject(LoadAlertsEncrypted()));
+        }
+
+        public static void RemoveAlerts(List<AlertDataSource> alerts)
+        {
+            AlertConfig alertConfig = LoadAlerts();
+            
+            foreach(AlertDataSource alert in alerts)
+                alertConfig.Alerts.RemoveAll(c => c.Coin.Equals(alert.Coin) && c.Operator.Equals(alert.Operator) && c.Price.Equals(alert.Price));
+
+            SaveAlerts(alertConfig);
+        }
+
+        public static void SendAlert(AlertDataSource alert)
+        {
+            string alertMessage = $"{alert.Coin} is {alert.Operator} than {alert.Price}";
+
+            Task.Factory.StartNew(() => { MessageBox.Show(alertMessage); });
+            
+            if(!string.IsNullOrEmpty(CachedAlertConfig.EmailAddress) && !string.IsNullOrEmpty(CachedAlertConfig.Password))
+            {
+                var fromAddress = new MailAddress(CachedAlertConfig.EmailAddress);
+                var toAddress = new MailAddress(CachedAlertConfig.ContactAddress);
+                string fromPassword = CachedAlertConfig.Password;
+                string subject = "My Crypto Monitor Alert";
+                string body = alertMessage;
+
+                var smtp = new SmtpClient
+                {
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                };
+                using (var message = new MailMessage(fromAddress, toAddress)
+                {
+                    Subject = subject,
+                    Body = body
+                })
+                {
+                    smtp.Send(message);
+                }
+            }
         }
         #endregion
     }

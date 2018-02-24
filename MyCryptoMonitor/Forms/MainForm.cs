@@ -8,8 +8,8 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Drawing;
-using MyCryptoMonitor.DataSources;
 using MyCryptoMonitor.Functions;
+using MyCryptoMonitor.DataSources;
 
 namespace MyCryptoMonitor.Forms
 {
@@ -53,6 +53,10 @@ namespace MyCryptoMonitor.Forms
 
             //Attempt to load portfolio on startup
             _coinConfigs = Management.LoadFirstPortfolio();
+
+            //Cache alerts
+            if(File.Exists("Alerts"))
+                Management.CachedAlertConfig = Management.LoadAlerts();
 
             //Update status
             UpdateStatusDelegate updateStatus = new UpdateStatusDelegate(UpdateStatus);
@@ -233,6 +237,26 @@ namespace MyCryptoMonitor.Forms
 
             //Create list of coin names
             _coins = coins.OrderBy(c => c.ShortName).ToList();
+
+            //Loop through alerts
+            if(Management.CachedAlertConfig != null && Management.CachedAlertConfig.Alerts.Count > 0)
+            {
+                List<AlertDataSource> removeAlerts = new List<AlertDataSource>();
+
+                foreach (AlertDataSource coin in Management.CachedAlertConfig.Alerts)
+                {
+                    var coinData = _coins.Where(c => c.ShortName.Equals(coin.Coin)).First();
+
+                    if((coin.Operator.Equals("Greater Than") && coinData.Price > coin.Price) || (coin.Operator.Equals("Less Than") && coinData.Price < coin.Price))
+                    {
+                        Management.SendAlert(coin);
+                        removeAlerts.Add(coin);
+                    }
+                }
+
+                if(removeAlerts.Count > 0)
+                    Management.RemoveAlerts(removeAlerts);
+            }
 
             //Loop through all coins from config
             foreach (CoinConfig coin in _coinConfigs)
