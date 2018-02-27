@@ -1,6 +1,7 @@
 ﻿using MyCryptoMonitor.DataSources;
 using MyCryptoMonitor.Forms;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -283,32 +284,39 @@ namespace MyCryptoMonitor.Functions
             string alertMessage = $"{alert.Coin} is {alert.Operator} than {alert.Price}";
 
             Task.Factory.StartNew(() => { MessageBox.Show(alertMessage); });
-            
-            if(!string.IsNullOrEmpty(CachedAlertConfig.EmailAddress) && !string.IsNullOrEmpty(CachedAlertConfig.Password))
-            {
-                var fromAddress = new MailAddress(CachedAlertConfig.EmailAddress);
-                var toAddress = new MailAddress(CachedAlertConfig.ContactAddress);
-                string fromPassword = CachedAlertConfig.Password;
-                string subject = "My Crypto Monitor Alert";
-                string body = alertMessage;
 
-                var smtp = new SmtpClient
+            try
+            {
+                if (!string.IsNullOrEmpty(CachedAlertConfig.EmailAddress) && !string.IsNullOrEmpty(CachedAlertConfig.Password))
                 {
-                    Host = "smtp.gmail.com",
-                    Port = 587,
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-                };
-                using (var message = new MailMessage(fromAddress, toAddress)
-                {
-                    Subject = subject,
-                    Body = body
-                })
-                {
-                    smtp.Send(message);
+                    var fromAddress = new MailAddress(CachedAlertConfig.EmailAddress);
+                    var toAddress = new MailAddress(CachedAlertConfig.ContactAddress);
+                    string fromPassword = CachedAlertConfig.Password;
+                    string subject = "My Crypto Monitor Alert";
+                    string body = alertMessage;
+
+                    var smtp = new SmtpClient
+                    {
+                        Host = "smtp.gmail.com",
+                        Port = 587,
+                        EnableSsl = true,
+                        DeliveryMethod = SmtpDeliveryMethod.Network,
+                        UseDefaultCredentials = false,
+                        Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                    };
+                    using (var message = new MailMessage(fromAddress, toAddress)
+                    {
+                        Subject = subject,
+                        Body = body
+                    })
+                    {
+                        smtp.Send(message);
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show($"Error sending external alert. Ensure that 'allow less secure apps' is enabled for gmail, your email and password is correct, and that port 587 is not blocked on your network.\nError: {e.Message}");
             }
         }
         #endregion

@@ -31,11 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Alerts));
             this.grdAlerts = new System.Windows.Forms.DataGridView();
-            this.coinDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Current = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.operatorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bsAlerts = new System.Windows.Forms.BindingSource(this.components);
             this.cmbCoins = new System.Windows.Forms.ComboBox();
             this.txtPrice = new System.Windows.Forms.TextBox();
             this.cmbOperator = new System.Windows.Forms.ComboBox();
@@ -62,14 +58,18 @@
             this.txtEmailAddress = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.coinDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.operatorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bsAlerts = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.grdAlerts)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bsAlerts)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.grpContact.SuspendLayout();
             this.grpAlerts.SuspendLayout();
             this.grpEmail.SuspendLayout();
             this.tblEmailInput.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bsAlerts)).BeginInit();
             this.SuspendLayout();
             // 
             // grdAlerts
@@ -93,18 +93,10 @@
             this.grdAlerts.Name = "grdAlerts";
             this.grdAlerts.RowHeadersVisible = false;
             this.grdAlerts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.grdAlerts.Size = new System.Drawing.Size(913, 342);
+            this.grdAlerts.Size = new System.Drawing.Size(913, 313);
             this.grdAlerts.TabIndex = 0;
             this.grdAlerts.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.grdAlerts_CellBeginEdit);
             this.grdAlerts.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdAlerts_CellEndEdit);
-            // 
-            // coinDataGridViewTextBoxColumn
-            // 
-            this.coinDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.coinDataGridViewTextBoxColumn.DataPropertyName = "Coin";
-            this.coinDataGridViewTextBoxColumn.HeaderText = "Coin";
-            this.coinDataGridViewTextBoxColumn.Name = "coinDataGridViewTextBoxColumn";
-            this.coinDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // Current
             // 
@@ -113,25 +105,6 @@
             this.Current.HeaderText = "Current";
             this.Current.Name = "Current";
             this.Current.ReadOnly = true;
-            // 
-            // operatorDataGridViewTextBoxColumn
-            // 
-            this.operatorDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.operatorDataGridViewTextBoxColumn.DataPropertyName = "Operator";
-            this.operatorDataGridViewTextBoxColumn.HeaderText = "Operator";
-            this.operatorDataGridViewTextBoxColumn.Name = "operatorDataGridViewTextBoxColumn";
-            this.operatorDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // priceDataGridViewTextBoxColumn
-            // 
-            this.priceDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.priceDataGridViewTextBoxColumn.DataPropertyName = "Price";
-            this.priceDataGridViewTextBoxColumn.HeaderText = "Price";
-            this.priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
-            // 
-            // bsAlerts
-            // 
-            this.bsAlerts.DataSource = typeof(MyCryptoMonitor.DataSources.AlertDataSourceList);
             // 
             // cmbCoins
             // 
@@ -372,7 +345,7 @@
             this.grpContact.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grpContact.Controls.Add(this.tableLayoutPanel1);
-            this.grpContact.Location = new System.Drawing.Point(9, 106);
+            this.grpContact.Location = new System.Drawing.Point(9, 114);
             this.grpContact.Name = "grpContact";
             this.grpContact.Size = new System.Drawing.Size(925, 57);
             this.grpContact.TabIndex = 11;
@@ -386,9 +359,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grpAlerts.Controls.Add(this.tableLayoutPanel2);
             this.grpAlerts.Controls.Add(this.grdAlerts);
-            this.grpAlerts.Location = new System.Drawing.Point(9, 169);
+            this.grpAlerts.Location = new System.Drawing.Point(9, 177);
             this.grpAlerts.Name = "grpAlerts";
-            this.grpAlerts.Size = new System.Drawing.Size(925, 400);
+            this.grpAlerts.Size = new System.Drawing.Size(925, 371);
             this.grpAlerts.TabIndex = 12;
             this.grpAlerts.TabStop = false;
             this.grpAlerts.Text = "Alerts";
@@ -401,7 +374,7 @@
             this.grpEmail.Controls.Add(this.tblEmailInput);
             this.grpEmail.Location = new System.Drawing.Point(9, 12);
             this.grpEmail.Name = "grpEmail";
-            this.grpEmail.Size = new System.Drawing.Size(925, 88);
+            this.grpEmail.Size = new System.Drawing.Size(925, 96);
             this.grpEmail.TabIndex = 12;
             this.grpEmail.TabStop = false;
             this.grpEmail.Text = "Email Credentials";
@@ -411,7 +384,7 @@
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(9, 19);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(873, 26);
+            this.label9.Size = new System.Drawing.Size(873, 39);
             this.label9.TabIndex = 13;
             this.label9.Text = resources.GetString("label9.Text");
             // 
@@ -430,7 +403,7 @@
             this.tblEmailInput.Controls.Add(this.txtEmailAddress, 1, 0);
             this.tblEmailInput.Controls.Add(this.label7, 2, 0);
             this.tblEmailInput.Controls.Add(this.label8, 0, 0);
-            this.tblEmailInput.Location = new System.Drawing.Point(6, 55);
+            this.tblEmailInput.Location = new System.Drawing.Point(6, 64);
             this.tblEmailInput.Name = "tblEmailInput";
             this.tblEmailInput.RowCount = 1;
             this.tblEmailInput.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -497,11 +470,38 @@
             this.label8.Text = "Email Address";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // coinDataGridViewTextBoxColumn
+            // 
+            this.coinDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.coinDataGridViewTextBoxColumn.DataPropertyName = "Coin";
+            this.coinDataGridViewTextBoxColumn.HeaderText = "Coin";
+            this.coinDataGridViewTextBoxColumn.Name = "coinDataGridViewTextBoxColumn";
+            this.coinDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // operatorDataGridViewTextBoxColumn
+            // 
+            this.operatorDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.operatorDataGridViewTextBoxColumn.DataPropertyName = "Operator";
+            this.operatorDataGridViewTextBoxColumn.HeaderText = "Operator";
+            this.operatorDataGridViewTextBoxColumn.Name = "operatorDataGridViewTextBoxColumn";
+            this.operatorDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // priceDataGridViewTextBoxColumn
+            // 
+            this.priceDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.priceDataGridViewTextBoxColumn.DataPropertyName = "Price";
+            this.priceDataGridViewTextBoxColumn.HeaderText = "Price";
+            this.priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
+            // 
+            // bsAlerts
+            // 
+            this.bsAlerts.DataSource = typeof(MyCryptoMonitor.DataSources.AlertDataSourceList);
+            // 
             // Alerts
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(946, 581);
+            this.ClientSize = new System.Drawing.Size(946, 560);
             this.Controls.Add(this.grpEmail);
             this.Controls.Add(this.grpAlerts);
             this.Controls.Add(this.grpContact);
@@ -511,7 +511,6 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Alerts_FormClosed);
             this.Load += new System.EventHandler(this.Alerts_Load);
             ((System.ComponentModel.ISupportInitialize)(this.grdAlerts)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bsAlerts)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -522,6 +521,7 @@
             this.grpEmail.PerformLayout();
             this.tblEmailInput.ResumeLayout(false);
             this.tblEmailInput.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bsAlerts)).EndInit();
             this.ResumeLayout(false);
 
         }
