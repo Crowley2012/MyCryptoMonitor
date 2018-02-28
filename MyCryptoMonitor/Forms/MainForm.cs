@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Drawing;
 using MyCryptoMonitor.Functions;
 using MyCryptoMonitor.DataSources;
+using System.Threading.Tasks;
 
 namespace MyCryptoMonitor.Forms
 {
@@ -28,6 +29,8 @@ namespace MyCryptoMonitor.Forms
         private DateTime _refreshTime;
         private bool _loadGuiLines;
         private string _api;
+        private CancellationTokenSource token;
+        private int count = 0;
         #endregion
 
         #region Load
@@ -36,7 +39,7 @@ namespace MyCryptoMonitor.Forms
             InitializeComponent();
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private async void MainForm_LoadAsync(object sender, EventArgs e)
         {
             _coinGuiLines = new List<CoinGuiLine>();
             _coinConfigs = new List<CoinConfig>();
@@ -67,11 +70,9 @@ namespace MyCryptoMonitor.Forms
             mainThread.IsBackground = true;
             mainThread.Start();
 
-            //Start time thread
-            Thread timeThread = new Thread(() => Timer());
-            timeThread.IsBackground = true;
-            timeThread.Start();
-            
+            token = new CancellationTokenSource();
+            await PeriodicFooAsync(500, token);
+
             //Start check update thread
             Thread checkUpdateThread = new Thread(() => CheckUpdate());
             checkUpdateThread.IsBackground = true;
@@ -117,15 +118,20 @@ namespace MyCryptoMonitor.Forms
             DownloadData();
         }
 
-        private void Timer()
+        public async Task PeriodicFooAsync(int interval, CancellationTokenSource cancellationToken)
         {
-            //Update times
-            UpdateTimesDelegate updateTimes = new UpdateTimesDelegate(UpdateTimes);
-            BeginInvoke(updateTimes);
+            while (!cancellationToken.Token.IsCancellationRequested)
+            {
+                //Update reset time
+                TimeSpan spanRefresh = DateTime.Now.Subtract(_refreshTime);
+                lblRefreshTime.Text = $"Time since refresh: {spanRefresh.Minutes}:{spanRefresh.Seconds:00}";
 
-            //Sleep and refresh
-            Thread.Sleep(500);
-            Timer();
+                //Update reset time
+                TimeSpan spanReset = DateTime.Now.Subtract(_resetTime);
+                lblResetTime.Text = $"Time since reset: {spanReset.Hours}:{spanReset.Minutes:00}:{spanReset.Seconds:00}";
+
+                await Task.Delay(interval, cancellationToken.Token);
+            }
         }
 
         private void CheckUpdate()
@@ -178,24 +184,6 @@ namespace MyCryptoMonitor.Forms
             lblStatus.Text = $"Status: {status}";
         }
 
-        private delegate void UpdateTimesDelegate();
-        public void UpdateTimes()
-        {
-            if (InvokeRequired)
-            {
-                Invoke(new UpdateTimesDelegate(UpdateTimes));
-                return;
-            }
-
-            //Update reset time
-            TimeSpan spanRefresh = DateTime.Now.Subtract(_refreshTime);
-            lblRefreshTime.Text = $"Time since refresh: {spanRefresh.Minutes}:{spanRefresh.Seconds:00}";
-
-            //Update reset time
-            TimeSpan spanReset = DateTime.Now.Subtract(_resetTime);
-            lblResetTime.Text = $"Time since reset: {spanReset.Hours}:{spanReset.Minutes:00}:{spanReset.Seconds:00}";
-        }
-
         private delegate void UpdateCoinDelegates(string response);
         public void UpdateCoins(string response)
         {
@@ -213,6 +201,10 @@ namespace MyCryptoMonitor.Forms
 
             //Index of coin gui line
             int index = 0;
+
+            count++;
+            if(count > 3)
+                token.Cancel(true);
 
             //Deserialize settings
             JsonSerializerSettings settings = new JsonSerializerSettings
