@@ -3,9 +3,11 @@ using MyCryptoMonitor.Forms;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Net;
 using System.Net.Mail;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -13,9 +15,12 @@ namespace MyCryptoMonitor.Functions
 {
     public class Management
     {
+        public enum Types {[Description("Email")] Email, [Description("Verizon")] Verizon, [Description("AT&T")] ATT, [Description("Sprint")] Sprint, [Description("Boost Mobile")] Boost, [Description("T-Mobile")] TMobile, [Description("US Cellular")] USCellular, [Description("Virgin Mobile")] VirginMobile }
+        public enum Operators {[Description("Greater Than")] GreaterThan, [Description("Less Than")] LessThan }
+
         #region Public Variables
         public static UserConfig UserConfig { get; set; }
-        public static AlertConfig CachedAlertConfig { get; set; }
+        public static AlertConfig AlertConfig { get; set; }
         public static string SelectedPortfolio { get; set; }
         public static string Password { get; set; } = string.Empty;
         #endregion
@@ -26,15 +31,15 @@ namespace MyCryptoMonitor.Functions
             if (File.Exists("UserConfig"))
                 UserConfig = JsonConvert.DeserializeObject<UserConfig>(File.ReadAllText("UserConfig"));
             else
+            {
+                UserConfig = new UserConfig();
                 SaveUserConfig();
+            }
         }
 
         public static void SaveUserConfig()
         {
-            if(UserConfig != null)
-                File.WriteAllText("UserConfig", JsonConvert.SerializeObject(UserConfig));
-            else
-                File.WriteAllText("UserConfig", JsonConvert.SerializeObject(new UserConfig()));
+            File.WriteAllText("UserConfig", JsonConvert.SerializeObject(UserConfig));
         }
         #endregion
 
@@ -228,8 +233,8 @@ namespace MyCryptoMonitor.Functions
         public static AlertConfig LoadAlertsUnencrypted()
         {
             AlertConfig alertConfig = JsonConvert.DeserializeObject<AlertConfig>(File.ReadAllText("Alerts"));
-            alertConfig.EmailAddress = string.Empty;
-            alertConfig.Password = string.Empty;
+            alertConfig.SendAddress = string.Empty;
+            alertConfig.SendPassword = string.Empty;
 
             return alertConfig;
         }
@@ -237,7 +242,7 @@ namespace MyCryptoMonitor.Functions
         public static void SaveAlerts(AlertConfig alertConfig)
         {
             //Update the cached alerts
-            CachedAlertConfig = alertConfig;
+            AlertConfig = alertConfig;
 
             if (UserConfig.Encryption)
                 SaveAlertsEncrypted(alertConfig);
@@ -252,8 +257,8 @@ namespace MyCryptoMonitor.Functions
 
         public static void SaveAlertsUnencrypted(AlertConfig alertConfig)
         {
-            alertConfig.EmailAddress = string.Empty;
-            alertConfig.Password = string.Empty;
+            alertConfig.SendAddress = string.Empty;
+            alertConfig.SendPassword = string.Empty;
             File.WriteAllText("Alerts", JsonConvert.SerializeObject(alertConfig));
         }
 
@@ -279,32 +284,65 @@ namespace MyCryptoMonitor.Functions
             SaveAlerts(alertConfig);
         }
 
+        public static string GetContactAddress(string address, string type)
+        {
+            switch ((Types)Enum.Parse(typeof(Types), type))
+            {
+                case Types.Email:
+                    return address;
+                case Types.ATT:
+                    return $"{address}@txt.att.net";
+                case Types.Boost:
+                    return $"{address}@myboostmobile.com";
+                case Types.Sprint:
+                    return $"{address}@messaging.sprintpcs.com";
+                case Types.Verizon:
+                    return $"{address}@vtext.com";
+                case Types.TMobile:
+                    return $"{address}@tmomail.net";
+                case Types.USCellular:
+                    return $"{address}@email.uscc.net";
+                case Types.VirginMobile:
+                    return $"{address}@vmobl.com";
+                default:
+                    return string.Empty;
+            }
+        }
+
         public static void SendAlert(AlertDataSource alert)
         {
             string alertMessage = $"{alert.Coin} is {alert.Operator} than {alert.Price}";
 
-            Task.Factory.StartNew(() => { MessageBox.Show(alertMessage); });
+            Task.Factory.StartNew(() => { MessageBox.Show(alertMessage, "Alert"); });
 
+            Thread sendEmail = new Thread(new ParameterizedThreadStart(sendEmailThread));
+            sendEmail.IsBackground = true;
+            sendEmail.Start(alertMessage);
+        }
+
+        public static void sendEmailThread(object alertMessage)
+        {
             try
             {
-                if (!string.IsNullOrEmpty(CachedAlertConfig.EmailAddress) && !string.IsNullOrEmpty(CachedAlertConfig.Password))
+                if (!string.IsNullOrEmpty(AlertConfig.SendAddress) && !string.IsNullOrEmpty(AlertConfig.SendPassword))
                 {
-                    var fromAddress = new MailAddress(CachedAlertConfig.EmailAddress);
-                    var toAddress = new MailAddress(CachedAlertConfig.ContactAddress);
-                    string fromPassword = CachedAlertConfig.Password;
+                    var sendAddress = new MailAddress(AlertConfig.SendAddress);
+                    var receiveAddress = new MailAddress(GetContactAddress(AlertConfig.ReceiveAddress, AlertConfig.ReceiveType));
+                    string fromPassword = AlertConfig.SendPassword;
                     string subject = "My Crypto Monitor Alert";
-                    string body = alertMessage;
+                    string body = Convert.ToString(alertMessage);
 
                     var smtp = new SmtpClient
                     {
                         Host = "smtp.gmail.com",
-                        Port = 587,
+                        Port = 25,
                         EnableSsl = true,
                         DeliveryMethod = SmtpDeliveryMethod.Network,
                         UseDefaultCredentials = false,
-                        Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                        Credentials = new NetworkCredential(sendAddress.Address, fromPassword)
                     };
-                    using (var message = new MailMessage(fromAddress, toAddress)
+
+                    using (var message = new MailMessage(sendAddress, receiveAddress)
                     {
                         Subject = subject,
                         Body = body
@@ -316,7 +354,7 @@ namespace MyCryptoMonitor.Functions
             }
             catch (Exception e)
             {
-                MessageBox.Show($"Error sending external alert. Ensure that 'allow less secure apps' is enabled for gmail, your email and password is correct, and that port 587 is not blocked on your network.\nError: {e.Message}");
+                MessageBox.Show($"Ensure that 'allow less secure apps' is enabled for gmail, your email and password are correct, and that port 25 is not blocked on your network.\n\nError Message: {e.Message}", "Error sending external alert");
             }
         }
         #endregion

@@ -4,10 +4,10 @@ namespace MyCryptoMonitor.DataSources
 {
     public class AlertConfig
     {
-        public string EmailAddress { get; set; }
-        public string Password { get; set; }
-        public string ContactAddress { get; set; }
-        public string ContactType { get; set; }
+        public string SendAddress { get; set; }
+        public string SendPassword { get; set; }
+        public string ReceiveAddress { get; set; }
+        public string ReceiveType { get; set; }
         public List<AlertDataSource> Alerts { get; set; }
     }
 }

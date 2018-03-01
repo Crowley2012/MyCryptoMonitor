@@ -11,9 +11,6 @@ namespace MyCryptoMonitor.Forms
 {
     public partial class Alerts : Form
     {
-        public enum Types {[Description("Email")] Email, [Description("Version")] Version, [Description("AT&T")] ATT, [Description("Sprint")] Sprint, [Description("Boost")] Boost, [Description("Mobile")] Mobile }
-        public enum Operators {[Description("Greater Than")] GreaterThan, [Description("Less Than")] LessThan }
-
         #region Private Variables
         private List<CoinData> _coins;
         private List<AlertDataSource> _alerts;
@@ -35,26 +32,26 @@ namespace MyCryptoMonitor.Forms
             if (File.Exists("Alerts"))
             {
                 AlertConfig alertConfig = Management.LoadAlerts();
-                txtEmailAddress.Text = alertConfig.EmailAddress;
-                txtPassword.Text = alertConfig.Password;
-                txtContactAddress.Text = alertConfig.ContactAddress;
-                cmbContactType.Text = alertConfig.ContactType;
+                txtSendAddress.Text = alertConfig.SendAddress;
+                txtSendPassword.Text = alertConfig.SendPassword;
+                txtReceiveAddress.Text = alertConfig.ReceiveAddress;
+                cmbReceiveType.Text = alertConfig.ReceiveType;
 
                 //Get the current price of coin
                 foreach(AlertDataSource alert in alertConfig.Alerts)
                     alert.Current = _coins.Where(c => c.ShortName.Equals(alert.Coin)).Select(c => c.Price).First();
 
-                bsAlerts.DataSource = alertConfig.Alerts;
+                bsAlerts.DataSource = alertConfig.Alerts.OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();
             }
 
             if (!Management.UserConfig.Encryption)
             {
-                txtEmailAddress.Text = string.Empty;
-                txtPassword.Text = string.Empty;
+                txtSendAddress.Text = string.Empty;
+                txtSendPassword.Text = string.Empty;
                 tblEmailInput.Enabled = false;
             }
 
-            if (string.IsNullOrEmpty(txtEmailAddress.Text) || string.IsNullOrEmpty(txtPassword.Text))
+            if (string.IsNullOrEmpty(txtSendAddress.Text) || string.IsNullOrEmpty(txtSendPassword.Text))
                 grpContact.Enabled = false;
         }
 
@@ -62,10 +59,10 @@ namespace MyCryptoMonitor.Forms
         {
             AlertConfig alertConfig = new AlertConfig
             {
-                EmailAddress = txtEmailAddress.Text,
-                Password = txtPassword.Text,
-                ContactAddress = txtContactAddress.Text,
-                ContactType = cmbContactType.Text,
+                SendAddress = txtSendAddress.Text,
+                SendPassword = txtSendPassword.Text,
+                ReceiveAddress = txtReceiveAddress.Text,
+                ReceiveType = cmbReceiveType.Text,
                 Alerts = bsAlerts.DataSource as List<AlertDataSource>
             };
 
@@ -73,14 +70,14 @@ namespace MyCryptoMonitor.Forms
             Management.SaveAlerts(alertConfig);
         }
 
-        private bool CheckValid(decimal currentPrice, decimal checkPrice, Operators op)
+        private bool CheckValid(decimal currentPrice, decimal checkPrice, Management.Operators op)
         {
-            if (op == Operators.GreaterThan && currentPrice > checkPrice)
+            if (op == Management.Operators.GreaterThan && currentPrice > checkPrice)
             {
                 MessageBox.Show("Current price is already greater than check price");
                 return false;
             }
-            else if(op == Operators.LessThan && currentPrice < checkPrice)
+            else if(op == Management.Operators.LessThan && currentPrice < checkPrice)
             {
                 MessageBox.Show("Current price is already less than check price");
                 return false;
@@ -94,13 +91,14 @@ namespace MyCryptoMonitor.Forms
         private void Alerts_Load(object sender, EventArgs e)
         {
             //Set contact types
-            cmbContactType.DataSource = Enum.GetValues(typeof(Types))
+            cmbReceiveType.DataSource = Enum.GetValues(typeof(Management.Types))
                 .Cast<Enum>()
                 .Select(value => new { (Attribute.GetCustomAttribute(value.GetType().GetField(value.ToString()), typeof(DescriptionAttribute)) as DescriptionAttribute).Description, value })
+                .OrderBy(d => d.Description)
                 .ToList();
 
             //Set operators
-            cmbOperator.DataSource = Enum.GetValues(typeof(Operators))
+            cmbOperator.DataSource = Enum.GetValues(typeof(Management.Operators))
                 .Cast<Enum>()
                 .Select(value => new { (Attribute.GetCustomAttribute(value.GetType().GetField(value.ToString()), typeof(DescriptionAttribute)) as DescriptionAttribute).Description, value })
                 .ToList();
@@ -125,10 +123,10 @@ namespace MyCryptoMonitor.Forms
 
         private void btnSet_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtEmailAddress.Text) || string.IsNullOrEmpty(txtPassword.Text))
+            if (string.IsNullOrEmpty(txtSendAddress.Text) || string.IsNullOrEmpty(txtSendPassword.Text))
             {
-                txtEmailAddress.Text = string.Empty;
-                txtPassword.Text = string.Empty;
+                txtSendAddress.Text = string.Empty;
+                txtSendPassword.Text = string.Empty;
                 grpContact.Enabled = false;
             }
             else
@@ -148,11 +146,12 @@ namespace MyCryptoMonitor.Forms
             }
 
             //Check if check value is valid
-            Enum.TryParse(cmbOperator.SelectedValue.ToString(), out Operators op);
+            Enum.TryParse(cmbOperator.SelectedValue.ToString(), out Management.Operators op);
             if (!CheckValid(Convert.ToDecimal(txtCurrent.Text), Convert.ToDecimal(txtPrice.Text), op))
                 return;
 
             bsAlerts.Add(new AlertDataSource { Coin = cmbCoins.Text, Current = Convert.ToDecimal(txtCurrent.Text), Operator = cmbOperator.Text, Price = Convert.ToDecimal(txtPrice.Text) });
+            bsAlerts.DataSource = ((List<AlertDataSource>)bsAlerts.DataSource).OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -171,7 +170,7 @@ namespace MyCryptoMonitor.Forms
             if (grdAlerts.SelectedCells.Count <= 0 || grdAlerts.SelectedCells[0].Value != null || Decimal.TryParse(txtPrice.Text, out decimal value))
             {
                 //Check if check value is valid
-                Enum.TryParse(cmbOperator.SelectedValue.ToString(), out Operators op);
+                Enum.TryParse(cmbOperator.SelectedValue.ToString(), out Management.Operators op);
                 if (!CheckValid(Convert.ToDecimal(grdAlerts.SelectedCells[0].OwningRow.Cells[1].Value), Convert.ToDecimal(grdAlerts.SelectedCells[0].OwningRow.Cells[3].Value), op))
                     grdAlerts.SelectedCells[0].OwningRow.Cells[3].Value = _oldCheckPrice;
 
@@ -194,7 +193,9 @@ namespace MyCryptoMonitor.Forms
             }
 
             //Set the coin price
-            txtCurrent.Text = _coins.Where(c => c.ShortName.Equals(cmbCoins.Text)).Select(c => c.Price).FirstOrDefault().ToString();
+            var currentPrice = _coins.Where(c => c.ShortName.Equals(cmbCoins.Text)).Select(c => c.Price).FirstOrDefault().ToString();
+            txtPrice.Text = currentPrice;
+            txtCurrent.Text = currentPrice;
         }
         #endregion
     }

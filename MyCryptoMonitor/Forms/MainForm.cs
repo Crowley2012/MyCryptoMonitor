@@ -56,7 +56,7 @@ namespace MyCryptoMonitor.Forms
 
             //Cache alerts
             if(File.Exists("Alerts"))
-                Management.CachedAlertConfig = Management.LoadAlerts();
+                Management.AlertConfig = Management.LoadAlerts();
 
             //Update status
             UpdateStatus("Loading");
@@ -166,7 +166,7 @@ namespace MyCryptoMonitor.Forms
                 }
             }
             
-            UpdateStatus("Failed to check for update");
+            UpdateStatus("Failed checking for update");
         }
         #endregion
 
@@ -226,11 +226,11 @@ namespace MyCryptoMonitor.Forms
                 _coins = coins.OrderBy(c => c.ShortName).ToList();
 
                 //Loop through alerts
-                if (Management.CachedAlertConfig != null && Management.CachedAlertConfig.Alerts.Count > 0)
+                if (Management.AlertConfig != null && Management.AlertConfig.Alerts.Count > 0)
                 {
                     List<AlertDataSource> removeAlerts = new List<AlertDataSource>();
 
-                    foreach (AlertDataSource coin in Management.CachedAlertConfig.Alerts)
+                    foreach (AlertDataSource coin in Management.AlertConfig.Alerts)
                     {
                         var coinData = _coins.Where(c => c.ShortName.Equals(coin.Coin)).First();
 
@@ -459,7 +459,7 @@ namespace MyCryptoMonitor.Forms
             //Check if coin exists
             if (!_coins.Any(c => c.ShortName.Equals(form.InputText.ToUpper())))
             {
-                MessageBox.Show("Coin does not exist.");
+                MessageBox.Show("Coin does not exist.", "Error");
                 return;
             }
 
@@ -487,7 +487,7 @@ namespace MyCryptoMonitor.Forms
             //Check if coin exists
             if (!_coinConfigs.Any(a => a.coin.Equals(form.InputText.ToUpper()) && a.coinIndex == form.CoinIndex))
             {
-                MessageBox.Show("Coin does not exist.");
+                MessageBox.Show("Coin does not exist.", "Error");
                 return;
             }
 
@@ -533,7 +533,7 @@ namespace MyCryptoMonitor.Forms
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show($"Created by Sean Crowley\n\nVersion: {Assembly.GetExecutingAssembly().GetName().Version.ToString()}");
+            MessageBox.Show($"Created by Sean Crowley\n\nGithub.com/Crowley2012/MyCryptoMonitor\n\nVersion: {Assembly.GetExecutingAssembly().GetName().Version.ToString()}", "About");
         }
 
         private void mnuCoinMarketCap_Click(object sender, EventArgs e)
@@ -560,6 +560,11 @@ namespace MyCryptoMonitor.Forms
         {
             Encrypt form = new Encrypt();
             form.Show();
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Environment.Exit(Environment.ExitCode);
         }
         #endregion
     }
