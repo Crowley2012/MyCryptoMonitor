@@ -10,7 +10,6 @@ using System.Reflection;
 using System.Drawing;
 using MyCryptoMonitor.Functions;
 using MyCryptoMonitor.DataSources;
-using System.Threading.Tasks;
 
 namespace MyCryptoMonitor.Forms
 {
@@ -29,8 +28,6 @@ namespace MyCryptoMonitor.Forms
         private DateTime _refreshTime;
         private bool _loadGuiLines;
         private string _api;
-        private CancellationTokenSource token;
-        private int count = 0;
         #endregion
 
         #region Load
@@ -39,7 +36,7 @@ namespace MyCryptoMonitor.Forms
             InitializeComponent();
         }
 
-        private async void MainForm_LoadAsync(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
             _coinGuiLines = new List<CoinGuiLine>();
             _coinConfigs = new List<CoinConfig>();
@@ -62,19 +59,20 @@ namespace MyCryptoMonitor.Forms
                 Management.CachedAlertConfig = Management.LoadAlerts();
 
             //Update status
-            UpdateStatusDelegate updateStatus = new UpdateStatusDelegate(UpdateStatus);
-            BeginInvoke(updateStatus, "Loading");
+            UpdateStatus("Loading");
 
             //Start main thread
-            Thread mainThread = new Thread(() => DownloadData());
+            Thread mainThread = new Thread(new ThreadStart(DownloadData));
             mainThread.IsBackground = true;
             mainThread.Start();
 
-            token = new CancellationTokenSource();
-            await PeriodicFooAsync(500, token);
+            //Start time thread
+            Thread timerThread = new Thread(new ThreadStart(TimerThread));
+            timerThread.IsBackground = true;
+            timerThread.Start();
 
             //Start check update thread
-            Thread checkUpdateThread = new Thread(() => CheckUpdate());
+            Thread checkUpdateThread = new Thread(new ThreadStart(CheckUpdate));
             checkUpdateThread.IsBackground = true;
             checkUpdateThread.Start();
         }
@@ -84,8 +82,7 @@ namespace MyCryptoMonitor.Forms
         private void DownloadData()
         {
             //Update status
-            UpdateStatusDelegate updateStatus = new UpdateStatusDelegate(UpdateStatus);
-            BeginInvoke(updateStatus, "Refreshing");
+            UpdateStatus("Refreshing");
 
             try
             {
@@ -98,19 +95,16 @@ namespace MyCryptoMonitor.Forms
                     string response = webClient.DownloadString(_api);
 
                     //Update coins
-                    UpdateCoinDelegates updateCoins = new UpdateCoinDelegates(UpdateCoins);
-                    BeginInvoke(updateCoins, response);
+                    UpdateCoins(response);
 
                     //Update status
-                    updateStatus = new UpdateStatusDelegate(UpdateStatus);
-                    BeginInvoke(updateStatus, "Sleeping");
+                    UpdateStatus("Sleeping");
                 }
             }
             catch (WebException)
             {
                 //Update status
-                updateStatus = new UpdateStatusDelegate(UpdateStatus);
-                BeginInvoke(updateStatus, "No internet connection");
+                UpdateStatus("No internet connection");
             }
 
             //Sleep and refresh
@@ -118,243 +112,240 @@ namespace MyCryptoMonitor.Forms
             DownloadData();
         }
 
-        public async Task PeriodicFooAsync(int interval, CancellationTokenSource cancellationToken)
+        private void TimerThread()
         {
-            while (!cancellationToken.Token.IsCancellationRequested)
+            while (true)
             {
-                //Update reset time
-                TimeSpan spanRefresh = DateTime.Now.Subtract(_refreshTime);
-                lblRefreshTime.Text = $"Time since refresh: {spanRefresh.Minutes}:{spanRefresh.Seconds:00}";
-
-                //Update reset time
                 TimeSpan spanReset = DateTime.Now.Subtract(_resetTime);
-                lblResetTime.Text = $"Time since reset: {spanReset.Hours}:{spanReset.Minutes:00}:{spanReset.Seconds:00}";
+                TimeSpan spanRefresh = DateTime.Now.Subtract(_refreshTime);
+                string resetTime = $"Time since reset: {spanReset.Hours}:{spanReset.Minutes:00}:{spanReset.Seconds:00}";
+                string refreshTime = $"Time since refresh: {spanRefresh.Minutes}:{spanRefresh.Seconds:00}";
+                
+                UpdateTimers(resetTime, refreshTime);
 
-                await Task.Delay(interval, cancellationToken.Token);
+                Thread.Sleep(500);
             }
         }
 
         private void CheckUpdate()
         {
-            try
+            bool checkingUpdate = true;
+            int attempts = 0;
+
+            while (checkingUpdate && attempts < 5)
             {
-                using (var webClient = new WebClient())
+                try
                 {
-                    //Github api requires a user agent
-                    webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2;)");
-
-                    //Download lastest release data from GitHub
-                    string response = webClient.DownloadString("https://api.github.com/repos/Crowley2012/MyCryptoMonitor/releases/latest");
-                    ApiGithub release = JsonConvert.DeserializeObject<ApiGithub>(response);
-
-                    //Parse versions
-                    Version currentVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString());
-                    Version latestVersion = new Version(release.tag_name);
-
-                    //Check if latest is newer than current
-                    if (currentVersion.CompareTo(latestVersion) < 0)
+                    using (var webClient = new WebClient())
                     {
-                        //Ask if user wants to open github page
-                        if (MessageBox.Show($"Download new version?\n\nCurrent Version: {currentVersion}\nLatest Version {latestVersion}", "Update Available", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
-                            System.Diagnostics.Process.Start("https://github.com/Crowley2012/MyCryptoMonitor/releases/latest");
+                        //Github api requires a user agent
+                        webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2;)");
+
+                        //Download lastest release data from GitHub
+                        string response = webClient.DownloadString("https://api.github.com/repos/Crowley2012/MyCryptoMonitor/releases/latest");
+                        ApiGithub release = JsonConvert.DeserializeObject<ApiGithub>(response);
+
+                        //Parse versions
+                        Version currentVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString());
+                        Version latestVersion = new Version(release.tag_name);
+
+                        //Check if latest is newer than current
+                        if (currentVersion.CompareTo(latestVersion) < 0)
+                        {
+                            //Ask if user wants to open github page
+                            if (MessageBox.Show($"Download new version?\n\nCurrent Version: {currentVersion}\nLatest Version {latestVersion}", "Update Available", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
+                                System.Diagnostics.Process.Start("https://github.com/Crowley2012/MyCryptoMonitor/releases/latest");
+                        }
+
+                        checkingUpdate = false;
                     }
                 }
+                catch (WebException)
+                {
+                    attempts++;
+                }
             }
-            catch (WebException)
-            {
-                //Update status
-                UpdateStatusDelegate updateStatus = new UpdateStatusDelegate(UpdateStatus);
-                BeginInvoke(updateStatus, "No internet connection");
-                CheckUpdate();
-            }
+            
+            UpdateStatus("Failed to check for update");
         }
         #endregion
 
         #region Delegates
-        private delegate void UpdateStatusDelegate(string status);
-        public void UpdateStatus(string status)
+        private void UpdateStatus(string status)
         {
-            if (InvokeRequired)
+            Invoke((MethodInvoker)delegate
             {
-                Invoke(new UpdateStatusDelegate(UpdateStatus), status);
-                return;
-            }
-
-            //Update status
-            lblStatus.Text = $"Status: {status}";
+                lblStatus.Text = $"Status: {status}";
+            });
         }
 
-        private delegate void UpdateCoinDelegates(string response);
-        public void UpdateCoins(string response)
+        private void UpdateTimers(string resetTime, string refreshTime)
         {
-            if (InvokeRequired)
+            Invoke((MethodInvoker)delegate
             {
-                Invoke(new UpdateCoinDelegates(UpdateCoins), response);
-                return;
-            }
+                lblResetTime.Text = resetTime;
+                lblRefreshTime.Text = refreshTime;
+            });
+        }
 
-            //Overall values
-            decimal totalPaid = 0;
-            decimal overallTotal = 0;
-            decimal totalNegativeProfits = 0;
-            decimal totalPostivieProfits = 0;
-
-            //Index of coin gui line
-            int index = 0;
-
-            count++;
-            if(count > 3)
-                token.Cancel(true);
-
-            //Deserialize settings
-            JsonSerializerSettings settings = new JsonSerializerSettings
+        private void UpdateCoins(string response)
+        {
+            Invoke((MethodInvoker)delegate
             {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
+                //Overall values
+                decimal totalPaid = 0;
+                decimal overallTotal = 0;
+                decimal totalNegativeProfits = 0;
+                decimal totalPostivieProfits = 0;
 
-            //Deserialize response and map to generic coin
-            List<CoinData> coins = new List<CoinData>();
-            switch (_api)
-            {
-                case API_COIN_MARKET_CAP:
-                    var coinsCoinMarketCap = JsonConvert.DeserializeObject<List<ApiCoinMarketCap>>(response, settings);
-                    coins = coinsCoinMarketCap.Select(c => Mappings.MapCoinMarketCap(c)).ToList();
-                    break;
-                case API_COIN_CAP:
-                    var coinsCoinCap = JsonConvert.DeserializeObject<List<ApiCoinCap>>(response, settings);
-                    coins = coinsCoinCap.Select(c => Mappings.MapCoinCap(c)).ToList();
-                    break;
-            }
+                //Index of coin gui line
+                int index = 0;
 
-            //Create list of coin names
-            _coins = coins.OrderBy(c => c.ShortName).ToList();
-
-            //Loop through alerts
-            if(Management.CachedAlertConfig != null && Management.CachedAlertConfig.Alerts.Count > 0)
-            {
-                List<AlertDataSource> removeAlerts = new List<AlertDataSource>();
-
-                foreach (AlertDataSource coin in Management.CachedAlertConfig.Alerts)
+                //Deserialize settings
+                JsonSerializerSettings settings = new JsonSerializerSettings
                 {
-                    var coinData = _coins.Where(c => c.ShortName.Equals(coin.Coin)).First();
+                    NullValueHandling = NullValueHandling.Ignore,
+                    MissingMemberHandling = MissingMemberHandling.Ignore
+                };
 
-                    if((coin.Operator.Equals("Greater Than") && coinData.Price > coin.Price) || (coin.Operator.Equals("Less Than") && coinData.Price < coin.Price))
+                //Deserialize response and map to generic coin
+                List<CoinData> coins = new List<CoinData>();
+                switch (_api)
+                {
+                    case API_COIN_MARKET_CAP:
+                        var coinsCoinMarketCap = JsonConvert.DeserializeObject<List<ApiCoinMarketCap>>(response, settings);
+                        coins = coinsCoinMarketCap.Select(c => Mappings.MapCoinMarketCap(c)).ToList();
+                        break;
+                    case API_COIN_CAP:
+                        var coinsCoinCap = JsonConvert.DeserializeObject<List<ApiCoinCap>>(response, settings);
+                        coins = coinsCoinCap.Select(c => Mappings.MapCoinCap(c)).ToList();
+                        break;
+                }
+
+                //Create list of coin names
+                _coins = coins.OrderBy(c => c.ShortName).ToList();
+
+                //Loop through alerts
+                if (Management.CachedAlertConfig != null && Management.CachedAlertConfig.Alerts.Count > 0)
+                {
+                    List<AlertDataSource> removeAlerts = new List<AlertDataSource>();
+
+                    foreach (AlertDataSource coin in Management.CachedAlertConfig.Alerts)
                     {
-                        Management.SendAlert(coin);
-                        removeAlerts.Add(coin);
+                        var coinData = _coins.Where(c => c.ShortName.Equals(coin.Coin)).First();
+
+                        if ((coin.Operator.Equals("Greater Than") && coinData.Price > coin.Price) || (coin.Operator.Equals("Less Than") && coinData.Price < coin.Price))
+                        {
+                            Management.SendAlert(coin);
+                            removeAlerts.Add(coin);
+                        }
                     }
+
+                    if (removeAlerts.Count > 0)
+                        Management.RemoveAlerts(removeAlerts);
                 }
 
-                if(removeAlerts.Count > 0)
-                    Management.RemoveAlerts(removeAlerts);
-            }
-
-            //Loop through all coins from config
-            foreach (CoinConfig coin in _coinConfigs)
-            {
-                CoinData downloadedCoin;
-
-                //Parse coins, if coin doesnt exist set to 0
-                downloadedCoin = coins.Any(c => c.ShortName == coin.coin) 
-                    ? coins.Single(c => c.ShortName == coin.coin) 
-                    : new CoinData { ShortName = coin.coin, CoinIndex = coin.coinIndex, Change1HourPercent = 0, Change24HourPercent = 0, Price = 0 };
-
-                //Check if gui lines need to be loaded
-                if (_loadGuiLines)
-                    AddCoin(coin, downloadedCoin, index);
-
-                //Incremenet coin line index
-                index++;
-                
-                //Check if coinguiline exists for coinConfig
-                if (!_coinGuiLines.Any(cg => cg.CoinName.Equals(downloadedCoin.ShortName)))
+                //Loop through all coins from config
+                foreach (CoinConfig coin in _coinConfigs)
                 {
-                    RemoveDelegate remove = new RemoveDelegate(Remove);
-                    BeginInvoke(remove);
-                    return;
+                    CoinData downloadedCoin;
+
+                    //Parse coins, if coin doesnt exist set to 0
+                    downloadedCoin = coins.Any(c => c.ShortName == coin.coin)
+                        ? coins.Single(c => c.ShortName == coin.coin)
+                        : new CoinData { ShortName = coin.coin, CoinIndex = coin.coinIndex, Change1HourPercent = 0, Change24HourPercent = 0, Price = 0 };
+
+                    //Check if gui lines need to be loaded
+                    if (_loadGuiLines)
+                        AddCoin(coin, downloadedCoin, index);
+
+                    //Incremenet coin line index
+                    index++;
+
+                    //Check if coinguiline exists for coinConfig
+                    if (!_coinGuiLines.Any(cg => cg.CoinName.Equals(downloadedCoin.ShortName)))
+                    {
+                        RemoveGuiLines();
+                        return;
+                    }
+
+                    //Get the gui line for coin
+                    CoinGuiLine line = (from c in _coinGuiLines where c.CoinName.Equals(downloadedCoin.ShortName) && c.CoinIndex == coin.coinIndex select c).First();
+
+                    if (string.IsNullOrEmpty(line.BoughtTextBox.Text))
+                        line.BoughtTextBox.Text = "0";
+
+                    if (string.IsNullOrEmpty(line.PaidTextBox.Text))
+                        line.PaidTextBox.Text = "0";
+
+                    //Calculate
+                    decimal bought = Convert.ToDecimal(line.BoughtTextBox.Text);
+                    decimal paid = Convert.ToDecimal(line.PaidTextBox.Text);
+                    decimal boughtPrice = bought == 0 ? 0 : paid / bought;
+                    decimal total = bought * downloadedCoin.Price;
+                    decimal profit = total - paid;
+                    decimal changeDollar = downloadedCoin.Price - coin.StartupPrice;
+                    decimal changePercent = coin.StartupPrice == 0 ? 0 : ((downloadedCoin.Price - coin.StartupPrice) / coin.StartupPrice) * 100;
+
+                    //Update total profits
+                    if (profit >= 0)
+                        totalPostivieProfits += profit;
+                    else
+                        totalNegativeProfits += profit;
+
+                    //Add to totals
+                    totalPaid += paid;
+                    overallTotal += paid + profit;
+
+                    //Update gui
+                    line.CoinLabel.Show();
+                    line.CoinIndexLabel.Text = _coinConfigs.Count(c => c.coin.Equals(coin.coin)) > 1 ? $"[{coin.coinIndex + 1}]" : string.Empty;
+                    line.CoinLabel.Text = downloadedCoin.ShortName;
+                    line.PriceLabel.Text = $"${downloadedCoin.Price}";
+                    line.BoughtPriceLabel.Text = $"${boughtPrice:0.000000}";
+                    line.TotalLabel.Text = $"${total:0.00}";
+                    line.ProfitLabel.Text = $"${profit:0.00}";
+                    line.ChangeDollarLabel.Text = $"${changeDollar:0.000000}";
+                    line.ChangePercentLabel.Text = $"{changePercent:0.00}%";
+                    line.Change1HrPercentLabel.Text = $"{downloadedCoin.Change1HourPercent:0.00}%";
+                    line.Change24HrPercentLabel.Text = $"{downloadedCoin.Change24HourPercent:0.00}%";
                 }
-
-                //Get the gui line for coin
-                CoinGuiLine line = (from c in _coinGuiLines where c.CoinName.Equals(downloadedCoin.ShortName) && c.CoinIndex == coin.coinIndex select c).First();
-
-                if (string.IsNullOrEmpty(line.BoughtTextBox.Text))
-                    line.BoughtTextBox.Text = "0";
-
-                if (string.IsNullOrEmpty(line.PaidTextBox.Text))
-                    line.PaidTextBox.Text = "0";
-
-                //Calculate
-                decimal bought = Convert.ToDecimal(line.BoughtTextBox.Text);
-                decimal paid = Convert.ToDecimal(line.PaidTextBox.Text);
-                decimal boughtPrice = bought == 0 ? 0 : paid / bought;
-                decimal total = bought * downloadedCoin.Price;
-                decimal profit = total - paid;
-                decimal changeDollar = downloadedCoin.Price - coin.StartupPrice;
-                decimal changePercent = coin.StartupPrice == 0 ? 0 : ((downloadedCoin.Price - coin.StartupPrice) / coin.StartupPrice) * 100;
-
-                //Update total profits
-                if (profit >= 0)
-                    totalPostivieProfits += profit;
-                else
-                    totalNegativeProfits += profit;
-
-                //Add to totals
-                totalPaid += paid;
-                overallTotal += paid + profit;
 
                 //Update gui
-                line.CoinLabel.Show();
-                line.CoinIndexLabel.Text = _coinConfigs.Count(c => c.coin.Equals(coin.coin)) > 1 ? $"[{coin.coinIndex + 1}]" : string.Empty;
-                line.CoinLabel.Text = downloadedCoin.ShortName;
-                line.PriceLabel.Text = $"${downloadedCoin.Price}";
-                line.BoughtPriceLabel.Text = $"${boughtPrice:0.000000}";
-                line.TotalLabel.Text = $"${total:0.00}";
-                line.ProfitLabel.Text = $"${profit:0.00}";
-                line.ChangeDollarLabel.Text = $"${changeDollar:0.000000}";
-                line.ChangePercentLabel.Text = $"{changePercent:0.00}%";
-                line.Change1HrPercentLabel.Text = $"{downloadedCoin.Change1HourPercent:0.00}%";
-                line.Change24HrPercentLabel.Text = $"{downloadedCoin.Change24HourPercent:0.00}%";
-            }
+                lblOverallTotal.Text = $"${overallTotal:0.00}";
+                lblTotalProfit.ForeColor = overallTotal - totalPaid >= 0 ? Color.Green : Color.Red;
+                lblTotalProfit.Text = $"${overallTotal - totalPaid:0.00}";
+                lblTotalNegativeProfit.Text = $"${totalNegativeProfits:0.00}";
+                lblTotalPositiveProfit.Text = $"${totalPostivieProfits:0.00}";
+                lblStatus.Text = "Status: Sleeping";
+                _refreshTime = DateTime.Now;
 
-            //Update gui
-            lblOverallTotal.Text = $"${overallTotal:0.00}";
-            lblTotalProfit.ForeColor = overallTotal - totalPaid >= 0 ? Color.Green : Color.Red;
-            lblTotalProfit.Text = $"${overallTotal - totalPaid:0.00}";
-            lblTotalNegativeProfit.Text = $"${totalNegativeProfits:0.00}";
-            lblTotalPositiveProfit.Text = $"${totalPostivieProfits:0.00}";
-            lblStatus.Text = "Status: Sleeping";
-            _refreshTime = DateTime.Now;
-
-            //Sleep and rerun
-            _loadGuiLines = false;
+                //Sleep and rerun
+                _loadGuiLines = false;
+            });
         }
 
-        private delegate void RemoveDelegate();
-        public void Remove()
+        private void RemoveGuiLines()
         {
-            if (InvokeRequired)
+            Invoke((MethodInvoker)delegate
             {
-                Invoke(new RemoveDelegate(Remove));
-                return;
-            }
+                //Set status
+                lblStatus.Text = "Status: Loading";
 
-            //Set status
-            lblStatus.Text = "Status: Loading";
+                //Reset totals
+                lblOverallTotal.Text = "$0.00";
+                lblTotalProfit.Text = "$0.00";
 
-            //Reset totals
-            lblOverallTotal.Text = "$0.00";
-            lblTotalProfit.Text = "$0.00";
+                //Remove the line elements from gui
+                foreach (var coin in _coinGuiLines)
+                {
+                    Height -= 25;
+                    coin.Dispose();
+                }
 
-            //Remove the line elements from gui
-            foreach (var coin in _coinGuiLines)
-            {
-                Height -= 25;
-                coin.Dispose();
-            }
-
-            _coinGuiLines = new List<CoinGuiLine>();
-            _loadGuiLines = true;
+                _coinGuiLines = new List<CoinGuiLine>();
+                _loadGuiLines = true;
+            });
         }
         #endregion
 
@@ -371,25 +362,20 @@ namespace MyCryptoMonitor.Forms
             //Set the bought and paid amounts
             newLine.BoughtTextBox.Text = coin.bought.ToString();
             newLine.PaidTextBox.Text = coin.paid.ToString();
-
-            //Add the line elements to gui
-            MethodInvoker invoke = delegate
-            {
-                Height += 25;
-                Controls.Add(newLine.CoinIndexLabel);
-                Controls.Add(newLine.CoinLabel);
-                Controls.Add(newLine.PriceLabel);
-                Controls.Add(newLine.BoughtTextBox);
-                Controls.Add(newLine.BoughtPriceLabel);
-                Controls.Add(newLine.TotalLabel);
-                Controls.Add(newLine.PaidTextBox);
-                Controls.Add(newLine.ProfitLabel);
-                Controls.Add(newLine.ChangeDollarLabel);
-                Controls.Add(newLine.ChangePercentLabel);
-                Controls.Add(newLine.Change1HrPercentLabel);
-                Controls.Add(newLine.Change24HrPercentLabel);
-            };
-            Invoke(invoke);
+            
+            Height += 25;
+            Controls.Add(newLine.CoinIndexLabel);
+            Controls.Add(newLine.CoinLabel);
+            Controls.Add(newLine.PriceLabel);
+            Controls.Add(newLine.BoughtTextBox);
+            Controls.Add(newLine.BoughtPriceLabel);
+            Controls.Add(newLine.TotalLabel);
+            Controls.Add(newLine.PaidTextBox);
+            Controls.Add(newLine.ProfitLabel);
+            Controls.Add(newLine.ChangeDollarLabel);
+            Controls.Add(newLine.ChangePercentLabel);
+            Controls.Add(newLine.Change1HrPercentLabel);
+            Controls.Add(newLine.Change24HrPercentLabel);
 
             //Add line to list
             _coinGuiLines.Add(newLine);
@@ -425,9 +411,7 @@ namespace MyCryptoMonitor.Forms
 
             //Load portfolio
             _coinConfigs = Management.LoadPortfolio(portfolio);
-
-            RemoveDelegate remove = new RemoveDelegate(Remove);
-            BeginInvoke(remove);
+            RemoveGuiLines();
         }
 
         private void ResetCoinIndex()
@@ -490,9 +474,7 @@ namespace MyCryptoMonitor.Forms
 
             //Add coin config
             _coinConfigs.Add(new CoinConfig { coin = form.InputText.ToUpper(), coinIndex = _coinConfigs.Count(c => c.coin.Equals(form.InputText.ToUpper())), bought = 0, paid = 0, StartupPrice = 0, SetStartupPrice = true });
-
-            RemoveDelegate remove = new RemoveDelegate(Remove);
-            BeginInvoke(remove);
+            RemoveGuiLines();
         }
 
         private void RemoveCoin_Click(object sender, EventArgs e)
@@ -523,17 +505,14 @@ namespace MyCryptoMonitor.Forms
 
             //Reset coin indexes
             ResetCoinIndex();
-
-            RemoveDelegate remove = new RemoveDelegate(Remove);
-            BeginInvoke(remove);
+            RemoveGuiLines();
         }
 
         private void RemoveAllCoins_Click(object sender, EventArgs e)
         {
             //Remove coin configs
             _coinConfigs = new List<CoinConfig>();
-            RemoveDelegate remove = new RemoveDelegate(Remove);
-            BeginInvoke(remove);
+            RemoveGuiLines();
         }
 
         private void SavePortfolio_Click(object sender, EventArgs e)
