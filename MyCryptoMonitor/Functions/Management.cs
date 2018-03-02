@@ -134,7 +134,10 @@ namespace MyCryptoMonitor.Functions
             if (File.Exists("Encryption"))
                 File.Delete("Encryption");
 
-            UserConfig.Encryption = false;
+            if (File.Exists("UserConfig"))
+                File.Delete("UserConfig");
+
+            LoadUserConfig();
         }
         #endregion
 
