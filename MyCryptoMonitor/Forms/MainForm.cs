@@ -81,35 +81,29 @@ namespace MyCryptoMonitor.Forms
         #region Threads
         private void DownloadData()
         {
-            //Update status
-            UpdateStatus("Refreshing");
-
-            try
+            while (true)
             {
-                using (var webClient = new WebClient())
+                UpdateStatus("Refreshing");
+
+                try
                 {
-                    //Set api
-                    _api = mnuCoinMarketCap.Checked ? API_COIN_MARKET_CAP : API_COIN_CAP;
+                    using (var webClient = new WebClient())
+                    {
+                        _api = mnuCoinMarketCap.Checked ? API_COIN_MARKET_CAP : API_COIN_CAP;
 
-                    //Download coin data from API
-                    string response = webClient.DownloadString(_api);
-
-                    //Update coins
-                    UpdateCoins(response);
-
-                    //Update status
-                    UpdateStatus("Sleeping");
+                        //Update coins
+                        UpdateCoins(webClient.DownloadString(_api));
+                    }
                 }
-            }
-            catch (WebException)
-            {
-                //Update status
-                UpdateStatus("No internet connection");
-            }
+                catch (WebException)
+                {
+                    UpdateStatus("No internet connection");
+                }
 
-            //Sleep and refresh
-            Thread.Sleep(5000);
-            DownloadData();
+                UpdateStatus("Sleeping");
+
+                Thread.Sleep(5000);
+            }
         }
 
         private void TimerThread()
