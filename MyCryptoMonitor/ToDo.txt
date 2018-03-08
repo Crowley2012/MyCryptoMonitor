@@ -14,12 +14,6 @@ User settings
 Remove coin button
 Sort buttons
 Resizeable window
-Alerts
 Mobile / Web version
 
 Running Change log
-**[FEATURE]** Encryption, all generated files will be encrypted
-**[FEATURE]** Alerts, be notified when a coin meets a specified condition via popup, email, or text
-**[FIXED]** Crash when bought or paid inputs are empty
-**[FIXED]** Parenthesis around total profits on startup
-**[FIXED]** Crash after running for extended amount of time
