@@ -1,4 +1,8 @@
-﻿namespace MyCryptoMonitor
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+
+namespace MyCryptoMonitor
 {
     public static class Mappings
     {
@@ -27,6 +31,16 @@
                 Price = coin.price,
                 Supply = coin.supply
             };
+        }
+
+        public static List<CoinData> MapCryptoCompare(string response)
+        {
+            dynamic test = JsonConvert.DeserializeObject(response);
+
+            dynamic a = test.GetType().GetProperty("First").GetValue(test, null);
+            var b = Convert.ToString(a.GetType().GetProperty("Root").GetValue(a, null));
+            
+            return null;
         }
     }
 }

@@ -18,6 +18,7 @@ namespace MyCryptoMonitor.Forms
         #region Constant Variables
         private const string API_COIN_MARKET_CAP = "https://api.coinmarketcap.com/v1/ticker/?limit=9999";
         private const string API_COIN_CAP = "https://coincap.io/front";
+        private const string API_CRYPTO_COMPARE = "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC,XRP,XLM,NANO&tsyms=USD";
         #endregion
 
         #region Private Variables
@@ -89,7 +90,8 @@ namespace MyCryptoMonitor.Forms
                 {
                     using (var webClient = new WebClient())
                     {
-                        _api = mnuCoinMarketCap.Checked ? API_COIN_MARKET_CAP : API_COIN_CAP;
+                        //_api = mnuCoinMarketCap.Checked ? API_COIN_MARKET_CAP : API_COIN_CAP;
+                        _api = API_CRYPTO_COMPARE;
 
                         //Update coins
                         UpdateCoins(webClient.DownloadString(_api));
@@ -213,6 +215,9 @@ namespace MyCryptoMonitor.Forms
                     case API_COIN_CAP:
                         var coinsCoinCap = JsonConvert.DeserializeObject<List<ApiCoinCap>>(response, settings);
                         coins = coinsCoinCap.Select(c => Mappings.MapCoinCap(c)).ToList();
+                        break;
+                    case API_CRYPTO_COMPARE:
+                        coins = Mappings.MapCryptoCompare(response);
                         break;
                 }
 

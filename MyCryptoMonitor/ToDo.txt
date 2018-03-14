@@ -1,19 +1,23 @@
-﻿New UI
-	Fancy
-	Simple
-	Compressed
-Themes
-	Light
-	Dark
+﻿User settings
+	Select fiat currency
+	Selected API
+
 Portfolio Manager
 	Naming
 	Unlimited portfolios
-User settings
-	Select fiat currency
-	Selected API
-Remove coin button
-Sort buttons
-Resizeable window
+
+New UI
+	Style
+		Fancy
+		Compressed
+		Detailed
+	Themes
+		Light
+		Dark
+	Sort buttons
+	Remove button
+	Resizeable window
+
 Mobile / Web version
 
 Running Change log

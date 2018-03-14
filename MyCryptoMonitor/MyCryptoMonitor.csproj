@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="ApiData\ApiCoinCap.cs" />
     <Compile Include="ApiData\ApiCoinMarketCap.cs" />
+    <Compile Include="ApiData\ApiCryptoCompare.cs" />
     <Compile Include="Coin\CoinGuiLine.cs" />
     <Compile Include="DataSources\AlertConfig.cs" />
     <Compile Include="DataSources\AlertDataSource.cs" />
