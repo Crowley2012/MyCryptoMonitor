@@ -203,6 +203,9 @@ namespace MyCryptoMonitor.Forms
             //Deserialize response
             _cryptoCompareCoins = Mappings.MapCombination(cryptoCompareResponse, coinMarketCapResponse);
 
+            if(_cryptoCompareCoins.Any(c => c.ShortName.Equals("NANO")))
+                _cryptoCompareCoins.Where(c => c.ShortName.Equals("NANO")).FirstOrDefault().ShortName = "XRB";
+
             //Create list of coin names
             _coinMarketCapCoins = Mappings.CoinMarketCap(coinMarketCapResponse).OrderBy(c => c.ShortName).ToList();
             _coinMarketCapCoins.Where(c => c.ShortName.Equals("NANO")).FirstOrDefault().ShortName = "XRB";
@@ -214,10 +217,10 @@ namespace MyCryptoMonitor.Forms
 
                 foreach (AlertDataSource coin in Management.AlertConfig.Alerts)
                 {
-                    var coinData = _cryptoCompareCoins.Where(c => c.ShortName.Equals(coin.Coin)).First();
+                    var coinData = _cryptoCompareCoins.Where(c => c.ShortName.Equals(coin.Coin)).FirstOrDefault();
 
-                    if(coin.Coin.Equals("NANO"))
-                        coinData = _cryptoCompareCoins.Where(c => c.ShortName.Equals("XRB")).First();
+                    if (coinData == null)
+                        continue;
 
                     if ((coin.Operator.Equals("Greater Than") && coinData.Price > coin.Price) || (coin.Operator.Equals("Less Than") && coinData.Price < coin.Price))
                     {
