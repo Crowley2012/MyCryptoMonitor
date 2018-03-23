@@ -21,6 +21,7 @@ namespace MyCryptoMonitor
         public Label ChangePercentLabel;
         public Label Change1HrPercentLabel;
         public Label Change24HrPercentLabel;
+        public Label Change7DayPercentLabel;
         public TextBox BoughtTextBox;
         public TextBox PaidTextBox;
 
@@ -42,6 +43,7 @@ namespace MyCryptoMonitor
             ChangePercentLabel = new Label();
             Change1HrPercentLabel = new Label();
             Change24HrPercentLabel = new Label();
+            Change7DayPercentLabel = new Label();
 
             CoinIndexLabel.AutoSize = true;
             CoinLabel.AutoSize = true;
@@ -53,6 +55,7 @@ namespace MyCryptoMonitor
             ChangePercentLabel.AutoSize = true;
             Change1HrPercentLabel.AutoSize = true;
             Change24HrPercentLabel.AutoSize = true;
+            Change7DayPercentLabel.AutoSize = true;
 
             CoinIndexLabel.Font = new Font(CoinIndexLabel.Font.FontFamily, 6f);
 
@@ -68,6 +71,7 @@ namespace MyCryptoMonitor
             ChangePercentLabel.Size = new Size(54, 13);
             Change1HrPercentLabel.Size = new Size(42, 13);
             Change24HrPercentLabel.Size = new Size(52, 13);
+            Change7DayPercentLabel.Size = new Size(52, 13);
 
             CoinIndexLabel.Location = new Point(3, yindex + 2);
             CoinLabel.Location = new Point(12, yindex);
@@ -81,10 +85,12 @@ namespace MyCryptoMonitor
             ChangePercentLabel.Location = new Point(ChangeDollarLabel.Location.X + ChangeDollarLabel.Width + Spacing, yindex);
             Change1HrPercentLabel.Location = new Point(ChangePercentLabel.Location.X + ChangePercentLabel.Width + Spacing, yindex);
             Change24HrPercentLabel.Location = new Point(Change1HrPercentLabel.Location.X + Change1HrPercentLabel.Width + Spacing, yindex);
+            Change7DayPercentLabel.Location = new Point(Change24HrPercentLabel.Location.X + Change24HrPercentLabel.Width + Spacing, yindex);
 
             ChangePercentLabel.TextChanged += new EventHandler(ChangePercentLabel_TextChanged);
-            Change1HrPercentLabel.TextChanged += new EventHandler(Change1HrPercentLabel_TextChanged);
-            Change24HrPercentLabel.TextChanged += new EventHandler(Change24HrPercentLabel_TextChanged);
+            Change1HrPercentLabel.TextChanged += new EventHandler(ChangeTestPercentLabel_TextChanged);
+            Change24HrPercentLabel.TextChanged += new EventHandler(ChangeTestPercentLabel_TextChanged);
+            Change7DayPercentLabel.TextChanged += new EventHandler(ChangeTestPercentLabel_TextChanged);
         }
 
         public void Dispose()
@@ -101,40 +107,25 @@ namespace MyCryptoMonitor
             ChangePercentLabel.Dispose();
             Change1HrPercentLabel.Dispose();
             Change24HrPercentLabel.Dispose();
+            Change7DayPercentLabel.Dispose();
         }
 
-        private void Change1HrPercentLabel_TextChanged(object sender, EventArgs e)
+        private void ChangeTestPercentLabel_TextChanged(object sender, EventArgs e)
         {
-            decimal change1HrPercent = Convert.ToDecimal(((Label)sender).Text.Replace("%", string.Empty));
+            Label label = (Label)sender;
+            decimal changePercent = Convert.ToDecimal(label.Text.Replace("%", string.Empty));
 
             //Set color
-            if (change1HrPercent >= 0)
-                Change1HrPercentLabel.ForeColor = Color.Green;
+            if (changePercent >= 0)
+                label.ForeColor = Color.Green;
             else
-                Change1HrPercentLabel.ForeColor = Color.Red;
+                label.ForeColor = Color.Red;
 
             //Set weight
-            if (change1HrPercent >= 10 || change1HrPercent <= -10)
-                Change1HrPercentLabel.Font = new Font(Change1HrPercentLabel.Font, FontStyle.Bold);
+            if (changePercent >= 10 || changePercent <= -10)
+                label.Font = new Font(label.Font, FontStyle.Bold);
             else
-                Change1HrPercentLabel.Font = new Font(Change1HrPercentLabel.Font, FontStyle.Regular);
-        }
-
-        private void Change24HrPercentLabel_TextChanged(object sender, EventArgs e)
-        {
-            decimal change24HrPercent = Convert.ToDecimal(((Label)sender).Text.Replace("%", string.Empty));
-
-            //Set color
-            if (change24HrPercent >= 0)
-                Change24HrPercentLabel.ForeColor = Color.Green;
-            else
-                Change24HrPercentLabel.ForeColor = Color.Red;
-
-            //Set weight
-            if (change24HrPercent >= 10 || change24HrPercent <= -10)
-                Change24HrPercentLabel.Font = new Font(Change24HrPercentLabel.Font, FontStyle.Bold);
-            else
-                Change24HrPercentLabel.Font = new Font(Change24HrPercentLabel.Font, FontStyle.Regular);
+                label.Font = new Font(label.Font, FontStyle.Regular);
         }
 
         private void ChangePercentLabel_TextChanged(object sender, EventArgs e)

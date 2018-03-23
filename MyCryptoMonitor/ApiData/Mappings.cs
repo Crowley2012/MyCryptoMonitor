@@ -1,46 +1,58 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using MyCryptoMonitor.ApiData;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MyCryptoMonitor
 {
     public static class Mappings
     {
-        public static CoinData MapCoinMarketCap(ApiCoinMarketCap coin)
+        public static List<CoinData> CoinMarketCap(string response)
         {
-            return new CoinData
+            JsonSerializerSettings settings = new JsonSerializerSettings
             {
-                ShortName = coin.symbol,
-                LongName = coin.name,
-                Change1HourPercent = coin.percent_change_1h,
-                Change24HourPercent = coin.percent_change_24h,
-                MarketCap = coin.market_cap_usd,
-                Price = coin.price_usd,
-                Supply = coin.total_supply
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
             };
+
+            return JsonConvert.DeserializeObject<List<ApiCoinMarketCap>>(response, settings).Select(c => new CoinData
+            {
+                ShortName = c.symbol,
+                LongName = c.name,
+                Change1HourPercent = c.percent_change_1h,
+                Change24HourPercent = c.percent_change_24h,
+                Change7DayPercent = c.percent_change_7d,
+                MarketCap = c.market_cap_usd,
+                Price = c.price_usd,
+                Supply = c.total_supply
+            }).ToList();
         }
 
-        public static CoinData MapCoinCap(ApiCoinCap coin)
+        public static List<CoinData> MapCombination(string responseCryptoCompare, string responseCoinMarketCap)
         {
-            return new CoinData
+            List<CoinData> list = new List<CoinData>();
+            var cryptoCompareCoins = JObject.Parse(responseCryptoCompare).First.First.Children<JProperty>();
+            var coinMarketCapCoins = CoinMarketCap(responseCoinMarketCap);
+
+            foreach (var data in cryptoCompareCoins)
             {
-                ShortName = coin.shortName,
-                LongName = coin.longName,
-                Change24HourPercent = coin.cap24hrChange,
-                MarketCap = coin.mktcap,
-                Price = coin.price,
-                Supply = coin.supply
-            };
-        }
+                var cryptoCompareCoin = JsonConvert.DeserializeObject<ApiCryptoCompare>(data.First.First.First.ToString());
 
-        public static List<CoinData> MapCryptoCompare(string response)
-        {
-            dynamic test = JsonConvert.DeserializeObject(response);
+                list.Add(new CoinData
+                {
+                    ShortName = cryptoCompareCoin.FROMSYMBOL,
+                    LongName = coinMarketCapCoins.Where(c => c.ShortName.Equals(cryptoCompareCoin.FROMSYMBOL)).Select(c => c.LongName).FirstOrDefault(),
+                    Change1HourPercent = coinMarketCapCoins.Where(c => c.ShortName.Equals(cryptoCompareCoin.FROMSYMBOL)).Select(c => c.Change1HourPercent).FirstOrDefault(),
+                    Change24HourPercent = cryptoCompareCoin.CHANGEPCT24HOUR,
+                    Change7DayPercent = coinMarketCapCoins.Where(c => c.ShortName.Equals(cryptoCompareCoin.FROMSYMBOL)).Select(c => c.Change7DayPercent).FirstOrDefault(),
+                    MarketCap = cryptoCompareCoin.MKTCAP,
+                    Price = cryptoCompareCoin.PRICE,
+                    Supply = cryptoCompareCoin.SUPPLY
+                });
+            }
 
-            dynamic a = test.GetType().GetProperty("First").GetValue(test, null);
-            var b = Convert.ToString(a.GetType().GetProperty("Root").GetValue(a, null));
-            
-            return null;
+            return list;
         }
     }
 }

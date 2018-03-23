@@ -1,6 +1,5 @@
 ﻿User settings
 	Select fiat currency
-	Selected API
 
 Portfolio Manager
 	Naming
@@ -21,3 +20,5 @@ New UI
 Mobile / Web version
 
 Running Change log
+**[ADDED]** 7 day percent change
+**[REMOVED]** API Selection, now uses a combo of coin market cap and crypto compare api

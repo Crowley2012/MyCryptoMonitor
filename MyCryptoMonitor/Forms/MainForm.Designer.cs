@@ -68,15 +68,13 @@
             this.portfolio2ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.portfolio3ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.encryptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aPIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuCoinMarketCap = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuCoinCap = new System.Windows.Forms.ToolStripMenuItem();
             this.donateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label2 = new System.Windows.Forms.Label();
             this.toolTips = new System.Windows.Forms.ToolTip(this.components);
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -111,7 +109,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(844, 67);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(907, 67);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // tableLayoutPanel2
@@ -130,7 +128,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33332F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(242, 61);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(273, 61);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
             // lblResetTime
@@ -176,7 +174,7 @@
             this.tableLayoutPanel3.Controls.Add(this.lblTotalProfit, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.lblOverallTotal, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 2);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(251, 3);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(282, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 3;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
@@ -359,13 +357,12 @@
             this.savePortfolioToolStripMenuItem,
             this.loadPortfolioToolStripMenuItem,
             this.encryptToolStripMenuItem,
-            this.aPIToolStripMenuItem,
             this.donateToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(868, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(931, 24);
             this.menuStrip1.TabIndex = 46;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -505,31 +502,6 @@
             this.encryptToolStripMenuItem.Text = "Encrypt";
             this.encryptToolStripMenuItem.Click += new System.EventHandler(this.encryptToolStripMenuItem_Click);
             // 
-            // aPIToolStripMenuItem
-            // 
-            this.aPIToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuCoinMarketCap,
-            this.mnuCoinCap});
-            this.aPIToolStripMenuItem.Name = "aPIToolStripMenuItem";
-            this.aPIToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.aPIToolStripMenuItem.Text = "API";
-            // 
-            // mnuCoinMarketCap
-            // 
-            this.mnuCoinMarketCap.Checked = true;
-            this.mnuCoinMarketCap.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.mnuCoinMarketCap.Name = "mnuCoinMarketCap";
-            this.mnuCoinMarketCap.Size = new System.Drawing.Size(163, 22);
-            this.mnuCoinMarketCap.Text = "Coin Market Cap";
-            this.mnuCoinMarketCap.Click += new System.EventHandler(this.mnuCoinMarketCap_Click);
-            // 
-            // mnuCoinCap
-            // 
-            this.mnuCoinCap.Name = "mnuCoinCap";
-            this.mnuCoinCap.Size = new System.Drawing.Size(163, 22);
-            this.mnuCoinCap.Text = "Coin Cap";
-            this.mnuCoinCap.Click += new System.EventHandler(this.mnuCoinCap_Click);
-            // 
             // donateToolStripMenuItem
             // 
             this.donateToolStripMenuItem.Name = "donateToolStripMenuItem";
@@ -553,7 +525,7 @@
             this.label2.Size = new System.Drawing.Size(52, 13);
             this.label2.TabIndex = 47;
             this.label2.Text = "1/hr (%)";
-            this.toolTips.SetToolTip(this.label2, "Change in percent for last hour");
+            this.toolTips.SetToolTip(this.label2, "Change in percent for the last hour");
             // 
             // label3
             // 
@@ -564,7 +536,7 @@
             this.label3.Size = new System.Drawing.Size(59, 13);
             this.label3.TabIndex = 48;
             this.label3.Text = "24/hr (%)";
-            this.toolTips.SetToolTip(this.label3, "Change in percent for last 24 hours");
+            this.toolTips.SetToolTip(this.label3, "Change in percent for the last 24 hours");
             // 
             // label5
             // 
@@ -578,11 +550,23 @@
             this.toolTips.SetToolTip(this.label5, "Price coin was bought at. If multiple payments, this will be average bought price" +
         ". (Paid / Bought)");
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(865, 98);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(48, 13);
+            this.label6.TabIndex = 50;
+            this.label6.Text = "7/d (%)";
+            this.toolTips.SetToolTip(this.label6, "Change in percent for the last 7 days");
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(868, 123);
+            this.ClientSize = new System.Drawing.Size(931, 123);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -656,9 +640,6 @@
         private System.Windows.Forms.Label lblRefreshTime;
         private System.Windows.Forms.ToolTip toolTips;
         private System.Windows.Forms.ToolStripMenuItem donateToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem aPIToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem mnuCoinMarketCap;
-        private System.Windows.Forms.ToolStripMenuItem mnuCoinCap;
         private System.Windows.Forms.Label lblTotalNegativeProfit;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.Label lblTotalPositiveProfit;
@@ -667,6 +648,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ToolStripMenuItem alertsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem encryptToolStripMenuItem;
+        private System.Windows.Forms.Label label6;
     }
 }
 

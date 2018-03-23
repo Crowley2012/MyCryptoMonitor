@@ -17,18 +17,18 @@ namespace MyCryptoMonitor.Forms
     {
         #region Constant Variables
         private const string API_COIN_MARKET_CAP = "https://api.coinmarketcap.com/v1/ticker/?limit=9999";
-        private const string API_COIN_CAP = "https://coincap.io/front";
-        private const string API_CRYPTO_COMPARE = "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC,XRP,XLM,NANO&tsyms=USD";
+        private const string API_CRYPTO_COMPARE = "https://min-api.cryptocompare.com/data/pricemultifull?tsyms=USD&fsyms=";
         #endregion
 
         #region Private Variables
         private List<CoinConfig> _coinConfigs;
         private List<CoinGuiLine> _coinGuiLines;
-        private List<CoinData> _coins;
+        private List<CoinData> _cryptoCompareCoins;
+        private List<CoinData> _coinMarketCapCoins;
         private DateTime _resetTime;
         private DateTime _refreshTime;
         private bool _loadGuiLines;
-        private string _api;
+        private string _selectedCoins;
         #endregion
 
         #region Load
@@ -41,7 +41,8 @@ namespace MyCryptoMonitor.Forms
         {
             _coinGuiLines = new List<CoinGuiLine>();
             _coinConfigs = new List<CoinConfig>();
-            _coins = new List<CoinData>();
+            _cryptoCompareCoins = new List<CoinData>();
+            _coinMarketCapCoins = new List<CoinData>();
             _resetTime = DateTime.Now;
             _refreshTime = DateTime.Now;
             _loadGuiLines = true;
@@ -54,6 +55,10 @@ namespace MyCryptoMonitor.Forms
 
             //Attempt to load portfolio on startup
             _coinConfigs = Management.LoadFirstPortfolio();
+
+            //Add list of coins in config for crypto compare api
+            foreach (var name in _coinConfigs)
+                _selectedCoins += $",{name.coin}";
 
             //Cache alerts
             if(File.Exists("Alerts"))
@@ -89,13 +94,7 @@ namespace MyCryptoMonitor.Forms
                 try
                 {
                     using (var webClient = new WebClient())
-                    {
-                        //_api = mnuCoinMarketCap.Checked ? API_COIN_MARKET_CAP : API_COIN_CAP;
-                        _api = API_CRYPTO_COMPARE;
-
-                        //Update coins
-                        UpdateCoins(webClient.DownloadString(_api));
-                    }
+                        UpdateCoins(webClient.DownloadString($"{API_CRYPTO_COMPARE}{_selectedCoins}"), webClient.DownloadString(API_COIN_MARKET_CAP));
                 }
                 catch (WebException)
                 {
@@ -103,7 +102,6 @@ namespace MyCryptoMonitor.Forms
                 }
 
                 UpdateStatus("Sleeping");
-
                 Thread.Sleep(5000);
             }
         }
@@ -184,65 +182,56 @@ namespace MyCryptoMonitor.Forms
             });
         }
 
-        private void UpdateCoins(string response)
+        private void UpdateCoins(string cryptoCompareResponse, string coinMarketCapResponse)
         {
+            //Overall values
+            decimal totalPaid = 0;
+            decimal overallTotal = 0;
+            decimal totalNegativeProfits = 0;
+            decimal totalPostivieProfits = 0;
+
+            //Index of coin gui line
+            int index = 0;
+
+            //Deserialize settings
+            JsonSerializerSettings settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+
+            //Deserialize response
+            _cryptoCompareCoins = Mappings.MapCombination(cryptoCompareResponse, coinMarketCapResponse);
+
+            //Create list of coin names
+            _coinMarketCapCoins = Mappings.CoinMarketCap(coinMarketCapResponse).OrderBy(c => c.ShortName).ToList();
+            _coinMarketCapCoins.Where(c => c.ShortName.Equals("NANO")).FirstOrDefault().ShortName = "XRB";
+
+            //Loop through alerts
+            if (Management.AlertConfig != null && Management.AlertConfig.Alerts.Count > 0)
+            {
+                List<AlertDataSource> removeAlerts = new List<AlertDataSource>();
+
+                foreach (AlertDataSource coin in Management.AlertConfig.Alerts)
+                {
+                    var coinData = _cryptoCompareCoins.Where(c => c.ShortName.Equals(coin.Coin)).First();
+
+                    if(coin.Coin.Equals("NANO"))
+                        coinData = _cryptoCompareCoins.Where(c => c.ShortName.Equals("XRB")).First();
+
+                    if ((coin.Operator.Equals("Greater Than") && coinData.Price > coin.Price) || (coin.Operator.Equals("Less Than") && coinData.Price < coin.Price))
+                    {
+                        Management.SendAlert(coin);
+                        removeAlerts.Add(coin);
+                    }
+                }
+
+                if (removeAlerts.Count > 0)
+                    Management.RemoveAlerts(removeAlerts);
+            }
+
             Invoke((MethodInvoker)delegate
             {
-                //Overall values
-                decimal totalPaid = 0;
-                decimal overallTotal = 0;
-                decimal totalNegativeProfits = 0;
-                decimal totalPostivieProfits = 0;
-
-                //Index of coin gui line
-                int index = 0;
-
-                //Deserialize settings
-                JsonSerializerSettings settings = new JsonSerializerSettings
-                {
-                    NullValueHandling = NullValueHandling.Ignore,
-                    MissingMemberHandling = MissingMemberHandling.Ignore
-                };
-
-                //Deserialize response and map to generic coin
-                List<CoinData> coins = new List<CoinData>();
-                switch (_api)
-                {
-                    case API_COIN_MARKET_CAP:
-                        var coinsCoinMarketCap = JsonConvert.DeserializeObject<List<ApiCoinMarketCap>>(response, settings);
-                        coins = coinsCoinMarketCap.Select(c => Mappings.MapCoinMarketCap(c)).ToList();
-                        break;
-                    case API_COIN_CAP:
-                        var coinsCoinCap = JsonConvert.DeserializeObject<List<ApiCoinCap>>(response, settings);
-                        coins = coinsCoinCap.Select(c => Mappings.MapCoinCap(c)).ToList();
-                        break;
-                    case API_CRYPTO_COMPARE:
-                        coins = Mappings.MapCryptoCompare(response);
-                        break;
-                }
-
-                //Create list of coin names
-                _coins = coins.OrderBy(c => c.ShortName).ToList();
-
-                //Loop through alerts
-                if (Management.AlertConfig != null && Management.AlertConfig.Alerts.Count > 0)
-                {
-                    List<AlertDataSource> removeAlerts = new List<AlertDataSource>();
-
-                    foreach (AlertDataSource coin in Management.AlertConfig.Alerts)
-                    {
-                        var coinData = _coins.Where(c => c.ShortName.Equals(coin.Coin)).First();
-
-                        if ((coin.Operator.Equals("Greater Than") && coinData.Price > coin.Price) || (coin.Operator.Equals("Less Than") && coinData.Price < coin.Price))
-                        {
-                            Management.SendAlert(coin);
-                            removeAlerts.Add(coin);
-                        }
-                    }
-
-                    if (removeAlerts.Count > 0)
-                        Management.RemoveAlerts(removeAlerts);
-                }
 
                 //Loop through all coins from config
                 foreach (CoinConfig coin in _coinConfigs)
@@ -250,8 +239,8 @@ namespace MyCryptoMonitor.Forms
                     CoinData downloadedCoin;
 
                     //Parse coins, if coin doesnt exist set to 0
-                    downloadedCoin = coins.Any(c => c.ShortName == coin.coin)
-                        ? coins.Single(c => c.ShortName == coin.coin)
+                    downloadedCoin = _cryptoCompareCoins.Any(c => c.ShortName == coin.coin)
+                        ? _cryptoCompareCoins.Single(c => c.ShortName == coin.coin)
                         : new CoinData { ShortName = coin.coin, CoinIndex = coin.coinIndex, Change1HourPercent = 0, Change24HourPercent = 0, Price = 0 };
 
                     //Check if gui lines need to be loaded
@@ -308,6 +297,7 @@ namespace MyCryptoMonitor.Forms
                     line.ChangePercentLabel.Text = $"{changePercent:0.00}%";
                     line.Change1HrPercentLabel.Text = $"{downloadedCoin.Change1HourPercent:0.00}%";
                     line.Change24HrPercentLabel.Text = $"{downloadedCoin.Change24HourPercent:0.00}%";
+                    line.Change7DayPercentLabel.Text = $"{downloadedCoin.Change7DayPercent:0.00}%";
                 }
 
                 //Update gui
@@ -375,6 +365,7 @@ namespace MyCryptoMonitor.Forms
             Controls.Add(newLine.ChangePercentLabel);
             Controls.Add(newLine.Change1HrPercentLabel);
             Controls.Add(newLine.Change24HrPercentLabel);
+            Controls.Add(newLine.Change7DayPercentLabel);
 
             //Add line to list
             _coinGuiLines.Add(newLine);
@@ -444,23 +435,25 @@ namespace MyCryptoMonitor.Forms
         private void AddCoin_Click(object sender, EventArgs e)
         {
             //Check if coin list has been downloaded
-            while(_coins.Count <= 0)
+            while(_coinMarketCapCoins.Count <= 0)
             {
                 if (MessageBox.Show("Please wait while coin list is being downloaded.", "Loading", MessageBoxButtons.RetryCancel) == DialogResult.Cancel)
                     return;
             }
 
             //Get coin to add
-            InputForm form = new InputForm("Add", _coins);
+            InputForm form = new InputForm("Add", _coinMarketCapCoins);
             if (form.ShowDialog() != DialogResult.OK)
                 return;
 
             //Check if coin exists
-            if (!_coins.Any(c => c.ShortName.Equals(form.InputText.ToUpper())))
+            if (!_coinMarketCapCoins.Any(c => c.ShortName.Equals(form.InputText.ToUpper())))
             {
                 MessageBox.Show("Coin does not exist.", "Error");
                 return;
             }
+
+            _selectedCoins += $",{form.InputText.ToUpper()}";
 
             //Update coin config bought and paid values
             foreach (var coinGuiLine in _coinGuiLines)
@@ -509,7 +502,6 @@ namespace MyCryptoMonitor.Forms
 
         private void RemoveAllCoins_Click(object sender, EventArgs e)
         {
-            //Remove coin configs
             _coinConfigs = new List<CoinConfig>();
             RemoveGuiLines();
         }
@@ -532,26 +524,12 @@ namespace MyCryptoMonitor.Forms
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show($"Created by Sean Crowley\n\nGithub.com/Crowley2012/MyCryptoMonitor\n\nVersion: {Assembly.GetExecutingAssembly().GetName().Version.ToString()}", "About");
-        }
-
-        private void mnuCoinMarketCap_Click(object sender, EventArgs e)
-        {
-            //Check menu item
-            mnuCoinMarketCap.Checked = true;
-            mnuCoinCap.Checked = false;
-        }
-
-        private void mnuCoinCap_Click(object sender, EventArgs e)
-        {
-            //Check menu item
-            mnuCoinMarketCap.Checked = false;
-            mnuCoinCap.Checked = true;
+            MessageBox.Show($"Created by Sean Crowley\n\nGithub.com/Crowley2012/MyCryptoMonitor\n\nVersion: {Assembly.GetExecutingAssembly().GetName().Version.ToString()}\n\nAPI's Used:\n  Coinmarketcap.com\n  Min-api.cryptocompare.com\n  Github.com", "About");
         }
 
         private void alertsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Alerts form = new Alerts(_coins);
+            Alerts form = new Alerts(_cryptoCompareCoins);
             form.Show();
         }
 
