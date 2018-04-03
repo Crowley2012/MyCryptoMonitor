@@ -63,14 +63,18 @@
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alertsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.savePortfolioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.savePortfolioMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.portfolio1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.portfolio2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.portfolio3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadPortfolioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.addPortfolioToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadPortfolioMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.portfolio1ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.portfolio2ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.portfolio3ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.addPortfolioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.encryptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.donateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,6 +83,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
@@ -116,7 +121,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(907, 67);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(960, 67);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // tableLayoutPanel5
@@ -127,12 +132,12 @@
             this.tableLayoutPanel5.ColumnCount = 1;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel6, 0, 0);
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(630, 3);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(657, 3);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 2;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33332F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(274, 61);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(300, 61);
             this.tableLayoutPanel5.TabIndex = 51;
             // 
             // tableLayoutPanel6
@@ -146,11 +151,11 @@
             this.tableLayoutPanel6.Controls.Add(this.cbCurrency, 1, 0);
             this.tableLayoutPanel6.Controls.Add(this.label11, 0, 0);
             this.tableLayoutPanel6.Location = new System.Drawing.Point(2, 2);
-            this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 1;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(270, 26);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(296, 26);
             this.tableLayoutPanel6.TabIndex = 52;
             // 
             // cbCurrency
@@ -279,10 +284,10 @@
             "YER",
             "ZAR",
             "ZMK"});
-            this.cbCurrency.Location = new System.Drawing.Point(195, 2);
-            this.cbCurrency.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbCurrency.Location = new System.Drawing.Point(213, 2);
+            this.cbCurrency.Margin = new System.Windows.Forms.Padding(2);
             this.cbCurrency.Name = "cbCurrency";
-            this.cbCurrency.Size = new System.Drawing.Size(73, 21);
+            this.cbCurrency.Size = new System.Drawing.Size(81, 21);
             this.cbCurrency.TabIndex = 0;
             this.cbCurrency.SelectedIndexChanged += new System.EventHandler(this.cbCurrency_SelectedIndexChanged);
             // 
@@ -291,10 +296,11 @@
             this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(83, 0);
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F);
+            this.label11.Location = new System.Drawing.Point(113, 0);
             this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(108, 26);
+            this.label11.Size = new System.Drawing.Size(96, 26);
             this.label11.TabIndex = 51;
             this.label11.Text = "Conversion Currency:";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -315,7 +321,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33332F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(273, 61);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(300, 61);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
             // lblResetTime
@@ -361,7 +367,7 @@
             this.tableLayoutPanel3.Controls.Add(this.lblTotalProfit, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.lblOverallTotal, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 2);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(282, 3);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(309, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 3;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
@@ -515,7 +521,7 @@
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(586, 98);
+            this.label17.Location = new System.Drawing.Point(643, 98);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(69, 13);
             this.label17.TabIndex = 39;
@@ -526,7 +532,7 @@
             // 
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(661, 98);
+            this.label18.Location = new System.Drawing.Point(718, 98);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(71, 13);
             this.label18.TabIndex = 45;
@@ -541,15 +547,15 @@
             this.fileToolStripMenuItem,
             this.coinsToolStripMenuItem,
             this.alertsToolStripMenuItem,
-            this.savePortfolioToolStripMenuItem,
-            this.loadPortfolioToolStripMenuItem,
+            this.savePortfolioMenu,
+            this.loadPortfolioMenu,
             this.encryptToolStripMenuItem,
             this.donateToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(931, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(984, 24);
             this.menuStrip1.TabIndex = 46;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -614,20 +620,22 @@
             this.alertsToolStripMenuItem.Text = "Alerts";
             this.alertsToolStripMenuItem.Click += new System.EventHandler(this.alertsToolStripMenuItem_Click);
             // 
-            // savePortfolioToolStripMenuItem
+            // savePortfolioMenu
             // 
-            this.savePortfolioToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.savePortfolioMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.portfolio1ToolStripMenuItem,
             this.portfolio2ToolStripMenuItem,
-            this.portfolio3ToolStripMenuItem});
-            this.savePortfolioToolStripMenuItem.Name = "savePortfolioToolStripMenuItem";
-            this.savePortfolioToolStripMenuItem.Size = new System.Drawing.Size(92, 20);
-            this.savePortfolioToolStripMenuItem.Text = "Save Portfolio";
+            this.portfolio3ToolStripMenuItem,
+            this.toolStripMenuItem2,
+            this.addPortfolioToolStripMenuItem1});
+            this.savePortfolioMenu.Name = "savePortfolioMenu";
+            this.savePortfolioMenu.Size = new System.Drawing.Size(92, 20);
+            this.savePortfolioMenu.Text = "Save Portfolio";
             // 
             // portfolio1ToolStripMenuItem
             // 
             this.portfolio1ToolStripMenuItem.Name = "portfolio1ToolStripMenuItem";
-            this.portfolio1ToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.portfolio1ToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.portfolio1ToolStripMenuItem.Tag = "Portfolio1";
             this.portfolio1ToolStripMenuItem.Text = "Portfolio 1";
             this.portfolio1ToolStripMenuItem.Click += new System.EventHandler(this.SavePortfolio_Click);
@@ -635,7 +643,7 @@
             // portfolio2ToolStripMenuItem
             // 
             this.portfolio2ToolStripMenuItem.Name = "portfolio2ToolStripMenuItem";
-            this.portfolio2ToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.portfolio2ToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.portfolio2ToolStripMenuItem.Tag = "Portfolio2";
             this.portfolio2ToolStripMenuItem.Text = "Portfolio 2";
             this.portfolio2ToolStripMenuItem.Click += new System.EventHandler(this.SavePortfolio_Click);
@@ -643,25 +651,39 @@
             // portfolio3ToolStripMenuItem
             // 
             this.portfolio3ToolStripMenuItem.Name = "portfolio3ToolStripMenuItem";
-            this.portfolio3ToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.portfolio3ToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.portfolio3ToolStripMenuItem.Tag = "Portfolio3";
             this.portfolio3ToolStripMenuItem.Text = "Portfolio 3";
             this.portfolio3ToolStripMenuItem.Click += new System.EventHandler(this.SavePortfolio_Click);
             // 
-            // loadPortfolioToolStripMenuItem
+            // toolStripMenuItem2
             // 
-            this.loadPortfolioToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(168, 6);
+            // 
+            // addPortfolioToolStripMenuItem1
+            // 
+            this.addPortfolioToolStripMenuItem1.Name = "addPortfolioToolStripMenuItem1";
+            this.addPortfolioToolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
+            this.addPortfolioToolStripMenuItem1.Text = "Manage Portfolios";
+            this.addPortfolioToolStripMenuItem1.Click += new System.EventHandler(this.manage_Click);
+            // 
+            // loadPortfolioMenu
+            // 
+            this.loadPortfolioMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.portfolio1ToolStripMenuItem1,
             this.portfolio2ToolStripMenuItem1,
-            this.portfolio3ToolStripMenuItem1});
-            this.loadPortfolioToolStripMenuItem.Name = "loadPortfolioToolStripMenuItem";
-            this.loadPortfolioToolStripMenuItem.Size = new System.Drawing.Size(94, 20);
-            this.loadPortfolioToolStripMenuItem.Text = "Load Portfolio";
+            this.portfolio3ToolStripMenuItem1,
+            this.toolStripMenuItem1,
+            this.addPortfolioToolStripMenuItem});
+            this.loadPortfolioMenu.Name = "loadPortfolioMenu";
+            this.loadPortfolioMenu.Size = new System.Drawing.Size(94, 20);
+            this.loadPortfolioMenu.Text = "Load Portfolio";
             // 
             // portfolio1ToolStripMenuItem1
             // 
             this.portfolio1ToolStripMenuItem1.Name = "portfolio1ToolStripMenuItem1";
-            this.portfolio1ToolStripMenuItem1.Size = new System.Drawing.Size(129, 22);
+            this.portfolio1ToolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
             this.portfolio1ToolStripMenuItem1.Tag = "Portfolio1";
             this.portfolio1ToolStripMenuItem1.Text = "Portfolio 1";
             this.portfolio1ToolStripMenuItem1.Click += new System.EventHandler(this.LoadPortfolio_Click);
@@ -669,7 +691,7 @@
             // portfolio2ToolStripMenuItem1
             // 
             this.portfolio2ToolStripMenuItem1.Name = "portfolio2ToolStripMenuItem1";
-            this.portfolio2ToolStripMenuItem1.Size = new System.Drawing.Size(129, 22);
+            this.portfolio2ToolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
             this.portfolio2ToolStripMenuItem1.Tag = "Portfolio2";
             this.portfolio2ToolStripMenuItem1.Text = "Portfolio 2";
             this.portfolio2ToolStripMenuItem1.Click += new System.EventHandler(this.LoadPortfolio_Click);
@@ -677,10 +699,22 @@
             // portfolio3ToolStripMenuItem1
             // 
             this.portfolio3ToolStripMenuItem1.Name = "portfolio3ToolStripMenuItem1";
-            this.portfolio3ToolStripMenuItem1.Size = new System.Drawing.Size(129, 22);
+            this.portfolio3ToolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
             this.portfolio3ToolStripMenuItem1.Tag = "Portfolio3";
             this.portfolio3ToolStripMenuItem1.Text = "Portfolio 3";
             this.portfolio3ToolStripMenuItem1.Click += new System.EventHandler(this.LoadPortfolio_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(168, 6);
+            // 
+            // addPortfolioToolStripMenuItem
+            // 
+            this.addPortfolioToolStripMenuItem.Name = "addPortfolioToolStripMenuItem";
+            this.addPortfolioToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.addPortfolioToolStripMenuItem.Text = "Manage Portfolios";
+            this.addPortfolioToolStripMenuItem.Click += new System.EventHandler(this.manage_Click);
             // 
             // encryptToolStripMenuItem
             // 
@@ -707,7 +741,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(735, 98);
+            this.label2.Location = new System.Drawing.Point(792, 98);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(52, 13);
             this.label2.TabIndex = 47;
@@ -718,7 +752,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(793, 98);
+            this.label3.Location = new System.Drawing.Point(850, 98);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(59, 13);
             this.label3.TabIndex = 48;
@@ -741,18 +775,30 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(865, 98);
+            this.label6.Location = new System.Drawing.Point(922, 98);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(48, 13);
             this.label6.TabIndex = 50;
             this.label6.Text = "7/d (%)";
             this.toolTips.SetToolTip(this.label6, "Change in percent for the last 7 days");
             // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(582, 98);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(37, 13);
+            this.label12.TabIndex = 51;
+            this.label12.Text = "Ratio";
+            this.toolTips.SetToolTip(this.label12, "(Profit / Paid)");
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(931, 123);
+            this.ClientSize = new System.Drawing.Size(984, 123);
+            this.Controls.Add(this.label12);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label3);
@@ -817,11 +863,11 @@
         private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem resetToolStripMenuItem;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ToolStripMenuItem savePortfolioToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem savePortfolioMenu;
         private System.Windows.Forms.ToolStripMenuItem portfolio1ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem portfolio2ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem portfolio3ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem loadPortfolioToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadPortfolioMenu;
         private System.Windows.Forms.ToolStripMenuItem portfolio1ToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem portfolio2ToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem portfolio3ToolStripMenuItem1;
@@ -843,6 +889,11 @@
         private System.Windows.Forms.ComboBox cbCurrency;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem addPortfolioToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem addPortfolioToolStripMenuItem;
     }
 }
 

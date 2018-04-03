@@ -31,6 +31,11 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Alerts));
             this.grdAlerts = new System.Windows.Forms.DataGridView();
+            this.coinDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.operatorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Current = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bsAlerts = new System.Windows.Forms.BindingSource(this.components);
             this.cmbCoins = new System.Windows.Forms.ComboBox();
             this.txtPrice = new System.Windows.Forms.TextBox();
             this.cmbOperator = new System.Windows.Forms.ComboBox();
@@ -58,12 +63,8 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.bsAlerts = new System.Windows.Forms.BindingSource(this.components);
-            this.coinDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.operatorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Current = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.grdAlerts)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bsAlerts)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.grpContact.SuspendLayout();
@@ -71,7 +72,6 @@
             this.grpEmail.SuspendLayout();
             this.tblEmailInput.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bsAlerts)).BeginInit();
             this.SuspendLayout();
             // 
             // grdAlerts
@@ -99,6 +99,41 @@
             this.grdAlerts.TabIndex = 0;
             this.grdAlerts.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.grdAlerts_CellBeginEdit);
             this.grdAlerts.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdAlerts_CellEndEdit);
+            // 
+            // coinDataGridViewTextBoxColumn
+            // 
+            this.coinDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.coinDataGridViewTextBoxColumn.DataPropertyName = "Coin";
+            this.coinDataGridViewTextBoxColumn.HeaderText = "Coin";
+            this.coinDataGridViewTextBoxColumn.Name = "coinDataGridViewTextBoxColumn";
+            this.coinDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // priceDataGridViewTextBoxColumn
+            // 
+            this.priceDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.priceDataGridViewTextBoxColumn.DataPropertyName = "Price";
+            this.priceDataGridViewTextBoxColumn.HeaderText = "Check Price";
+            this.priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
+            // 
+            // operatorDataGridViewTextBoxColumn
+            // 
+            this.operatorDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.operatorDataGridViewTextBoxColumn.DataPropertyName = "Operator";
+            this.operatorDataGridViewTextBoxColumn.HeaderText = "Operator";
+            this.operatorDataGridViewTextBoxColumn.Name = "operatorDataGridViewTextBoxColumn";
+            this.operatorDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // Current
+            // 
+            this.Current.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Current.DataPropertyName = "Current";
+            this.Current.HeaderText = "Current Price";
+            this.Current.Name = "Current";
+            this.Current.ReadOnly = true;
+            // 
+            // bsAlerts
+            // 
+            this.bsAlerts.DataSource = typeof(MyCryptoMonitor.DataSources.AlertDataSourceList);
             // 
             // cmbCoins
             // 
@@ -483,41 +518,6 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Instructions";
             // 
-            // bsAlerts
-            // 
-            this.bsAlerts.DataSource = typeof(MyCryptoMonitor.DataSources.AlertDataSourceList);
-            // 
-            // coinDataGridViewTextBoxColumn
-            // 
-            this.coinDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.coinDataGridViewTextBoxColumn.DataPropertyName = "Coin";
-            this.coinDataGridViewTextBoxColumn.HeaderText = "Coin";
-            this.coinDataGridViewTextBoxColumn.Name = "coinDataGridViewTextBoxColumn";
-            this.coinDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // priceDataGridViewTextBoxColumn
-            // 
-            this.priceDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.priceDataGridViewTextBoxColumn.DataPropertyName = "Price";
-            this.priceDataGridViewTextBoxColumn.HeaderText = "Check Price";
-            this.priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
-            // 
-            // operatorDataGridViewTextBoxColumn
-            // 
-            this.operatorDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.operatorDataGridViewTextBoxColumn.DataPropertyName = "Operator";
-            this.operatorDataGridViewTextBoxColumn.HeaderText = "Operator";
-            this.operatorDataGridViewTextBoxColumn.Name = "operatorDataGridViewTextBoxColumn";
-            this.operatorDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // Current
-            // 
-            this.Current.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Current.DataPropertyName = "Current";
-            this.Current.HeaderText = "Current Price";
-            this.Current.Name = "Current";
-            this.Current.ReadOnly = true;
-            // 
             // Alerts
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -533,6 +533,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Alerts_FormClosed);
             this.Load += new System.EventHandler(this.Alerts_Load);
             ((System.ComponentModel.ISupportInitialize)(this.grdAlerts)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bsAlerts)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -543,7 +544,6 @@
             this.tblEmailInput.ResumeLayout(false);
             this.tblEmailInput.PerformLayout();
             this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.bsAlerts)).EndInit();
             this.ResumeLayout(false);
 
         }

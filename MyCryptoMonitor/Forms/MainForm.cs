@@ -70,6 +70,13 @@ namespace MyCryptoMonitor.Forms
             //Update status
             UpdateStatus("Loading");
 
+            Management.LoadPortfolios();
+            foreach(var portfolio in Management.Portfolios)
+            {
+                savePortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem { Text = portfolio.Name, Name = portfolio.Name });
+                loadPortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem { Text = portfolio.Name, Name = portfolio.Name });
+            }
+
             //Start main thread
             Thread mainThread = new Thread(new ThreadStart(DownloadData));
             mainThread.IsBackground = true;
@@ -308,6 +315,7 @@ namespace MyCryptoMonitor.Forms
                     line.BoughtPriceLabel.Text = $"${boughtPrice:0.000000}";
                     line.TotalLabel.Text = $"${total:0.00}";
                     line.ProfitLabel.Text = $"${profit:0.00}";
+                    line.RatioLabel.Text = paid != 0 ? $"{profit/paid:0.00}" : "0.00";
                     line.ChangeDollarLabel.Text = $"${changeDollar:0.000000}";
                     line.ChangePercentLabel.Text = $"{changePercent:0.00}%";
                     line.Change1HrPercentLabel.Text = $"{downloadedCoin.Change1HourPercent:0.00}%";
@@ -376,6 +384,7 @@ namespace MyCryptoMonitor.Forms
             Controls.Add(newLine.TotalLabel);
             Controls.Add(newLine.PaidTextBox);
             Controls.Add(newLine.ProfitLabel);
+            Controls.Add(newLine.RatioLabel);
             Controls.Add(newLine.ChangeDollarLabel);
             Controls.Add(newLine.ChangePercentLabel);
             Controls.Add(newLine.Change1HrPercentLabel);
@@ -384,6 +393,11 @@ namespace MyCryptoMonitor.Forms
 
             //Add line to list
             _coinGuiLines.Add(newLine);
+        }
+
+        private void LoadPortfolios()
+        {
+
         }
 
         private void SavePortfolio(string portfolio)
@@ -563,6 +577,16 @@ namespace MyCryptoMonitor.Forms
 
             Management.UserConfig.Currency = cbCurrency.Text;
             Management.SaveUserConfig();
+        }
+
+        private void manage_Click(object sender, EventArgs e)
+        {
+            PortfolioManager form = new PortfolioManager();
+            if (form.ShowDialog() != DialogResult.OK)
+                return;
+
+            savePortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem { Text = "TEST", Name = "TEST" });
+            loadPortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem { Text = "TEST", Name = "TEST" });
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

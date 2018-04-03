@@ -56,6 +56,7 @@
     <Compile Include="Coin\CoinGuiLine.cs" />
     <Compile Include="DataSources\AlertConfig.cs" />
     <Compile Include="DataSources\AlertDataSource.cs" />
+    <Compile Include="DataSources\PortfolioSource.cs" />
     <Compile Include="DataSources\UserConfig.cs" />
     <Compile Include="Forms\Alerts.cs">
       <SubType>Form</SubType>
@@ -103,7 +104,14 @@
     <Compile Include="Forms\Password.Designer.cs">
       <DependentUpon>Password.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\PortfolioManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PortfolioManager.Designer.cs">
+      <DependentUpon>PortfolioManager.cs</DependentUpon>
+    </Compile>
     <Compile Include="Functions\AESEncrypt.cs" />
+    <Compile Include="Functions\Extensions.cs" />
     <Compile Include="Functions\Management.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -128,6 +136,9 @@
     <EmbeddedResource Include="Forms\Password.resx">
       <DependentUpon>Password.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PortfolioManager.resx">
+      <DependentUpon>PortfolioManager.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -140,6 +151,7 @@
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\MyCryptoMonitor.DataSources.AlertDataSourceList.datasource" />
+    <None Include="Properties\DataSources\MyCryptoMonitor.DataSources.PortfolioSourceList.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

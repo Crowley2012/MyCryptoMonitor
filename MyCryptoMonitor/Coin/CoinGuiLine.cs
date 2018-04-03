@@ -17,6 +17,7 @@ namespace MyCryptoMonitor
         public Label BoughtPriceLabel;
         public Label TotalLabel;
         public Label ProfitLabel;
+        public Label RatioLabel;
         public Label ChangeDollarLabel;
         public Label ChangePercentLabel;
         public Label Change1HrPercentLabel;
@@ -39,6 +40,7 @@ namespace MyCryptoMonitor
             TotalLabel = new Label();
             PaidTextBox = new TextBox();
             ProfitLabel = new Label();
+            RatioLabel = new Label();
             ChangeDollarLabel = new Label();
             ChangePercentLabel = new Label();
             Change1HrPercentLabel = new Label();
@@ -51,6 +53,7 @@ namespace MyCryptoMonitor
             BoughtPriceLabel.AutoSize = true;
             TotalLabel.AutoSize = true;
             ProfitLabel.AutoSize = true;
+            RatioLabel.AutoSize = true;
             ChangeDollarLabel.AutoSize = true;
             ChangePercentLabel.AutoSize = true;
             Change1HrPercentLabel.AutoSize = true;
@@ -67,6 +70,7 @@ namespace MyCryptoMonitor
             TotalLabel.Size = new Size(58, 13);
             PaidTextBox.Size = new Size(80, 20);
             ProfitLabel.Size = new Size(58, 13);
+            RatioLabel.Size = new Size(58, 13);
             ChangeDollarLabel.Size = new Size(58, 13);
             ChangePercentLabel.Size = new Size(54, 13);
             Change1HrPercentLabel.Size = new Size(42, 13);
@@ -81,16 +85,20 @@ namespace MyCryptoMonitor
             TotalLabel.Location = new Point(BoughtPriceLabel.Location.X + BoughtPriceLabel.Width + Spacing, yindex);
             PaidTextBox.Location = new Point(TotalLabel.Location.X + TotalLabel.Width + Spacing, yindex - 3);
             ProfitLabel.Location = new Point(PaidTextBox.Location.X + PaidTextBox.Width + Spacing, yindex);
-            ChangeDollarLabel.Location = new Point(ProfitLabel.Location.X + ProfitLabel.Width + Spacing, yindex);
+            RatioLabel.Location = new Point(ProfitLabel.Location.X + ProfitLabel.Width + Spacing - 5, yindex);
+            ChangeDollarLabel.Location = new Point(RatioLabel.Location.X + RatioLabel.Width + Spacing - 15, yindex);
             ChangePercentLabel.Location = new Point(ChangeDollarLabel.Location.X + ChangeDollarLabel.Width + Spacing, yindex);
             Change1HrPercentLabel.Location = new Point(ChangePercentLabel.Location.X + ChangePercentLabel.Width + Spacing, yindex);
             Change24HrPercentLabel.Location = new Point(Change1HrPercentLabel.Location.X + Change1HrPercentLabel.Width + Spacing, yindex);
             Change7DayPercentLabel.Location = new Point(Change24HrPercentLabel.Location.X + Change24HrPercentLabel.Width + Spacing, yindex);
 
-            ChangePercentLabel.TextChanged += new EventHandler(ChangePercentLabel_TextChanged);
-            Change1HrPercentLabel.TextChanged += new EventHandler(ChangeTestPercentLabel_TextChanged);
-            Change24HrPercentLabel.TextChanged += new EventHandler(ChangeTestPercentLabel_TextChanged);
-            Change7DayPercentLabel.TextChanged += new EventHandler(ChangeTestPercentLabel_TextChanged);
+            ProfitLabel.TextChanged += new EventHandler(label_TextChanged);
+            RatioLabel.TextChanged += new EventHandler(label_TextChanged);
+            ChangeDollarLabel.TextChanged += new EventHandler(label_TextChanged);
+            ChangePercentLabel.TextChanged += new EventHandler(labelBold_TextChanged);
+            Change1HrPercentLabel.TextChanged += new EventHandler(labelBold_TextChanged);
+            Change24HrPercentLabel.TextChanged += new EventHandler(labelBold_TextChanged);
+            Change7DayPercentLabel.TextChanged += new EventHandler(labelBold_TextChanged);
         }
 
         public void Dispose()
@@ -103,6 +111,7 @@ namespace MyCryptoMonitor
             TotalLabel.Dispose();
             PaidTextBox.Dispose();
             ProfitLabel.Dispose();
+            RatioLabel.Dispose();
             ChangeDollarLabel.Dispose();
             ChangePercentLabel.Dispose();
             Change1HrPercentLabel.Dispose();
@@ -110,51 +119,21 @@ namespace MyCryptoMonitor
             Change7DayPercentLabel.Dispose();
         }
 
-        private void ChangeTestPercentLabel_TextChanged(object sender, EventArgs e)
+        private void label_TextChanged(object sender, EventArgs e)
         {
             Label label = (Label)sender;
-            decimal changePercent = Convert.ToDecimal(label.Text.Replace("%", string.Empty));
+            decimal changePercent = Convert.ToDecimal(label.Text.Replace("%", string.Empty).Replace("$", string.Empty));
 
-            //Set color
-            if (changePercent >= 0)
-                label.ForeColor = Color.Green;
-            else
-                label.ForeColor = Color.Red;
-
-            //Set weight
-            if (changePercent >= 10 || changePercent <= -10)
-                label.Font = new Font(label.Font, FontStyle.Bold);
-            else
-                label.Font = new Font(label.Font, FontStyle.Regular);
+            label.ForeColor = changePercent >= 0 ? Color.Green : Color.Red;
         }
 
-        private void ChangePercentLabel_TextChanged(object sender, EventArgs e)
+        private void labelBold_TextChanged(object sender, EventArgs e)
         {
-            decimal changePercent = Convert.ToDecimal(((Label)sender).Text.Replace("%", string.Empty));
+            Label label = (Label)sender;
+            decimal changePercent = Convert.ToDecimal(label.Text.Replace("%", string.Empty).Replace("$", string.Empty));
 
-            //Set color
-            if (changePercent >= 0)
-            {
-                ChangeDollarLabel.ForeColor = Color.Green;
-                ChangePercentLabel.ForeColor = Color.Green;
-            }
-            else
-            {
-                ChangeDollarLabel.ForeColor = Color.Red;
-                ChangePercentLabel.ForeColor = Color.Red;
-            }
-
-            //Set weight
-            if (changePercent >= 10 || changePercent <= -10)
-            {
-                ChangeDollarLabel.Font = new Font(ChangeDollarLabel.Font, FontStyle.Bold);
-                ChangePercentLabel.Font = new Font(ChangePercentLabel.Font, FontStyle.Bold);
-            }
-            else
-            {
-                ChangeDollarLabel.Font = new Font(ChangeDollarLabel.Font, FontStyle.Regular);
-                ChangePercentLabel.Font = new Font(ChangePercentLabel.Font, FontStyle.Regular);
-            }
+            label.ForeColor = changePercent >= 0 ? Color.Green : Color.Red;
+            label.Font = changePercent >= 10 || changePercent <= -10 ? new Font(label.Font, FontStyle.Bold) : new Font(label.Font, FontStyle.Regular);
         }
     }
 }

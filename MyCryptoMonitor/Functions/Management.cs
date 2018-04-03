@@ -23,6 +23,7 @@ namespace MyCryptoMonitor.Functions
         public static AlertConfig AlertConfig { get; set; }
         public static string SelectedPortfolio { get; set; }
         public static string Password { get; set; } = string.Empty;
+        public static List<PortfolioSource> Portfolios { get; set; }
         #endregion
 
         #region User Config Management
@@ -142,6 +143,20 @@ namespace MyCryptoMonitor.Functions
         #endregion
 
         #region Portfolio Management
+        public static void LoadPortfolios()
+        {
+            Portfolios = new List<PortfolioSource>();
+            var files = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.portfolio");
+
+            UserConfig.StartupPortfolio = "Portfolio1";
+
+            foreach (string file in files)
+            {
+                var name = Path.GetFileName(file).Replace(".portfolio", string.Empty);
+                Portfolios.Add(new PortfolioSource { Name = name, Startup = UserConfig.StartupPortfolio.Equals(name) });
+            }
+        }
+
         public static List<CoinConfig> LoadFirstPortfolio()
         {
             if (File.Exists("Portfolio1"))
