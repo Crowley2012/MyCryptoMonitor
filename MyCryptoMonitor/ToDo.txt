@@ -1,7 +1,4 @@
-﻿User settings
-	Select fiat currency
-
-Portfolio Manager
+﻿Portfolio Manager
 	Naming
 	Unlimited portfolios
 
@@ -20,5 +17,4 @@ New UI
 Mobile / Web version
 
 Running Change log
-**[ADDED]** 7 day percent change
-**[REMOVED]** API Selection, now uses a combo of coin market cap and crypto compare api
+**[FEATURE]** Choose your conversion currency

@@ -16,8 +16,8 @@ namespace MyCryptoMonitor.Forms
     public partial class MainForm : Form
     {
         #region Constant Variables
-        private const string API_COIN_MARKET_CAP = "https://api.coinmarketcap.com/v1/ticker/?limit=9999";
-        private const string API_CRYPTO_COMPARE = "https://min-api.cryptocompare.com/data/pricemultifull?tsyms=USD&fsyms=";
+        private const string API_COIN_MARKET_CAP = "https://api.coinmarketcap.com/v1/ticker/?limit=9999&convert={0}";
+        private const string API_CRYPTO_COMPARE = "https://min-api.cryptocompare.com/data/pricemultifull?tsyms={0}&fsyms={1}";
         #endregion
 
         #region Private Variables
@@ -56,6 +56,9 @@ namespace MyCryptoMonitor.Forms
             //Attempt to load portfolio on startup
             _coinConfigs = Management.LoadFirstPortfolio();
 
+            //Set currency
+            cbCurrency.Text = string.IsNullOrEmpty(Management.UserConfig.Currency) ? "USD" : Management.UserConfig.Currency;
+
             //Add list of coins in config for crypto compare api
             foreach (var name in _coinConfigs)
                 _selectedCoins += $",{name.coin}";
@@ -93,8 +96,10 @@ namespace MyCryptoMonitor.Forms
 
                 try
                 {
+                    string currency = (string)cbCurrency.Invoke(new Func<string>(() => cbCurrency.Text));
+
                     using (var webClient = new WebClient())
-                        UpdateCoins(webClient.DownloadString($"{API_CRYPTO_COMPARE}{_selectedCoins}"), webClient.DownloadString(API_COIN_MARKET_CAP));
+                        UpdateCoins(webClient.DownloadString(string.Format(API_CRYPTO_COMPARE, currency, _selectedCoins)), webClient.DownloadString(string.Format(API_COIN_MARKET_CAP, currency)));
                 }
                 catch (WebException)
                 {
@@ -540,6 +545,16 @@ namespace MyCryptoMonitor.Forms
         {
             Encrypt form = new Encrypt();
             form.Show();
+        }
+
+        private void cbCurrency_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //TODO: Reset startup price
+            _resetTime = DateTime.Now;
+            LoadPortfolio(Management.SelectedPortfolio);
+
+            Management.UserConfig.Currency = cbCurrency.Text;
+            Management.SaveUserConfig();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

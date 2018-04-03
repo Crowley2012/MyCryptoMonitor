@@ -47,6 +47,8 @@
             // 
             // cbCoins
             // 
+            this.cbCoins.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbCoins.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbCoins.FormattingEnabled = true;
             this.cbCoins.Location = new System.Drawing.Point(13, 13);
             this.cbCoins.Margin = new System.Windows.Forms.Padding(4);
