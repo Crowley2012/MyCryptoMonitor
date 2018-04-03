@@ -222,7 +222,7 @@ namespace MyCryptoMonitor.Forms
 
                 foreach (AlertDataSource coin in Management.AlertConfig.Alerts)
                 {
-                    var coinData = _cryptoCompareCoins.Where(c => c.ShortName.Equals(coin.Coin)).FirstOrDefault();
+                    var coinData = _cryptoCompareCoins.Where(c => c.ShortName.Equals(coin.Coin) && Management.UserConfig.Currency.Equals(coin.Currency)).FirstOrDefault();
 
                     if (coinData == null)
                         continue;
@@ -254,6 +254,13 @@ namespace MyCryptoMonitor.Forms
                     //Check if gui lines need to be loaded
                     if (_loadGuiLines)
                         AddCoin(coin, downloadedCoin, index);
+
+                    //Store the intial coin price at startup
+                    if (coin.SetStartupPrice)
+                    {
+                        coin.StartupPrice = downloadedCoin.Price;
+                        coin.SetStartupPrice = false;
+                    }
 
                     //Incremenet coin line index
                     index++;
@@ -317,8 +324,8 @@ namespace MyCryptoMonitor.Forms
                 lblStatus.Text = "Status: Sleeping";
                 _refreshTime = DateTime.Now;
 
-                //Sleep and rerun
                 _loadGuiLines = false;
+                alertsToolStripMenuItem.Enabled = true;
             });
         }
 
@@ -549,9 +556,10 @@ namespace MyCryptoMonitor.Forms
 
         private void cbCurrency_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //TODO: Reset startup price
-            _resetTime = DateTime.Now;
-            LoadPortfolio(Management.SelectedPortfolio);
+            alertsToolStripMenuItem.Enabled = false;
+
+            foreach (var config in _coinConfigs)
+                config.SetStartupPrice = true;
 
             Management.UserConfig.Currency = cbCurrency.Text;
             Management.SaveUserConfig();

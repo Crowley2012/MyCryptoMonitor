@@ -14,6 +14,7 @@ namespace MyCryptoMonitor.Forms
         #region Private Variables
         private List<CoinData> _coins;
         private List<AlertDataSource> _alerts;
+        private List<AlertDataSource> _otherAlerts;
         private decimal _oldCheckPrice;
         #endregion
 
@@ -39,9 +40,15 @@ namespace MyCryptoMonitor.Forms
 
                 //Get the current price of coin
                 foreach(AlertDataSource alert in alertConfig.Alerts)
-                    alert.Current = _coins.Where(c => c.ShortName.Equals(alert.Coin)).Select(c => c.Price).First();
+                {
+                    if (alert.Coin.Equals("NANO"))
+                        alert.Coin = "XRB";
 
-                bsAlerts.DataSource = alertConfig.Alerts.OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();
+                    alert.Current = _coins.Where(c => c.ShortName.Equals(alert.Coin)).Select(c => c.Price).First();
+                }
+
+                _otherAlerts = alertConfig.Alerts.Where(a => !a.Currency.Equals(Management.UserConfig.Currency)).OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();
+                bsAlerts.DataSource = alertConfig.Alerts.Where(a => a.Currency.Equals(Management.UserConfig.Currency)).OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();
             }
 
             if (!Management.UserConfig.Encryption)
@@ -65,6 +72,8 @@ namespace MyCryptoMonitor.Forms
                 ReceiveType = cmbReceiveType.Text,
                 Alerts = bsAlerts.DataSource as List<AlertDataSource>
             };
+
+            alertConfig.Alerts.AddRange(_otherAlerts);
 
             //Save config
             Management.SaveAlerts(alertConfig);
@@ -150,7 +159,7 @@ namespace MyCryptoMonitor.Forms
             if (!CheckValid(Convert.ToDecimal(txtCurrent.Text), Convert.ToDecimal(txtPrice.Text), op))
                 return;
 
-            bsAlerts.Add(new AlertDataSource { Coin = cmbCoins.Text, Current = Convert.ToDecimal(txtCurrent.Text), Operator = cmbOperator.Text, Price = Convert.ToDecimal(txtPrice.Text) });
+            bsAlerts.Add(new AlertDataSource { Coin = cmbCoins.Text, Current = Convert.ToDecimal(txtCurrent.Text), Operator = cmbOperator.Text, Price = Convert.ToDecimal(txtPrice.Text), Currency = Management.UserConfig.Currency });
             bsAlerts.DataSource = ((List<AlertDataSource>)bsAlerts.DataSource).OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();
         }
 

@@ -18,3 +18,4 @@ Mobile / Web version
 
 Running Change log
 **[FEATURE]** Choose your conversion currency
+**[FEATURE]** Alerts are currency specific
