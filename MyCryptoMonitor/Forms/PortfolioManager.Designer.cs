@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PortfolioManager));
             this.grdPortfolios = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnSave = new System.Windows.Forms.Button();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.startupDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.bsPortfolios = new System.Windows.Forms.BindingSource(this.components);
@@ -41,6 +42,8 @@
             // 
             // grdPortfolios
             // 
+            this.grdPortfolios.AllowUserToResizeColumns = false;
+            this.grdPortfolios.AllowUserToResizeRows = false;
             this.grdPortfolios.AutoGenerateColumns = false;
             this.grdPortfolios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grdPortfolios.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -49,8 +52,11 @@
             this.grdPortfolios.DataSource = this.bsPortfolios;
             this.grdPortfolios.Location = new System.Drawing.Point(12, 29);
             this.grdPortfolios.Name = "grdPortfolios";
-            this.grdPortfolios.Size = new System.Drawing.Size(454, 435);
+            this.grdPortfolios.Size = new System.Drawing.Size(454, 404);
             this.grdPortfolios.TabIndex = 7;
+            this.grdPortfolios.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdPortfolios_CellClick);
+            this.grdPortfolios.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdPortfolios_CellEndEdit);
+            this.grdPortfolios.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.grdPortfolios_CellValidating);
             this.grdPortfolios.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdPortfolios_CellValueChanged);
             // 
             // label1
@@ -63,6 +69,16 @@
             this.label1.TabIndex = 8;
             this.label1.Text = "To add, click empty cell. To edit, double click cell. To delete, click row header" +
     " and press delete.";
+            // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(12, 441);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(454, 23);
+            this.btnSave.TabIndex = 9;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // nameDataGridViewTextBoxColumn
             // 
@@ -88,6 +104,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(478, 476);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.grdPortfolios);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -108,5 +125,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewCheckBoxColumn startupDataGridViewCheckBoxColumn;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnSave;
     }
 }

@@ -73,8 +73,8 @@ namespace MyCryptoMonitor.Forms
             Management.LoadPortfolios();
             foreach(var portfolio in Management.Portfolios)
             {
-                savePortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem { Text = portfolio.Name, Name = portfolio.Name });
-                loadPortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem { Text = portfolio.Name, Name = portfolio.Name });
+                savePortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, SavePortfolio_Click) { Name = portfolio.Name });
+                loadPortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, LoadPortfolio_Click) { Name = portfolio.Name });
             }
 
             //Start main thread
@@ -420,16 +420,16 @@ namespace MyCryptoMonitor.Forms
             }
 
             //Save portfolio
-            Management.SavePortfolio(portfolio, coinConfigs);
+            Management.SavePortfolio($"{portfolio}.portfolio", coinConfigs);
         }
 
         private void LoadPortfolio(string portfolio)
         {
-            if (!File.Exists(portfolio))
+            if (!File.Exists($"{portfolio}.portfolio"))
                 return;
 
             //Load portfolio
-            _coinConfigs = Management.LoadPortfolio(portfolio);
+            _coinConfigs = Management.LoadPortfolio($"{portfolio}.portfolio");
             RemoveGuiLines();
         }
 
@@ -537,12 +537,12 @@ namespace MyCryptoMonitor.Forms
 
         private void SavePortfolio_Click(object sender, EventArgs e)
         {
-            SavePortfolio(((ToolStripMenuItem)sender).Tag.ToString());
+            SavePortfolio(((ToolStripMenuItem)sender).Text);
         }
 
         private void LoadPortfolio_Click(object sender, EventArgs e)
         {
-            LoadPortfolio(((ToolStripMenuItem)sender).Tag.ToString());
+            LoadPortfolio(((ToolStripMenuItem)sender).Text);
         }
 
         private void donateToolStripMenuItem_Click(object sender, EventArgs e)
@@ -582,11 +582,20 @@ namespace MyCryptoMonitor.Forms
         private void manage_Click(object sender, EventArgs e)
         {
             PortfolioManager form = new PortfolioManager();
-            if (form.ShowDialog() != DialogResult.OK)
-                return;
+            form.ShowDialog();
 
-            savePortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem { Text = "TEST", Name = "TEST" });
-            loadPortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem { Text = "TEST", Name = "TEST" });
+            Management.LoadPortfolios();
+
+            foreach (var portfolio in Management.Portfolios)
+            {
+                if (!loadPortfolioMenu.DropDownItems.ContainsKey(portfolio.Name))
+                {
+                    savePortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, SavePortfolio_Click) { Name = portfolio.Name });
+                    loadPortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, LoadPortfolio_Click) { Name = portfolio.Name });
+                }
+            }
+
+            Management.Portfolios = Management.Portfolios.OrderByDescending(p => p.Name).ToList();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

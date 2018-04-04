@@ -64,15 +64,9 @@
             this.removeAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alertsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.savePortfolioMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.portfolio1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.portfolio2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.portfolio3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.addPortfolioToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.loadPortfolioMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.portfolio1ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.portfolio2ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.portfolio3ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.addPortfolioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.encryptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -623,38 +617,11 @@
             // savePortfolioMenu
             // 
             this.savePortfolioMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.portfolio1ToolStripMenuItem,
-            this.portfolio2ToolStripMenuItem,
-            this.portfolio3ToolStripMenuItem,
             this.toolStripMenuItem2,
             this.addPortfolioToolStripMenuItem1});
             this.savePortfolioMenu.Name = "savePortfolioMenu";
             this.savePortfolioMenu.Size = new System.Drawing.Size(92, 20);
             this.savePortfolioMenu.Text = "Save Portfolio";
-            // 
-            // portfolio1ToolStripMenuItem
-            // 
-            this.portfolio1ToolStripMenuItem.Name = "portfolio1ToolStripMenuItem";
-            this.portfolio1ToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-            this.portfolio1ToolStripMenuItem.Tag = "Portfolio1";
-            this.portfolio1ToolStripMenuItem.Text = "Portfolio 1";
-            this.portfolio1ToolStripMenuItem.Click += new System.EventHandler(this.SavePortfolio_Click);
-            // 
-            // portfolio2ToolStripMenuItem
-            // 
-            this.portfolio2ToolStripMenuItem.Name = "portfolio2ToolStripMenuItem";
-            this.portfolio2ToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-            this.portfolio2ToolStripMenuItem.Tag = "Portfolio2";
-            this.portfolio2ToolStripMenuItem.Text = "Portfolio 2";
-            this.portfolio2ToolStripMenuItem.Click += new System.EventHandler(this.SavePortfolio_Click);
-            // 
-            // portfolio3ToolStripMenuItem
-            // 
-            this.portfolio3ToolStripMenuItem.Name = "portfolio3ToolStripMenuItem";
-            this.portfolio3ToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-            this.portfolio3ToolStripMenuItem.Tag = "Portfolio3";
-            this.portfolio3ToolStripMenuItem.Text = "Portfolio 3";
-            this.portfolio3ToolStripMenuItem.Click += new System.EventHandler(this.SavePortfolio_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -671,38 +638,11 @@
             // loadPortfolioMenu
             // 
             this.loadPortfolioMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.portfolio1ToolStripMenuItem1,
-            this.portfolio2ToolStripMenuItem1,
-            this.portfolio3ToolStripMenuItem1,
             this.toolStripMenuItem1,
             this.addPortfolioToolStripMenuItem});
             this.loadPortfolioMenu.Name = "loadPortfolioMenu";
             this.loadPortfolioMenu.Size = new System.Drawing.Size(94, 20);
             this.loadPortfolioMenu.Text = "Load Portfolio";
-            // 
-            // portfolio1ToolStripMenuItem1
-            // 
-            this.portfolio1ToolStripMenuItem1.Name = "portfolio1ToolStripMenuItem1";
-            this.portfolio1ToolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
-            this.portfolio1ToolStripMenuItem1.Tag = "Portfolio1";
-            this.portfolio1ToolStripMenuItem1.Text = "Portfolio 1";
-            this.portfolio1ToolStripMenuItem1.Click += new System.EventHandler(this.LoadPortfolio_Click);
-            // 
-            // portfolio2ToolStripMenuItem1
-            // 
-            this.portfolio2ToolStripMenuItem1.Name = "portfolio2ToolStripMenuItem1";
-            this.portfolio2ToolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
-            this.portfolio2ToolStripMenuItem1.Tag = "Portfolio2";
-            this.portfolio2ToolStripMenuItem1.Text = "Portfolio 2";
-            this.portfolio2ToolStripMenuItem1.Click += new System.EventHandler(this.LoadPortfolio_Click);
-            // 
-            // portfolio3ToolStripMenuItem1
-            // 
-            this.portfolio3ToolStripMenuItem1.Name = "portfolio3ToolStripMenuItem1";
-            this.portfolio3ToolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
-            this.portfolio3ToolStripMenuItem1.Tag = "Portfolio3";
-            this.portfolio3ToolStripMenuItem1.Text = "Portfolio 3";
-            this.portfolio3ToolStripMenuItem1.Click += new System.EventHandler(this.LoadPortfolio_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -864,13 +804,7 @@
         private System.Windows.Forms.ToolStripMenuItem resetToolStripMenuItem;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ToolStripMenuItem savePortfolioMenu;
-        private System.Windows.Forms.ToolStripMenuItem portfolio1ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem portfolio2ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem portfolio3ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadPortfolioMenu;
-        private System.Windows.Forms.ToolStripMenuItem portfolio1ToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem portfolio2ToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem portfolio3ToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removeAllToolStripMenuItem;
         private System.Windows.Forms.Label lblRefreshTime;

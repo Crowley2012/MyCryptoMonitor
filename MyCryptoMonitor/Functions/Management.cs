@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading;
@@ -36,6 +37,10 @@ namespace MyCryptoMonitor.Functions
                 UserConfig = new UserConfig();
                 SaveUserConfig();
             }
+
+            if (UserConfig.StartupPortfolio == null)
+                UserConfig.StartupPortfolio = string.Empty;
+            SaveUserConfig();
         }
 
         public static void SaveUserConfig()
@@ -148,25 +153,21 @@ namespace MyCryptoMonitor.Functions
             Portfolios = new List<PortfolioSource>();
             var files = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.portfolio");
 
-            UserConfig.StartupPortfolio = "Portfolio1";
-
             foreach (string file in files)
             {
                 var name = Path.GetFileName(file).Replace(".portfolio", string.Empty);
                 Portfolios.Add(new PortfolioSource { Name = name, Startup = UserConfig.StartupPortfolio.Equals(name) });
             }
+
+            Portfolios = Portfolios.OrderByDescending(p => p.Name).ToList();
         }
 
         public static List<CoinConfig> LoadFirstPortfolio()
         {
-            if (File.Exists("Portfolio1"))
-                return LoadPortfolio("Portfolio1");
+            var portfolio = $"{UserConfig.StartupPortfolio}.portfolio";
 
-            else if (File.Exists("Portfolio2"))
-                return LoadPortfolio("Portfolio2");
-
-            else if (File.Exists("Portfolio3"))
-                return LoadPortfolio("Portfolio3");
+            if (File.Exists(portfolio))
+                return LoadPortfolio(portfolio);
 
             return new List<CoinConfig>();
         }
@@ -176,9 +177,9 @@ namespace MyCryptoMonitor.Functions
             SelectedPortfolio = portfolio;
 
             if (UserConfig.Encryption)
-                return LoadPortfolioEncrypted(portfolio);
+                return LoadPortfolioEncrypted(portfolio) ?? new List<CoinConfig>();
             else
-                return LoadPortfolioUnencrypted(portfolio);
+                return LoadPortfolioUnencrypted(portfolio) ?? new List<CoinConfig>();
         }
 
         public static List<CoinConfig> LoadPortfolioEncrypted(string portfolio)
