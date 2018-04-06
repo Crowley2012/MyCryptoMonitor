@@ -1,6 +1,5 @@
 ﻿using MyCryptoMonitor.Functions;
 using System;
-using System.IO;
 using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Forms
@@ -17,25 +16,9 @@ namespace MyCryptoMonitor.Forms
             bsPortfolios.DataSource = Management.Portfolios;
         }
 
-        private void grdPortfolios_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-        }
-
         private void btnSave_Click(object sender, EventArgs e)
         {
             Close();
-        }
-
-        private void grdPortfolios_CellEndEdit(object sender, DataGridViewCellEventArgs e)
-        {
-            var grid = (DataGridView)sender;
-
-            //Name is empty
-            if (grid[0, e.RowIndex].Value == null)
-            {
-                grid.Rows.RemoveAt(e.RowIndex);
-                return;
-            }
         }
 
         private void grdPortfolios_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
@@ -47,7 +30,7 @@ namespace MyCryptoMonitor.Forms
             //No change
             if(oldValue != null && oldValue.ToString().Equals(newValue))
             {
-                return;
+
             }
 
             //New row
@@ -57,65 +40,42 @@ namespace MyCryptoMonitor.Forms
             }
 
             //Updating row
-            else if (oldValue != null && !string.IsNullOrEmpty(newValue))
+            else if (oldValue != null && !string.IsNullOrEmpty(newValue) && !oldValue.ToString().Equals(newValue))
             {
                 //Name is empty
-                if (grid[0, e.RowIndex].Value == null)
+                if (grid[0, e.RowIndex].Value == null || string.IsNullOrEmpty(grid[0, e.RowIndex].Value.ToString()))
                 {
-                    //e.Cancel = true;
-                    //grid.Rows.RemoveAt(e.RowIndex);
+                    grid.CancelEdit();
                     return;
+                }
+
+                //Set startups to false
+                if (e.ColumnIndex == 1)
+                {
+                    for (int i = 0; i < grid.Rows.Count; i++)
+                    {
+                        if (i == e.RowIndex)
+                        {
+                            Management.UserConfig.StartupPortfolio = Convert.ToBoolean(grid[1, i].Value) ? grid[0, i].Value.ToString() : string.Empty;
+                            Management.SaveUserConfig();
+                            continue;
+                        }
+
+                        grid[1, i].Value = false;
+                    }
                 }
             }
 
             //Cancelled new row
             else if (oldValue == null && string.IsNullOrEmpty(newValue))
             {
-                return;
+                grid.CancelEdit();
             }
 
-            /*
-            if (oldValue != null && oldValue.Equals(newValue))
-                return;
-
-            if (newValue == null)
+            //Existing row empty name
+            else if(oldValue != null && string.IsNullOrEmpty(newValue))
             {
-                grid.Rows.RemoveAt(e.RowIndex);
-                return;
-            }
-
-            if (e.ColumnIndex == 1)
-            {
-                for (int i = 0; i < grid.Rows.Count; i++)
-                {
-                    if (i == e.RowIndex)
-                    {
-                        Management.UserConfig.StartupPortfolio = Convert.ToBoolean(grid.Rows[i].Cells[1].Value) ? grid.Rows[i].Cells[0].Value.ToString() : string.Empty;
-                        Management.SaveUserConfig();
-                        continue;
-                    }
-
-                    grid.Rows[i].Cells[1].Value = false;
-                }
-            }
-
-            var name = grid.Rows[e.RowIndex].Cells[0].Value.ToString();
-            var file = $"{name}.portfolio";
-
-            if (!File.Exists(file))
-                File.Create(file).Dispose();
-                */
-        }
-
-        private void grdPortfolios_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            var grid = (DataGridView)sender;
-
-            //Name is empty
-            if (grid[0, e.RowIndex].Value == null)
-            {
-                //grid.Rows.RemoveAt(e.RowIndex);
-                return;
+                grid[0, e.RowIndex].Value = oldValue;
             }
         }
     }

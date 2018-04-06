@@ -31,11 +31,11 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PortfolioManager));
             this.grdPortfolios = new System.Windows.Forms.DataGridView();
-            this.label1 = new System.Windows.Forms.Label();
-            this.btnSave = new System.Windows.Forms.Button();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.startupDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.bsPortfolios = new System.Windows.Forms.BindingSource(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.btnSave = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.grdPortfolios)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bsPortfolios)).BeginInit();
             this.SuspendLayout();
@@ -54,10 +54,26 @@
             this.grdPortfolios.Name = "grdPortfolios";
             this.grdPortfolios.Size = new System.Drawing.Size(454, 404);
             this.grdPortfolios.TabIndex = 7;
-            this.grdPortfolios.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdPortfolios_CellClick);
-            this.grdPortfolios.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdPortfolios_CellEndEdit);
             this.grdPortfolios.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.grdPortfolios_CellValidating);
-            this.grdPortfolios.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdPortfolios_CellValueChanged);
+            // 
+            // nameDataGridViewTextBoxColumn
+            // 
+            this.nameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
+            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
+            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            // 
+            // startupDataGridViewCheckBoxColumn
+            // 
+            this.startupDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.startupDataGridViewCheckBoxColumn.DataPropertyName = "Startup";
+            this.startupDataGridViewCheckBoxColumn.HeaderText = "Startup";
+            this.startupDataGridViewCheckBoxColumn.Name = "startupDataGridViewCheckBoxColumn";
+            this.startupDataGridViewCheckBoxColumn.Width = 47;
+            // 
+            // bsPortfolios
+            // 
+            this.bsPortfolios.DataSource = typeof(MyCryptoMonitor.DataSources.PortfolioSourceList);
             // 
             // label1
             // 
@@ -79,25 +95,6 @@
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // nameDataGridViewTextBoxColumn
-            // 
-            this.nameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
-            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
-            // 
-            // startupDataGridViewCheckBoxColumn
-            // 
-            this.startupDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.startupDataGridViewCheckBoxColumn.DataPropertyName = "Startup";
-            this.startupDataGridViewCheckBoxColumn.HeaderText = "Startup";
-            this.startupDataGridViewCheckBoxColumn.Name = "startupDataGridViewCheckBoxColumn";
-            this.startupDataGridViewCheckBoxColumn.Width = 47;
-            // 
-            // bsPortfolios
-            // 
-            this.bsPortfolios.DataSource = typeof(MyCryptoMonitor.DataSources.PortfolioSourceList);
             // 
             // PortfolioManager
             // 
