@@ -1,8 +1,4 @@
-﻿Portfolio Manager
-	Naming
-	Unlimited portfolios
-
-New UI
+﻿New UI
 	Style
 		Fancy
 		Compressed
@@ -17,6 +13,7 @@ New UI
 Mobile / Web version
 
 Running Change log
+**[FEATURE]** Portfolio Manager: create unlimted number of portfolios, custom names, and set a startup portfolio
 **[FEATURE]** Choose your conversion currency
 **[FEATURE]** Alerts are currency specific
 **[FEATURE]** Added profit ratio column (Profit / Paid)
