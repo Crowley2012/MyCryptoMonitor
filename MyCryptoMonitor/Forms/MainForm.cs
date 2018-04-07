@@ -29,6 +29,7 @@ namespace MyCryptoMonitor.Forms
         private DateTime _refreshTime;
         private bool _loadGuiLines;
         private string _selectedCoins;
+        private string _selectedPortfolio;
         #endregion
 
         #region Load
@@ -73,8 +74,8 @@ namespace MyCryptoMonitor.Forms
             Management.LoadPortfolios();
             foreach(var portfolio in Management.Portfolios)
             {
-                savePortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, SavePortfolio_Click) { Name = portfolio.Name });
-                loadPortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, LoadPortfolio_Click) { Name = portfolio.Name });
+                savePortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, SavePortfolio_Click) { Name = portfolio.Name, Checked = portfolio.Startup });
+                loadPortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, LoadPortfolio_Click) { Name = portfolio.Name, Checked = portfolio.Startup });
             }
 
             //Start main thread
@@ -395,11 +396,6 @@ namespace MyCryptoMonitor.Forms
             _coinGuiLines.Add(newLine);
         }
 
-        private void LoadPortfolios()
-        {
-
-        }
-
         private void SavePortfolio(string portfolio)
         {
             if (_coinGuiLines.Count <= 0)
@@ -535,14 +531,41 @@ namespace MyCryptoMonitor.Forms
             RemoveGuiLines();
         }
 
+        private void UncheckPortfolios(string portfolio)
+        {
+            _selectedPortfolio = portfolio;
+
+            foreach (ToolStripMenuItem item in savePortfolioMenu.DropDownItems.OfType<ToolStripMenuItem>())
+            {
+                item.Checked = false;
+
+                if (item.Text.Equals(portfolio))
+                    item.Checked = true;
+            }
+
+            foreach (ToolStripMenuItem item in loadPortfolioMenu.DropDownItems.OfType<ToolStripMenuItem>())
+            {
+                item.Checked = false;
+
+                if (item.Text.Equals(portfolio))
+                    item.Checked = true;
+            }
+        }
+
         private void SavePortfolio_Click(object sender, EventArgs e)
         {
-            SavePortfolio(((ToolStripMenuItem)sender).Text);
+            var portfolio = ((ToolStripMenuItem)sender).Text;
+
+            UncheckPortfolios(portfolio);
+            SavePortfolio(portfolio);
         }
 
         private void LoadPortfolio_Click(object sender, EventArgs e)
         {
-            LoadPortfolio(((ToolStripMenuItem)sender).Text);
+            var portfolio = ((ToolStripMenuItem)sender).Text;
+
+            UncheckPortfolios(portfolio);
+            LoadPortfolio(portfolio);
         }
 
         private void donateToolStripMenuItem_Click(object sender, EventArgs e)
@@ -588,10 +611,19 @@ namespace MyCryptoMonitor.Forms
 
             foreach (var portfolio in Management.Portfolios)
             {
+                if (loadPortfolioMenu.DropDownItems.ContainsKey(portfolio.Name))
+                {
+                    savePortfolioMenu.DropDownItems.RemoveByKey(portfolio.Name);
+                    loadPortfolioMenu.DropDownItems.RemoveByKey(portfolio.Name);
+                }
+            }
+
+            foreach (var portfolio in Management.Portfolios)
+            {
                 if (!loadPortfolioMenu.DropDownItems.ContainsKey(portfolio.Name))
                 {
-                    savePortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, SavePortfolio_Click) { Name = portfolio.Name });
-                    loadPortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, LoadPortfolio_Click) { Name = portfolio.Name });
+                    savePortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, SavePortfolio_Click) { Name = portfolio.Name, Checked = portfolio.Name.Equals(_selectedPortfolio) });
+                    loadPortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, LoadPortfolio_Click) { Name = portfolio.Name, Checked = portfolio.Name.Equals(_selectedPortfolio) });
                 }
             }
 

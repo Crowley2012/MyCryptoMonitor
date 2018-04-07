@@ -40,6 +40,7 @@ namespace MyCryptoMonitor.Functions
 
             if (UserConfig.StartupPortfolio == null)
                 UserConfig.StartupPortfolio = string.Empty;
+
             SaveUserConfig();
         }
 
@@ -155,8 +156,8 @@ namespace MyCryptoMonitor.Functions
 
             foreach (string file in files)
             {
-                var name = Path.GetFileName(file).Replace(".portfolio", string.Empty);
-                Portfolios.Add(new PortfolioSource { Name = name, Startup = UserConfig.StartupPortfolio.Equals(name) });
+                var name = Path.GetFileName(file);
+                Portfolios.Add(new PortfolioSource { Name = name.Replace(".portfolio", string.Empty), Startup = UserConfig.StartupPortfolio.Equals(name) });
             }
 
             Portfolios = Portfolios.OrderByDescending(p => p.Name).ToList();
@@ -164,7 +165,7 @@ namespace MyCryptoMonitor.Functions
 
         public static List<CoinConfig> LoadFirstPortfolio()
         {
-            var portfolio = $"{UserConfig.StartupPortfolio}.portfolio";
+            var portfolio = $"{UserConfig.StartupPortfolio}";
 
             if (File.Exists(portfolio))
                 return LoadPortfolio(portfolio);
@@ -190,6 +191,25 @@ namespace MyCryptoMonitor.Functions
         public static List<CoinConfig> LoadPortfolioUnencrypted(string portfolio)
         {
             return JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText(portfolio));
+        }
+
+        public static void SetStartupPortfolio(string portfolio)
+        {
+            UserConfig.StartupPortfolio = portfolio += ".portfolio";
+            SaveUserConfig();
+        }
+
+        public static bool NewPortfolio(string portfolio)
+        {
+            portfolio += ".portfolio";
+
+            if (!File.Exists(portfolio))
+            {
+                File.WriteAllText(portfolio, string.Empty);
+                return true;
+            }
+
+            return false;
         }
 
         public static void SavePortfolio(string portfolio, List<CoinConfig> coinConfigs)

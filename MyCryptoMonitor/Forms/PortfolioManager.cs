@@ -30,13 +30,14 @@ namespace MyCryptoMonitor.Forms
             //No change
             if(oldValue != null && oldValue.ToString().Equals(newValue))
             {
-
+                return;
             }
 
             //New row
             else if(oldValue == null && !string.IsNullOrEmpty(newValue))
             {
-
+                if (!Management.NewPortfolio(newValue))
+                    grid.CancelEdit();
             }
 
             //Updating row
@@ -56,8 +57,7 @@ namespace MyCryptoMonitor.Forms
                     {
                         if (i == e.RowIndex)
                         {
-                            Management.UserConfig.StartupPortfolio = Convert.ToBoolean(grid[1, i].Value) ? grid[0, i].Value.ToString() : string.Empty;
-                            Management.SaveUserConfig();
+                            Management.SetStartupPortfolio(Convert.ToBoolean(newValue) ? grid[0, i].Value.ToString() : string.Empty);
                             continue;
                         }
 
