@@ -53,6 +53,12 @@
   <ItemGroup>
     <Compile Include="Api\CoinMarketCap.cs" />
     <Compile Include="Api\CryptoCompare.cs" />
+    <Compile Include="Forms\PopupAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PopupAbout.Designer.cs">
+      <DependentUpon>PopupAbout.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\CoinLine.cs" />
     <Compile Include="Configs\AlertConfig.cs" />
     <Compile Include="DataSources\AlertDataSource.cs" />
@@ -122,6 +128,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\ManageAlerts.resx">
       <DependentUpon>ManageAlerts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PopupAbout.resx">
+      <DependentUpon>PopupAbout.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PopupDonate.resx">
       <DependentUpon>PopupDonate.cs</DependentUpon>

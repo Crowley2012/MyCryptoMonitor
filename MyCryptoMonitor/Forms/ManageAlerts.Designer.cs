@@ -518,7 +518,7 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Instructions";
             // 
-            // Alerts
+            // ManageAlerts
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -528,7 +528,7 @@
             this.Controls.Add(this.grpAlerts);
             this.Controls.Add(this.grpContact);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Alerts";
+            this.Name = "ManageAlerts";
             this.Text = "Alerts";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Alerts_FormClosed);
             this.Load += new System.EventHandler(this.Alerts_Load);

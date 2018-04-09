@@ -31,10 +31,10 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ManagePortfolios));
             this.grdPortfolios = new System.Windows.Forms.DataGridView();
-            this.label1 = new System.Windows.Forms.Label();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.startupDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.bsPortfolios = new System.Windows.Forms.BindingSource(this.components);
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.grdPortfolios)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bsPortfolios)).BeginInit();
             this.SuspendLayout();
@@ -56,17 +56,6 @@
             this.grdPortfolios.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.grdPortfolios_CellValidating);
             this.grdPortfolios.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.grdPortfolios_UserDeletingRow);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F);
-            this.label1.Location = new System.Drawing.Point(13, 11);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(442, 13);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "To add, click empty cell. To edit, double click cell. To delete, click row header" +
-    " and press delete.";
-            // 
             // nameDataGridViewTextBoxColumn
             // 
             this.nameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -86,7 +75,18 @@
             // 
             this.bsPortfolios.DataSource = typeof(MyCryptoMonitor.DataSources.PortfolioDataSourceList);
             // 
-            // PortfolioManager
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F);
+            this.label1.Location = new System.Drawing.Point(13, 11);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(442, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "To add, click empty cell. To edit, double click cell. To delete, click row header" +
+    " and press delete.";
+            // 
+            // ManagePortfolios
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -95,7 +95,7 @@
             this.Controls.Add(this.grdPortfolios);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "PortfolioManager";
+            this.Name = "ManagePortfolios";
             this.Text = "Portfolio Manager";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PortfolioManager_FormClosing);
             this.Load += new System.EventHandler(this.PortfolioManager_Load);

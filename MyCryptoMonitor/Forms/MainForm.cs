@@ -581,7 +581,8 @@ namespace MyCryptoMonitor.Forms
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show($"Created by Sean Crowley\n\nGithub.com/Crowley2012/MyCryptoMonitor\n\nVersion: {Assembly.GetExecutingAssembly().GetName().Version.ToString()}\n\nAPI's Used:\n  Coinmarketcap.com\n  Min-api.cryptocompare.com\n  Github.com", "About");
+            PopupAbout form = new PopupAbout();
+            form.Show();
         }
 
         private void alertsToolStripMenuItem_Click(object sender, EventArgs e)
