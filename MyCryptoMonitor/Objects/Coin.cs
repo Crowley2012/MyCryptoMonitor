@@ -1,12 +1,10 @@
-﻿namespace MyCryptoMonitor
+﻿namespace MyCryptoMonitor.Objects
 {
-    public class CoinData
+    public class Coin
     {
         public string ShortName { get; set; }
         public string LongName { get; set; }
-
         public int CoinIndex { get; set; }
-
         public decimal Change1HourPercent { get; set; }
         public decimal Change24HourPercent { get; set; }
         public decimal Change7DayPercent { get; set; }

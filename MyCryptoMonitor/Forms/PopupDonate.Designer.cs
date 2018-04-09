@@ -1,6 +1,6 @@
 ﻿namespace MyCryptoMonitor.Forms
 {
-    partial class Donate
+    partial class PopupDonate
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Donate));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PopupDonate));
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -84,7 +84,7 @@
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Image = global::MyCryptoMonitor.Properties.Resources.StellarPublicQR;
+            this.pictureBox2.Image = global::MyCryptoMonitor.Properties.Resources.stellar_qr;
             this.pictureBox2.Location = new System.Drawing.Point(11, 333);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(427, 152);
@@ -94,7 +94,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::MyCryptoMonitor.Properties.Resources.RipplePublicQR;
+            this.pictureBox1.Image = global::MyCryptoMonitor.Properties.Resources.ripple_qr;
             this.pictureBox1.Location = new System.Drawing.Point(12, 120);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(427, 152);

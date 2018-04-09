@@ -2,9 +2,9 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace MyCryptoMonitor
+namespace MyCryptoMonitor.Gui
 {
-    public sealed class CoinGuiLine : IDisposable
+    public sealed class CoinLine : IDisposable
     {
         private const int StartY = 122;
         private const int Spacing = 18;
@@ -26,7 +26,7 @@ namespace MyCryptoMonitor
         public TextBox BoughtTextBox;
         public TextBox PaidTextBox;
 
-        public CoinGuiLine(string coin, int coinIndex, int index)
+        public CoinLine(string coin, int coinIndex, int index)
         {
             CoinName = coin;
             CoinIndex = coinIndex;

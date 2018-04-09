@@ -1,12 +1,12 @@
-﻿using MyCryptoMonitor.Functions;
+﻿using MyCryptoMonitor.Services;
 using System;
 using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Forms
 {
-    public partial class Encrypt : Form
+    public partial class ManageEncryption : Form
     {
-        public Encrypt()
+        public ManageEncryption()
         {
             InitializeComponent();
         }

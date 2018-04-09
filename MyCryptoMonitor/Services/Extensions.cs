@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyCryptoMonitor.Functions
+namespace MyCryptoMonitor.Services
 {
     public static class Extensions
     {

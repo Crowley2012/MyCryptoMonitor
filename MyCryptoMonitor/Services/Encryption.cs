@@ -7,9 +7,9 @@ using System.Text;
  * Credit for this class goes to the author of this article
  * https://msftstack.wordpress.com/2014/12/31/simple-aes-byte-encryption-and-decryption-routines-in-c/
  */
-namespace MyCryptoMonitor.Functions
+namespace MyCryptoMonitor.Services
 {
-    public static class AESEncrypt
+    public static class Encryption
     {
         #region Constants
         private const string SALT = "QM4436DL3A259EFXYNZEW4TCVVY5QZJG9CXFEKFW";

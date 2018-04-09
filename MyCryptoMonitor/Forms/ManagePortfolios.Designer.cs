@@ -1,6 +1,6 @@
 ﻿namespace MyCryptoMonitor.Forms
 {
-    partial class PortfolioManager
+    partial class ManagePortfolios
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PortfolioManager));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ManagePortfolios));
             this.grdPortfolios = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -84,7 +84,7 @@
             // 
             // bsPortfolios
             // 
-            this.bsPortfolios.DataSource = typeof(MyCryptoMonitor.DataSources.PortfolioSourceList);
+            this.bsPortfolios.DataSource = typeof(MyCryptoMonitor.DataSources.PortfolioDataSourceList);
             // 
             // PortfolioManager
             // 

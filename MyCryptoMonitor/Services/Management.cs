@@ -1,4 +1,5 @@
-﻿using MyCryptoMonitor.DataSources;
+﻿using MyCryptoMonitor.Configs;
+using MyCryptoMonitor.DataSources;
 using MyCryptoMonitor.Forms;
 using Newtonsoft.Json;
 using System;
@@ -12,7 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MyCryptoMonitor.Functions
+namespace MyCryptoMonitor.Services
 {
     public class Management
     {
@@ -24,7 +25,7 @@ namespace MyCryptoMonitor.Functions
         public static AlertConfig AlertConfig { get; set; }
         public static string SelectedPortfolio { get; set; }
         public static string Password { get; set; } = string.Empty;
-        public static List<PortfolioSource> Portfolios { get; set; }
+        public static List<PortfolioDataSource> Portfolios { get; set; }
         #endregion
 
         #region User Config Management
@@ -53,7 +54,7 @@ namespace MyCryptoMonitor.Functions
         #region Encryption Management
         public static bool CheckPassword(string password)
         {
-            if (AESEncrypt.AesDecryptString(File.ReadAllText("Encryption"), password).Equals("Success"))
+            if (Encryption.AesDecryptString(File.ReadAllText("Encryption"), password).Equals("Success"))
             {
                 Password = password;
                 return true;
@@ -70,7 +71,7 @@ namespace MyCryptoMonitor.Functions
             if (!UserConfig.Encryption)
                 return;
 
-            using (Password form = new Password())
+            using (InputPassword form = new InputPassword())
             {
                 var result = form.ShowDialog();
 
@@ -116,7 +117,7 @@ namespace MyCryptoMonitor.Functions
 
         public static void CreateEncryptionFile()
         {
-            File.WriteAllText("Encryption", AESEncrypt.AesEncryptString("Success"));
+            File.WriteAllText("Encryption", Encryption.AesEncryptString("Success"));
         }
 
         public static void RemoveEncryptionFile()
@@ -151,13 +152,13 @@ namespace MyCryptoMonitor.Functions
         #region Portfolio Management
         public static void LoadPortfolios()
         {
-            Portfolios = new List<PortfolioSource>();
+            Portfolios = new List<PortfolioDataSource>();
             var files = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.portfolio");
 
             foreach (string file in files)
             {
                 var name = Path.GetFileName(file);
-                Portfolios.Add(new PortfolioSource { Name = name.Replace(".portfolio", string.Empty), Startup = UserConfig.StartupPortfolio.Equals(name) });
+                Portfolios.Add(new PortfolioDataSource { Name = name.Replace(".portfolio", string.Empty), Startup = UserConfig.StartupPortfolio.Equals(name) });
             }
 
             Portfolios = Portfolios.OrderByDescending(p => p.Name).ToList();
@@ -185,7 +186,7 @@ namespace MyCryptoMonitor.Functions
 
         public static List<CoinConfig> LoadPortfolioEncrypted(string portfolio)
         {
-            return JsonConvert.DeserializeObject<List<CoinConfig>>(AESEncrypt.AesDecryptString(File.ReadAllText(portfolio)));
+            return JsonConvert.DeserializeObject<List<CoinConfig>>(Encryption.AesDecryptString(File.ReadAllText(portfolio)));
         }
 
         public static List<CoinConfig> LoadPortfolioUnencrypted(string portfolio)
@@ -232,7 +233,7 @@ namespace MyCryptoMonitor.Functions
 
         public static void SavePortfolioEncrypted(string portfolio, List<CoinConfig> coinConfigs)
         {
-            File.WriteAllText(portfolio, AESEncrypt.AesEncryptString(JsonConvert.SerializeObject(coinConfigs)));
+            File.WriteAllText(portfolio, Encryption.AesEncryptString(JsonConvert.SerializeObject(coinConfigs)));
         }
 
         public static void SavePortfolioUnencrypted(string portfolio, List<CoinConfig> coinConfigs)
@@ -243,13 +244,13 @@ namespace MyCryptoMonitor.Functions
         public static void EncryptPortfolios()
         {
             if (File.Exists("Portfolio1"))
-                File.WriteAllText("Portfolio1", AESEncrypt.AesEncryptString(JsonConvert.SerializeObject(LoadPortfolioUnencrypted("Portfolio1"))));
+                File.WriteAllText("Portfolio1", Encryption.AesEncryptString(JsonConvert.SerializeObject(LoadPortfolioUnencrypted("Portfolio1"))));
 
             if (File.Exists("Portfolio2"))
-                File.WriteAllText("Portfolio2", AESEncrypt.AesEncryptString(JsonConvert.SerializeObject(LoadPortfolioUnencrypted("Portfolio2"))));
+                File.WriteAllText("Portfolio2", Encryption.AesEncryptString(JsonConvert.SerializeObject(LoadPortfolioUnencrypted("Portfolio2"))));
 
             if (File.Exists("Portfolio3"))
-                File.WriteAllText("Portfolio3", AESEncrypt.AesEncryptString(JsonConvert.SerializeObject(LoadPortfolioUnencrypted("Portfolio3"))));
+                File.WriteAllText("Portfolio3", Encryption.AesEncryptString(JsonConvert.SerializeObject(LoadPortfolioUnencrypted("Portfolio3"))));
         }
 
         public static void DecryptPortfolios()
@@ -276,7 +277,7 @@ namespace MyCryptoMonitor.Functions
 
         public static AlertConfig LoadAlertsEncrypted()
         {
-            return JsonConvert.DeserializeObject<AlertConfig>(AESEncrypt.AesDecryptString(File.ReadAllText("Alerts")));
+            return JsonConvert.DeserializeObject<AlertConfig>(Encryption.AesDecryptString(File.ReadAllText("Alerts")));
         }
 
         public static AlertConfig LoadAlertsUnencrypted()
@@ -301,7 +302,7 @@ namespace MyCryptoMonitor.Functions
 
         public static void SaveAlertsEncrypted(AlertConfig alertConfig)
         {
-            File.WriteAllText("Alerts", AESEncrypt.AesEncryptString(JsonConvert.SerializeObject(alertConfig)));
+            File.WriteAllText("Alerts", Encryption.AesEncryptString(JsonConvert.SerializeObject(alertConfig)));
         }
 
         public static void SaveAlertsUnencrypted(AlertConfig alertConfig)
@@ -314,7 +315,7 @@ namespace MyCryptoMonitor.Functions
         public static void EncryptAlerts()
         {
             if (File.Exists("Alerts"))
-                File.WriteAllText("Alerts", AESEncrypt.AesEncryptString(JsonConvert.SerializeObject(LoadAlertsUnencrypted())));
+                File.WriteAllText("Alerts", Encryption.AesEncryptString(JsonConvert.SerializeObject(LoadAlertsUnencrypted())));
         }
 
         public static void DecryptAlerts()

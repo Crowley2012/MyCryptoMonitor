@@ -1,4 +1,4 @@
-﻿namespace MyCryptoMonitor
+﻿namespace MyCryptoMonitor.Configs
 {
     public class CoinConfig
     {

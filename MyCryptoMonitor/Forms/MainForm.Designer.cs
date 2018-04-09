@@ -145,7 +145,7 @@
             this.tableLayoutPanel6.Controls.Add(this.cbCurrency, 1, 0);
             this.tableLayoutPanel6.Controls.Add(this.label11, 0, 0);
             this.tableLayoutPanel6.Location = new System.Drawing.Point(2, 2);
-            this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 1;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -279,7 +279,7 @@
             "ZAR",
             "ZMK"});
             this.cbCurrency.Location = new System.Drawing.Point(213, 2);
-            this.cbCurrency.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbCurrency.Margin = new System.Windows.Forms.Padding(2);
             this.cbCurrency.Name = "cbCurrency";
             this.cbCurrency.Size = new System.Drawing.Size(81, 21);
             this.cbCurrency.TabIndex = 0;

@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Linq;
+using MyCryptoMonitor.Objects;
+using MyCryptoMonitor.Configs;
 
 namespace MyCryptoMonitor.Forms
 {
-    public partial class InputForm : Form
+    public partial class ManageCoins : Form
     {
         public string InputText { get; set; }
         public int CoinIndex { get; set; }
 
         private List<CoinConfig> _coinConfigs { get; set; }
 
-        public InputForm(string submitLabel, List<CoinData> coins)
+        public ManageCoins(string submitLabel, List<Coin> coins)
         {
             InitializeComponent();
 
@@ -27,7 +29,7 @@ namespace MyCryptoMonitor.Forms
             cbCoins.DataSource = coins.Select(c => c.ShortName).ToList();
         }
 
-        public InputForm(string submitLabel, List<CoinConfig> coinsConfig)
+        public ManageCoins(string submitLabel, List<CoinConfig> coinsConfig)
         {
             InitializeComponent();
 

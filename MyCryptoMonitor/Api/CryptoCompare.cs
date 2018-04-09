@@ -1,4 +1,4 @@
-﻿namespace MyCryptoMonitor.ApiData
+﻿namespace MyCryptoMonitor.Api
 {
     public class ApiCryptoCompare
     {

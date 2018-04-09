@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using MyCryptoMonitor.DataSources;
+using System.Collections.Generic;
 
-namespace MyCryptoMonitor.DataSources
+namespace MyCryptoMonitor.Configs
 {
     public class AlertConfig
     {

@@ -1,6 +1,6 @@
 ﻿namespace MyCryptoMonitor.Forms
 {
-    partial class InputForm
+    partial class ManageCoins
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InputForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ManageCoins));
             this.btnSubmit = new System.Windows.Forms.Button();
             this.cbCoins = new System.Windows.Forms.ComboBox();
             this.cbCoinIndex = new System.Windows.Forms.ComboBox();

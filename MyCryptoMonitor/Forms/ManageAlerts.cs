@@ -5,21 +5,23 @@ using System.Linq;
 using System.Collections.Generic;
 using MyCryptoMonitor.DataSources;
 using System.IO;
-using MyCryptoMonitor.Functions;
+using MyCryptoMonitor.Services;
+using MyCryptoMonitor.Objects;
+using MyCryptoMonitor.Configs;
 
 namespace MyCryptoMonitor.Forms
 {
-    public partial class Alerts : Form
+    public partial class ManageAlerts : Form
     {
         #region Private Variables
-        private List<CoinData> _coins;
+        private List<Coin> _coins;
         private List<AlertDataSource> _alerts;
         private List<AlertDataSource> _otherAlerts;
         private decimal _oldCheckPrice;
         #endregion
 
         #region Constructor
-        public Alerts(List<CoinData> coins)
+        public ManageAlerts(List<Coin> coins)
         {
             InitializeComponent();
 

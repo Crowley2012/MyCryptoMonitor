@@ -1,14 +1,15 @@
-﻿using MyCryptoMonitor.ApiData;
+﻿using MyCryptoMonitor.Api;
+using MyCryptoMonitor.Objects;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MyCryptoMonitor
+namespace MyCryptoMonitor.Services
 {
-    public static class Mappings
+    public static class CoinMapping
     {
-        public static List<CoinData> CoinMarketCap(string response)
+        public static List<Coin> CoinMarketCap(string response)
         {
             JsonSerializerSettings settings = new JsonSerializerSettings
             {
@@ -16,7 +17,7 @@ namespace MyCryptoMonitor
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
 
-            return JsonConvert.DeserializeObject<List<ApiCoinMarketCap>>(response, settings).Select(c => new CoinData
+            return JsonConvert.DeserializeObject<List<ApiCoinMarketCap>>(response, settings).Select(c => new Coin
             {
                 ShortName = c.symbol,
                 LongName = c.name,
@@ -29,9 +30,9 @@ namespace MyCryptoMonitor
             }).ToList();
         }
 
-        public static List<CoinData> MapCombination(string responseCryptoCompare, string responseCoinMarketCap)
+        public static List<Coin> MapCombination(string responseCryptoCompare, string responseCoinMarketCap)
         {
-            List<CoinData> list = new List<CoinData>();
+            List<Coin> list = new List<Coin>();
             var cryptoCompareCoins = JObject.Parse(responseCryptoCompare).First.First.Children<JProperty>();
             var coinMarketCapCoins = CoinMarketCap(responseCoinMarketCap);
 
@@ -39,7 +40,7 @@ namespace MyCryptoMonitor
             {
                 var cryptoCompareCoin = JsonConvert.DeserializeObject<ApiCryptoCompare>(data.First.First.First.ToString());
 
-                list.Add(new CoinData
+                list.Add(new Coin
                 {
                     ShortName = cryptoCompareCoin.FROMSYMBOL,
                     LongName = coinMarketCapCoins.Where(c => c.ShortName.Equals(cryptoCompareCoin.FROMSYMBOL)).Select(c => c.LongName).FirstOrDefault(),

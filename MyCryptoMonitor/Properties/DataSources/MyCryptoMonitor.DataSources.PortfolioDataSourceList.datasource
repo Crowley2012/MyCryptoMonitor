@@ -5,6 +5,6 @@
     Renaming the file extension or editing the content of this file may   
     cause the file to be unrecognizable by the program.
 -->
-<GenericObjectDataSource DisplayName="PortfolioSourceList" Version="1.0" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
-   <TypeInfo>MyCryptoMonitor.DataSources.PortfolioSourceList, MyCryptoMonitor, Version=1.0.6667.29526, Culture=neutral, PublicKeyToken=null</TypeInfo>
+<GenericObjectDataSource DisplayName="PortfolioDataSourceList" Version="1.0" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+   <TypeInfo>MyCryptoMonitor.DataSources.PortfolioDataSourceList, MyCryptoMonitor, Version=1.0.6673.23989, Culture=neutral, PublicKeyToken=null</TypeInfo>
 </GenericObjectDataSource>

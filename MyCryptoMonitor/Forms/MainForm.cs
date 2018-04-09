@@ -8,8 +8,12 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Drawing;
-using MyCryptoMonitor.Functions;
 using MyCryptoMonitor.DataSources;
+using MyCryptoMonitor.Api;
+using MyCryptoMonitor.Services;
+using MyCryptoMonitor.Gui;
+using MyCryptoMonitor.Configs;
+using MyCryptoMonitor.Objects;
 
 namespace MyCryptoMonitor.Forms
 {
@@ -22,9 +26,9 @@ namespace MyCryptoMonitor.Forms
 
         #region Private Variables
         private List<CoinConfig> _coinConfigs;
-        private List<CoinGuiLine> _coinGuiLines;
-        private List<CoinData> _cryptoCompareCoins;
-        private List<CoinData> _coinMarketCapCoins;
+        private List<CoinLine> _coinGuiLines;
+        private List<Coin> _cryptoCompareCoins;
+        private List<Coin> _coinMarketCapCoins;
         private DateTime _resetTime;
         private DateTime _refreshTime;
         private bool _loadGuiLines;
@@ -40,10 +44,10 @@ namespace MyCryptoMonitor.Forms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            _coinGuiLines = new List<CoinGuiLine>();
+            _coinGuiLines = new List<CoinLine>();
             _coinConfigs = new List<CoinConfig>();
-            _cryptoCompareCoins = new List<CoinData>();
-            _coinMarketCapCoins = new List<CoinData>();
+            _cryptoCompareCoins = new List<Coin>();
+            _coinMarketCapCoins = new List<Coin>();
             _resetTime = DateTime.Now;
             _refreshTime = DateTime.Now;
             _loadGuiLines = true;
@@ -215,13 +219,13 @@ namespace MyCryptoMonitor.Forms
             };
 
             //Deserialize response
-            _cryptoCompareCoins = Mappings.MapCombination(cryptoCompareResponse, coinMarketCapResponse);
+            _cryptoCompareCoins = CoinMapping.MapCombination(cryptoCompareResponse, coinMarketCapResponse);
 
             if(_cryptoCompareCoins.Any(c => c.ShortName.Equals("NANO")))
                 _cryptoCompareCoins.Where(c => c.ShortName.Equals("NANO")).FirstOrDefault().ShortName = "XRB";
 
             //Create list of coin names
-            _coinMarketCapCoins = Mappings.CoinMarketCap(coinMarketCapResponse).OrderBy(c => c.ShortName).ToList();
+            _coinMarketCapCoins = CoinMapping.CoinMarketCap(coinMarketCapResponse).OrderBy(c => c.ShortName).ToList();
             _coinMarketCapCoins.Where(c => c.ShortName.Equals("NANO")).FirstOrDefault().ShortName = "XRB";
 
             //Loop through alerts
@@ -253,12 +257,12 @@ namespace MyCryptoMonitor.Forms
                 //Loop through all coins from config
                 foreach (CoinConfig coin in _coinConfigs)
                 {
-                    CoinData downloadedCoin;
+                    Coin downloadedCoin;
 
                     //Parse coins, if coin doesnt exist set to 0
                     downloadedCoin = _cryptoCompareCoins.Any(c => c.ShortName == coin.coin)
                         ? _cryptoCompareCoins.Single(c => c.ShortName == coin.coin)
-                        : new CoinData { ShortName = coin.coin, CoinIndex = coin.coinIndex, Change1HourPercent = 0, Change24HourPercent = 0, Price = 0 };
+                        : new Coin { ShortName = coin.coin, CoinIndex = coin.coinIndex, Change1HourPercent = 0, Change24HourPercent = 0, Price = 0 };
 
                     //Check if gui lines need to be loaded
                     if (_loadGuiLines)
@@ -282,7 +286,7 @@ namespace MyCryptoMonitor.Forms
                     }
 
                     //Get the gui line for coin
-                    CoinGuiLine line = (from c in _coinGuiLines where c.CoinName.Equals(downloadedCoin.ShortName) && c.CoinIndex == coin.coinIndex select c).First();
+                    CoinLine line = (from c in _coinGuiLines where c.CoinName.Equals(downloadedCoin.ShortName) && c.CoinIndex == coin.coinIndex select c).First();
 
                     if (string.IsNullOrEmpty(line.BoughtTextBox.Text))
                         line.BoughtTextBox.Text = "0";
@@ -357,21 +361,21 @@ namespace MyCryptoMonitor.Forms
                     coin.Dispose();
                 }
 
-                _coinGuiLines = new List<CoinGuiLine>();
+                _coinGuiLines = new List<CoinLine>();
                 _loadGuiLines = true;
             });
         }
         #endregion
 
         #region Methods
-        private void AddCoin(CoinConfig coin, CoinData downloadedCoin, int index)
+        private void AddCoin(CoinConfig coin, Coin downloadedCoin, int index)
         {
             //Store the intial coin price at startup
             if(coin.SetStartupPrice)
                 coin.StartupPrice = downloadedCoin.Price;
 
             //Create the gui line
-            CoinGuiLine newLine = new CoinGuiLine(downloadedCoin.ShortName, coin.coinIndex, index);
+            CoinLine newLine = new CoinLine(downloadedCoin.ShortName, coin.coinIndex, index);
 
             //Set the bought and paid amounts
             newLine.BoughtTextBox.Text = coin.bought.ToString();
@@ -468,7 +472,7 @@ namespace MyCryptoMonitor.Forms
             }
 
             //Get coin to add
-            InputForm form = new InputForm("Add", _coinMarketCapCoins);
+            ManageCoins form = new ManageCoins("Add", _coinMarketCapCoins);
             if (form.ShowDialog() != DialogResult.OK)
                 return;
 
@@ -498,7 +502,7 @@ namespace MyCryptoMonitor.Forms
         private void RemoveCoin_Click(object sender, EventArgs e)
         {
             //Get coin to remove
-            InputForm form = new InputForm("Remove", _coinConfigs);
+            ManageCoins form = new ManageCoins("Remove", _coinConfigs);
             if (form.ShowDialog() != DialogResult.OK)
                 return;
 
@@ -571,7 +575,7 @@ namespace MyCryptoMonitor.Forms
 
         private void donateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Donate form = new Donate();
+            PopupDonate form = new PopupDonate();
             form.Show();
         }
 
@@ -582,13 +586,13 @@ namespace MyCryptoMonitor.Forms
 
         private void alertsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Alerts form = new Alerts(_cryptoCompareCoins);
+            ManageAlerts form = new ManageAlerts(_cryptoCompareCoins);
             form.Show();
         }
 
         private void encryptToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Encrypt form = new Encrypt();
+            ManageEncryption form = new ManageEncryption();
             form.Show();
         }
 
@@ -607,7 +611,7 @@ namespace MyCryptoMonitor.Forms
         {
             UncheckPortfolios(_selectedPortfolio);
 
-            PortfolioManager form = new PortfolioManager();
+            ManagePortfolios form = new ManagePortfolios();
             form.ShowDialog();
 
             Management.LoadPortfolios();

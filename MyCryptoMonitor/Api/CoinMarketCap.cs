@@ -1,4 +1,4 @@
-﻿namespace MyCryptoMonitor
+﻿namespace MyCryptoMonitor.Api
 {
     public class ApiCoinMarketCap
     {
@@ -11,7 +11,6 @@
         public string available_supply { get; set; }
         public string max_supply { get; set; }
         public string last_updated { get; set; }
-
         public decimal price_usd { get; set; }
         public decimal market_cap_usd { get; set; }
         public decimal total_supply { get; set; }

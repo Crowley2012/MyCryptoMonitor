@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\CoinImage.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\app_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -51,81 +51,86 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiData\ApiCoinMarketCap.cs" />
-    <Compile Include="ApiData\ApiCryptoCompare.cs" />
-    <Compile Include="Coin\CoinGuiLine.cs" />
-    <Compile Include="DataSources\AlertConfig.cs" />
+    <Compile Include="Api\CoinMarketCap.cs" />
+    <Compile Include="Api\CryptoCompare.cs" />
+    <Compile Include="Gui\CoinLine.cs" />
+    <Compile Include="Configs\AlertConfig.cs" />
     <Compile Include="DataSources\AlertDataSource.cs" />
-    <Compile Include="DataSources\PortfolioSource.cs" />
-    <Compile Include="DataSources\UserConfig.cs" />
-    <Compile Include="Forms\Alerts.cs">
+    <Compile Include="DataSources\PortfolioDataSource.cs" />
+    <Compile Include="Configs\UserConfig.cs" />
+    <Compile Include="Forms\ManageAlerts.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Alerts.Designer.cs">
-      <DependentUpon>Alerts.cs</DependentUpon>
+    <Compile Include="Forms\ManageAlerts.Designer.cs">
+      <DependentUpon>ManageAlerts.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Donate.cs">
+    <Compile Include="Forms\PopupDonate.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Donate.Designer.cs">
-      <DependentUpon>Donate.cs</DependentUpon>
+    <Compile Include="Forms\PopupDonate.Designer.cs">
+      <DependentUpon>PopupDonate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Coin\CoinData.cs" />
-    <Compile Include="ApiData\ApiGithub.cs" />
-    <Compile Include="Forms\Encrypt.cs">
+    <Compile Include="Objects\Coin.cs" />
+    <Compile Include="Api\Github.cs" />
+    <Compile Include="Forms\ManageEncryption.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Encrypt.Designer.cs">
-      <DependentUpon>Encrypt.cs</DependentUpon>
+    <Compile Include="Forms\ManageEncryption.Designer.cs">
+      <DependentUpon>ManageEncryption.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\InputForm.cs">
+    <Compile Include="Forms\ManageCoins.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\InputForm.Designer.cs">
-      <DependentUpon>InputForm.cs</DependentUpon>
+    <Compile Include="Forms\ManageCoins.Designer.cs">
+      <DependentUpon>ManageCoins.cs</DependentUpon>
     </Compile>
-    <Compile Include="Coin\CoinConfig.cs" />
+    <Compile Include="Configs\CoinConfig.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ApiData\Mappings.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Services\CoinMapping.cs" />
     <Compile Include="Forms\NewUI.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\NewUI.Designer.cs">
       <DependentUpon>NewUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Password.cs">
+    <Compile Include="Forms\InputPassword.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Password.Designer.cs">
-      <DependentUpon>Password.cs</DependentUpon>
+    <Compile Include="Forms\InputPassword.Designer.cs">
+      <DependentUpon>InputPassword.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\PortfolioManager.cs">
+    <Compile Include="Forms\ManagePortfolios.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\PortfolioManager.Designer.cs">
-      <DependentUpon>PortfolioManager.cs</DependentUpon>
+    <Compile Include="Forms\ManagePortfolios.Designer.cs">
+      <DependentUpon>ManagePortfolios.cs</DependentUpon>
     </Compile>
-    <Compile Include="Functions\AESEncrypt.cs" />
-    <Compile Include="Functions\Extensions.cs" />
-    <Compile Include="Functions\Management.cs" />
+    <Compile Include="Services\Encryption.cs" />
+    <Compile Include="Services\Extensions.cs" />
+    <Compile Include="Services\Management.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Forms\Alerts.resx">
-      <DependentUpon>Alerts.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ManageAlerts.resx">
+      <DependentUpon>ManageAlerts.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Donate.resx">
-      <DependentUpon>Donate.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\PopupDonate.resx">
+      <DependentUpon>PopupDonate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Encrypt.resx">
-      <DependentUpon>Encrypt.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ManageEncryption.resx">
+      <DependentUpon>ManageEncryption.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\InputForm.resx">
-      <DependentUpon>InputForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ManageCoins.resx">
+      <DependentUpon>ManageCoins.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -133,25 +138,20 @@
     <EmbeddedResource Include="Forms\NewUI.resx">
       <DependentUpon>NewUI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Password.resx">
-      <DependentUpon>Password.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\InputPassword.resx">
+      <DependentUpon>InputPassword.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\PortfolioManager.resx">
-      <DependentUpon>PortfolioManager.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ManagePortfolios.resx">
+      <DependentUpon>ManagePortfolios.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\MyCryptoMonitor.DataSources.AlertDataSourceList.datasource" />
-    <None Include="Properties\DataSources\MyCryptoMonitor.DataSources.PortfolioSourceList.datasource" />
+    <None Include="Properties\DataSources\MyCryptoMonitor.DataSources.PortfolioDataSourceList.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -166,12 +166,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\CoinImage.ico" />
-    <Content Include="Resources\Down Arrow.png" />
-    <Content Include="Resources\RipplePublicQR.png" />
-    <None Include="Resources\StellarPublicQR.png" />
-    <Content Include="Resources\Up Arrow.png" />
+    <Content Include="Resources\app_icon.ico" />
+    <Content Include="Resources\ripple_qr.png" />
+    <None Include="Resources\stellar_qr.png" />
     <Content Include="ToDo.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

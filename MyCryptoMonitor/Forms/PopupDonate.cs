@@ -2,9 +2,9 @@
 
 namespace MyCryptoMonitor.Forms
 {
-    public partial class Donate : Form
+    public partial class PopupDonate : Form
     {
-        public Donate()
+        public PopupDonate()
         {
             InitializeComponent();
         }

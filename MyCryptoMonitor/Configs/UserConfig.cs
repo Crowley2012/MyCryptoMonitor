@@ -1,4 +1,4 @@
-﻿namespace MyCryptoMonitor.DataSources
+﻿namespace MyCryptoMonitor.Configs
 {
     public class UserConfig
     {

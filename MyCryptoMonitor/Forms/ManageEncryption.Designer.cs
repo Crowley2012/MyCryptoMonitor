@@ -1,6 +1,6 @@
 ﻿namespace MyCryptoMonitor.Forms
 {
-    partial class Encrypt
+    partial class ManageEncryption
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Encrypt));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ManageEncryption));
             this.lblDetails = new System.Windows.Forms.Label();
             this.cbEnableEncryption = new System.Windows.Forms.CheckBox();
             this.txtPassword = new System.Windows.Forms.TextBox();

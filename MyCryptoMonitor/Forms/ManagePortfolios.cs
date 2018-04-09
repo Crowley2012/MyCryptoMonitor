@@ -1,15 +1,15 @@
-﻿using MyCryptoMonitor.Functions;
+﻿using MyCryptoMonitor.Services;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Forms
 {
-    public partial class PortfolioManager : Form
+    public partial class ManagePortfolios : Form
     {
         private List<string> _deletedPortfolios;
 
-        public PortfolioManager()
+        public ManagePortfolios()
         {
             InitializeComponent();
         }
