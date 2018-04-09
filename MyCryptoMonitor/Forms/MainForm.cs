@@ -56,6 +56,7 @@ namespace MyCryptoMonitor.Forms
 
             //Attempt to load portfolio on startup
             _coinConfigs = Management.LoadFirstPortfolio();
+            _selectedPortfolio = Management.UserConfig.StartupPortfolio.Replace(".portfolio", string.Empty);
 
             //Set currency
             cbCurrency.Text = string.IsNullOrEmpty(Management.UserConfig.Currency) ? "USD" : Management.UserConfig.Currency;
@@ -604,6 +605,8 @@ namespace MyCryptoMonitor.Forms
 
         private void manage_Click(object sender, EventArgs e)
         {
+            UncheckPortfolios(_selectedPortfolio);
+
             PortfolioManager form = new PortfolioManager();
             form.ShowDialog();
 

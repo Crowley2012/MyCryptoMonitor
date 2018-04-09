@@ -199,6 +199,16 @@ namespace MyCryptoMonitor.Functions
             SaveUserConfig();
         }
 
+        public static void RenamePortfolio(string oldPortfolio, string newPortfolio)
+        {
+            File.Move(oldPortfolio + ".portfolio", newPortfolio + ".portfolio");
+        }
+
+        public static void DeletePortfolio(string portfolio)
+        {
+            File.Delete(portfolio + ".portfolio");
+        }
+
         public static bool NewPortfolio(string portfolio)
         {
             portfolio += ".portfolio";

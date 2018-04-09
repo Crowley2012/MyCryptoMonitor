@@ -1,11 +1,14 @@
 ﻿using MyCryptoMonitor.Functions;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Forms
 {
     public partial class PortfolioManager : Form
     {
+        private List<string> _deletedPortfolios;
+
         public PortfolioManager()
         {
             InitializeComponent();
@@ -13,12 +16,8 @@ namespace MyCryptoMonitor.Forms
 
         private void PortfolioManager_Load(object sender, EventArgs e)
         {
+            _deletedPortfolios = new List<string>();
             bsPortfolios.DataSource = Management.Portfolios;
-        }
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            Close();
         }
 
         private void grdPortfolios_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
@@ -50,6 +49,15 @@ namespace MyCryptoMonitor.Forms
                     return;
                 }
 
+                //Rename portfolio
+                if(e.ColumnIndex == 0)
+                {
+                    Management.RenamePortfolio(oldValue.ToString(), newValue);
+
+                    if (Convert.ToBoolean(grid[1, e.RowIndex].Value))
+                        Management.SetStartupPortfolio(newValue);
+                }
+
                 //Set startups to false
                 if (e.ColumnIndex == 1)
                 {
@@ -77,6 +85,20 @@ namespace MyCryptoMonitor.Forms
             {
                 grid[0, e.RowIndex].Value = oldValue;
             }
+        }
+
+        private void grdPortfolios_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            _deletedPortfolios.Add(e.Row.Cells[0].Value.ToString());
+        }
+
+        private void PortfolioManager_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(grdPortfolios.Rows.Count > 0)
+                grdPortfolios.CurrentCell = grdPortfolios.Rows[0].Cells[0];
+
+            foreach (var portfolio in _deletedPortfolios)
+                Management.DeletePortfolio(portfolio);
         }
     }
 }
