@@ -431,6 +431,11 @@ namespace MyCryptoMonitor.Forms
 
             //Load portfolio
             _coinConfigs = Management.LoadPortfolio($"{portfolio}.portfolio");
+
+            _selectedCoins = string.Empty;
+            foreach (var coin in _coinConfigs)
+                _selectedCoins += coin.coin.ToUpper() + ",";
+
             RemoveGuiLines();
         }
 
@@ -497,6 +502,12 @@ namespace MyCryptoMonitor.Forms
             //Add coin config
             _coinConfigs.Add(new CoinConfig { coin = form.InputText.ToUpper(), coinIndex = _coinConfigs.Count(c => c.coin.Equals(form.InputText.ToUpper())), bought = 0, paid = 0, StartupPrice = 0, SetStartupPrice = true });
             RemoveGuiLines();
+
+            _selectedCoins = string.Empty;
+            foreach (var coin in _coinConfigs)
+                _selectedCoins += coin.coin.ToUpper() + ",";
+
+            UncheckPortfolios(string.Empty);
         }
 
         private void RemoveCoin_Click(object sender, EventArgs e)
@@ -528,12 +539,15 @@ namespace MyCryptoMonitor.Forms
             //Reset coin indexes
             ResetCoinIndex();
             RemoveGuiLines();
+
+            UncheckPortfolios(string.Empty);
         }
 
         private void RemoveAllCoins_Click(object sender, EventArgs e)
         {
             _coinConfigs = new List<CoinConfig>();
             RemoveGuiLines();
+            UncheckPortfolios(string.Empty);
         }
 
         private void UncheckPortfolios(string portfolio)
@@ -612,9 +626,6 @@ namespace MyCryptoMonitor.Forms
         {
             UncheckPortfolios(_selectedPortfolio);
 
-            ManagePortfolios form = new ManagePortfolios();
-            form.ShowDialog();
-
             Management.LoadPortfolios();
 
             foreach (var portfolio in Management.Portfolios)
@@ -625,6 +636,11 @@ namespace MyCryptoMonitor.Forms
                     loadPortfolioMenu.DropDownItems.RemoveByKey(portfolio.Name);
                 }
             }
+
+            ManagePortfolios form = new ManagePortfolios();
+            form.ShowDialog();
+
+            Management.LoadPortfolios();
 
             foreach (var portfolio in Management.Portfolios)
             {

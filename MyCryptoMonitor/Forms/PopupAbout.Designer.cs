@@ -85,7 +85,7 @@
             this.btnGithub.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGithub.Location = new System.Drawing.Point(200, 3);
+            this.btnGithub.Location = new System.Drawing.Point(3, 3);
             this.btnGithub.Name = "btnGithub";
             this.btnGithub.Size = new System.Drawing.Size(191, 34);
             this.btnGithub.TabIndex = 3;
@@ -98,7 +98,7 @@
             this.btnFreepik.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnFreepik.Location = new System.Drawing.Point(3, 3);
+            this.btnFreepik.Location = new System.Drawing.Point(200, 3);
             this.btnFreepik.Name = "btnFreepik";
             this.btnFreepik.Size = new System.Drawing.Size(191, 34);
             this.btnFreepik.TabIndex = 4;
@@ -113,8 +113,8 @@
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Controls.Add(this.btnFreepik, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.btnGithub, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnFreepik, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnGithub, 0, 0);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(12, 218);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
