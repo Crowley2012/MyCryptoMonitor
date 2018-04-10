@@ -27,7 +27,7 @@ namespace MyCryptoMonitor.Statics
 
         public static void Unlock()
         {
-            if (!UserConfigService.UserConfig.Encryption)
+            if (!UserConfigService.Encrypted)
                 return;
 
             using (InputPassword form = new InputPassword())
@@ -56,20 +56,20 @@ namespace MyCryptoMonitor.Statics
         public static void EncryptFiles(string password)
         {
             Password = password;
-            UserConfigService.UserConfig.Encryption = true;
+            UserConfigService.Encrypted = true;
 
             CreateEncryptionFile();
-            UserConfigService.SaveUserConfig();
+            UserConfigService.Save();
             PortfolioService.EncryptPortfolios();
             AlertService.EncryptAlerts();
         }
 
         public static void DecryptFiles()
         {
-            UserConfigService.UserConfig.Encryption = false;
+            UserConfigService.Encrypted = false;
 
             RemoveEncryptionFile();
-            UserConfigService.SaveUserConfig();
+            UserConfigService.Save();
             PortfolioService.DecryptPortfolios();
             AlertService.DecryptAlerts();
         }
@@ -97,10 +97,9 @@ namespace MyCryptoMonitor.Statics
             if (File.Exists("Encryption"))
                 File.Delete("Encryption");
 
-            if (File.Exists("UserConfig"))
-                File.Delete("UserConfig");
+            UserConfigService.Delete();
 
-            UserConfigService.LoadUserConfig();
+            UserConfigService.Load();
         }
         #endregion
     }

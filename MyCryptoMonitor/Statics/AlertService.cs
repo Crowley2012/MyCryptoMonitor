@@ -21,7 +21,7 @@ namespace MyCryptoMonitor.Statics
         #region Methods
         public static AlertConfig LoadAlerts()
         {
-            if (UserConfigService.UserConfig.Encryption)
+            if (UserConfigService.Encrypted)
                 return LoadAlertsEncrypted();
             else
                 return LoadAlertsUnencrypted();
@@ -46,7 +46,7 @@ namespace MyCryptoMonitor.Statics
             //Update the cached alerts
             AlertConfig = alertConfig;
 
-            if (UserConfigService.UserConfig.Encryption)
+            if (UserConfigService.Encrypted)
                 SaveAlertsEncrypted(alertConfig);
             else
                 SaveAlertsUnencrypted(alertConfig);

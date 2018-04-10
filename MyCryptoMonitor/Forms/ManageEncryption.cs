@@ -13,9 +13,9 @@ namespace MyCryptoMonitor.Forms
 
         private void Encrypt_Load(object sender, EventArgs e)
         {
-            cbEnableEncryption.Checked = UserConfigService.UserConfig.Encryption;
-            btnEncrypt.Text = UserConfigService.UserConfig.Encryption ? "Decrypt" : "Encrypt";
-            lblInstructions.Text = UserConfigService.UserConfig.Encryption ? "Type in your password to disable encryption." : "Type in a password to enable encryption.";
+            cbEnableEncryption.Checked = UserConfigService.Encrypted;
+            btnEncrypt.Text = UserConfigService.Encrypted ? "Decrypt" : "Encrypt";
+            lblInstructions.Text = UserConfigService.Encrypted ? "Type in your password to disable encryption." : "Type in a password to enable encryption.";
         }
 
         private void btnEncrypt_Click(object sender, EventArgs e)
@@ -23,7 +23,7 @@ namespace MyCryptoMonitor.Forms
             if (string.IsNullOrEmpty(txtPassword.Text))
                 return;
 
-            if (UserConfigService.UserConfig.Encryption && EncryptionService.CheckPassword(txtPassword.Text))
+            if (UserConfigService.Encrypted && EncryptionService.CheckPassword(txtPassword.Text))
             {
                 EncryptionService.DecryptFiles();
 
@@ -31,7 +31,7 @@ namespace MyCryptoMonitor.Forms
                 btnEncrypt.Text = "Encrypt";
                 lblInstructions.Text = "Type in a password to enable encryption.";
             }
-            else if (!UserConfigService.UserConfig.Encryption)
+            else if (!UserConfigService.Encrypted)
             {
                 EncryptionService.EncryptFiles(txtPassword.Text);
 

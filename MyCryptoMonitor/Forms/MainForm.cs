@@ -53,17 +53,17 @@ namespace MyCryptoMonitor.Forms
             _loadGuiLines = true;
 
             //Load user config
-            UserConfigService.LoadUserConfig();
+            UserConfigService.Load();
 
             //Unlock if encryption is enabled
             EncryptionService.Unlock();
 
             //Attempt to load portfolio on startup
             _coinConfigs = PortfolioService.LoadFirstPortfolio();
-            _selectedPortfolio = UserConfigService.UserConfig.StartupPortfolio.Replace(".portfolio", string.Empty);
+            _selectedPortfolio = UserConfigService.StartupPortfolio.Replace(".portfolio", string.Empty);
 
             //Set currency
-            cbCurrency.Text = string.IsNullOrEmpty(UserConfigService.UserConfig.Currency) ? "USD" : UserConfigService.UserConfig.Currency;
+            cbCurrency.Text = string.IsNullOrEmpty(UserConfigService.Currency) ? "USD" : UserConfigService.Currency;
 
             //Add list of coins in config for crypto compare api
             foreach (var name in _coinConfigs)
@@ -235,7 +235,7 @@ namespace MyCryptoMonitor.Forms
 
                 foreach (AlertDataSource coin in AlertService.AlertConfig.Alerts)
                 {
-                    var coinData = _cryptoCompareCoins.Where(c => c.ShortName.Equals(coin.Coin) && UserConfigService.UserConfig.Currency.Equals(coin.Currency)).FirstOrDefault();
+                    var coinData = _cryptoCompareCoins.Where(c => c.ShortName.Equals(coin.Coin) && UserConfigService.Currency.Equals(coin.Currency)).FirstOrDefault();
 
                     if (coinData == null)
                         continue;
@@ -618,8 +618,8 @@ namespace MyCryptoMonitor.Forms
             foreach (var config in _coinConfigs)
                 config.SetStartupPrice = true;
 
-            UserConfigService.UserConfig.Currency = cbCurrency.Text;
-            UserConfigService.SaveUserConfig();
+            UserConfigService.Currency = cbCurrency.Text;
+            UserConfigService.Save();
         }
 
         private void manage_Click(object sender, EventArgs e)

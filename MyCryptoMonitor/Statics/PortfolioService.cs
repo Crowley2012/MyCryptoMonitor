@@ -23,7 +23,7 @@ namespace MyCryptoMonitor.Statics
             foreach (string file in files)
             {
                 var name = Path.GetFileName(file);
-                Portfolios.Add(new PortfolioDataSource { Name = name.Replace(".portfolio", string.Empty), Startup = UserConfigService.UserConfig.StartupPortfolio.Equals(name) });
+                Portfolios.Add(new PortfolioDataSource { Name = name.Replace(".portfolio", string.Empty), Startup = UserConfigService.StartupPortfolio.Equals(name) });
             }
 
             Portfolios = Portfolios.OrderByDescending(p => p.Name).ToList();
@@ -31,7 +31,7 @@ namespace MyCryptoMonitor.Statics
 
         public static List<CoinConfig> LoadFirstPortfolio()
         {
-            var portfolio = $"{UserConfigService.UserConfig.StartupPortfolio}";
+            var portfolio = $"{UserConfigService.StartupPortfolio}";
 
             if (File.Exists(portfolio))
                 return LoadPortfolio(portfolio);
@@ -43,7 +43,7 @@ namespace MyCryptoMonitor.Statics
         {
             SelectedPortfolio = portfolio;
 
-            if (UserConfigService.UserConfig.Encryption)
+            if (UserConfigService.Encrypted)
                 return LoadPortfolioEncrypted(portfolio) ?? new List<CoinConfig>();
             else
                 return LoadPortfolioUnencrypted(portfolio) ?? new List<CoinConfig>();
@@ -61,8 +61,8 @@ namespace MyCryptoMonitor.Statics
 
         public static void SetStartupPortfolio(string portfolio)
         {
-            UserConfigService.UserConfig.StartupPortfolio = portfolio += ".portfolio";
-            UserConfigService.SaveUserConfig();
+            UserConfigService.StartupPortfolio = portfolio += ".portfolio";
+            UserConfigService.Save();
         }
 
         public static void RenamePortfolio(string oldPortfolio, string newPortfolio)
@@ -90,7 +90,7 @@ namespace MyCryptoMonitor.Statics
 
         public static void SavePortfolio(string portfolio, List<CoinConfig> coinConfigs)
         {
-            if (UserConfigService.UserConfig.Encryption)
+            if (UserConfigService.Encrypted)
                 SavePortfolioEncrypted(portfolio, coinConfigs);
             else
                 SavePortfolioUnencrypted(portfolio, coinConfigs);

@@ -51,11 +51,11 @@ namespace MyCryptoMonitor.Forms
                     alert.Current = _coins.Where(c => c.ShortName.Equals(alert.Coin)).Select(c => c.Price).First();
                 }
 
-                _otherAlerts = alertConfig.Alerts.Where(a => !a.Currency.Equals(UserConfigService.UserConfig.Currency)).OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();
-                bsAlerts.DataSource = alertConfig.Alerts.Where(a => a.Currency.Equals(UserConfigService.UserConfig.Currency)).OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();
+                _otherAlerts = alertConfig.Alerts.Where(a => !a.Currency.Equals(UserConfigService.Currency)).OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();
+                bsAlerts.DataSource = alertConfig.Alerts.Where(a => a.Currency.Equals(UserConfigService.Currency)).OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();
             }
 
-            if (!UserConfigService.UserConfig.Encryption)
+            if (!UserConfigService.Encrypted)
             {
                 txtSendAddress.Text = string.Empty;
                 txtSendPassword.Text = string.Empty;
@@ -163,7 +163,7 @@ namespace MyCryptoMonitor.Forms
             if (!CheckValid(Convert.ToDecimal(txtCurrent.Text), Convert.ToDecimal(txtPrice.Text), op))
                 return;
 
-            bsAlerts.Add(new AlertDataSource { Coin = cmbCoins.Text, Current = Convert.ToDecimal(txtCurrent.Text), Operator = cmbOperator.Text, Price = Convert.ToDecimal(txtPrice.Text), Currency = UserConfigService.UserConfig.Currency });
+            bsAlerts.Add(new AlertDataSource { Coin = cmbCoins.Text, Current = Convert.ToDecimal(txtCurrent.Text), Operator = cmbOperator.Text, Price = Convert.ToDecimal(txtPrice.Text), Currency = UserConfigService.Currency });
             bsAlerts.DataSource = ((List<AlertDataSource>)bsAlerts.DataSource).OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();
         }
 
