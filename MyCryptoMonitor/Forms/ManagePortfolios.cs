@@ -1,4 +1,4 @@
-﻿using MyCryptoMonitor.Services;
+﻿using MyCryptoMonitor.Statics;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -18,7 +18,7 @@ namespace MyCryptoMonitor.Forms
         private void PortfolioManager_Load(object sender, EventArgs e)
         {
             _deletedPortfolios = new List<string>();
-            bsPortfolios.DataSource = Management.Portfolios.OrderBy(p => p.Name).ToList();
+            bsPortfolios.DataSource = PortfolioService.Portfolios.OrderBy(p => p.Name).ToList();
         }
 
         private void grdPortfolios_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
@@ -36,7 +36,7 @@ namespace MyCryptoMonitor.Forms
             //New row
             else if(oldValue == null && !string.IsNullOrEmpty(newValue))
             {
-                if (!Management.NewPortfolio(newValue))
+                if (!PortfolioService.NewPortfolio(newValue))
                     grid.CancelEdit();
             }
 
@@ -53,10 +53,10 @@ namespace MyCryptoMonitor.Forms
                 //Rename portfolio
                 if(e.ColumnIndex == 0)
                 {
-                    Management.RenamePortfolio(oldValue.ToString(), newValue);
+                    PortfolioService.RenamePortfolio(oldValue.ToString(), newValue);
 
                     if (Convert.ToBoolean(grid[1, e.RowIndex].Value))
-                        Management.SetStartupPortfolio(newValue);
+                        PortfolioService.SetStartupPortfolio(newValue);
                 }
 
                 //Set startups to false
@@ -66,7 +66,7 @@ namespace MyCryptoMonitor.Forms
                     {
                         if (i == e.RowIndex)
                         {
-                            Management.SetStartupPortfolio(Convert.ToBoolean(newValue) ? grid[0, i].Value.ToString() : string.Empty);
+                            PortfolioService.SetStartupPortfolio(Convert.ToBoolean(newValue) ? grid[0, i].Value.ToString() : string.Empty);
                             continue;
                         }
 
@@ -99,7 +99,7 @@ namespace MyCryptoMonitor.Forms
                 grdPortfolios.CurrentCell = grdPortfolios.Rows[0].Cells[0];
 
             foreach (var portfolio in _deletedPortfolios)
-                Management.DeletePortfolio(portfolio);
+                PortfolioService.DeletePortfolio(portfolio);
         }
     }
 }

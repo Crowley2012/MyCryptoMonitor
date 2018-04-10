@@ -5,9 +5,9 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MyCryptoMonitor.Services
+namespace MyCryptoMonitor.Statics
 {
-    public static class CoinMapping
+    public static class MappingService
     {
         public static List<Coin> CoinMarketCap(string response)
         {

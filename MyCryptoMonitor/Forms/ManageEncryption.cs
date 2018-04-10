@@ -1,4 +1,4 @@
-﻿using MyCryptoMonitor.Services;
+﻿using MyCryptoMonitor.Statics;
 using System;
 using System.Windows.Forms;
 
@@ -13,9 +13,9 @@ namespace MyCryptoMonitor.Forms
 
         private void Encrypt_Load(object sender, EventArgs e)
         {
-            cbEnableEncryption.Checked = Management.UserConfig.Encryption;
-            btnEncrypt.Text = Management.UserConfig.Encryption ? "Decrypt" : "Encrypt";
-            lblInstructions.Text = Management.UserConfig.Encryption ? "Type in your password to disable encryption." : "Type in a password to enable encryption.";
+            cbEnableEncryption.Checked = UserConfigService.UserConfig.Encryption;
+            btnEncrypt.Text = UserConfigService.UserConfig.Encryption ? "Decrypt" : "Encrypt";
+            lblInstructions.Text = UserConfigService.UserConfig.Encryption ? "Type in your password to disable encryption." : "Type in a password to enable encryption.";
         }
 
         private void btnEncrypt_Click(object sender, EventArgs e)
@@ -23,17 +23,17 @@ namespace MyCryptoMonitor.Forms
             if (string.IsNullOrEmpty(txtPassword.Text))
                 return;
 
-            if (Management.UserConfig.Encryption && Management.CheckPassword(txtPassword.Text))
+            if (UserConfigService.UserConfig.Encryption && EncryptionService.CheckPassword(txtPassword.Text))
             {
-                Management.DecryptFiles();
+                EncryptionService.DecryptFiles();
 
                 cbEnableEncryption.Checked = false;
                 btnEncrypt.Text = "Encrypt";
                 lblInstructions.Text = "Type in a password to enable encryption.";
             }
-            else if (!Management.UserConfig.Encryption)
+            else if (!UserConfigService.UserConfig.Encryption)
             {
-                Management.EncryptFiles(txtPassword.Text);
+                EncryptionService.EncryptFiles(txtPassword.Text);
 
                 cbEnableEncryption.Checked = true;
                 btnEncrypt.Text = "Decrypt";

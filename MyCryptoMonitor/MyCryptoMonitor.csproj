@@ -102,7 +102,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Services\CoinMapping.cs" />
+    <Compile Include="Statics\MappingService.cs" />
     <Compile Include="Forms\NewUI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,11 +121,15 @@
     <Compile Include="Forms\ManagePortfolios.Designer.cs">
       <DependentUpon>ManagePortfolios.cs</DependentUpon>
     </Compile>
-    <Compile Include="Services\Encryption.cs" />
-    <Compile Include="Services\Extensions.cs" />
-    <Compile Include="Services\Management.cs" />
+    <Compile Include="Statics\Encryption.cs" />
+    <Compile Include="Statics\Extensions.cs" />
+    <Compile Include="Statics\Globals.cs" />
+    <Compile Include="Statics\AlertService.cs" />
+    <Compile Include="Statics\EncryptionService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Statics\PortfolioService.cs" />
+    <Compile Include="Statics\UserConfigService.cs" />
     <EmbeddedResource Include="Forms\ManageAlerts.resx">
       <DependentUpon>ManageAlerts.cs</DependentUpon>
     </EmbeddedResource>

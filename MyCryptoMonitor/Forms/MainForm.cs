@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Drawing;
 using MyCryptoMonitor.DataSources;
 using MyCryptoMonitor.Api;
-using MyCryptoMonitor.Services;
+using MyCryptoMonitor.Statics;
 using MyCryptoMonitor.Gui;
 using MyCryptoMonitor.Configs;
 using MyCryptoMonitor.Objects;
@@ -53,17 +53,17 @@ namespace MyCryptoMonitor.Forms
             _loadGuiLines = true;
 
             //Load user config
-            Management.LoadUserConfig();
+            UserConfigService.LoadUserConfig();
 
             //Unlock if encryption is enabled
-            Management.Unlock();
+            EncryptionService.Unlock();
 
             //Attempt to load portfolio on startup
-            _coinConfigs = Management.LoadFirstPortfolio();
-            _selectedPortfolio = Management.UserConfig.StartupPortfolio.Replace(".portfolio", string.Empty);
+            _coinConfigs = PortfolioService.LoadFirstPortfolio();
+            _selectedPortfolio = UserConfigService.UserConfig.StartupPortfolio.Replace(".portfolio", string.Empty);
 
             //Set currency
-            cbCurrency.Text = string.IsNullOrEmpty(Management.UserConfig.Currency) ? "USD" : Management.UserConfig.Currency;
+            cbCurrency.Text = string.IsNullOrEmpty(UserConfigService.UserConfig.Currency) ? "USD" : UserConfigService.UserConfig.Currency;
 
             //Add list of coins in config for crypto compare api
             foreach (var name in _coinConfigs)
@@ -71,13 +71,13 @@ namespace MyCryptoMonitor.Forms
 
             //Cache alerts
             if(File.Exists("Alerts"))
-                Management.AlertConfig = Management.LoadAlerts();
+                AlertService.AlertConfig = AlertService.LoadAlerts();
 
             //Update status
             UpdateStatus("Loading");
 
-            Management.LoadPortfolios();
-            foreach(var portfolio in Management.Portfolios)
+            PortfolioService.LoadPortfolios();
+            foreach(var portfolio in PortfolioService.Portfolios)
             {
                 savePortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, SavePortfolio_Click) { Name = portfolio.Name, Checked = portfolio.Startup });
                 loadPortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, LoadPortfolio_Click) { Name = portfolio.Name, Checked = portfolio.Startup });
@@ -219,36 +219,36 @@ namespace MyCryptoMonitor.Forms
             };
 
             //Deserialize response
-            _cryptoCompareCoins = CoinMapping.MapCombination(cryptoCompareResponse, coinMarketCapResponse);
+            _cryptoCompareCoins = MappingService.MapCombination(cryptoCompareResponse, coinMarketCapResponse);
 
             if(_cryptoCompareCoins.Any(c => c.ShortName.Equals("NANO")))
                 _cryptoCompareCoins.Where(c => c.ShortName.Equals("NANO")).FirstOrDefault().ShortName = "XRB";
 
             //Create list of coin names
-            _coinMarketCapCoins = CoinMapping.CoinMarketCap(coinMarketCapResponse).OrderBy(c => c.ShortName).ToList();
+            _coinMarketCapCoins = MappingService.CoinMarketCap(coinMarketCapResponse).OrderBy(c => c.ShortName).ToList();
             _coinMarketCapCoins.Where(c => c.ShortName.Equals("NANO")).FirstOrDefault().ShortName = "XRB";
 
             //Loop through alerts
-            if (Management.AlertConfig != null && Management.AlertConfig.Alerts.Count > 0)
+            if (AlertService.AlertConfig != null && AlertService.AlertConfig.Alerts.Count > 0)
             {
                 List<AlertDataSource> removeAlerts = new List<AlertDataSource>();
 
-                foreach (AlertDataSource coin in Management.AlertConfig.Alerts)
+                foreach (AlertDataSource coin in AlertService.AlertConfig.Alerts)
                 {
-                    var coinData = _cryptoCompareCoins.Where(c => c.ShortName.Equals(coin.Coin) && Management.UserConfig.Currency.Equals(coin.Currency)).FirstOrDefault();
+                    var coinData = _cryptoCompareCoins.Where(c => c.ShortName.Equals(coin.Coin) && UserConfigService.UserConfig.Currency.Equals(coin.Currency)).FirstOrDefault();
 
                     if (coinData == null)
                         continue;
 
                     if ((coin.Operator.Equals("Greater Than") && coinData.Price > coin.Price) || (coin.Operator.Equals("Less Than") && coinData.Price < coin.Price))
                     {
-                        Management.SendAlert(coin);
+                        AlertService.SendAlert(coin);
                         removeAlerts.Add(coin);
                     }
                 }
 
                 if (removeAlerts.Count > 0)
-                    Management.RemoveAlerts(removeAlerts);
+                    AlertService.RemoveAlerts(removeAlerts);
             }
 
             Invoke((MethodInvoker)delegate
@@ -421,7 +421,7 @@ namespace MyCryptoMonitor.Forms
             }
 
             //Save portfolio
-            Management.SavePortfolio($"{portfolio}.portfolio", coinConfigs);
+            PortfolioService.SavePortfolio($"{portfolio}.portfolio", coinConfigs);
         }
 
         private void LoadPortfolio(string portfolio)
@@ -430,7 +430,7 @@ namespace MyCryptoMonitor.Forms
                 return;
 
             //Load portfolio
-            _coinConfigs = Management.LoadPortfolio($"{portfolio}.portfolio");
+            _coinConfigs = PortfolioService.LoadPortfolio($"{portfolio}.portfolio");
 
             _selectedCoins = string.Empty;
             foreach (var coin in _coinConfigs)
@@ -459,7 +459,7 @@ namespace MyCryptoMonitor.Forms
         private void Reset_Click(object sender, EventArgs e)
         {
             _resetTime = DateTime.Now;
-            LoadPortfolio(Management.SelectedPortfolio);
+            LoadPortfolio(PortfolioService.SelectedPortfolio);
         }
 
         private void Exit_Click(object sender, EventArgs e)
@@ -618,17 +618,17 @@ namespace MyCryptoMonitor.Forms
             foreach (var config in _coinConfigs)
                 config.SetStartupPrice = true;
 
-            Management.UserConfig.Currency = cbCurrency.Text;
-            Management.SaveUserConfig();
+            UserConfigService.UserConfig.Currency = cbCurrency.Text;
+            UserConfigService.SaveUserConfig();
         }
 
         private void manage_Click(object sender, EventArgs e)
         {
             UncheckPortfolios(_selectedPortfolio);
 
-            Management.LoadPortfolios();
+            PortfolioService.LoadPortfolios();
 
-            foreach (var portfolio in Management.Portfolios)
+            foreach (var portfolio in PortfolioService.Portfolios)
             {
                 if (loadPortfolioMenu.DropDownItems.ContainsKey(portfolio.Name))
                 {
@@ -640,9 +640,9 @@ namespace MyCryptoMonitor.Forms
             ManagePortfolios form = new ManagePortfolios();
             form.ShowDialog();
 
-            Management.LoadPortfolios();
+            PortfolioService.LoadPortfolios();
 
-            foreach (var portfolio in Management.Portfolios)
+            foreach (var portfolio in PortfolioService.Portfolios)
             {
                 if (!loadPortfolioMenu.DropDownItems.ContainsKey(portfolio.Name))
                 {
@@ -651,7 +651,7 @@ namespace MyCryptoMonitor.Forms
                 }
             }
 
-            Management.Portfolios = Management.Portfolios.OrderByDescending(p => p.Name).ToList();
+            PortfolioService.Portfolios = PortfolioService.Portfolios.OrderByDescending(p => p.Name).ToList();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

@@ -7,7 +7,7 @@ using System.Text;
  * Credit for this class goes to the author of this article
  * https://msftstack.wordpress.com/2014/12/31/simple-aes-byte-encryption-and-decryption-routines-in-c/
  */
-namespace MyCryptoMonitor.Services
+namespace MyCryptoMonitor.Statics
 {
     public static class Encryption
     {
@@ -18,7 +18,7 @@ namespace MyCryptoMonitor.Services
         #region Encrypt
         public static string AesEncryptString(string clearText)
         {
-            return AesEncryptString(clearText, Management.Password, SALT);
+            return AesEncryptString(clearText, EncryptionService.Password, SALT);
         }
 
         public static string AesEncryptString(string clearText, string passText)
@@ -70,7 +70,7 @@ namespace MyCryptoMonitor.Services
         #region Decrypt
         public static string AesDecryptString(string cryptText)
         {
-            return AesDecryptString(cryptText, Management.Password, SALT);
+            return AesDecryptString(cryptText, EncryptionService.Password, SALT);
         }
 
         public static string AesDecryptString(string cryptText, string passText)
