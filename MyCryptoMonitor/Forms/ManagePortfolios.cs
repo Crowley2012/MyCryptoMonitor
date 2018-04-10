@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using System.Linq;
 
 namespace MyCryptoMonitor.Forms
 {
@@ -18,7 +17,7 @@ namespace MyCryptoMonitor.Forms
         private void PortfolioManager_Load(object sender, EventArgs e)
         {
             _deletedPortfolios = new List<string>();
-            bsPortfolios.DataSource = Management.Portfolios.OrderBy(p => p.Name);
+            bsPortfolios.DataSource = Management.Portfolios;
         }
 
         private void grdPortfolios_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)

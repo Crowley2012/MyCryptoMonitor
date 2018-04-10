@@ -127,14 +127,10 @@ namespace MyCryptoMonitor.Services
 
         public static void ResetEncryption()
         {
-            if (File.Exists("Portfolio1"))
-                File.Delete("Portfolio1");
+            LoadPortfolios();
 
-            if (File.Exists("Portfolio2"))
-                File.Delete("Portfolio2");
-
-            if (File.Exists("Portfolio3"))
-                File.Delete("Portfolio3");
+            foreach(var portfolio in Portfolios)
+                DeletePortfolio(portfolio.Name);
 
             if (File.Exists("Alerts"))
                 File.Delete("Alerts");
@@ -243,26 +239,18 @@ namespace MyCryptoMonitor.Services
 
         public static void EncryptPortfolios()
         {
-            if (File.Exists("Portfolio1"))
-                File.WriteAllText("Portfolio1", Encryption.AesEncryptString(JsonConvert.SerializeObject(LoadPortfolioUnencrypted("Portfolio1"))));
+            LoadPortfolios();
 
-            if (File.Exists("Portfolio2"))
-                File.WriteAllText("Portfolio2", Encryption.AesEncryptString(JsonConvert.SerializeObject(LoadPortfolioUnencrypted("Portfolio2"))));
-
-            if (File.Exists("Portfolio3"))
-                File.WriteAllText("Portfolio3", Encryption.AesEncryptString(JsonConvert.SerializeObject(LoadPortfolioUnencrypted("Portfolio3"))));
+            foreach (var portfolio in Portfolios)
+                File.WriteAllText(portfolio.Name + ".portfolio", Encryption.AesEncryptString(JsonConvert.SerializeObject(LoadPortfolioUnencrypted(portfolio.Name + ".portfolio"))));
         }
 
         public static void DecryptPortfolios()
         {
-            if (File.Exists("Portfolio1"))
-                File.WriteAllText("Portfolio1", JsonConvert.SerializeObject(LoadPortfolioEncrypted("Portfolio1")));
+            LoadPortfolios();
 
-            if (File.Exists("Portfolio2"))
-                File.WriteAllText("Portfolio2", JsonConvert.SerializeObject(LoadPortfolioEncrypted("Portfolio2")));
-
-            if (File.Exists("Portfolio3"))
-                File.WriteAllText("Portfolio3", JsonConvert.SerializeObject(LoadPortfolioEncrypted("Portfolio3")));
+            foreach (var portfolio in Portfolios)
+                File.WriteAllText(portfolio.Name + ".portfolio", JsonConvert.SerializeObject(LoadPortfolioEncrypted(portfolio.Name + ".portfolio")));
         }
         #endregion
 

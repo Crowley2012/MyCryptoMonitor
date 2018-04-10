@@ -32,6 +32,8 @@ namespace MyCryptoMonitor.Forms
         #region Methods
         private void LoadAlerts()
         {
+            _otherAlerts = new List<AlertDataSource>();
+
             if (File.Exists("Alerts"))
             {
                 AlertConfig alertConfig = Management.LoadAlerts();
@@ -74,7 +76,7 @@ namespace MyCryptoMonitor.Forms
                 ReceiveType = cmbReceiveType.Text,
                 Alerts = bsAlerts.DataSource as List<AlertDataSource>
             };
-
+            
             alertConfig.Alerts.AddRange(_otherAlerts);
 
             //Save config
