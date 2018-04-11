@@ -29,7 +29,7 @@ namespace MyCryptoMonitor.Statics
 
         public static AlertConfig LoadAlertsEncrypted()
         {
-            return JsonConvert.DeserializeObject<AlertConfig>(Encryption.AesDecryptString(File.ReadAllText("Alerts")));
+            return JsonConvert.DeserializeObject<AlertConfig>(EncryptionService.AesDecryptString(File.ReadAllText("Alerts")));
         }
 
         public static AlertConfig LoadAlertsUnencrypted()
@@ -54,7 +54,7 @@ namespace MyCryptoMonitor.Statics
 
         public static void SaveAlertsEncrypted(AlertConfig alertConfig)
         {
-            File.WriteAllText("Alerts", Encryption.AesEncryptString(JsonConvert.SerializeObject(alertConfig)));
+            File.WriteAllText("Alerts", EncryptionService.AesEncryptString(JsonConvert.SerializeObject(alertConfig)));
         }
 
         public static void SaveAlertsUnencrypted(AlertConfig alertConfig)
@@ -67,7 +67,7 @@ namespace MyCryptoMonitor.Statics
         public static void EncryptAlerts()
         {
             if (File.Exists("Alerts"))
-                File.WriteAllText("Alerts", Encryption.AesEncryptString(JsonConvert.SerializeObject(LoadAlertsUnencrypted())));
+                File.WriteAllText("Alerts", EncryptionService.AesEncryptString(JsonConvert.SerializeObject(LoadAlertsUnencrypted())));
         }
 
         public static void DecryptAlerts()

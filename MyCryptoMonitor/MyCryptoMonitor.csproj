@@ -121,11 +121,10 @@
     <Compile Include="Forms\ManagePortfolios.Designer.cs">
       <DependentUpon>ManagePortfolios.cs</DependentUpon>
     </Compile>
-    <Compile Include="Statics\Encryption.cs" />
+    <Compile Include="Statics\EncryptionService.cs" />
     <Compile Include="Statics\Extensions.cs" />
     <Compile Include="Statics\Globals.cs" />
     <Compile Include="Statics\AlertService.cs" />
-    <Compile Include="Statics\EncryptionService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Statics\PortfolioService.cs" />

@@ -18,7 +18,7 @@ namespace MyCryptoMonitor.Forms
         private void PortfolioManager_Load(object sender, EventArgs e)
         {
             _deletedPortfolios = new List<string>();
-            bsPortfolios.DataSource = PortfolioService.Portfolios.OrderBy(p => p.Name).ToList();
+            bsPortfolios.DataSource = PortfolioService.GetPortfolios().OrderBy(p => p.Name).ToList();
         }
 
         private void grdPortfolios_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
@@ -36,7 +36,7 @@ namespace MyCryptoMonitor.Forms
             //New row
             else if(oldValue == null && !string.IsNullOrEmpty(newValue))
             {
-                if (!PortfolioService.NewPortfolio(newValue))
+                if (!PortfolioService.Create(newValue))
                     grid.CancelEdit();
             }
 
@@ -53,10 +53,10 @@ namespace MyCryptoMonitor.Forms
                 //Rename portfolio
                 if(e.ColumnIndex == 0)
                 {
-                    PortfolioService.RenamePortfolio(oldValue.ToString(), newValue);
+                    PortfolioService.Rename(oldValue.ToString(), newValue);
 
                     if (Convert.ToBoolean(grid[1, e.RowIndex].Value))
-                        PortfolioService.SetStartupPortfolio(newValue);
+                        PortfolioService.SetStartup(newValue);
                 }
 
                 //Set startups to false
@@ -66,7 +66,7 @@ namespace MyCryptoMonitor.Forms
                     {
                         if (i == e.RowIndex)
                         {
-                            PortfolioService.SetStartupPortfolio(Convert.ToBoolean(newValue) ? grid[0, i].Value.ToString() : string.Empty);
+                            PortfolioService.SetStartup(Convert.ToBoolean(newValue) ? grid[0, i].Value.ToString() : string.Empty);
                             continue;
                         }
 
@@ -99,7 +99,7 @@ namespace MyCryptoMonitor.Forms
                 grdPortfolios.CurrentCell = grdPortfolios.Rows[0].Cells[0];
 
             foreach (var portfolio in _deletedPortfolios)
-                PortfolioService.DeletePortfolio(portfolio);
+                PortfolioService.Delete(portfolio);
         }
     }
 }

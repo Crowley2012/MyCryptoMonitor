@@ -5,6 +5,7 @@ namespace MyCryptoMonitor.DataSources
     public class PortfolioDataSource
     {
         public string Name { get; set; }
+        public string FileName { get; set; }
         public bool Startup { get; set; }
     }
 

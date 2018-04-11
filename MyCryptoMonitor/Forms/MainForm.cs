@@ -59,7 +59,7 @@ namespace MyCryptoMonitor.Forms
             EncryptionService.Unlock();
 
             //Attempt to load portfolio on startup
-            _coinConfigs = PortfolioService.LoadFirstPortfolio();
+            _coinConfigs = PortfolioService.LoadStartup();
             _selectedPortfolio = UserConfigService.StartupPortfolio.Replace(".portfolio", string.Empty);
 
             //Set currency
@@ -76,8 +76,8 @@ namespace MyCryptoMonitor.Forms
             //Update status
             UpdateStatus("Loading");
 
-            PortfolioService.LoadPortfolios();
-            foreach(var portfolio in PortfolioService.Portfolios)
+            PortfolioService.GetPortfolios();
+            foreach(var portfolio in PortfolioService.GetPortfolios())
             {
                 savePortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, SavePortfolio_Click) { Name = portfolio.Name, Checked = portfolio.Startup });
                 loadPortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, LoadPortfolio_Click) { Name = portfolio.Name, Checked = portfolio.Startup });
@@ -421,7 +421,7 @@ namespace MyCryptoMonitor.Forms
             }
 
             //Save portfolio
-            PortfolioService.SavePortfolio($"{portfolio}.portfolio", coinConfigs);
+            PortfolioService.Save($"{portfolio}.portfolio", coinConfigs);
         }
 
         private void LoadPortfolio(string portfolio)
@@ -430,7 +430,7 @@ namespace MyCryptoMonitor.Forms
                 return;
 
             //Load portfolio
-            _coinConfigs = PortfolioService.LoadPortfolio($"{portfolio}.portfolio");
+            _coinConfigs = PortfolioService.Load($"{portfolio}.portfolio");
 
             _selectedCoins = string.Empty;
             foreach (var coin in _coinConfigs)
@@ -459,7 +459,7 @@ namespace MyCryptoMonitor.Forms
         private void Reset_Click(object sender, EventArgs e)
         {
             _resetTime = DateTime.Now;
-            LoadPortfolio(PortfolioService.SelectedPortfolio);
+            LoadPortfolio(PortfolioService.CurrentPortfolio);
         }
 
         private void Exit_Click(object sender, EventArgs e)
@@ -626,9 +626,9 @@ namespace MyCryptoMonitor.Forms
         {
             UncheckPortfolios(_selectedPortfolio);
 
-            PortfolioService.LoadPortfolios();
+            PortfolioService.GetPortfolios();
 
-            foreach (var portfolio in PortfolioService.Portfolios)
+            foreach (var portfolio in PortfolioService.GetPortfolios())
             {
                 if (loadPortfolioMenu.DropDownItems.ContainsKey(portfolio.Name))
                 {
@@ -640,9 +640,9 @@ namespace MyCryptoMonitor.Forms
             ManagePortfolios form = new ManagePortfolios();
             form.ShowDialog();
 
-            PortfolioService.LoadPortfolios();
+            PortfolioService.GetPortfolios();
 
-            foreach (var portfolio in PortfolioService.Portfolios)
+            foreach (var portfolio in PortfolioService.GetPortfolios())
             {
                 if (!loadPortfolioMenu.DropDownItems.ContainsKey(portfolio.Name))
                 {
@@ -650,8 +650,6 @@ namespace MyCryptoMonitor.Forms
                     loadPortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, LoadPortfolio_Click) { Name = portfolio.Name, Checked = portfolio.Name.Equals(_selectedPortfolio) });
                 }
             }
-
-            PortfolioService.Portfolios = PortfolioService.Portfolios.OrderByDescending(p => p.Name).ToList();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

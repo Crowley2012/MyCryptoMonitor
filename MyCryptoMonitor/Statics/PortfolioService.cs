@@ -10,117 +10,79 @@ namespace MyCryptoMonitor.Statics
     public class PortfolioService
     {
         #region Public Variables
-        public static string SelectedPortfolio { get; set; }
-        public static List<PortfolioDataSource> Portfolios { get; set; }
+        public static string CurrentPortfolio { get; set; }
+        #endregion
+
+        #region Private Variables
+        private const string FILEEXTENSION = ".portfolio";
         #endregion
 
         #region Methods
-        public static void LoadPortfolios()
+        public static List<PortfolioDataSource> GetPortfolios()
         {
-            Portfolios = new List<PortfolioDataSource>();
-            var files = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.portfolio");
+            return (from filePath in Directory.GetFiles(Directory.GetCurrentDirectory(), $"*{FILEEXTENSION}")
+                    select new PortfolioDataSource
+                    {
+                        Name = Path.GetFileName(filePath).Replace(FILEEXTENSION, string.Empty),
+                        FileName = Path.GetFileName(filePath),
+                        Startup = UserConfigService.StartupPortfolio.Equals(Path.GetFileName(filePath))
+                    })
+                    .OrderByDescending(p => p.Name)
+                    .ToList();
+        }
 
-            foreach (string file in files)
+        public static bool Create(string portfolio)
+        {
+            if (!File.Exists(portfolio + FILEEXTENSION))
             {
-                var name = Path.GetFileName(file);
-                Portfolios.Add(new PortfolioDataSource { Name = name.Replace(".portfolio", string.Empty), Startup = UserConfigService.StartupPortfolio.Equals(name) });
-            }
-
-            Portfolios = Portfolios.OrderByDescending(p => p.Name).ToList();
-        }
-
-        public static List<CoinConfig> LoadFirstPortfolio()
-        {
-            var portfolio = $"{UserConfigService.StartupPortfolio}";
-
-            if (File.Exists(portfolio))
-                return LoadPortfolio(portfolio);
-
-            return new List<CoinConfig>();
-        }
-
-        public static List<CoinConfig> LoadPortfolio(string portfolio)
-        {
-            SelectedPortfolio = portfolio;
-
-            if (UserConfigService.Encrypted)
-                return LoadPortfolioEncrypted(portfolio) ?? new List<CoinConfig>();
-            else
-                return LoadPortfolioUnencrypted(portfolio) ?? new List<CoinConfig>();
-        }
-
-        public static List<CoinConfig> LoadPortfolioEncrypted(string portfolio)
-        {
-            return JsonConvert.DeserializeObject<List<CoinConfig>>(Encryption.AesDecryptString(File.ReadAllText(portfolio)));
-        }
-
-        public static List<CoinConfig> LoadPortfolioUnencrypted(string portfolio)
-        {
-            return JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText(portfolio));
-        }
-
-        public static void SetStartupPortfolio(string portfolio)
-        {
-            UserConfigService.StartupPortfolio = portfolio += ".portfolio";
-            UserConfigService.Save();
-        }
-
-        public static void RenamePortfolio(string oldPortfolio, string newPortfolio)
-        {
-            File.Move(oldPortfolio + ".portfolio", newPortfolio + ".portfolio");
-        }
-
-        public static void DeletePortfolio(string portfolio)
-        {
-            File.Delete(portfolio + ".portfolio");
-        }
-
-        public static bool NewPortfolio(string portfolio)
-        {
-            portfolio += ".portfolio";
-
-            if (!File.Exists(portfolio))
-            {
-                File.WriteAllText(portfolio, string.Empty);
+                File.WriteAllText(portfolio + FILEEXTENSION, string.Empty);
                 return true;
             }
 
             return false;
         }
 
-        public static void SavePortfolio(string portfolio, List<CoinConfig> coinConfigs)
+        public static void Save(string portfolio, List<CoinConfig> coinConfigs)
         {
             if (UserConfigService.Encrypted)
-                SavePortfolioEncrypted(portfolio, coinConfigs);
+                SaveEncrypted(portfolio, coinConfigs);
             else
-                SavePortfolioUnencrypted(portfolio, coinConfigs);
+                SaveUnencrypted(portfolio, coinConfigs);
         }
 
-        public static void SavePortfolioEncrypted(string portfolio, List<CoinConfig> coinConfigs)
+        public static List<CoinConfig> Load(string portfolio)
         {
-            File.WriteAllText(portfolio, Encryption.AesEncryptString(JsonConvert.SerializeObject(coinConfigs)));
-        }
-
-        public static void SavePortfolioUnencrypted(string portfolio, List<CoinConfig> coinConfigs)
-        {
-            File.WriteAllText(portfolio, JsonConvert.SerializeObject(coinConfigs));
+            CurrentPortfolio = portfolio;
+            return UserConfigService.Encrypted ? LoadEncrypted(portfolio) ?? new List<CoinConfig>() : LoadUnencrypted(portfolio) ?? new List<CoinConfig>();
         }
 
         public static void EncryptPortfolios()
         {
-            LoadPortfolios();
-
-            foreach (var portfolio in Portfolios)
-                File.WriteAllText(portfolio.Name + ".portfolio", Encryption.AesEncryptString(JsonConvert.SerializeObject(LoadPortfolioUnencrypted(portfolio.Name + ".portfolio"))));
+            foreach (var portfolio in GetPortfolios())
+                File.WriteAllText(portfolio.Name + FILEEXTENSION, EncryptionService.AesEncryptString(JsonConvert.SerializeObject(LoadUnencrypted(portfolio.Name + FILEEXTENSION))));
         }
 
         public static void DecryptPortfolios()
         {
-            LoadPortfolios();
-
-            foreach (var portfolio in Portfolios)
-                File.WriteAllText(portfolio.Name + ".portfolio", JsonConvert.SerializeObject(LoadPortfolioEncrypted(portfolio.Name + ".portfolio")));
+            foreach (var portfolio in GetPortfolios())
+                File.WriteAllText(portfolio.Name + FILEEXTENSION, JsonConvert.SerializeObject(LoadEncrypted(portfolio.Name + FILEEXTENSION)));
         }
+
+        public static void SaveEncrypted(string portfolio, List<CoinConfig> coinConfigs) => File.WriteAllText(portfolio, EncryptionService.AesEncryptString(JsonConvert.SerializeObject(coinConfigs)));
+
+        public static void SaveUnencrypted(string portfolio, List<CoinConfig> coinConfigs) => File.WriteAllText(portfolio, JsonConvert.SerializeObject(coinConfigs));
+
+        public static List<CoinConfig> LoadStartup() => File.Exists(UserConfigService.StartupPortfolio) ? Load(UserConfigService.StartupPortfolio) : new List<CoinConfig>();
+
+        private static List<CoinConfig> LoadEncrypted(string portfolio) => JsonConvert.DeserializeObject<List<CoinConfig>>(EncryptionService.AesDecryptString(File.ReadAllText(portfolio)));
+
+        private static List<CoinConfig> LoadUnencrypted(string portfolio) => JsonConvert.DeserializeObject<List<CoinConfig>>(File.ReadAllText(portfolio));
+
+        public static void Rename(string oldPortfolio, string newPortfolio) => File.Move(oldPortfolio + FILEEXTENSION, newPortfolio + FILEEXTENSION);
+
+        public static void Delete(string portfolio) => File.Delete(portfolio + FILEEXTENSION);
+
+        public static void SetStartup(string portfolio) => UserConfigService.StartupPortfolio = portfolio += FILEEXTENSION;
         #endregion
     }
 }
