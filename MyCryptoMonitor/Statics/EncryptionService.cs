@@ -5,32 +5,21 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
 
-/*
- * Credit for this class goes to the author of this article
- * https://msftstack.wordpress.com/2014/12/31/simple-aes-byte-encryption-and-decryption-routines-in-c/
- */
 namespace MyCryptoMonitor.Statics
 {
     public static class EncryptionService
     {
-
-        #region Public Variables
-        public static string Password { get; set; } = string.Empty;
+        #region Private Variables
+        private const string SALT = "QM4436DL3A259EFXYNZEW4TCVVY5QZJG9CXFEKFW";
+        private const string CHECKFILE = "Encryption";
+        private const string CHECKVALUE = "Success";
+        private static string _password = string.Empty;
         #endregion
 
         #region Methods
         public static bool CheckPassword(string password)
         {
-            if (EncryptionService.AesDecryptString(File.ReadAllText("Encryption"), password).Equals("Success"))
-            {
-                Password = password;
-                return true;
-            }
-            else
-            {
-                MessageBox.Show("Incorrect password.");
-                return false;
-            }
+            return AesDecryptString(File.ReadAllText(CHECKFILE), password).Equals(CHECKVALUE);
         }
 
         public static void Unlock()
@@ -46,11 +35,13 @@ namespace MyCryptoMonitor.Statics
                 {
                     if (!CheckPassword(form.PasswordInput))
                         Unlock();
+
+                    _password = form.PasswordInput;
                 }
                 else if (result == DialogResult.Abort)
                 {
                     if (MessageBox.Show($"This will delete all saved files (portfolios, alerts, etc) and remove encryption. Do you want to continue?", "Forgot Password", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
-                        ResetEncryption();
+                        Reset();
                     else
                         Unlock();
                 }
@@ -63,10 +54,11 @@ namespace MyCryptoMonitor.Statics
 
         public static void EncryptFiles(string password)
         {
-            Password = password;
+            _password = password;
             UserConfigService.Encrypted = true;
 
-            CreateEncryptionFile();
+            File.WriteAllText(CHECKFILE, AesEncryptString(CHECKVALUE));
+
             UserConfigService.Save();
             PortfolioService.EncryptPortfolios();
             AlertService.EncryptAlerts();
@@ -76,54 +68,37 @@ namespace MyCryptoMonitor.Statics
         {
             UserConfigService.Encrypted = false;
 
-            RemoveEncryptionFile();
+            DeleteCheckFile();
+
             UserConfigService.Save();
             PortfolioService.DecryptPortfolios();
             AlertService.DecryptAlerts();
         }
 
-        public static void CreateEncryptionFile()
+        public static void DeleteCheckFile()
         {
-            File.WriteAllText("Encryption", EncryptionService.AesEncryptString("Success"));
+
+            if (File.Exists(CHECKFILE))
+                File.Delete(CHECKFILE);
         }
 
-        public static void RemoveEncryptionFile()
+        public static void Reset()
         {
-            File.Delete("Encryption");
-        }
+            DeleteCheckFile();
 
-        public static void ResetEncryption()
-        {
-            PortfolioService.GetPortfolios();
-
-            foreach (var portfolio in PortfolioService.GetPortfolios())
-                PortfolioService.Delete(portfolio.Name);
-
-            if (File.Exists("Alerts"))
-                File.Delete("Alerts");
-
-            if (File.Exists("Encryption"))
-                File.Delete("Encryption");
-
+            PortfolioService.DeleteAll();
+            AlertService.Delete();
             UserConfigService.Delete();
-
-            UserConfigService.Load();
         }
         #endregion
 
 
 
-
-
-
-        #region Constants
-        private const string SALT = "QM4436DL3A259EFXYNZEW4TCVVY5QZJG9CXFEKFW";
-        #endregion
 
         #region Encrypt
         public static string AesEncryptString(string clearText)
         {
-            return AesEncryptString(clearText, EncryptionService.Password, SALT);
+            return AesEncryptString(clearText, _password, SALT);
         }
 
         public static string AesEncryptString(string clearText, string passText)
@@ -175,7 +150,7 @@ namespace MyCryptoMonitor.Statics
         #region Decrypt
         public static string AesDecryptString(string cryptText)
         {
-            return AesDecryptString(cryptText, EncryptionService.Password, SALT);
+            return AesDecryptString(cryptText, _password, SALT);
         }
 
         public static string AesDecryptString(string cryptText, string passText)

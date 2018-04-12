@@ -9,6 +9,7 @@ namespace MyCryptoMonitor.Statics
 {
     public static class MappingService
     {
+        #region Methods
         public static List<Coin> CoinMarketCap(string response)
         {
             JsonSerializerSettings settings = new JsonSerializerSettings
@@ -55,5 +56,6 @@ namespace MyCryptoMonitor.Statics
 
             return list;
         }
+        #endregion
     }
 }

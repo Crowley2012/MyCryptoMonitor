@@ -17,7 +17,7 @@ namespace MyCryptoMonitor.Statics
         private const string FILENAME = "User.config";
         #endregion
 
-        #region Methods
+        #region Manage
         public static void Create()
         {
             File.WriteAllText(FILENAME, JsonConvert.SerializeObject(new UserConfig()));
@@ -41,6 +41,8 @@ namespace MyCryptoMonitor.Statics
         {
             if (File.Exists(FILENAME))
                 File.Delete(FILENAME);
+
+            Create();
         }
         #endregion
     }

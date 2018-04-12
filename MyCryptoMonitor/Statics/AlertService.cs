@@ -86,6 +86,12 @@ namespace MyCryptoMonitor.Statics
             SaveAlerts(alertConfig);
         }
 
+        public static void Delete()
+        {
+            if (File.Exists("Alerts"))
+                File.Delete("Alerts");
+        }
+
         public static string GetContactAddress(string address, string type)
         {
             switch ((Globals.Types)Enum.Parse(typeof(Globals.Types), type))
