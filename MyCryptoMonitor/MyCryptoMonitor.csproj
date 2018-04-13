@@ -109,11 +109,11 @@
     <Compile Include="Forms\NewUI.Designer.cs">
       <DependentUpon>NewUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\InputPassword.cs">
+    <Compile Include="Forms\Unlock.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\InputPassword.Designer.cs">
-      <DependentUpon>InputPassword.cs</DependentUpon>
+    <Compile Include="Forms\Unlock.Designer.cs">
+      <DependentUpon>Unlock.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ManagePortfolios.cs">
       <SubType>Form</SubType>
@@ -150,8 +150,8 @@
     <EmbeddedResource Include="Forms\NewUI.resx">
       <DependentUpon>NewUI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\InputPassword.resx">
-      <DependentUpon>InputPassword.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Unlock.resx">
+      <DependentUpon>Unlock.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ManagePortfolios.resx">
       <DependentUpon>ManagePortfolios.cs</DependentUpon>

@@ -66,7 +66,7 @@ namespace MyCryptoMonitor.Statics
         public static void DeleteAll()
         {
             foreach(var portfolio in GetPortfolios())
-                File.Delete(portfolio + FILEEXTENSION);
+                File.Delete(portfolio.FileName);
         }
         #endregion
 

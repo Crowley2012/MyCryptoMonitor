@@ -2,11 +2,11 @@
 
 namespace MyCryptoMonitor.Forms
 {
-    public partial class InputPassword : Form
+    public partial class Unlock : Form
     {
         public string PasswordInput { get { return txtPassword.Text; } }
 
-        public InputPassword()
+        public Unlock()
         {
             InitializeComponent();
         }

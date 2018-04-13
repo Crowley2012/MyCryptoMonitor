@@ -56,7 +56,8 @@ namespace MyCryptoMonitor.Forms
             UserConfigService.Load();
 
             //Unlock if encryption is enabled
-            EncryptionService.Unlock();
+            if (UserConfigService.Encrypted)
+                EncryptionService.Unlock();
 
             //Attempt to load portfolio on startup
             _coinConfigs = PortfolioService.LoadStartup();

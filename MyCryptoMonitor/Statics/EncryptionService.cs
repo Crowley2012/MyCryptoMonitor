@@ -17,24 +17,24 @@ namespace MyCryptoMonitor.Statics
         #endregion
 
         #region Methods
-        public static bool CheckPassword(string password)
+        public static bool ValidatePassword(string password)
         {
             return AesDecryptString(File.ReadAllText(CHECKFILE), password).Equals(CHECKVALUE);
         }
 
         public static void Unlock()
         {
-            if (!UserConfigService.Encrypted)
-                return;
-
-            using (InputPassword form = new InputPassword())
+            using (Unlock form = new Unlock())
             {
                 var result = form.ShowDialog();
 
                 if (result == DialogResult.OK)
                 {
-                    if (!CheckPassword(form.PasswordInput))
+                    if (!ValidatePassword(form.PasswordInput))
+                    {
                         Unlock();
+                        return;
+                    }
 
                     _password = form.PasswordInput;
                 }
@@ -55,10 +55,9 @@ namespace MyCryptoMonitor.Statics
         public static void EncryptFiles(string password)
         {
             _password = password;
+
+            CreateCheckFile();
             UserConfigService.Encrypted = true;
-
-            File.WriteAllText(CHECKFILE, AesEncryptString(CHECKVALUE));
-
             UserConfigService.Save();
             PortfolioService.EncryptPortfolios();
             AlertService.EncryptAlerts();
@@ -66,34 +65,33 @@ namespace MyCryptoMonitor.Statics
 
         public static void DecryptFiles()
         {
-            UserConfigService.Encrypted = false;
-
             DeleteCheckFile();
-
+            UserConfigService.Encrypted = false;
             UserConfigService.Save();
             PortfolioService.DecryptPortfolios();
             AlertService.DecryptAlerts();
         }
 
-        public static void DeleteCheckFile()
-        {
-
-            if (File.Exists(CHECKFILE))
-                File.Delete(CHECKFILE);
-        }
-
         public static void Reset()
         {
             DeleteCheckFile();
-
             PortfolioService.DeleteAll();
             AlertService.Delete();
             UserConfigService.Delete();
         }
+
+        private static void CreateCheckFile()
+        {
+            if (!File.Exists(CHECKFILE))
+                File.WriteAllText(CHECKFILE, AesEncryptString(CHECKVALUE));
+        }
+
+        private static void DeleteCheckFile()
+        {
+            if (File.Exists(CHECKFILE))
+                File.Delete(CHECKFILE);
+        }
         #endregion
-
-
-
 
         #region Encrypt
         public static string AesEncryptString(string clearText)

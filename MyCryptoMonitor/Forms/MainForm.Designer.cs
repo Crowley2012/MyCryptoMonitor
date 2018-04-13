@@ -291,12 +291,12 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F);
-            this.label11.Location = new System.Drawing.Point(113, 0);
+            this.label11.Location = new System.Drawing.Point(163, 0);
             this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(96, 26);
+            this.label11.Size = new System.Drawing.Size(46, 26);
             this.label11.TabIndex = 51;
-            this.label11.Text = "Conversion Currency:";
+            this.label11.Text = "Currency:";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel2

@@ -23,7 +23,7 @@ namespace MyCryptoMonitor.Forms
             if (string.IsNullOrEmpty(txtPassword.Text))
                 return;
 
-            if (UserConfigService.Encrypted && EncryptionService.CheckPassword(txtPassword.Text))
+            if (UserConfigService.Encrypted && EncryptionService.ValidatePassword(txtPassword.Text))
             {
                 EncryptionService.DecryptFiles();
 
