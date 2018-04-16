@@ -7,29 +7,29 @@
         public string FROMSYMBOL { get; set; }
         public string TOSYMBOL { get; set; }
         public string FLAGS { get; set; }
-        public decimal PRICE { get; set; }
-        public int LASTUPDATE { get; set; }
-        public decimal LASTVOLUME { get; set; }
-        public decimal LASTVOLUMETO { get; set; }
+        public string PRICE { get; set; }
+        public string LASTUPDATE { get; set; }
+        public string LASTVOLUME { get; set; }
+        public string LASTVOLUMETO { get; set; }
         public string LASTTRADEID { get; set; }
-        public decimal VOLUMEDAY { get; set; }
-        public decimal VOLUMEDAYTO { get; set; }
-        public decimal VOLUME24HOUR { get; set; }
-        public decimal VOLUME24HOURTO { get; set; }
-        public decimal OPENDAY { get; set; }
-        public decimal HIGHDAY { get; set; }
-        public decimal LOWDAY { get; set; }
-        public decimal OPEN24HOUR { get; set; }
-        public decimal HIGH24HOUR { get; set; }
-        public decimal LOW24HOUR { get; set; }
+        public string VOLUMEDAY { get; set; }
+        public string VOLUMEDAYTO { get; set; }
+        public string VOLUME24HOUR { get; set; }
+        public string VOLUME24HOURTO { get; set; }
+        public string OPENDAY { get; set; }
+        public string HIGHDAY { get; set; }
+        public string LOWDAY { get; set; }
+        public string OPEN24HOUR { get; set; }
+        public string HIGH24HOUR { get; set; }
+        public string LOW24HOUR { get; set; }
         public string LASTMARKET { get; set; }
-        public decimal CHANGE24HOUR { get; set; }
-        public decimal CHANGEPCT24HOUR { get; set; }
-        public decimal CHANGEDAY { get; set; }
-        public decimal CHANGEPCTDAY { get; set; }
-        public long SUPPLY { get; set; }
-        public decimal MKTCAP { get; set; }
-        public decimal TOTALVOLUME24H { get; set; }
-        public decimal TOTALVOLUME24HTO { get; set; }
+        public string CHANGE24HOUR { get; set; }
+        public string CHANGEPCT24HOUR { get; set; }
+        public string CHANGEDAY { get; set; }
+        public string CHANGEPCTDAY { get; set; }
+        public string SUPPLY { get; set; }
+        public string MKTCAP { get; set; }
+        public string TOTALVOLUME24H { get; set; }
+        public string TOTALVOLUME24HTO { get; set; }
     }
 }

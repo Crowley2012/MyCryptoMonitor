@@ -22,12 +22,12 @@ namespace MyCryptoMonitor.Statics
             {
                 ShortName = c.symbol,
                 LongName = c.name,
-                Change1HourPercent = c.percent_change_1h,
-                Change24HourPercent = c.percent_change_24h,
-                Change7DayPercent = c.percent_change_7d,
-                MarketCap = c.market_cap_usd,
-                Price = c.price_usd,
-                Supply = c.total_supply
+                Change1HourPercent = c.percent_change_1h.ConvertToDecimal(),
+                Change24HourPercent = c.percent_change_24h.ConvertToDecimal(),
+                Change7DayPercent = c.percent_change_7d.ConvertToDecimal(),
+                MarketCap = c.market_cap_usd.ConvertToDecimal(),
+                Price = c.price_usd.ConvertToDecimal(),
+                Supply = c.total_supply.ConvertToDecimal()
             }).ToList();
         }
 
@@ -46,11 +46,11 @@ namespace MyCryptoMonitor.Statics
                     ShortName = cryptoCompareCoin.FROMSYMBOL,
                     LongName = coinMarketCapCoins.Where(c => c.ShortName.Equals(cryptoCompareCoin.FROMSYMBOL)).Select(c => c.LongName).FirstOrDefault(),
                     Change1HourPercent = coinMarketCapCoins.Where(c => c.ShortName.Equals(cryptoCompareCoin.FROMSYMBOL)).Select(c => c.Change1HourPercent).FirstOrDefault(),
-                    Change24HourPercent = cryptoCompareCoin.CHANGEPCT24HOUR,
+                    Change24HourPercent = cryptoCompareCoin.CHANGEPCT24HOUR.ConvertToDecimal(),
                     Change7DayPercent = coinMarketCapCoins.Where(c => c.ShortName.Equals(cryptoCompareCoin.FROMSYMBOL)).Select(c => c.Change7DayPercent).FirstOrDefault(),
-                    MarketCap = cryptoCompareCoin.MKTCAP,
-                    Price = cryptoCompareCoin.PRICE,
-                    Supply = cryptoCompareCoin.SUPPLY
+                    MarketCap = cryptoCompareCoin.MKTCAP.ConvertToDecimal(),
+                    Price = cryptoCompareCoin.PRICE.ConvertToDecimal(),
+                    Supply = cryptoCompareCoin.SUPPLY.ConvertToDecimal()
                 });
             }
 

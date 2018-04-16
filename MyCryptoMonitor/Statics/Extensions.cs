@@ -18,5 +18,13 @@ namespace MyCryptoMonitor.Statics
         {
             return source.ToString().IndexOf(toCheck, StringComparison.OrdinalIgnoreCase) >= 0;
         }
+
+        public static decimal ConvertToDecimal(this string source)
+        {
+            if (string.IsNullOrEmpty(source))
+                return 0;
+
+            return decimal.Parse(source);
+        }
     }
 }
