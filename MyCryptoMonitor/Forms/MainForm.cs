@@ -59,6 +59,8 @@ namespace MyCryptoMonitor.Forms
             if (UserConfigService.Encrypted)
                 EncryptionService.Unlock();
 
+            AlertService.Load();
+
             //Attempt to load portfolio on startup
             _coinConfigs = PortfolioService.LoadStartup();
             _selectedPortfolio = PortfolioService.CurrentPortfolio;
@@ -68,11 +70,7 @@ namespace MyCryptoMonitor.Forms
 
             //Add list of coins in config for crypto compare api
             foreach (var name in _coinConfigs)
-                _selectedCoins += $",{name.coin}";
-
-            //Cache alerts
-            if(File.Exists("Alerts"))
-                AlertService.AlertConfig = AlertService.LoadAlerts();
+                _selectedCoins += $",{name.Coin}";
 
             //Update status
             UpdateStatus("Loading");
@@ -229,11 +227,11 @@ namespace MyCryptoMonitor.Forms
             _coinMarketCapCoins.Where(c => c.ShortName.Equals("NANO")).FirstOrDefault().ShortName = "XRB";
 
             //Loop through alerts
-            if (AlertService.AlertConfig != null && AlertService.AlertConfig.Alerts.Count > 0)
+            if (AlertService.Alerts.Count > 0)
             {
                 List<AlertDataSource> removeAlerts = new List<AlertDataSource>();
 
-                foreach (AlertDataSource coin in AlertService.AlertConfig.Alerts)
+                foreach (AlertDataSource coin in AlertService.Alerts)
                 {
                     var coinData = _cryptoCompareCoins.Where(c => c.ShortName.Equals(coin.Coin) && UserConfigService.Currency.Equals(coin.Currency)).FirstOrDefault();
 
@@ -248,7 +246,7 @@ namespace MyCryptoMonitor.Forms
                 }
 
                 if (removeAlerts.Count > 0)
-                    AlertService.RemoveAlerts(removeAlerts);
+                    AlertService.Remove(removeAlerts);
             }
 
             Invoke((MethodInvoker)delegate
@@ -260,9 +258,9 @@ namespace MyCryptoMonitor.Forms
                     Coin downloadedCoin;
 
                     //Parse coins, if coin doesnt exist set to 0
-                    downloadedCoin = _cryptoCompareCoins.Any(c => c.ShortName == coin.coin)
-                        ? _cryptoCompareCoins.Single(c => c.ShortName == coin.coin)
-                        : new Coin { ShortName = coin.coin, CoinIndex = coin.coinIndex, Change1HourPercent = 0, Change24HourPercent = 0, Price = 0 };
+                    downloadedCoin = _cryptoCompareCoins.Any(c => c.ShortName == coin.Coin)
+                        ? _cryptoCompareCoins.Single(c => c.ShortName == coin.Coin)
+                        : new Coin { ShortName = coin.Coin, CoinIndex = coin.CoinIndex, Change1HourPercent = 0, Change24HourPercent = 0, Price = 0 };
 
                     //Check if gui lines need to be loaded
                     if (_loadGuiLines)
@@ -286,7 +284,7 @@ namespace MyCryptoMonitor.Forms
                     }
 
                     //Get the gui line for coin
-                    CoinLine line = (from c in _coinGuiLines where c.CoinName.Equals(downloadedCoin.ShortName) && c.CoinIndex == coin.coinIndex select c).First();
+                    CoinLine line = (from c in _coinGuiLines where c.CoinName.Equals(downloadedCoin.ShortName) && c.CoinIndex == coin.CoinIndex select c).First();
 
                     if (string.IsNullOrEmpty(line.BoughtTextBox.Text))
                         line.BoughtTextBox.Text = "0";
@@ -315,7 +313,7 @@ namespace MyCryptoMonitor.Forms
 
                     //Update gui
                     line.CoinLabel.Show();
-                    line.CoinIndexLabel.Text = _coinConfigs.Count(c => c.coin.Equals(coin.coin)) > 1 ? $"[{coin.coinIndex + 1}]" : string.Empty;
+                    line.CoinIndexLabel.Text = _coinConfigs.Count(c => c.Coin.Equals(coin.Coin)) > 1 ? $"[{coin.CoinIndex + 1}]" : string.Empty;
                     line.CoinLabel.Text = downloadedCoin.ShortName;
                     line.PriceLabel.Text = $"${downloadedCoin.Price}";
                     line.BoughtPriceLabel.Text = $"${boughtPrice:0.000000}";
@@ -375,11 +373,11 @@ namespace MyCryptoMonitor.Forms
                 coin.StartupPrice = downloadedCoin.Price;
 
             //Create the gui line
-            CoinLine newLine = new CoinLine(downloadedCoin.ShortName, coin.coinIndex, index);
+            CoinLine newLine = new CoinLine(downloadedCoin.ShortName, coin.CoinIndex, index);
 
             //Set the bought and paid amounts
-            newLine.BoughtTextBox.Text = coin.bought.ToString();
-            newLine.PaidTextBox.Text = coin.paid.ToString();
+            newLine.BoughtTextBox.Text = coin.Bought.ToString();
+            newLine.PaidTextBox.Text = coin.Paid.ToString();
             
             Height += 25;
             Controls.Add(newLine.CoinIndexLabel);
@@ -413,28 +411,24 @@ namespace MyCryptoMonitor.Forms
             {
                 coinConfigs.Add(new CoinConfig
                 {
-                    coin = coinLine.CoinLabel.Text,
-                    coinIndex = coinConfigs.Count(c => c.coin.Equals(coinLine.CoinName)),
-                    bought = Convert.ToDecimal(coinLine.BoughtTextBox.Text),
-                    paid = Convert.ToDecimal(coinLine.PaidTextBox.Text)
+                    Coin = coinLine.CoinLabel.Text,
+                    CoinIndex = coinConfigs.Count(c => c.Coin.Equals(coinLine.CoinName)),
+                    Bought = Convert.ToDecimal(coinLine.BoughtTextBox.Text),
+                    Paid = Convert.ToDecimal(coinLine.PaidTextBox.Text)
                 });
             }
 
             //Save portfolio
-            PortfolioService.Save($"{portfolio}.portfolio", coinConfigs);
+            PortfolioService.Save(portfolio, coinConfigs);
         }
 
         private void LoadPortfolio(string portfolio)
         {
-            if (!File.Exists($"{portfolio}.portfolio"))
-                return;
-
-            //Load portfolio
-            _coinConfigs = PortfolioService.Load($"{portfolio}.portfolio");
+            _coinConfigs = PortfolioService.Load(portfolio);
 
             _selectedCoins = string.Empty;
             foreach (var coin in _coinConfigs)
-                _selectedCoins += coin.coin.ToUpper() + ",";
+                _selectedCoins += coin.Coin.ToUpper() + ",";
 
             RemoveGuiLines();
         }
@@ -446,9 +440,9 @@ namespace MyCryptoMonitor.Forms
             {
                 int index = 0;
 
-                foreach(CoinConfig coin in _coinConfigs.Where(c => c.coin == config.coin).ToList())
+                foreach(CoinConfig coin in _coinConfigs.Where(c => c.Coin == config.Coin).ToList())
                 {
-                    coin.coinIndex = index;
+                    coin.CoinIndex = index;
                     index++;
                 }
             }
@@ -493,19 +487,19 @@ namespace MyCryptoMonitor.Forms
             //Update coin config bought and paid values
             foreach (var coinGuiLine in _coinGuiLines)
             {
-                var coinConfig = _coinConfigs.Single(c => c.coin == coinGuiLine.CoinName && c.coinIndex == coinGuiLine.CoinIndex);
-                coinConfig.bought = Convert.ToDecimal(coinGuiLine.BoughtTextBox.Text);
-                coinConfig.paid = Convert.ToDecimal(coinGuiLine.PaidTextBox.Text);
+                var coinConfig = _coinConfigs.Single(c => c.Coin == coinGuiLine.CoinName && c.CoinIndex == coinGuiLine.CoinIndex);
+                coinConfig.Bought = Convert.ToDecimal(coinGuiLine.BoughtTextBox.Text);
+                coinConfig.Paid = Convert.ToDecimal(coinGuiLine.PaidTextBox.Text);
                 coinConfig.SetStartupPrice = false;
             }
 
             //Add coin config
-            _coinConfigs.Add(new CoinConfig { coin = form.InputText.ToUpper(), coinIndex = _coinConfigs.Count(c => c.coin.Equals(form.InputText.ToUpper())), bought = 0, paid = 0, StartupPrice = 0, SetStartupPrice = true });
+            _coinConfigs.Add(new CoinConfig { Coin = form.InputText.ToUpper(), CoinIndex = _coinConfigs.Count(c => c.Coin.Equals(form.InputText.ToUpper())), Bought = 0, Paid = 0, StartupPrice = 0, SetStartupPrice = true });
             RemoveGuiLines();
 
             _selectedCoins = string.Empty;
             foreach (var coin in _coinConfigs)
-                _selectedCoins += coin.coin.ToUpper() + ",";
+                _selectedCoins += coin.Coin.ToUpper() + ",";
 
             UncheckPortfolios(string.Empty);
         }
@@ -518,7 +512,7 @@ namespace MyCryptoMonitor.Forms
                 return;
 
             //Check if coin exists
-            if (!_coinConfigs.Any(a => a.coin.Equals(form.InputText.ToUpper()) && a.coinIndex == form.CoinIndex))
+            if (!_coinConfigs.Any(a => a.Coin.Equals(form.InputText.ToUpper()) && a.CoinIndex == form.CoinIndex))
             {
                 MessageBox.Show("Coin does not exist.", "Error");
                 return;
@@ -527,14 +521,14 @@ namespace MyCryptoMonitor.Forms
             //Update coin config bought and paid values
             foreach (var coinGuiLine in _coinGuiLines)
             {
-                var coinConfig = _coinConfigs.Single(c => c.coin == coinGuiLine.CoinName && c.coinIndex == coinGuiLine.CoinIndex);
-                coinConfig.bought = Convert.ToDecimal(coinGuiLine.BoughtTextBox.Text);
-                coinConfig.paid = Convert.ToDecimal(coinGuiLine.PaidTextBox.Text);
+                var coinConfig = _coinConfigs.Single(c => c.Coin == coinGuiLine.CoinName && c.CoinIndex == coinGuiLine.CoinIndex);
+                coinConfig.Bought = Convert.ToDecimal(coinGuiLine.BoughtTextBox.Text);
+                coinConfig.Paid = Convert.ToDecimal(coinGuiLine.PaidTextBox.Text);
                 coinConfig.SetStartupPrice = false;
             }
 
             //Remove coin config
-            _coinConfigs.RemoveAll(a => a.coin.Equals(form.InputText.ToUpper()) && a.coinIndex == form.CoinIndex);
+            _coinConfigs.RemoveAll(a => a.Coin.Equals(form.InputText.ToUpper()) && a.CoinIndex == form.CoinIndex);
 
             //Reset coin indexes
             ResetCoinIndex();
@@ -619,7 +613,6 @@ namespace MyCryptoMonitor.Forms
                 config.SetStartupPrice = true;
 
             UserConfigService.Currency = cbCurrency.Text;
-            UserConfigService.Save();
         }
 
         private void manage_Click(object sender, EventArgs e)

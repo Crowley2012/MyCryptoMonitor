@@ -41,8 +41,8 @@ namespace MyCryptoMonitor.Forms
             _coinConfigs = coinsConfig;
 
             //Set data sources
-            cbCoins.DataSource = coinsConfig.OrderBy(c => c.coin).Select(c => c.coin).Distinct().ToList();
-            cbCoinIndex.DataSource = (from c in _coinConfigs where c.coin == cbCoins.Text select c.coinIndex + 1).ToList();
+            cbCoins.DataSource = coinsConfig.OrderBy(c => c.Coin).Select(c => c.Coin).Distinct().ToList();
+            cbCoinIndex.DataSource = (from c in _coinConfigs where c.Coin == cbCoins.Text select c.CoinIndex + 1).ToList();
         }
 
         private void Submit_Click(object sender, EventArgs e)
@@ -60,7 +60,7 @@ namespace MyCryptoMonitor.Forms
             if (_coinConfigs == null)
                 return;
 
-            cbCoinIndex.DataSource = (from c in _coinConfigs where c.coin == cbCoins.Text select c.coinIndex + 1).ToList();
+            cbCoinIndex.DataSource = (from c in _coinConfigs where c.Coin == cbCoins.Text select c.CoinIndex + 1).ToList();
         }
     }
 }

@@ -15,83 +15,67 @@ namespace MyCryptoMonitor.Statics
     public class AlertService
     {
         #region Public Variables
-        public static AlertConfig AlertConfig { get; set; }
+        public static string SendAddress { get { return AlertConfig.SendAddress; } set { AlertConfig.SendAddress = value; } }
+        public static string SendPassword { get { return AlertConfig.SendPassword; } set { AlertConfig.SendPassword = value; } }
+        public static string ReceiveAddress { get { return AlertConfig.ReceiveAddress; } set { AlertConfig.ReceiveAddress = value; } }
+        public static string ReceiveType { get { return AlertConfig.ReceiveType; } set { AlertConfig.ReceiveType = value; } }
+        public static List<AlertDataSource> Alerts { get { return AlertConfig.Alerts; } set { AlertConfig.Alerts = value; } }
         #endregion
 
-        #region Methods
-        public static AlertConfig LoadAlerts()
+        #region Private Variables
+        private static AlertConfig AlertConfig { get; set; }
+        private const string FILENAME = "Alert.config";
+        #endregion
+
+        #region Manage
+        public static void Create()
+        {
+            File.WriteAllText(FILENAME, JsonConvert.SerializeObject(new AlertConfig()));
+            Load();
+        }
+
+        public static void Save()
         {
             if (UserConfigService.Encrypted)
-                return LoadAlertsEncrypted();
+            {
+                File.WriteAllText(FILENAME, EncryptionService.AesEncryptString(JsonConvert.SerializeObject(AlertConfig)));
+            }
             else
-                return LoadAlertsUnencrypted();
+            {
+                SendAddress = string.Empty;
+                SendPassword = string.Empty;
+                ReceiveAddress = string.Empty;
+                ReceiveType = string.Empty;
+                File.WriteAllText(FILENAME, JsonConvert.SerializeObject(AlertConfig));
+            }
         }
 
-        public static AlertConfig LoadAlertsEncrypted()
+        public static void Load()
         {
-            return JsonConvert.DeserializeObject<AlertConfig>(EncryptionService.AesDecryptString(File.ReadAllText("Alerts")));
-        }
-
-        public static AlertConfig LoadAlertsUnencrypted()
-        {
-            AlertConfig alertConfig = JsonConvert.DeserializeObject<AlertConfig>(File.ReadAllText("Alerts"));
-            alertConfig.SendAddress = string.Empty;
-            alertConfig.SendPassword = string.Empty;
-
-            return alertConfig;
-        }
-
-        public static void SaveAlerts(AlertConfig alertConfig)
-        {
-            //Update the cached alerts
-            AlertConfig = alertConfig;
-
-            if (UserConfigService.Encrypted)
-                SaveAlertsEncrypted(alertConfig);
+            if (File.Exists(FILENAME))
+                AlertConfig = UserConfigService.Encrypted 
+                    ? JsonConvert.DeserializeObject<AlertConfig>(EncryptionService.AesDecryptString(File.ReadAllText(FILENAME))) 
+                    : JsonConvert.DeserializeObject<AlertConfig>(File.ReadAllText(FILENAME));
             else
-                SaveAlertsUnencrypted(alertConfig);
-        }
-
-        public static void SaveAlertsEncrypted(AlertConfig alertConfig)
-        {
-            File.WriteAllText("Alerts", EncryptionService.AesEncryptString(JsonConvert.SerializeObject(alertConfig)));
-        }
-
-        public static void SaveAlertsUnencrypted(AlertConfig alertConfig)
-        {
-            alertConfig.SendAddress = string.Empty;
-            alertConfig.SendPassword = string.Empty;
-            File.WriteAllText("Alerts", JsonConvert.SerializeObject(alertConfig));
-        }
-
-        public static void EncryptAlerts()
-        {
-            if (File.Exists("Alerts"))
-                File.WriteAllText("Alerts", EncryptionService.AesEncryptString(JsonConvert.SerializeObject(LoadAlertsUnencrypted())));
-        }
-
-        public static void DecryptAlerts()
-        {
-            if (File.Exists("Alerts"))
-                File.WriteAllText("Alerts", JsonConvert.SerializeObject(LoadAlertsEncrypted()));
-        }
-
-        public static void RemoveAlerts(List<AlertDataSource> alerts)
-        {
-            AlertConfig alertConfig = LoadAlerts();
-
-            foreach (AlertDataSource alert in alerts)
-                alertConfig.Alerts.RemoveAll(c => c.Coin.Equals(alert.Coin) && c.Operator.Equals(alert.Operator) && c.Price.Equals(alert.Price));
-
-            SaveAlerts(alertConfig);
+                Create();
         }
 
         public static void Delete()
         {
-            if (File.Exists("Alerts"))
-                File.Delete("Alerts");
+            if (File.Exists(FILENAME))
+                File.Delete(FILENAME);
         }
 
+        public static void Remove(List<AlertDataSource> alerts)
+        {
+            foreach (AlertDataSource alert in alerts)
+                Alerts.RemoveAll(c => c.Coin.Equals(alert.Coin) && c.Operator.Equals(alert.Operator) && c.Price.Equals(alert.Price));
+
+            Save();
+        }
+        #endregion
+
+        #region Methods
         public static string GetContactAddress(string address, string type)
         {
             switch ((Globals.Types)Enum.Parse(typeof(Globals.Types), type))

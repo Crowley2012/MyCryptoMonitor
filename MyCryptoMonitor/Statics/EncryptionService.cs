@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Statics
 {
-    public static class EncryptionService
+    public class EncryptionService
     {
         #region Private Variables
         private const string SALT = "QM4436DL3A259EFXYNZEW4TCVVY5QZJG9CXFEKFW";
@@ -57,16 +57,16 @@ namespace MyCryptoMonitor.Statics
 
             UserConfigService.Encrypted = true;
             UserConfigService.EncryptionCheck = AesEncryptString(CHECKVALUE);
-            PortfolioService.EncryptPortfolios();
-            AlertService.EncryptAlerts();
+            PortfolioService.Save();
+            AlertService.Save();
         }
 
         public static void DecryptFiles()
         {
             UserConfigService.Encrypted = false;
             UserConfigService.EncryptionCheck = string.Empty;
-            PortfolioService.DecryptPortfolios();
-            AlertService.DecryptAlerts();
+            PortfolioService.Save();
+            AlertService.Save();
         }
 
         public static void Reset()

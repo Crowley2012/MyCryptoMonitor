@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace MyCryptoMonitor.Statics
 {
-    public static class MappingService
+    public class MappingService
     {
         #region Methods
         public static List<Coin> CoinMarketCap(string response)

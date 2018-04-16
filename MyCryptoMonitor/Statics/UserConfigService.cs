@@ -25,7 +25,7 @@ namespace MyCryptoMonitor.Statics
             Load();
         }
 
-        public static void Save()
+        private static void Save()
         {
             File.WriteAllText(FILENAME, JsonConvert.SerializeObject(UserConfig));
         }

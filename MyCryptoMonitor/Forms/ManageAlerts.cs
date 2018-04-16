@@ -4,10 +4,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Collections.Generic;
 using MyCryptoMonitor.DataSources;
-using System.IO;
 using MyCryptoMonitor.Statics;
 using MyCryptoMonitor.Objects;
-using MyCryptoMonitor.Configs;
 
 namespace MyCryptoMonitor.Forms
 {
@@ -34,26 +32,23 @@ namespace MyCryptoMonitor.Forms
         {
             _otherAlerts = new List<AlertDataSource>();
 
-            if (File.Exists("Alerts"))
+            AlertService.Load();
+            txtSendAddress.Text = AlertService.SendAddress;
+            txtSendPassword.Text = AlertService.SendPassword;
+            txtReceiveAddress.Text = AlertService.ReceiveAddress;
+            cmbReceiveType.Text = AlertService.ReceiveType;
+
+            //Get the current price of coin
+            foreach(AlertDataSource alert in AlertService.Alerts)
             {
-                AlertConfig alertConfig = AlertService.LoadAlerts();
-                txtSendAddress.Text = alertConfig.SendAddress;
-                txtSendPassword.Text = alertConfig.SendPassword;
-                txtReceiveAddress.Text = alertConfig.ReceiveAddress;
-                cmbReceiveType.Text = alertConfig.ReceiveType;
+                if (alert.Coin.Equals("NANO"))
+                    alert.Coin = "XRB";
 
-                //Get the current price of coin
-                foreach(AlertDataSource alert in alertConfig.Alerts)
-                {
-                    if (alert.Coin.Equals("NANO"))
-                        alert.Coin = "XRB";
-
-                    alert.Current = _coins.Where(c => c.ShortName.Equals(alert.Coin)).Select(c => c.Price).First();
-                }
-
-                _otherAlerts = alertConfig.Alerts.Where(a => !a.Currency.Equals(UserConfigService.Currency)).OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();
-                bsAlerts.DataSource = alertConfig.Alerts.Where(a => a.Currency.Equals(UserConfigService.Currency)).OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();
+                alert.Current = _coins.Where(c => c.ShortName.Equals(alert.Coin)).Select(c => c.Price).First();
             }
+
+            _otherAlerts = AlertService.Alerts.Where(a => !a.Currency.Equals(UserConfigService.Currency)).OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();
+            bsAlerts.DataSource = AlertService.Alerts.Where(a => a.Currency.Equals(UserConfigService.Currency)).OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();
 
             if (!UserConfigService.Encrypted)
             {
@@ -68,19 +63,15 @@ namespace MyCryptoMonitor.Forms
 
         private void SaveAlerts()
         {
-            AlertConfig alertConfig = new AlertConfig
-            {
-                SendAddress = txtSendAddress.Text,
-                SendPassword = txtSendPassword.Text,
-                ReceiveAddress = txtReceiveAddress.Text,
-                ReceiveType = cmbReceiveType.Text,
-                Alerts = bsAlerts.DataSource as List<AlertDataSource>
-            };
-            
-            alertConfig.Alerts.AddRange(_otherAlerts);
+            AlertService.SendAddress = txtSendAddress.Text;
+            AlertService.SendPassword = txtSendPassword.Text;
+            AlertService.ReceiveAddress = txtReceiveAddress.Text;
+            AlertService.ReceiveType = cmbReceiveType.Text;
+            AlertService.Alerts = bsAlerts.DataSource as List<AlertDataSource>;
+            AlertService.Alerts.AddRange(_otherAlerts);
 
             //Save config
-            AlertService.SaveAlerts(alertConfig);
+            AlertService.Save();
         }
 
         private bool CheckValid(decimal currentPrice, decimal checkPrice, Globals.Operators op)
