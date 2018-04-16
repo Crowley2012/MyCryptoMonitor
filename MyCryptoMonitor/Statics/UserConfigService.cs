@@ -8,8 +8,9 @@ namespace MyCryptoMonitor.Statics
     {
         #region Public Variables
         public static string Currency { get { return UserConfig.Currency; } set { UserConfig.Currency = value; Save(); } }
-        public static bool Encrypted { get { return UserConfig.Encryption; } set { UserConfig.Encryption = value; Save(); } }
+        public static bool Encrypted { get { return UserConfig.Encrypted; } set { UserConfig.Encrypted = value; Save(); } }
         public static string StartupPortfolio { get { return UserConfig.StartupPortfolio; } set { UserConfig.StartupPortfolio = value; Save(); } }
+        public static string EncryptionCheck { get { return UserConfig.EncryptionCheck; } set { UserConfig.EncryptionCheck = value; Save(); } }
         #endregion
 
         #region Private Variables

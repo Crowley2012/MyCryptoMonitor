@@ -61,7 +61,7 @@ namespace MyCryptoMonitor.Forms
 
             //Attempt to load portfolio on startup
             _coinConfigs = PortfolioService.LoadStartup();
-            _selectedPortfolio = UserConfigService.StartupPortfolio.Replace(".portfolio", string.Empty);
+            _selectedPortfolio = PortfolioService.CurrentPortfolio;
 
             //Set currency
             cbCurrency.Text = string.IsNullOrEmpty(UserConfigService.Currency) ? "USD" : UserConfigService.Currency;
@@ -77,7 +77,6 @@ namespace MyCryptoMonitor.Forms
             //Update status
             UpdateStatus("Loading");
 
-            PortfolioService.GetPortfolios();
             foreach(var portfolio in PortfolioService.GetPortfolios())
             {
                 savePortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, SavePortfolio_Click) { Name = portfolio.Name, Checked = portfolio.Startup });

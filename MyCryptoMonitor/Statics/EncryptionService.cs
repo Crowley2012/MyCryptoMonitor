@@ -11,7 +11,6 @@ namespace MyCryptoMonitor.Statics
     {
         #region Private Variables
         private const string SALT = "QM4436DL3A259EFXYNZEW4TCVVY5QZJG9CXFEKFW";
-        private const string CHECKFILE = "Encryption";
         private const string CHECKVALUE = "Success";
         private static string _password = string.Empty;
         #endregion
@@ -19,7 +18,7 @@ namespace MyCryptoMonitor.Statics
         #region Methods
         public static bool ValidatePassword(string password)
         {
-            return AesDecryptString(File.ReadAllText(CHECKFILE), password).Equals(CHECKVALUE);
+            return AesDecryptString(UserConfigService.EncryptionCheck, password).Equals(CHECKVALUE);
         }
 
         public static void Unlock()
@@ -56,40 +55,26 @@ namespace MyCryptoMonitor.Statics
         {
             _password = password;
 
-            CreateCheckFile();
             UserConfigService.Encrypted = true;
-            UserConfigService.Save();
+            UserConfigService.EncryptionCheck = AesEncryptString(CHECKVALUE);
             PortfolioService.EncryptPortfolios();
             AlertService.EncryptAlerts();
         }
 
         public static void DecryptFiles()
         {
-            DeleteCheckFile();
             UserConfigService.Encrypted = false;
-            UserConfigService.Save();
+            UserConfigService.EncryptionCheck = string.Empty;
             PortfolioService.DecryptPortfolios();
             AlertService.DecryptAlerts();
         }
 
         public static void Reset()
         {
-            DeleteCheckFile();
+            UserConfigService.EncryptionCheck = string.Empty;
             PortfolioService.DeleteAll();
             AlertService.Delete();
             UserConfigService.Delete();
-        }
-
-        private static void CreateCheckFile()
-        {
-            if (!File.Exists(CHECKFILE))
-                File.WriteAllText(CHECKFILE, AesEncryptString(CHECKVALUE));
-        }
-
-        private static void DeleteCheckFile()
-        {
-            if (File.Exists(CHECKFILE))
-                File.Delete(CHECKFILE);
         }
         #endregion
 

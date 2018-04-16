@@ -75,9 +75,9 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(386, 169);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Developed by Sean Crowley\r\n\r\nPlease submit feature requests and bug reports to th" +
-    "e Github page\r\n\r\nAPI\'s Used\r\nCoinMarketCap\r\nCryptoCompare\r\nGithub\r\n\r\nSpecial tha" +
-    "nks to Freepik for the app icon";
+            this.label1.Text = "Developed by Sean Crowley\r\n\r\nPlease submit feature requests and bug reports on th" +
+    "e Github project page\r\n\r\nAPI\'s Used\r\nCoinMarketCap\r\nCryptoCompare\r\nGithub\r\n\r\nSpe" +
+    "cial thanks to Freepik for the app icon";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnGithub
