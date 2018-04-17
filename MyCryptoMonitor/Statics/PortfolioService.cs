@@ -104,7 +104,7 @@ namespace MyCryptoMonitor.Statics
                         FileName = fileName,
                         Startup = UserConfigService.StartupPortfolio.Equals(name)
                     })
-                    .OrderByDescending(p => p.Name)
+                    .OrderBy(p => p.Name)
                     .ToList();
         }
         #endregion

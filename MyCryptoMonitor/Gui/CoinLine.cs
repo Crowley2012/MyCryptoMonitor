@@ -6,9 +6,7 @@ namespace MyCryptoMonitor.Gui
 {
     public sealed class CoinLine : IDisposable
     {
-        private const int StartY = 122;
-        private const int Spacing = 18;
-
+        #region Public Variables
         public string CoinName;
         public int CoinIndex;
         public Label CoinLabel;
@@ -25,7 +23,14 @@ namespace MyCryptoMonitor.Gui
         public Label Change7DayPercentLabel;
         public TextBox BoughtTextBox;
         public TextBox PaidTextBox;
+        #endregion
 
+        #region Private Variables
+        private const int StartY = 122;
+        private const int Spacing = 18;
+        #endregion
+
+        #region Constructor
         public CoinLine(string coin, int coinIndex, int index)
         {
             CoinName = coin;
@@ -100,7 +105,9 @@ namespace MyCryptoMonitor.Gui
             Change24HrPercentLabel.TextChanged += new EventHandler(labelBold_TextChanged);
             Change7DayPercentLabel.TextChanged += new EventHandler(labelBold_TextChanged);
         }
+        #endregion
 
+        #region Methods
         public void Dispose()
         {
             CoinIndexLabel.Dispose();
@@ -118,7 +125,9 @@ namespace MyCryptoMonitor.Gui
             Change24HrPercentLabel.Dispose();
             Change7DayPercentLabel.Dispose();
         }
+        #endregion
 
+        #region Events
         private void label_TextChanged(object sender, EventArgs e)
         {
             Label label = (Label)sender;
@@ -135,5 +144,6 @@ namespace MyCryptoMonitor.Gui
             label.ForeColor = changePercent >= 0 ? Color.Green : Color.Red;
             label.Font = changePercent >= 10 || changePercent <= -10 ? new Font(label.Font, FontStyle.Bold) : new Font(label.Font, FontStyle.Regular);
         }
+        #endregion
     }
 }

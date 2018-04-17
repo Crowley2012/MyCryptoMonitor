@@ -31,10 +31,10 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ManagePortfolios));
             this.grdPortfolios = new System.Windows.Forms.DataGridView();
-            this.label1 = new System.Windows.Forms.Label();
-            this.bsPortfolios = new System.Windows.Forms.BindingSource(this.components);
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.startupDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.bsPortfolios = new System.Windows.Forms.BindingSource(this.components);
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.grdPortfolios)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bsPortfolios)).BeginInit();
             this.SuspendLayout();
@@ -49,29 +49,12 @@
             this.nameDataGridViewTextBoxColumn,
             this.startupDataGridViewCheckBoxColumn});
             this.grdPortfolios.DataSource = this.bsPortfolios;
-            this.grdPortfolios.Location = new System.Drawing.Point(16, 36);
-            this.grdPortfolios.Margin = new System.Windows.Forms.Padding(4);
+            this.grdPortfolios.Location = new System.Drawing.Point(12, 29);
             this.grdPortfolios.Name = "grdPortfolios";
-            this.grdPortfolios.Size = new System.Drawing.Size(605, 535);
+            this.grdPortfolios.Size = new System.Drawing.Size(454, 435);
             this.grdPortfolios.TabIndex = 7;
             this.grdPortfolios.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.grdPortfolios_CellValidating);
             this.grdPortfolios.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.grdPortfolios_UserDeletingRow);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F);
-            this.label1.Location = new System.Drawing.Point(17, 14);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(518, 15);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "To add, click empty cell. To edit, double click cell. To delete, click row header" +
-    " and press delete.";
-            // 
-            // bsPortfolios
-            // 
-            this.bsPortfolios.DataSource = typeof(MyCryptoMonitor.DataSources.PortfolioDataSourceList);
             // 
             // nameDataGridViewTextBoxColumn
             // 
@@ -86,18 +69,31 @@
             this.startupDataGridViewCheckBoxColumn.DataPropertyName = "Startup";
             this.startupDataGridViewCheckBoxColumn.HeaderText = "Startup";
             this.startupDataGridViewCheckBoxColumn.Name = "startupDataGridViewCheckBoxColumn";
-            this.startupDataGridViewCheckBoxColumn.Width = 60;
+            this.startupDataGridViewCheckBoxColumn.Width = 47;
+            // 
+            // bsPortfolios
+            // 
+            this.bsPortfolios.DataSource = typeof(MyCryptoMonitor.DataSources.PortfolioDataSourceList);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F);
+            this.label1.Location = new System.Drawing.Point(13, 11);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(364, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "To add or edit, type in cells. To delete, click row header and press delete key.";
             // 
             // ManagePortfolios
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(637, 586);
+            this.ClientSize = new System.Drawing.Size(478, 476);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.grdPortfolios);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ManagePortfolios";
             this.Text = "Portfolio Manager";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PortfolioManager_FormClosing);

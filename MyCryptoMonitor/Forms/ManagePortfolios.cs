@@ -1,24 +1,22 @@
 ﻿using MyCryptoMonitor.Statics;
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
-using System.Linq;
 
 namespace MyCryptoMonitor.Forms
 {
     public partial class ManagePortfolios : Form
     {
-        private List<string> _deletedPortfolios;
-
+        #region Constructor
         public ManagePortfolios()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region Events
         private void PortfolioManager_Load(object sender, EventArgs e)
         {
-            _deletedPortfolios = new List<string>();
-            bsPortfolios.DataSource = PortfolioService.GetPortfolios().OrderBy(p => p.Name).ToList();
+            bsPortfolios.DataSource = PortfolioService.GetPortfolios();
         }
 
         private void grdPortfolios_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
@@ -29,9 +27,7 @@ namespace MyCryptoMonitor.Forms
 
             //No change
             if(oldValue != null && oldValue.ToString().Equals(newValue))
-            {
                 return;
-            }
 
             //New row
             else if(oldValue == null && !string.IsNullOrEmpty(newValue))
@@ -77,29 +73,23 @@ namespace MyCryptoMonitor.Forms
 
             //Cancelled new row
             else if (oldValue == null && string.IsNullOrEmpty(newValue))
-            {
                 grid.CancelEdit();
-            }
 
             //Existing row empty name
             else if(oldValue != null && string.IsNullOrEmpty(newValue))
-            {
                 grid[0, e.RowIndex].Value = oldValue;
-            }
         }
 
         private void grdPortfolios_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
-            _deletedPortfolios.Add(e.Row.Cells[0].Value.ToString());
+            PortfolioService.Delete(e.Row.Cells[0].Value.ToString());
         }
 
         private void PortfolioManager_FormClosing(object sender, FormClosingEventArgs e)
         {
             if(grdPortfolios.Rows.Count > 0)
                 grdPortfolios.CurrentCell = grdPortfolios.Rows[0].Cells[0];
-
-            foreach (var portfolio in _deletedPortfolios)
-                PortfolioService.Delete(portfolio);
         }
+        #endregion
     }
 }

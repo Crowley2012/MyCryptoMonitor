@@ -62,7 +62,7 @@
             this.btnForgot.UseVisualStyleBackColor = true;
             this.btnForgot.Click += new System.EventHandler(this.btnForgot_Click);
             // 
-            // InputPassword
+            // Unlock
             // 
             this.AcceptButton = this.btnUnlock;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -72,8 +72,8 @@
             this.Controls.Add(this.btnUnlock);
             this.Controls.Add(this.txtPassword);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "InputPassword";
-            this.Text = "Encryption Password";
+            this.Name = "Unlock";
+            this.Text = "Unlock";
             this.ResumeLayout(false);
             this.PerformLayout();
 

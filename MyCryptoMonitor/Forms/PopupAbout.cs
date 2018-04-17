@@ -7,11 +7,14 @@ namespace MyCryptoMonitor.Forms
 {
     public partial class PopupAbout : Form
     {
+        #region Constructor
         public PopupAbout()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region Events
         private void PopupAbout_Load(object sender, EventArgs e)
         {
             txtVersion.Text = $"Version: {Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
@@ -26,5 +29,6 @@ namespace MyCryptoMonitor.Forms
         {
             Process.Start("https://www.freepik.com");
         }
+        #endregion
     }
 }
