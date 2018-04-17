@@ -3,10 +3,10 @@ using MyCryptoMonitor.DataSources;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Net;
 using System.Net.Mail;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -14,6 +14,11 @@ namespace MyCryptoMonitor.Statics
 {
     public class AlertService
     {
+        #region Enums
+        public enum Types {[Description("Email")] Email, [Description("Verizon")] Verizon, [Description("AT&T")] ATT, [Description("Sprint")] Sprint, [Description("Boost Mobile")] Boost, [Description("T-Mobile")] TMobile, [Description("US Cellular")] USCellular, [Description("Virgin Mobile")] VirginMobile }
+        public enum Operators {[Description("Greater Than")] GreaterThan, [Description("Less Than")] LessThan }
+        #endregion
+
         #region Public Variables
         public static string SendAddress { get { return AlertConfig.SendAddress; } set { AlertConfig.SendAddress = value; } }
         public static string SendPassword { get { return AlertConfig.SendPassword; } set { AlertConfig.SendPassword = value; } }
@@ -76,77 +81,69 @@ namespace MyCryptoMonitor.Statics
         #endregion
 
         #region Methods
-        public static string GetContactAddress(string address, string type)
-        {
-            switch ((Globals.Types)Enum.Parse(typeof(Globals.Types), type))
-            {
-                case Globals.Types.Email:
-                    return address;
-                case Globals.Types.ATT:
-                    return $"{address}@txt.att.net";
-                case Globals.Types.Boost:
-                    return $"{address}@myboostmobile.com";
-                case Globals.Types.Sprint:
-                    return $"{address}@messaging.sprintpcs.com";
-                case Globals.Types.Verizon:
-                    return $"{address}@vtext.com";
-                case Globals.Types.TMobile:
-                    return $"{address}@tmomail.net";
-                case Globals.Types.USCellular:
-                    return $"{address}@email.uscc.net";
-                case Globals.Types.VirginMobile:
-                    return $"{address}@vmobl.com";
-                default:
-                    return string.Empty;
-            }
-        }
-
         public static void SendAlert(AlertDataSource alert)
         {
-            string alertMessage = $"{alert.Coin} is {alert.Operator} than {alert.Price}";
-
-            Task.Factory.StartNew(() => { MessageBox.Show(alertMessage, "Alert"); });
-
-            Thread sendEmail = new Thread(new ParameterizedThreadStart(sendEmailThread));
-            sendEmail.IsBackground = true;
-            sendEmail.Start(alertMessage);
+            Task.Factory.StartNew(() => {
+                string message = $"{alert.Coin} is {alert.Operator} than {alert.Price}";
+                MessageBox.Show(message, "Alert");
+                SendEmail(message);
+            });
         }
 
-        public static void sendEmailThread(object alertMessage)
+        private static void SendEmail(string alertMessage)
         {
+            if (string.IsNullOrEmpty(SendAddress) || string.IsNullOrEmpty(SendPassword) || string.IsNullOrEmpty(ReceiveAddress) || string.IsNullOrEmpty(ReceiveType))
+                return;
+
             try
             {
-                if (!string.IsNullOrEmpty(AlertConfig.SendAddress) && !string.IsNullOrEmpty(AlertConfig.SendPassword))
+                var sendAddress = new MailAddress(SendAddress);
+                var receiveAddress = new MailAddress(GetContactAddress(ReceiveAddress, ReceiveType));
+                var fromPassword = SendPassword;
+                var subject = "My Crypto Monitor Alert";
+                var body = alertMessage;
+
+                var smtp = new SmtpClient
                 {
-                    var sendAddress = new MailAddress(AlertConfig.SendAddress);
-                    var receiveAddress = new MailAddress(GetContactAddress(AlertConfig.ReceiveAddress, AlertConfig.ReceiveType));
-                    string fromPassword = AlertConfig.SendPassword;
-                    string subject = "My Crypto Monitor Alert";
-                    string body = Convert.ToString(alertMessage);
+                    Host = "smtp.gmail.com",
+                    Port = 25,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(sendAddress.Address, fromPassword)
+                };
 
-                    var smtp = new SmtpClient
-                    {
-                        Host = "smtp.gmail.com",
-                        Port = 25,
-                        EnableSsl = true,
-                        DeliveryMethod = SmtpDeliveryMethod.Network,
-                        UseDefaultCredentials = false,
-                        Credentials = new NetworkCredential(sendAddress.Address, fromPassword)
-                    };
-
-                    using (var message = new MailMessage(sendAddress, receiveAddress)
-                    {
-                        Subject = subject,
-                        Body = body
-                    })
-                    {
-                        smtp.Send(message);
-                    }
-                }
+                using (var message = new MailMessage(sendAddress, receiveAddress) { Subject = subject, Body = body })
+                    smtp.Send(message);
             }
             catch (Exception e)
             {
-                MessageBox.Show($"Ensure that 'allow less secure apps' is enabled for gmail, your email and password are correct, and that port 25 is not blocked on your network.\n\nError Message: {e.Message}", "Error sending external alert");
+                MessageBox.Show($"Ensure that 'allow less secure apps' is enabled for gmail, your email and password are correct, and that port 25 is not blocked on your network.\n\nError Message: {e.Message}", "Error sending email alert");
+            }
+        }
+
+        private static string GetContactAddress(string address, string type)
+        {
+            switch ((Types)Enum.Parse(typeof(Types), type))
+            {
+                case Types.Email:
+                    return address;
+                case Types.ATT:
+                    return $"{address}@txt.att.net";
+                case Types.Boost:
+                    return $"{address}@myboostmobile.com";
+                case Types.Sprint:
+                    return $"{address}@messaging.sprintpcs.com";
+                case Types.Verizon:
+                    return $"{address}@vtext.com";
+                case Types.TMobile:
+                    return $"{address}@tmomail.net";
+                case Types.USCellular:
+                    return $"{address}@email.uscc.net";
+                case Types.VirginMobile:
+                    return $"{address}@vmobl.com";
+                default:
+                    return string.Empty;
             }
         }
         #endregion

@@ -53,7 +53,6 @@ namespace MyCryptoMonitor.Statics
                     Supply = cryptoCompareCoin.SUPPLY.ConvertToDecimal()
                 });
             }
-
             return list;
         }
         #endregion

@@ -74,14 +74,14 @@ namespace MyCryptoMonitor.Forms
             AlertService.Save();
         }
 
-        private bool CheckValid(decimal currentPrice, decimal checkPrice, Globals.Operators op)
+        private bool CheckValid(decimal currentPrice, decimal checkPrice, AlertService.Operators op)
         {
-            if (op == Globals.Operators.GreaterThan && currentPrice > checkPrice)
+            if (op == AlertService.Operators.GreaterThan && currentPrice > checkPrice)
             {
                 MessageBox.Show("Current price is already greater than check price");
                 return false;
             }
-            else if(op == Globals.Operators.LessThan && currentPrice < checkPrice)
+            else if(op == AlertService.Operators.LessThan && currentPrice < checkPrice)
             {
                 MessageBox.Show("Current price is already less than check price");
                 return false;
@@ -95,14 +95,14 @@ namespace MyCryptoMonitor.Forms
         private void Alerts_Load(object sender, EventArgs e)
         {
             //Set contact types
-            cmbReceiveType.DataSource = Enum.GetValues(typeof(Globals.Types))
+            cmbReceiveType.DataSource = Enum.GetValues(typeof(AlertService.Types))
                 .Cast<Enum>()
                 .Select(value => new { (Attribute.GetCustomAttribute(value.GetType().GetField(value.ToString()), typeof(DescriptionAttribute)) as DescriptionAttribute).Description, value })
                 .OrderBy(d => d.Description)
                 .ToList();
 
             //Set operators
-            cmbOperator.DataSource = Enum.GetValues(typeof(Globals.Operators))
+            cmbOperator.DataSource = Enum.GetValues(typeof(AlertService.Operators))
                 .Cast<Enum>()
                 .Select(value => new { (Attribute.GetCustomAttribute(value.GetType().GetField(value.ToString()), typeof(DescriptionAttribute)) as DescriptionAttribute).Description, value })
                 .ToList();
@@ -150,7 +150,7 @@ namespace MyCryptoMonitor.Forms
             }
 
             //Check if check value is valid
-            Enum.TryParse(cmbOperator.SelectedValue.ToString(), out Globals.Operators op);
+            Enum.TryParse(cmbOperator.SelectedValue.ToString(), out AlertService.Operators op);
             if (!CheckValid(Convert.ToDecimal(txtCurrent.Text), Convert.ToDecimal(txtPrice.Text), op))
                 return;
 
@@ -174,7 +174,7 @@ namespace MyCryptoMonitor.Forms
             if (grdAlerts.SelectedCells.Count <= 0 || grdAlerts.SelectedCells[0].Value != null || Decimal.TryParse(txtPrice.Text, out decimal value))
             {
                 //Check if check value is valid
-                Enum.TryParse(cmbOperator.SelectedValue.ToString(), out Globals.Operators op);
+                Enum.TryParse(cmbOperator.SelectedValue.ToString(), out AlertService.Operators op);
                 if (!CheckValid(Convert.ToDecimal(grdAlerts.SelectedCells[0].OwningRow.Cells[1].Value), Convert.ToDecimal(grdAlerts.SelectedCells[0].OwningRow.Cells[3].Value), op))
                     grdAlerts.SelectedCells[0].OwningRow.Cells[3].Value = _oldCheckPrice;
 
