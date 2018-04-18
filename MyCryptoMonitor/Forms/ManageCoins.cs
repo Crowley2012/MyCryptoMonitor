@@ -9,49 +9,49 @@ namespace MyCryptoMonitor.Forms
 {
     public partial class ManageCoins : Form
     {
-        public string InputText { get; set; }
-        public int CoinIndex { get; set; }
+        #region Public Variables
+        public string InputText { get => cbCoins.Text.ToUpper(); }
+        public int CoinIndex { get => !string.IsNullOrEmpty(cbCoinIndex.Text) ? Convert.ToInt32(cbCoinIndex.Text) - 1 : 0; }
+        #endregion
 
+        #region Private Variables
         private List<CoinConfig> _coinConfigs { get; set; }
+        #endregion
 
-        public ManageCoins(string submitLabel, List<Coin> coins)
+        #region Constructor
+        public ManageCoins(bool addCoin, List<Coin> coins)
         {
             InitializeComponent();
 
-            //Setup labels
-            Text = $"{submitLabel} Coin";
-            btnSubmit.Text = submitLabel;
+            Setup(addCoin);
 
-            //Disable coin index selection
-            cbCoinIndex.Enabled = false;
-
-            //Set data sources
             cbCoins.DataSource = coins.Select(c => c.ShortName).ToList();
         }
 
-        public ManageCoins(string submitLabel, List<CoinConfig> coinsConfig)
+        public ManageCoins(bool addCoin, List<CoinConfig> coinsConfig)
         {
             InitializeComponent();
 
-            //Setup labels
-            Text = $"{submitLabel} Coin";
-            btnSubmit.Text = submitLabel;
+            Setup(addCoin);
 
-            //Set coin configs
             _coinConfigs = coinsConfig;
-
-            //Set data sources
             cbCoins.DataSource = coinsConfig.OrderBy(c => c.Coin).Select(c => c.Coin).Distinct().ToList();
             cbCoinIndex.DataSource = (from c in _coinConfigs where c.Coin == cbCoins.Text select c.CoinIndex + 1).ToList();
         }
+        #endregion
 
+        #region Methods
+        public void Setup(bool addCoin)
+        {
+            Text = addCoin ? "Add Coin" : "Remove Coin";
+            btnSubmit.Text = addCoin ? "Add" : "Remove";
+            cbCoinIndex.Enabled = !addCoin;
+        }
+        #endregion
+
+        #region Events
         private void Submit_Click(object sender, EventArgs e)
         {
-            InputText = cbCoins.Text;
-
-            if(!string.IsNullOrEmpty(cbCoinIndex.Text))
-                CoinIndex = Convert.ToInt32(cbCoinIndex.Text) - 1;
-
             DialogResult = DialogResult.OK;
         }
 
@@ -62,5 +62,6 @@ namespace MyCryptoMonitor.Forms
 
             cbCoinIndex.DataSource = (from c in _coinConfigs where c.Coin == cbCoins.Text select c.CoinIndex + 1).ToList();
         }
+        #endregion
     }
 }

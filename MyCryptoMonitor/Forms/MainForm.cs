@@ -315,7 +315,7 @@ namespace MyCryptoMonitor.Forms
                     line.CoinLabel.Show();
                     line.CoinIndexLabel.Text = _coinConfigs.Count(c => c.Coin.Equals(coin.Coin)) > 1 ? $"[{coin.CoinIndex + 1}]" : string.Empty;
                     line.CoinLabel.Text = downloadedCoin.ShortName;
-                    line.PriceLabel.Text = $"${downloadedCoin.Price}";
+                    line.PriceLabel.Text = downloadedCoin.Price.ToString().Substring(downloadedCoin.Price.ToString().IndexOf(".") + 1).Length > 7 ? $"${downloadedCoin.Price:0.0000000}" : $"${downloadedCoin.Price}";
                     line.BoughtPriceLabel.Text = $"${boughtPrice:0.000000}";
                     line.TotalLabel.Text = $"${total:0.00}";
                     line.ProfitLabel.Text = $"${profit:0.00}";
@@ -471,18 +471,18 @@ namespace MyCryptoMonitor.Forms
             }
 
             //Get coin to add
-            ManageCoins form = new ManageCoins("Add", _coinMarketCapCoins);
+            ManageCoins form = new ManageCoins(true, _coinMarketCapCoins);
             if (form.ShowDialog() != DialogResult.OK)
                 return;
 
             //Check if coin exists
-            if (!_coinMarketCapCoins.Any(c => c.ShortName.Equals(form.InputText.ToUpper())))
+            if (!_coinMarketCapCoins.Any(c => c.ShortName.Equals(form.InputText)))
             {
                 MessageBox.Show("Coin does not exist.", "Error");
                 return;
             }
 
-            _selectedCoins += $",{form.InputText.ToUpper()}";
+            _selectedCoins += $",{form.InputText}";
 
             //Update coin config bought and paid values
             foreach (var coinGuiLine in _coinGuiLines)
@@ -494,7 +494,7 @@ namespace MyCryptoMonitor.Forms
             }
 
             //Add coin config
-            _coinConfigs.Add(new CoinConfig { Coin = form.InputText.ToUpper(), CoinIndex = _coinConfigs.Count(c => c.Coin.Equals(form.InputText.ToUpper())), Bought = 0, Paid = 0, StartupPrice = 0, SetStartupPrice = true });
+            _coinConfigs.Add(new CoinConfig { Coin = form.InputText, CoinIndex = _coinConfigs.Count(c => c.Coin.Equals(form.InputText)), Bought = 0, Paid = 0, StartupPrice = 0, SetStartupPrice = true });
             RemoveGuiLines();
 
             _selectedCoins = string.Empty;
@@ -507,12 +507,12 @@ namespace MyCryptoMonitor.Forms
         private void RemoveCoin_Click(object sender, EventArgs e)
         {
             //Get coin to remove
-            ManageCoins form = new ManageCoins("Remove", _coinConfigs);
+            ManageCoins form = new ManageCoins(false, _coinConfigs);
             if (form.ShowDialog() != DialogResult.OK)
                 return;
 
             //Check if coin exists
-            if (!_coinConfigs.Any(a => a.Coin.Equals(form.InputText.ToUpper()) && a.CoinIndex == form.CoinIndex))
+            if (!_coinConfigs.Any(a => a.Coin.Equals(form.InputText) && a.CoinIndex == form.CoinIndex))
             {
                 MessageBox.Show("Coin does not exist.", "Error");
                 return;
@@ -528,7 +528,7 @@ namespace MyCryptoMonitor.Forms
             }
 
             //Remove coin config
-            _coinConfigs.RemoveAll(a => a.Coin.Equals(form.InputText.ToUpper()) && a.CoinIndex == form.CoinIndex);
+            _coinConfigs.RemoveAll(a => a.Coin.Equals(form.InputText) && a.CoinIndex == form.CoinIndex);
 
             //Reset coin indexes
             ResetCoinIndex();
@@ -643,6 +643,11 @@ namespace MyCryptoMonitor.Forms
                     loadPortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, LoadPortfolio_Click) { Name = portfolio.Name, Checked = portfolio.Name.Equals(_selectedPortfolio) });
                 }
             }
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(Directory.GetCurrentDirectory());
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

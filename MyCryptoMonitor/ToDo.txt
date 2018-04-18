@@ -15,6 +15,7 @@ Mobile / Web version
 Running Change log
 **[FEATURE]** Portfolio Manager: create unlimted number of portfolios, custom names, and set a startup portfolio
 **[FEATURE]** Choose your conversion currency
+**[FEATURE]** Open program working directory via the file menu
 **[ADDED]** Currency specific alerts
 **[ADDED]** Profit ratio column (Profit / Paid)
 **[ADDED]** Checkmark placed next to currently loaded portfolio

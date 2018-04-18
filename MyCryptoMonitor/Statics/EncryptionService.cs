@@ -55,23 +55,22 @@ namespace MyCryptoMonitor.Statics
         {
             _password = password;
 
-            UserConfigService.Encrypted = true;
+            PortfolioService.ToggleEncryption();
             UserConfigService.EncryptionCheck = AesEncryptString(CHECKVALUE);
-            PortfolioService.Save();
+            UserConfigService.Encrypted = true;
             AlertService.Save();
         }
 
         public static void DecryptFiles()
         {
-            UserConfigService.Encrypted = false;
+            PortfolioService.ToggleEncryption();
             UserConfigService.EncryptionCheck = string.Empty;
-            PortfolioService.Save();
+            UserConfigService.Encrypted = false;
             AlertService.Save();
         }
 
         public static void Reset()
         {
-            UserConfigService.EncryptionCheck = string.Empty;
             PortfolioService.DeleteAll();
             AlertService.Delete();
             UserConfigService.Delete();

@@ -55,7 +55,7 @@ namespace MyCryptoMonitor.Forms
                         PortfolioService.SetStartup(newValue);
                 }
 
-                //Set startups to false
+                //Set startup
                 if (e.ColumnIndex == 1)
                 {
                     for (int i = 0; i < grid.Rows.Count; i++)

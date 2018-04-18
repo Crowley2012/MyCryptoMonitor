@@ -44,7 +44,8 @@ namespace MyCryptoMonitor.Forms
                 if (alert.Coin.Equals("NANO"))
                     alert.Coin = "XRB";
 
-                alert.Current = _coins.Where(c => c.ShortName.Equals(alert.Coin)).Select(c => c.Price).First();
+                if(_coins.Any(c => c.ShortName.Equals(alert.Coin)))
+                    alert.Current = _coins.Where(c => c.ShortName.Equals(alert.Coin)).Select(c => c.Price).First();
             }
 
             _otherAlerts = AlertService.Alerts.Where(a => !a.Currency.Equals(UserConfigService.Currency)).OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();

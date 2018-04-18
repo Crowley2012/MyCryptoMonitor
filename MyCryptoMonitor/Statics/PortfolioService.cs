@@ -29,15 +29,6 @@ namespace MyCryptoMonitor.Statics
             return false;
         }
 
-        public static void Save()
-        {
-            foreach (var portfolio in GetPortfolios())
-                if (UserConfigService.Encrypted)
-                    Save(portfolio.Name, LoadEncrypted(portfolio.FileName));
-                else
-                    Save(portfolio.Name, LoadUnencrypted(portfolio.FileName));
-        }
-
         public static void Save(string portfolio, List<CoinConfig> coinConfigs)
         {
             portfolio += FILEEXTENSION;
@@ -49,12 +40,21 @@ namespace MyCryptoMonitor.Statics
                 File.WriteAllText(portfolio, JsonConvert.SerializeObject(coinConfigs));
         }
 
+        public static void ToggleEncryption()
+        {
+            foreach (var portfolio in GetPortfolios())
+                if (UserConfigService.Encrypted)
+                    File.WriteAllText(portfolio.FileName, JsonConvert.SerializeObject(LoadEncrypted(portfolio.FileName)));
+                else
+                    File.WriteAllText(portfolio.FileName, EncryptionService.AesEncryptString(JsonConvert.SerializeObject(LoadUnencrypted(portfolio.FileName))));
+        }
+
         public static List<CoinConfig> Load(string portfolio)
         {
             portfolio += FILEEXTENSION;
             CurrentPortfolio = portfolio;
 
-            return UserConfigService.Encrypted ? LoadEncrypted(portfolio) : LoadUnencrypted(portfolio);
+            return File.Exists(portfolio) ? (UserConfigService.Encrypted ? LoadEncrypted(portfolio) : LoadUnencrypted(portfolio)) : new List<CoinConfig>();
         }
 
         private static List<CoinConfig> LoadEncrypted(string portfolio)
