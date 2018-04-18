@@ -41,10 +41,11 @@ namespace MyCryptoMonitor.Forms
             btnEncrypt.Enabled = false;
             txtPassword.Enabled = false;
 
-            if (UserConfigService.Encrypted && EncryptionService.ValidatePassword(txtPassword.Text))
+            if (UserConfigService.Encrypted && !EncryptionService.ValidatePassword(txtPassword.Text))
+                MessageBox.Show("Incorrect password.");
+            else if (UserConfigService.Encrypted)
                 EncryptionService.DecryptFiles();
-
-            else if (!UserConfigService.Encrypted)
+            else
                 EncryptionService.EncryptFiles(txtPassword.Text);
 
             Setup();
