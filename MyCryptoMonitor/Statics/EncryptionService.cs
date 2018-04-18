@@ -40,7 +40,7 @@ namespace MyCryptoMonitor.Statics
                 else if (result == DialogResult.Abort)
                 {
                     if (MessageBox.Show($"This will delete all saved files (portfolios, alerts, etc) and remove encryption. Do you want to continue?", "Forgot Password", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
-                        Reset();
+                        MainService.Reset();
                     else
                         Unlock();
                 }
@@ -67,13 +67,6 @@ namespace MyCryptoMonitor.Statics
             UserConfigService.EncryptionCheck = string.Empty;
             UserConfigService.Encrypted = false;
             AlertService.Save();
-        }
-
-        public static void Reset()
-        {
-            PortfolioService.DeleteAll();
-            AlertService.Delete();
-            UserConfigService.Delete();
         }
         #endregion
 

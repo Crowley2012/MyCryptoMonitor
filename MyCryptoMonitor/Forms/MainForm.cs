@@ -452,8 +452,16 @@ namespace MyCryptoMonitor.Forms
         #region Events
         private void Reset_Click(object sender, EventArgs e)
         {
-            _resetTime = DateTime.Now;
-            LoadPortfolio(PortfolioService.CurrentPortfolio);
+            if (MessageBox.Show($"This will delete all saved files (portfolios, alerts, etc) and remove encryption. Do you want to continue?", "Reset", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
+            {
+                foreach (var portfolio in PortfolioService.GetPortfolios())
+                {
+                    savePortfolioMenu.DropDownItems.RemoveByKey(portfolio.Name);
+                    loadPortfolioMenu.DropDownItems.RemoveByKey(portfolio.Name);
+                }
+
+                MainService.Reset();
+            }
         }
 
         private void Exit_Click(object sender, EventArgs e)
@@ -619,8 +627,6 @@ namespace MyCryptoMonitor.Forms
         {
             UncheckPortfolios(_selectedPortfolio);
 
-            PortfolioService.GetPortfolios();
-
             foreach (var portfolio in PortfolioService.GetPortfolios())
             {
                 if (loadPortfolioMenu.DropDownItems.ContainsKey(portfolio.Name))
@@ -630,10 +636,7 @@ namespace MyCryptoMonitor.Forms
                 }
             }
 
-            ManagePortfolios form = new ManagePortfolios();
-            form.ShowDialog();
-
-            PortfolioService.GetPortfolios();
+            new ManagePortfolios().ShowDialog();
 
             foreach (var portfolio in PortfolioService.GetPortfolios())
             {
