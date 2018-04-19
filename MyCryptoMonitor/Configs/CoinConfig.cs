@@ -2,8 +2,8 @@
 {
     public class CoinConfig
     {
-        public string Coin { get; set; } = string.Empty;
-        public int CoinIndex { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public int Index { get; set; }
         public decimal Bought { get; set; }
         public decimal Paid { get; set; }
         public decimal StartupPrice { get; set; }

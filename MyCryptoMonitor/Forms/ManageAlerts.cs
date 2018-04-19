@@ -114,7 +114,7 @@ namespace MyCryptoMonitor.Forms
             if (!CheckValidAlert(Convert.ToDecimal(txtCurrent.Text), Convert.ToDecimal(txtPrice.Text), op))
                 return;
 
-            bsAlerts.Add(new AlertDataSource { Coin = cmbCoins.Text, Current = Convert.ToDecimal(txtCurrent.Text), Operator = cmbOperator.Text, Price = Convert.ToDecimal(txtPrice.Text), Currency = UserConfigService.Currency });
+            bsAlerts.Add(new AlertDataSource { Coin = cmbCoins.Text, Current = Convert.ToDecimal(txtCurrent.Text), Operator = (AlertService.Operators)cmbOperator.SelectedValue, Price = Convert.ToDecimal(txtPrice.Text), Currency = UserConfigService.Currency });
             bsAlerts.DataSource = ((List<AlertDataSource>)bsAlerts.DataSource).OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();
         }
 

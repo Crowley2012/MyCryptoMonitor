@@ -71,11 +71,9 @@ namespace MyCryptoMonitor.Statics
                 File.Delete(FILENAME);
         }
 
-        public static void Remove(List<AlertDataSource> alerts)
+        public static void Remove(AlertDataSource alert)
         {
-            foreach (AlertDataSource alert in alerts)
-                Alerts.RemoveAll(c => c.Coin.Equals(alert.Coin) && c.Operator.Equals(alert.Operator) && c.Price.Equals(alert.Price));
-
+            Alerts.RemoveAll(c => c.Coin.Equals(alert.Coin) && c.Operator.Equals(alert.Operator) && c.Price.Equals(alert.Price));
             Save();
         }
         #endregion
@@ -88,6 +86,8 @@ namespace MyCryptoMonitor.Statics
                 MessageBox.Show(message, "Alert");
                 SendEmail(message);
             });
+
+            Remove(alert);
         }
 
         private static void SendEmail(string alertMessage)
