@@ -114,7 +114,7 @@
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 1, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(16, 34);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -130,7 +130,7 @@
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel6, 0, 0);
             this.tableLayoutPanel5.Location = new System.Drawing.Point(876, 4);
-            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 2;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33332F));
@@ -313,7 +313,7 @@
             this.tableLayoutPanel2.Controls.Add(this.lblRefreshTime, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.lblStatus, 0, 2);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(4, 4);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 3;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33332F));
@@ -369,7 +369,7 @@
             this.tableLayoutPanel3.Controls.Add(this.lblOverallTotal, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 2);
             this.tableLayoutPanel3.Location = new System.Drawing.Point(412, 4);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 3;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
@@ -405,7 +405,7 @@
             this.tableLayoutPanel4.Controls.Add(this.lblTotalNegativeProfit, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.label4, 1, 0);
             this.tableLayoutPanel4.Location = new System.Drawing.Point(4, 55);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -585,21 +585,21 @@
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(120, 26);
             this.openToolStripMenuItem.Text = "Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.menuOpen_Click);
             // 
             // resetToolStripMenuItem
             // 
             this.resetToolStripMenuItem.Name = "resetToolStripMenuItem";
-            this.resetToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.resetToolStripMenuItem.Size = new System.Drawing.Size(120, 26);
             this.resetToolStripMenuItem.Text = "Reset";
             this.resetToolStripMenuItem.Click += new System.EventHandler(this.Reset_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(120, 26);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.Exit_Click);
             // 
@@ -644,8 +644,8 @@
             // savePortfolioMenu
             // 
             this.savePortfolioMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem2,
-            this.addPortfolioToolStripMenuItem1});
+            this.addPortfolioToolStripMenuItem1,
+            this.toolStripMenuItem2});
             this.savePortfolioMenu.Name = "savePortfolioMenu";
             this.savePortfolioMenu.Size = new System.Drawing.Size(113, 24);
             this.savePortfolioMenu.Text = "Save Portfolio";
@@ -660,13 +660,13 @@
             this.addPortfolioToolStripMenuItem1.Name = "addPortfolioToolStripMenuItem1";
             this.addPortfolioToolStripMenuItem1.Size = new System.Drawing.Size(205, 26);
             this.addPortfolioToolStripMenuItem1.Text = "Manage Portfolios";
-            this.addPortfolioToolStripMenuItem1.Click += new System.EventHandler(this.manage_Click);
+            this.addPortfolioToolStripMenuItem1.Click += new System.EventHandler(this.menuManagePortfolios_Click);
             // 
             // loadPortfolioMenu
             // 
             this.loadPortfolioMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
-            this.addPortfolioToolStripMenuItem});
+            this.addPortfolioToolStripMenuItem,
+            this.toolStripMenuItem1});
             this.loadPortfolioMenu.Name = "loadPortfolioMenu";
             this.loadPortfolioMenu.Size = new System.Drawing.Size(115, 24);
             this.loadPortfolioMenu.Text = "Load Portfolio";
@@ -681,7 +681,7 @@
             this.addPortfolioToolStripMenuItem.Name = "addPortfolioToolStripMenuItem";
             this.addPortfolioToolStripMenuItem.Size = new System.Drawing.Size(205, 26);
             this.addPortfolioToolStripMenuItem.Text = "Manage Portfolios";
-            this.addPortfolioToolStripMenuItem.Click += new System.EventHandler(this.manage_Click);
+            this.addPortfolioToolStripMenuItem.Click += new System.EventHandler(this.menuManagePortfolios_Click);
             // 
             // encryptToolStripMenuItem
             // 
@@ -788,7 +788,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "My Crypto Monitor";

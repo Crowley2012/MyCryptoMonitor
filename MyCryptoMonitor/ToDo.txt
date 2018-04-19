@@ -1,6 +1,5 @@
 ﻿Catch all errors, offer reset
 Config file deleted when encrypted
-Portfolio menu sort
 Donate form
 Tips
 

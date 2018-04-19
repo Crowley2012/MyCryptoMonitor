@@ -77,8 +77,8 @@ namespace MyCryptoMonitor.Forms
 
             foreach(var portfolio in PortfolioService.GetPortfolios())
             {
-                savePortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, SavePortfolio_Click) { Name = portfolio.Name, Checked = portfolio.Startup });
-                loadPortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, LoadPortfolio_Click) { Name = portfolio.Name, Checked = portfolio.Startup });
+                savePortfolioMenu.DropDownItems.Add(new ToolStripMenuItem(portfolio.Name, null, SavePortfolio_Click) { Name = portfolio.Name, Checked = portfolio.Startup });
+                loadPortfolioMenu.DropDownItems.Add(new ToolStripMenuItem(portfolio.Name, null, LoadPortfolio_Click) { Name = portfolio.Name, Checked = portfolio.Startup });
             }
 
             //Start main thread
@@ -623,32 +623,26 @@ namespace MyCryptoMonitor.Forms
             UserConfigService.Currency = cbCurrency.Text;
         }
 
-        private void manage_Click(object sender, EventArgs e)
+        private void menuManagePortfolios_Click(object sender, EventArgs e)
         {
             UncheckPortfolios(_selectedPortfolio);
 
             foreach (var portfolio in PortfolioService.GetPortfolios())
             {
-                if (loadPortfolioMenu.DropDownItems.ContainsKey(portfolio.Name))
-                {
-                    savePortfolioMenu.DropDownItems.RemoveByKey(portfolio.Name);
-                    loadPortfolioMenu.DropDownItems.RemoveByKey(portfolio.Name);
-                }
+                savePortfolioMenu.DropDownItems.RemoveByKey(portfolio.Name);
+                loadPortfolioMenu.DropDownItems.RemoveByKey(portfolio.Name);
             }
 
             new ManagePortfolios().ShowDialog();
 
             foreach (var portfolio in PortfolioService.GetPortfolios())
             {
-                if (!loadPortfolioMenu.DropDownItems.ContainsKey(portfolio.Name))
-                {
-                    savePortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, SavePortfolio_Click) { Name = portfolio.Name, Checked = portfolio.Name.Equals(_selectedPortfolio) });
-                    loadPortfolioMenu.DropDownItems.Insert(0, new ToolStripMenuItem(portfolio.Name, null, LoadPortfolio_Click) { Name = portfolio.Name, Checked = portfolio.Name.Equals(_selectedPortfolio) });
-                }
+                savePortfolioMenu.DropDownItems.Add(new ToolStripMenuItem(portfolio.Name, null, SavePortfolio_Click) { Name = portfolio.Name, Checked = portfolio.Name.Equals(_selectedPortfolio) });
+                loadPortfolioMenu.DropDownItems.Add(new ToolStripMenuItem(portfolio.Name, null, LoadPortfolio_Click) { Name = portfolio.Name, Checked = portfolio.Name.Equals(_selectedPortfolio) });
             }
         }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        private void menuOpen_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start(Directory.GetCurrentDirectory());
         }
