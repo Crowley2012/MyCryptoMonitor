@@ -144,7 +144,7 @@ namespace MyCryptoMonitor.Forms
 
         private void UpdateCoins(string cryptoCompareResponse, string coinMarketCapResponse)
         {
-            int index = 0;
+            int lineIndex = 0;
             decimal totalPaid = 0;
             decimal totalOverall = 0;
             decimal totalNegativeProfits = 0;
@@ -160,7 +160,7 @@ namespace MyCryptoMonitor.Forms
                 Coin coin = _coins.Find(c => c.ShortName == coinConfig.Name);
 
                 if (_loadLines)
-                    AddLine(coinConfig, coin, index++);
+                    AddLine(coinConfig, coin, lineIndex++);
 
                 CoinLine line = (from c in _coinLines where c.CoinName.Equals(coin.ShortName) && c.CoinIndex == coinConfig.Index select c).First();
 
@@ -229,9 +229,9 @@ namespace MyCryptoMonitor.Forms
             });
         }
 
-        private void AddLine(CoinConfig coinConfig, Coin coin, int index)
+        private void AddLine(CoinConfig coinConfig, Coin coin, int lineIndex)
         {
-            CoinLine newLine = new CoinLine(coin.ShortName, coinConfig.Index, index);
+            CoinLine newLine = new CoinLine(coin.ShortName, coinConfig.Index, lineIndex);
             coinConfig.StartupPrice = coin.Price;
 
             Invoke((MethodInvoker)delegate
@@ -263,14 +263,12 @@ namespace MyCryptoMonitor.Forms
         {
             Invoke((MethodInvoker)delegate
             {
-                lblStatus.Text = "Status: Loading";
-                lblOverallTotal.Text = "$0.00";
-                lblTotalProfit.Text = "$0.00";
+                UpdateStatus("Loading");
                 
-                foreach (var coin in _coinLines)
+                foreach (var line in _coinLines)
                 {
                     Height -= 25;
-                    coin.Dispose();
+                    line.Dispose();
                 }
 
                 _coinLines = new List<CoinLine>();
@@ -301,21 +299,6 @@ namespace MyCryptoMonitor.Forms
             RemoveLines();
         }
 
-        private void ResetCoinIndex()
-        {
-            //Reset the coin index
-            foreach (CoinConfig config in _coinConfigs)
-            {
-                int index = 0;
-
-                foreach(CoinConfig coin in _coinConfigs.Where(c => c.Name == config.Name).ToList())
-                {
-                    coin.Index = index;
-                    index++;
-                }
-            }
-        }
-
         private void SetupPortfolioMenu()
         {
             foreach (var portfolio in PortfolioService.GetPortfolios())
@@ -323,6 +306,17 @@ namespace MyCryptoMonitor.Forms
                 savePortfolioMenu.DropDownItems.Add(new ToolStripMenuItem(portfolio.Name, null, SavePortfolio_Click) { Name = portfolio.Name, Checked = PortfolioService.CurrentPortfolio.Equals(portfolio.Name) });
                 loadPortfolioMenu.DropDownItems.Add(new ToolStripMenuItem(portfolio.Name, null, LoadPortfolio_Click) { Name = portfolio.Name, Checked = PortfolioService.CurrentPortfolio.Equals(portfolio.Name) });
             }
+        }
+
+        private void SelectPortfolio(string portfolio)
+        {
+            PortfolioService.CurrentPortfolio = portfolio;
+
+            foreach (ToolStripMenuItem item in savePortfolioMenu.DropDownItems.OfType<ToolStripMenuItem>())
+                item.Checked = item.Text.Equals(portfolio);
+
+            foreach (ToolStripMenuItem item in loadPortfolioMenu.DropDownItems.OfType<ToolStripMenuItem>())
+                item.Checked = item.Text.Equals(portfolio);
         }
         #endregion
 
@@ -340,9 +334,26 @@ namespace MyCryptoMonitor.Forms
             ThreadStarter(new Thread(new ThreadStart(CheckUpdate)));
         }
 
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Environment.Exit(Environment.ExitCode);
+        }
+
+        private void Currency_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            coinsToolStripMenuItem.Enabled = false;
+            UserConfigService.Currency = cbCurrency.Text;
+        }
+
+        #region File Menu
+        private void Open_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(Directory.GetCurrentDirectory());
+        }
+
         private void Reset_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show($"This will delete all saved files (portfolios, alerts, etc) and remove encryption. Do you want to continue?", "Reset", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
+            if (MainService.ConfirmReset())
             {
                 foreach (var portfolio in PortfolioService.GetPortfolios())
                 {
@@ -356,102 +367,100 @@ namespace MyCryptoMonitor.Forms
 
         private void Exit_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            Close();
         }
+        #endregion
 
+        #region Coins Menu
         private void AddCoin_Click(object sender, EventArgs e)
         {
-            //Check if coin list has been downloaded
-            while(_coinNames.Count <= 0)
+            using (ManageCoins form = new ManageCoins(_coinNames))
             {
-                if (MessageBox.Show("Please wait while coin list is being downloaded.", "Loading", MessageBoxButtons.RetryCancel) == DialogResult.Cancel)
+                if (form.ShowDialog() != DialogResult.OK)
                     return;
+                
+                if (!_coinNames.Any(c => c.Equals(form.InputText)))
+                {
+                    MessageBox.Show("Coin does not exist.", "Error");
+                    return;
+                }
+                
+                _coinConfigs.Add(new CoinConfig
+                {
+                    Name = form.InputText,
+                    Bought = 0,
+                    Paid = 0,
+                    StartupPrice = 0,
+                    Index = _coinConfigs.Count(c => c.Name.Equals(form.InputText))
+                });
+
+                RemoveLines();
+                SelectPortfolio(string.Empty);
             }
-
-            //Get coin to add
-            ManageCoins form = new ManageCoins(true, _coinNames);
-            if (form.ShowDialog() != DialogResult.OK)
-                return;
-
-            //Check if coin exists
-            if (!_coinNames.Any(c => c.Equals(form.InputText)))
-            {
-                MessageBox.Show("Coin does not exist.", "Error");
-                return;
-            }
-
-            //Add coin config
-            _coinConfigs.Add(new CoinConfig { Name = form.InputText, Index = _coinConfigs.Count(c => c.Name.Equals(form.InputText)), Bought = 0, Paid = 0, StartupPrice = 0 });
-            RemoveLines();
-
-            UncheckPortfolios(string.Empty);
         }
 
         private void RemoveCoin_Click(object sender, EventArgs e)
         {
-            //Get coin to remove
-            ManageCoins form = new ManageCoins(false, _coinConfigs);
-            if (form.ShowDialog() != DialogResult.OK)
-                return;
-
-            //Check if coin exists
-            if (!_coinConfigs.Any(a => a.Name.Equals(form.InputText) && a.Index == form.CoinIndex))
+            using (ManageCoins form = new ManageCoins(_coinConfigs))
             {
-                MessageBox.Show("Coin does not exist.", "Error");
-                return;
+                if (form.ShowDialog() != DialogResult.OK)
+                    return;
+                
+                _coinConfigs.RemoveAll(a => a.Name.Equals(form.InputText) && a.Index == form.CoinIndex);
+
+                //Reset coin indexes
+                foreach (CoinConfig coinConfig in _coinConfigs)
+                {
+                    int index = 0;
+
+                    foreach (CoinConfig sameCoinConfig in _coinConfigs.Where(c => c.Name == coinConfig.Name).ToList())
+                    {
+                        sameCoinConfig.Index = index;
+                        index++;
+                    }
+                }
             }
 
-            //Update coin config bought and paid values
-            foreach (var coinGuiLine in _coinLines)
-            {
-                var coinConfig = _coinConfigs.Single(c => c.Name == coinGuiLine.CoinName && c.Index == coinGuiLine.CoinIndex);
-                coinConfig.Bought = Convert.ToDecimal(coinGuiLine.BoughtTextBox.Text);
-                coinConfig.Paid = Convert.ToDecimal(coinGuiLine.PaidTextBox.Text);
-            }
-
-            //Remove coin config
-            _coinConfigs.RemoveAll(a => a.Name.Equals(form.InputText) && a.Index == form.CoinIndex);
-
-            //Reset coin indexes
-            ResetCoinIndex();
             RemoveLines();
-
-            UncheckPortfolios(string.Empty);
+            SelectPortfolio(string.Empty);
         }
 
         private void RemoveAllCoins_Click(object sender, EventArgs e)
         {
             _coinConfigs = new List<CoinConfig>();
             RemoveLines();
-            UncheckPortfolios(string.Empty);
+            SelectPortfolio(string.Empty);
         }
+        #endregion
 
-        private void UncheckPortfolios(string portfolio)
+        #region Alerts Menu
+        private void Alerts_Click(object sender, EventArgs e)
         {
-            PortfolioService.CurrentPortfolio = portfolio;
+            using (ManageAlerts form = new ManageAlerts(_coins))
+                form.ShowDialog();
+        }
+        #endregion
 
-            foreach (ToolStripMenuItem item in savePortfolioMenu.DropDownItems.OfType<ToolStripMenuItem>())
+        #region Portfolio Menu
+        private void ManagePortfolios_Click(object sender, EventArgs e)
+        {
+            foreach (var portfolio in PortfolioService.GetPortfolios())
             {
-                item.Checked = false;
-
-                if (item.Text.Equals(portfolio))
-                    item.Checked = true;
+                savePortfolioMenu.DropDownItems.RemoveByKey(portfolio.Name);
+                loadPortfolioMenu.DropDownItems.RemoveByKey(portfolio.Name);
             }
 
-            foreach (ToolStripMenuItem item in loadPortfolioMenu.DropDownItems.OfType<ToolStripMenuItem>())
-            {
-                item.Checked = false;
+            using(ManagePortfolios form = new ManagePortfolios())
+                form.ShowDialog();
 
-                if (item.Text.Equals(portfolio))
-                    item.Checked = true;
-            }
+            SetupPortfolioMenu();
         }
 
         private void SavePortfolio_Click(object sender, EventArgs e)
         {
             var portfolio = ((ToolStripMenuItem)sender).Text;
 
-            UncheckPortfolios(portfolio);
+            SelectPortfolio(portfolio);
             SavePortfolio(portfolio);
         }
 
@@ -461,64 +470,34 @@ namespace MyCryptoMonitor.Forms
             alertsToolStripMenuItem.Enabled = false;
             coinsToolStripMenuItem.Enabled = false;
 
-            UncheckPortfolios(portfolio);
+            SelectPortfolio(portfolio);
             LoadPortfolio(portfolio);
         }
+        #endregion
 
-        private void donateToolStripMenuItem_Click(object sender, EventArgs e)
+        #region Encrypt Menu
+        private void Encrypt_Click(object sender, EventArgs e)
         {
-            PopupDonate form = new PopupDonate();
-            form.Show();
+            using (ManageEncryption form = new ManageEncryption())
+                form.ShowDialog();
         }
+        #endregion
 
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        #region Donate Menu
+        private void Donate_Click(object sender, EventArgs e)
         {
-            PopupAbout form = new PopupAbout();
-            form.Show();
+            using (PopupDonate form = new PopupDonate())
+                form.ShowDialog();
         }
+        #endregion
 
-        private void alertsToolStripMenuItem_Click(object sender, EventArgs e)
+        #region About Menu
+        private void About_Click(object sender, EventArgs e)
         {
-            ManageAlerts form = new ManageAlerts(_coins);
-            form.Show();
+            using (PopupAbout form = new PopupAbout())
+                form.ShowDialog();
         }
-
-        private void encryptToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ManageEncryption form = new ManageEncryption();
-            form.Show();
-        }
-
-        private void cbCurrency_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            coinsToolStripMenuItem.Enabled = false;
-            UserConfigService.Currency = cbCurrency.Text;
-        }
-
-        private void menuManagePortfolios_Click(object sender, EventArgs e)
-        {
-            UncheckPortfolios(PortfolioService.CurrentPortfolio);
-
-            foreach (var portfolio in PortfolioService.GetPortfolios())
-            {
-                savePortfolioMenu.DropDownItems.RemoveByKey(portfolio.Name);
-                loadPortfolioMenu.DropDownItems.RemoveByKey(portfolio.Name);
-            }
-
-            new ManagePortfolios().ShowDialog();
-
-            SetupPortfolioMenu();
-        }
-
-        private void menuOpen_Click(object sender, EventArgs e)
-        {
-            System.Diagnostics.Process.Start(Directory.GetCurrentDirectory());
-        }
-
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Environment.Exit(Environment.ExitCode);
-        }
+        #endregion
         #endregion
     }
 }

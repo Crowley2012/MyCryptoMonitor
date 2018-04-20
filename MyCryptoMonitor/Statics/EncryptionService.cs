@@ -39,7 +39,7 @@ namespace MyCryptoMonitor.Statics
                 }
                 else if (result == DialogResult.Abort)
                 {
-                    if (MessageBox.Show($"This will delete all saved files (portfolios, alerts, etc) and remove encryption. Do you want to continue?", "Forgot Password", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
+                    if (MainService.ConfirmReset())
                         MainService.Reset();
                     else
                         Unlock();

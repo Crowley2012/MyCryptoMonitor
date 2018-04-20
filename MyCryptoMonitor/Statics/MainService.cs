@@ -2,6 +2,7 @@
 using MyCryptoMonitor.Objects;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Statics
 {
@@ -22,6 +23,11 @@ namespace MyCryptoMonitor.Statics
             PortfolioService.DeleteAll();
             AlertService.Delete();
             UserConfigService.Delete();
+        }
+
+        public static bool ConfirmReset()
+        {
+            return MessageBox.Show($"This will delete all saved files (portfolios, alerts, etc) and remove encryption. Do you want to continue?", "Reset", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes;
         }
 
         public static void CheckAlerts(List<Coin> coins)

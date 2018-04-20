@@ -18,33 +18,29 @@ namespace MyCryptoMonitor.Forms
         #endregion
 
         #region Constructor
-        public ManageCoins(bool addCoin, List<string> coins)
+        public ManageCoins(List<string> coins)
         {
             InitializeComponent();
 
-            Setup(addCoin);
+            Text = "Add Coin";
+            btnSubmit.Text = "Add";
+            cbCoinIndex.Enabled = false;
 
             cbCoins.DataSource = coins.ToList();
         }
 
-        public ManageCoins(bool addCoin, List<CoinConfig> coinsConfig)
+        public ManageCoins(List<CoinConfig> coinsConfig)
         {
             InitializeComponent();
 
-            Setup(addCoin);
+            Text = "Remove Coin";
+            btnSubmit.Text = "Remove";
+            cbCoinIndex.Enabled = true;
+            cbCoins.DropDownStyle = ComboBoxStyle.DropDownList;
 
             _coinConfigs = coinsConfig;
             cbCoins.DataSource = coinsConfig.OrderBy(c => c.Name).Select(c => c.Name).Distinct().ToList();
             cbCoinIndex.DataSource = (from c in _coinConfigs where c.Name == cbCoins.Text select c.Index + 1).ToList();
-        }
-        #endregion
-
-        #region Methods
-        public void Setup(bool addCoin)
-        {
-            Text = addCoin ? "Add Coin" : "Remove Coin";
-            btnSubmit.Text = addCoin ? "Add" : "Remove";
-            cbCoinIndex.Enabled = !addCoin;
         }
         #endregion
 

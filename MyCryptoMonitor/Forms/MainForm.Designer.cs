@@ -284,7 +284,7 @@
             this.cbCurrency.Name = "cbCurrency";
             this.cbCurrency.Size = new System.Drawing.Size(81, 21);
             this.cbCurrency.TabIndex = 0;
-            this.cbCurrency.SelectedIndexChanged += new System.EventHandler(this.cbCurrency_SelectedIndexChanged);
+            this.cbCurrency.SelectedIndexChanged += new System.EventHandler(this.Currency_SelectedIndexChanged);
             // 
             // label11
             // 
@@ -569,7 +569,7 @@
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.openToolStripMenuItem.Text = "Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.menuOpen_Click);
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.Open_Click);
             // 
             // resetToolStripMenuItem
             // 
@@ -623,7 +623,7 @@
             this.alertsToolStripMenuItem.Name = "alertsToolStripMenuItem";
             this.alertsToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
             this.alertsToolStripMenuItem.Text = "Alerts";
-            this.alertsToolStripMenuItem.Click += new System.EventHandler(this.alertsToolStripMenuItem_Click);
+            this.alertsToolStripMenuItem.Click += new System.EventHandler(this.Alerts_Click);
             // 
             // savePortfolioMenu
             // 
@@ -639,7 +639,7 @@
             this.addPortfolioToolStripMenuItem1.Name = "addPortfolioToolStripMenuItem1";
             this.addPortfolioToolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
             this.addPortfolioToolStripMenuItem1.Text = "Manage Portfolios";
-            this.addPortfolioToolStripMenuItem1.Click += new System.EventHandler(this.menuManagePortfolios_Click);
+            this.addPortfolioToolStripMenuItem1.Click += new System.EventHandler(this.ManagePortfolios_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -660,7 +660,7 @@
             this.addPortfolioToolStripMenuItem.Name = "addPortfolioToolStripMenuItem";
             this.addPortfolioToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.addPortfolioToolStripMenuItem.Text = "Manage Portfolios";
-            this.addPortfolioToolStripMenuItem.Click += new System.EventHandler(this.menuManagePortfolios_Click);
+            this.addPortfolioToolStripMenuItem.Click += new System.EventHandler(this.ManagePortfolios_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -672,21 +672,21 @@
             this.encryptToolStripMenuItem.Name = "encryptToolStripMenuItem";
             this.encryptToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             this.encryptToolStripMenuItem.Text = "Encrypt";
-            this.encryptToolStripMenuItem.Click += new System.EventHandler(this.encryptToolStripMenuItem_Click);
+            this.encryptToolStripMenuItem.Click += new System.EventHandler(this.Encrypt_Click);
             // 
             // donateToolStripMenuItem
             // 
             this.donateToolStripMenuItem.Name = "donateToolStripMenuItem";
             this.donateToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
             this.donateToolStripMenuItem.Text = "Donate";
-            this.donateToolStripMenuItem.Click += new System.EventHandler(this.donateToolStripMenuItem_Click);
+            this.donateToolStripMenuItem.Click += new System.EventHandler(this.Donate_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
             this.aboutToolStripMenuItem.Text = "About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.About_Click);
             // 
             // label2
             // 

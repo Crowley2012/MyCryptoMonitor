@@ -31,7 +31,6 @@ namespace MyCryptoMonitor.Statics
 
         public static void Save(string portfolio, List<CoinConfig> coinConfigs)
         {
-            CurrentPortfolio = portfolio;
             portfolio += FILEEXTENSION;
 
             if (UserConfigService.Encrypted)
