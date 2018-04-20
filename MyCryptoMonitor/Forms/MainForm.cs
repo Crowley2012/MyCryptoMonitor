@@ -25,12 +25,12 @@ namespace MyCryptoMonitor.Forms
 
         #region Private Variables
         private List<CoinConfig> _coinConfigs = new List<CoinConfig>();
-        private List<CoinLine> _coinGuiLines = new List<CoinLine>();
-        private List<Coin> _mappedCoins = new List<Coin>();
-        private List<Coin> _coinNameList = new List<Coin>();
+        private List<CoinLine> _coinLines = new List<CoinLine>();
+        private List<Coin> _coins = new List<Coin>();
+        private List<string> _coinNames = new List<string>();
         private DateTime _resetTime = DateTime.Now;
         private DateTime _refreshTime = DateTime.Now;
-        private bool _loadGuiLines = true;
+        private bool _loadLines = true;
         #endregion
 
         #region Constructor
@@ -146,119 +146,98 @@ namespace MyCryptoMonitor.Forms
         {
             int index = 0;
             decimal totalPaid = 0;
-            decimal overallTotal = 0;
+            decimal totalOverall = 0;
             decimal totalNegativeProfits = 0;
             decimal totalPostivieProfits = 0;
 
-            _coinNameList = MappingService.CoinMarketCap(coinMarketCapResponse).OrderBy(c => c.ShortName).ToList();
-            _mappedCoins = MappingService.MapCombination(cryptoCompareResponse, coinMarketCapResponse);
+            _coinNames = MappingService.CoinMarketCap(coinMarketCapResponse).OrderBy(c => c.ShortName).Select(c => c.ShortName).ToList();
+            _coins = MappingService.MapCombination(cryptoCompareResponse, coinMarketCapResponse);
 
-            MainService.CheckAlerts(_mappedCoins);
+            MainService.CheckAlerts(_coins);
 
-            foreach (CoinConfig coin in _coinConfigs)
+            foreach (CoinConfig coinConfig in _coinConfigs)
             {
-                Coin downloadedCoin = _mappedCoins.Find(c => c.ShortName == coin.Name);
+                Coin coin = _coins.Find(c => c.ShortName == coinConfig.Name);
 
-                if (_loadGuiLines)
-                    AddCoin(coin, downloadedCoin, index);
+                if (_loadLines)
+                    AddLine(coinConfig, coin, index++);
 
-                index++;
+                CoinLine line = (from c in _coinLines where c.CoinName.Equals(coin.ShortName) && c.CoinIndex == coinConfig.Index select c).First();
 
-                if (coin.SetStartupPrice)
-                {
-                    coin.StartupPrice = downloadedCoin.Price;
-                    coin.SetStartupPrice = false;
-                }
-
-                CoinLine line = (from c in _coinGuiLines where c.CoinName.Equals(downloadedCoin.ShortName) && c.CoinIndex == coin.Index select c).First();
-
-                if (string.IsNullOrEmpty(line.BoughtTextBox.Text))
-                    line.BoughtTextBox.Text = "0";
-
-                if (string.IsNullOrEmpty(line.PaidTextBox.Text))
-                    line.PaidTextBox.Text = "0";
-
-                decimal bought = Convert.ToDecimal(line.BoughtTextBox.Text);
-                decimal paid = Convert.ToDecimal(line.PaidTextBox.Text);
-                decimal boughtPrice = bought == 0 ? 0 : paid / bought;
-                decimal total = bought * downloadedCoin.Price;
+                decimal bought = line.BoughtTextBox.Text.ConvertToDecimal();
+                decimal paid = line.PaidTextBox.Text.ConvertToDecimal();
+                decimal total = bought * coin.Price;
                 decimal profit = total - paid;
-                decimal changeDollar = downloadedCoin.Price - coin.StartupPrice;
-                decimal changePercent = coin.StartupPrice == 0 ? 0 : ((downloadedCoin.Price - coin.StartupPrice) / coin.StartupPrice) * 100;
+
+                totalPaid += paid;
+                totalOverall += paid + profit;
 
                 if (profit >= 0)
                     totalPostivieProfits += profit;
                 else
                     totalNegativeProfits += profit;
 
-                totalPaid += paid;
-                overallTotal += paid + profit;
+                var coinIndexLabel = _coinConfigs.Count(c => c.Name.Equals(coinConfig.Name)) > 1 ? $"[{coinConfig.Index + 1}]" : string.Empty;
+                var coinLabel = coin.ShortName;
+                var priceLabel = $"${coin.Price.ConvertToString(7)}";
+                var boughtLabel = $"${bought.SafeDivision(paid).ConvertToString(7)}";
+                var totalLabel = $"${total:0.00}";
+                var profitLabel = $"${profit:0.00}";
+                var ratioLabel = paid != 0 ? $"{profit / paid:0.00}" : "0.00";
+                var changeDollarLabel = $"${(coin.Price - coinConfig.StartupPrice):0.000000}";
+                var changePercentLabel = $"{coinConfig.StartupPrice.SafeDivision(coin.Price - coinConfig.StartupPrice) * 100:0.00}%";
+                var change1HrLabel = $"{coin.Change1HourPercent:0.00}%";
+                var change24HrLabel = $"{coin.Change24HourPercent:0.00}%";
+                var change7DayLabel = $"{coin.Change7DayPercent:0.00}%";
 
                 Invoke((MethodInvoker)delegate
                 {
-                    line.CoinLabel.Show();
-                    line.CoinIndexLabel.Text = _coinConfigs.Count(c => c.Name.Equals(coin.Name)) > 1 ? $"[{coin.Index + 1}]" : string.Empty;
-                    line.CoinLabel.Text = downloadedCoin.ShortName;
-                    line.PriceLabel.Text = downloadedCoin.Price.ToString().Substring(downloadedCoin.Price.ToString().IndexOf(".") + 1).Length > 7 ? $"${downloadedCoin.Price:0.0000000}" : $"${downloadedCoin.Price}";
-                    line.BoughtPriceLabel.Text = $"${boughtPrice:0.000000}";
-                    line.TotalLabel.Text = $"${total:0.00}";
-                    line.ProfitLabel.Text = $"${profit:0.00}";
-                    line.RatioLabel.Text = paid != 0 ? $"{profit / paid:0.00}" : "0.00";
-                    line.ChangeDollarLabel.Text = $"${changeDollar:0.000000}";
-                    line.ChangePercentLabel.Text = $"{changePercent:0.00}%";
-                    line.Change1HrPercentLabel.Text = $"{downloadedCoin.Change1HourPercent:0.00}%";
-                    line.Change24HrPercentLabel.Text = $"{downloadedCoin.Change24HourPercent:0.00}%";
-                    line.Change7DayPercentLabel.Text = $"{downloadedCoin.Change7DayPercent:0.00}%";
+                    line.CoinIndexLabel.Text = coinIndexLabel;
+                    line.CoinLabel.Text = coinLabel;
+                    line.PriceLabel.Text = priceLabel;
+                    line.BoughtPriceLabel.Text = boughtLabel;
+                    line.TotalLabel.Text = totalLabel;
+                    line.ProfitLabel.Text = profitLabel;
+                    line.RatioLabel.Text = ratioLabel;
+                    line.ChangeDollarLabel.Text = changeDollarLabel;
+                    line.ChangePercentLabel.Text = changePercentLabel;
+                    line.Change1HrPercentLabel.Text = change1HrLabel;
+                    line.Change24HrPercentLabel.Text = change24HrLabel;
+                    line.Change7DayPercentLabel.Text = change7DayLabel;
                 });
             }
 
+            _refreshTime = DateTime.Now;
+            _loadLines = false;
+            UpdateStatus("Sleeping");
+
+            var totalProfitColor = totalOverall - totalPaid >= 0 ? Color.Green : Color.Red;
+            var totalProfitLabel = $"${totalOverall - totalPaid:0.00}";
+            var totalNegativeProfitLabel = $"${totalNegativeProfits:0.00}";
+            var totalPositiveProfitLabel = $"${totalPostivieProfits:0.00}";
+            var totalOverallLabel = $"${totalOverall:0.00}";
+
             Invoke((MethodInvoker)delegate
             {
-                lblOverallTotal.Text = $"${overallTotal:0.00}";
-                lblTotalProfit.ForeColor = overallTotal - totalPaid >= 0 ? Color.Green : Color.Red;
-                lblTotalProfit.Text = $"${overallTotal - totalPaid:0.00}";
-                lblTotalNegativeProfit.Text = $"${totalNegativeProfits:0.00}";
-                lblTotalPositiveProfit.Text = $"${totalPostivieProfits:0.00}";
-                lblStatus.Text = "Status: Sleeping";
-                _refreshTime = DateTime.Now;
-                _loadGuiLines = false;
+                lblTotalProfit.ForeColor = totalProfitColor;
+                lblTotalProfit.Text = totalProfitLabel;
+                lblTotalNegativeProfit.Text = totalNegativeProfitLabel;
+                lblTotalPositiveProfit.Text = totalPositiveProfitLabel;
+                lblOverallTotal.Text = totalOverallLabel;
                 alertsToolStripMenuItem.Enabled = true;
+                coinsToolStripMenuItem.Enabled = true;
             });
         }
 
-        private void RemoveGuiLines()
+        private void AddLine(CoinConfig coinConfig, Coin coin, int index)
         {
-            Invoke((MethodInvoker)delegate
-            {
-                lblStatus.Text = "Status: Loading";
-                lblOverallTotal.Text = "$0.00";
-                lblTotalProfit.Text = "$0.00";
-                
-                foreach (var coin in _coinGuiLines)
-                {
-                    Height -= 25;
-                    coin.Dispose();
-                }
-
-                _coinGuiLines = new List<CoinLine>();
-                _loadGuiLines = true;
-            });
-        }
-
-        private void AddCoin(CoinConfig coin, Coin downloadedCoin, int index)
-        {
-            //Store the intial coin price at startup
-            if(coin.SetStartupPrice)
-                coin.StartupPrice = downloadedCoin.Price;
+            CoinLine newLine = new CoinLine(coin.ShortName, coinConfig.Index, index);
+            coinConfig.StartupPrice = coin.Price;
 
             Invoke((MethodInvoker)delegate
             {
-                //Create the gui line
-                CoinLine newLine = new CoinLine(downloadedCoin.ShortName, coin.Index, index);
-
-                //Set the bought and paid amounts
-                newLine.BoughtTextBox.Text = coin.Bought.ToString();
-                newLine.PaidTextBox.Text = coin.Paid.ToString();
+                newLine.BoughtTextBox.Text = coinConfig.Bought.ToString();
+                newLine.PaidTextBox.Text = coinConfig.Paid.ToString();
 
                 Height += 25;
                 Controls.Add(newLine.CoinIndexLabel);
@@ -276,39 +255,50 @@ namespace MyCryptoMonitor.Forms
                 Controls.Add(newLine.Change24HrPercentLabel);
                 Controls.Add(newLine.Change7DayPercentLabel);
 
-                //Add line to list
-                _coinGuiLines.Add(newLine);
+                _coinLines.Add(newLine);
+            });
+        }
+
+        private void RemoveLines()
+        {
+            Invoke((MethodInvoker)delegate
+            {
+                lblStatus.Text = "Status: Loading";
+                lblOverallTotal.Text = "$0.00";
+                lblTotalProfit.Text = "$0.00";
+                
+                foreach (var coin in _coinLines)
+                {
+                    Height -= 25;
+                    coin.Dispose();
+                }
+
+                _coinLines = new List<CoinLine>();
+                _loadLines = true;
             });
         }
 
         private void SavePortfolio(string portfolio)
         {
-            if (_coinGuiLines.Count <= 0)
+            if (_coinLines.Count <= 0)
                 return;
 
-            List<CoinConfig> coinConfigs = new List<CoinConfig>();
-
-            //Create new list of gui lines
-            foreach (var coinLine in _coinGuiLines)
+            var config = _coinLines.Select(coinLine => new CoinConfig
             {
-                coinConfigs.Add(new CoinConfig
-                {
-                    Name = coinLine.CoinLabel.Text,
-                    Index = coinConfigs.Count(c => c.Name.Equals(coinLine.CoinName)),
-                    Bought = Convert.ToDecimal(coinLine.BoughtTextBox.Text),
-                    Paid = Convert.ToDecimal(coinLine.PaidTextBox.Text)
-                });
-            }
+                Name = coinLine.CoinLabel.Text,
+                Bought = Convert.ToDecimal(coinLine.BoughtTextBox.Text),
+                Paid = Convert.ToDecimal(coinLine.PaidTextBox.Text),
+                Index = coinLine.CoinIndex
+            }).ToList();
 
-            //Save portfolio
-            PortfolioService.Save(portfolio, coinConfigs);
+            PortfolioService.Save(portfolio, config);
         }
 
         private void LoadPortfolio(string portfolio)
         {
             _coinConfigs = PortfolioService.Load(portfolio);
 
-            RemoveGuiLines();
+            RemoveLines();
         }
 
         private void ResetCoinIndex()
@@ -330,8 +320,8 @@ namespace MyCryptoMonitor.Forms
         {
             foreach (var portfolio in PortfolioService.GetPortfolios())
             {
-                savePortfolioMenu.DropDownItems.Add(new ToolStripMenuItem(portfolio.Name, null, SavePortfolio_Click) { Name = portfolio.Name, Checked = portfolio.Startup });
-                loadPortfolioMenu.DropDownItems.Add(new ToolStripMenuItem(portfolio.Name, null, LoadPortfolio_Click) { Name = portfolio.Name, Checked = portfolio.Startup });
+                savePortfolioMenu.DropDownItems.Add(new ToolStripMenuItem(portfolio.Name, null, SavePortfolio_Click) { Name = portfolio.Name, Checked = PortfolioService.CurrentPortfolio.Equals(portfolio.Name) });
+                loadPortfolioMenu.DropDownItems.Add(new ToolStripMenuItem(portfolio.Name, null, LoadPortfolio_Click) { Name = portfolio.Name, Checked = PortfolioService.CurrentPortfolio.Equals(portfolio.Name) });
             }
         }
         #endregion
@@ -372,36 +362,27 @@ namespace MyCryptoMonitor.Forms
         private void AddCoin_Click(object sender, EventArgs e)
         {
             //Check if coin list has been downloaded
-            while(_coinNameList.Count <= 0)
+            while(_coinNames.Count <= 0)
             {
                 if (MessageBox.Show("Please wait while coin list is being downloaded.", "Loading", MessageBoxButtons.RetryCancel) == DialogResult.Cancel)
                     return;
             }
 
             //Get coin to add
-            ManageCoins form = new ManageCoins(true, _coinNameList);
+            ManageCoins form = new ManageCoins(true, _coinNames);
             if (form.ShowDialog() != DialogResult.OK)
                 return;
 
             //Check if coin exists
-            if (!_coinNameList.Any(c => c.ShortName.Equals(form.InputText)))
+            if (!_coinNames.Any(c => c.Equals(form.InputText)))
             {
                 MessageBox.Show("Coin does not exist.", "Error");
                 return;
             }
 
-            //Update coin config bought and paid values
-            foreach (var coinGuiLine in _coinGuiLines)
-            {
-                var coinConfig = _coinConfigs.Single(c => c.Name == coinGuiLine.CoinName && c.Index == coinGuiLine.CoinIndex);
-                coinConfig.Bought = Convert.ToDecimal(coinGuiLine.BoughtTextBox.Text);
-                coinConfig.Paid = Convert.ToDecimal(coinGuiLine.PaidTextBox.Text);
-                coinConfig.SetStartupPrice = false;
-            }
-
             //Add coin config
-            _coinConfigs.Add(new CoinConfig { Name = form.InputText, Index = _coinConfigs.Count(c => c.Name.Equals(form.InputText)), Bought = 0, Paid = 0, StartupPrice = 0, SetStartupPrice = true });
-            RemoveGuiLines();
+            _coinConfigs.Add(new CoinConfig { Name = form.InputText, Index = _coinConfigs.Count(c => c.Name.Equals(form.InputText)), Bought = 0, Paid = 0, StartupPrice = 0 });
+            RemoveLines();
 
             UncheckPortfolios(string.Empty);
         }
@@ -421,12 +402,11 @@ namespace MyCryptoMonitor.Forms
             }
 
             //Update coin config bought and paid values
-            foreach (var coinGuiLine in _coinGuiLines)
+            foreach (var coinGuiLine in _coinLines)
             {
                 var coinConfig = _coinConfigs.Single(c => c.Name == coinGuiLine.CoinName && c.Index == coinGuiLine.CoinIndex);
                 coinConfig.Bought = Convert.ToDecimal(coinGuiLine.BoughtTextBox.Text);
                 coinConfig.Paid = Convert.ToDecimal(coinGuiLine.PaidTextBox.Text);
-                coinConfig.SetStartupPrice = false;
             }
 
             //Remove coin config
@@ -434,7 +414,7 @@ namespace MyCryptoMonitor.Forms
 
             //Reset coin indexes
             ResetCoinIndex();
-            RemoveGuiLines();
+            RemoveLines();
 
             UncheckPortfolios(string.Empty);
         }
@@ -442,7 +422,7 @@ namespace MyCryptoMonitor.Forms
         private void RemoveAllCoins_Click(object sender, EventArgs e)
         {
             _coinConfigs = new List<CoinConfig>();
-            RemoveGuiLines();
+            RemoveLines();
             UncheckPortfolios(string.Empty);
         }
 
@@ -478,6 +458,8 @@ namespace MyCryptoMonitor.Forms
         private void LoadPortfolio_Click(object sender, EventArgs e)
         {
             var portfolio = ((ToolStripMenuItem)sender).Text;
+            alertsToolStripMenuItem.Enabled = false;
+            coinsToolStripMenuItem.Enabled = false;
 
             UncheckPortfolios(portfolio);
             LoadPortfolio(portfolio);
@@ -497,7 +479,7 @@ namespace MyCryptoMonitor.Forms
 
         private void alertsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ManageAlerts form = new ManageAlerts(_mappedCoins);
+            ManageAlerts form = new ManageAlerts(_coins);
             form.Show();
         }
 
@@ -509,11 +491,7 @@ namespace MyCryptoMonitor.Forms
 
         private void cbCurrency_SelectedIndexChanged(object sender, EventArgs e)
         {
-            alertsToolStripMenuItem.Enabled = false;
-
-            foreach (var config in _coinConfigs)
-                config.SetStartupPrice = true;
-
+            coinsToolStripMenuItem.Enabled = false;
             UserConfigService.Currency = cbCurrency.Text;
         }
 

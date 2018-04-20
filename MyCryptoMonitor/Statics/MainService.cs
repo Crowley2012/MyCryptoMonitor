@@ -26,19 +26,26 @@ namespace MyCryptoMonitor.Statics
 
         public static void CheckAlerts(List<Coin> coins)
         {
-            if (AlertService.Alerts.Count > 0)
+            List<AlertDataSource> removeAlerts = new List<AlertDataSource>();
+
+            if (AlertService.Alerts.Count <= 0)
+                return;
+
+            foreach (AlertDataSource alert in AlertService.Alerts)
             {
-                foreach (AlertDataSource coin in AlertService.Alerts)
+                var coinData = coins.Where(c => c.ShortName.Equals(alert.Coin) && UserConfigService.Currency.Equals(alert.Currency)).FirstOrDefault();
+
+                if (coinData == null)
+                    continue;
+
+                if ((alert.Operator == AlertService.Operators.GreaterThan && coinData.Price > alert.Price) || (alert.Operator == AlertService.Operators.LessThan && coinData.Price < alert.Price))
                 {
-                    var coinData = coins.Where(c => c.ShortName.Equals(coin.Coin) && UserConfigService.Currency.Equals(coin.Currency)).FirstOrDefault();
-
-                    if (coinData == null)
-                        continue;
-
-                    if ((coin.Operator == AlertService.Operators.GreaterThan && coinData.Price > coin.Price) || (coin.Operator == AlertService.Operators.LessThan && coinData.Price < coin.Price))
-                        AlertService.SendAlert(coin);
+                    AlertService.SendAlert(alert);
+                    removeAlerts.Add(alert);
                 }
             }
+
+            AlertService.Remove(removeAlerts);
         }
     }
 }

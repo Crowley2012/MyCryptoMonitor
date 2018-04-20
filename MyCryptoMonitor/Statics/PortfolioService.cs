@@ -31,8 +31,8 @@ namespace MyCryptoMonitor.Statics
 
         public static void Save(string portfolio, List<CoinConfig> coinConfigs)
         {
-            portfolio += FILEEXTENSION;
             CurrentPortfolio = portfolio;
+            portfolio += FILEEXTENSION;
 
             if (UserConfigService.Encrypted)
                 File.WriteAllText(portfolio, EncryptionService.AesEncryptString(JsonConvert.SerializeObject(coinConfigs)));
@@ -51,8 +51,8 @@ namespace MyCryptoMonitor.Statics
 
         public static List<CoinConfig> Load(string portfolio)
         {
-            portfolio += FILEEXTENSION;
             CurrentPortfolio = portfolio;
+            portfolio += FILEEXTENSION;
 
             return File.Exists(portfolio) ? (UserConfigService.Encrypted ? LoadEncrypted(portfolio) : LoadUnencrypted(portfolio)) : new List<CoinConfig>();
         }

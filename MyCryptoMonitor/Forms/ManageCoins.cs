@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Linq;
-using MyCryptoMonitor.Objects;
 using MyCryptoMonitor.Configs;
 
 namespace MyCryptoMonitor.Forms
@@ -19,13 +18,13 @@ namespace MyCryptoMonitor.Forms
         #endregion
 
         #region Constructor
-        public ManageCoins(bool addCoin, List<Coin> coins)
+        public ManageCoins(bool addCoin, List<string> coins)
         {
             InitializeComponent();
 
             Setup(addCoin);
 
-            cbCoins.DataSource = coins.Select(c => c.ShortName).ToList();
+            cbCoins.DataSource = coins.ToList();
         }
 
         public ManageCoins(bool addCoin, List<CoinConfig> coinsConfig)
