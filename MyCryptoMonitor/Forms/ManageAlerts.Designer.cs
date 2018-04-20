@@ -38,7 +38,6 @@
             this.bsAlerts = new System.Windows.Forms.BindingSource(this.components);
             this.cmbCoins = new System.Windows.Forms.ComboBox();
             this.txtPrice = new System.Windows.Forms.TextBox();
-            this.cmbOperator = new System.Windows.Forms.ComboBox();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.txtReceiveAddress = new System.Windows.Forms.TextBox();
@@ -47,10 +46,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.radioLess = new System.Windows.Forms.RadioButton();
             this.label3 = new System.Windows.Forms.Label();
+            this.radioGreater = new System.Windows.Forms.RadioButton();
             this.label5 = new System.Windows.Forms.Label();
             this.txtCurrent = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.grpContact = new System.Windows.Forms.GroupBox();
             this.grpAlerts = new System.Windows.Forms.GroupBox();
@@ -135,53 +135,33 @@
             // 
             // cmbCoins
             // 
-            this.cmbCoins.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbCoins.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbCoins.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cmbCoins.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbCoins.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCoins.FormattingEnabled = true;
             this.cmbCoins.Location = new System.Drawing.Point(37, 3);
             this.cmbCoins.Name = "cmbCoins";
-            this.cmbCoins.Size = new System.Drawing.Size(178, 21);
+            this.cmbCoins.Size = new System.Drawing.Size(176, 21);
             this.cmbCoins.TabIndex = 1;
             this.cmbCoins.Validated += new System.EventHandler(this.cmbCoins_Validated);
             // 
             // txtPrice
             // 
-            this.txtPrice.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPrice.Location = new System.Drawing.Point(292, 3);
+            this.txtPrice.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtPrice.Location = new System.Drawing.Point(290, 3);
             this.txtPrice.Name = "txtPrice";
-            this.txtPrice.Size = new System.Drawing.Size(178, 20);
+            this.txtPrice.Size = new System.Drawing.Size(176, 20);
             this.txtPrice.TabIndex = 2;
-            // 
-            // cmbOperator
-            // 
-            this.cmbOperator.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbOperator.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cmbOperator.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbOperator.DisplayMember = "Description";
-            this.cmbOperator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbOperator.FormattingEnabled = true;
-            this.cmbOperator.Location = new System.Drawing.Point(530, 3);
-            this.cmbOperator.Name = "cmbOperator";
-            this.cmbOperator.Size = new System.Drawing.Size(100, 21);
-            this.cmbOperator.TabIndex = 3;
-            this.cmbOperator.ValueMember = "value";
             // 
             // btnDelete
             // 
             this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDelete.Location = new System.Drawing.Point(994, 3);
+            this.btnDelete.Location = new System.Drawing.Point(1003, 3);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(108, 21);
+            this.btnDelete.Size = new System.Drawing.Size(99, 21);
             this.btnDelete.TabIndex = 4;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
@@ -192,7 +172,7 @@
             this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAdd.Location = new System.Drawing.Point(894, 3);
+            this.btnAdd.Location = new System.Drawing.Point(903, 3);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(94, 21);
             this.btnAdd.TabIndex = 5;
@@ -293,23 +273,34 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 114F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 105F));
+            this.tableLayoutPanel2.Controls.Add(this.radioLess, 5, 0);
             this.tableLayoutPanel2.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.cmbCoins, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.btnAdd, 8, 0);
+            this.tableLayoutPanel2.Controls.Add(this.radioGreater, 4, 0);
             this.tableLayoutPanel2.Controls.Add(this.label5, 2, 0);
-            this.tableLayoutPanel2.Controls.Add(this.txtCurrent, 7, 0);
-            this.tableLayoutPanel2.Controls.Add(this.cmbOperator, 5, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label4, 4, 0);
             this.tableLayoutPanel2.Controls.Add(this.txtPrice, 3, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label6, 6, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnDelete, 9, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnAdd, 8, 0);
+            this.tableLayoutPanel2.Controls.Add(this.txtCurrent, 7, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label6, 6, 0);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(6, 19);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1105, 27);
             this.tableLayoutPanel2.TabIndex = 10;
+            // 
+            // radioLess
+            // 
+            this.radioLess.AutoSize = true;
+            this.radioLess.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radioLess.Location = new System.Drawing.Point(566, 3);
+            this.radioLess.Name = "radioLess";
+            this.radioLess.Size = new System.Drawing.Size(75, 21);
+            this.radioLess.TabIndex = 15;
+            this.radioLess.Text = "Less Than";
+            this.radioLess.UseVisualStyleBackColor = true;
             // 
             // label3
             // 
@@ -324,13 +315,26 @@
             this.label3.Text = "Coin";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // radioGreater
+            // 
+            this.radioGreater.AutoSize = true;
+            this.radioGreater.Checked = true;
+            this.radioGreater.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radioGreater.Location = new System.Drawing.Point(472, 3);
+            this.radioGreater.Name = "radioGreater";
+            this.radioGreater.Size = new System.Drawing.Size(88, 21);
+            this.radioGreater.TabIndex = 14;
+            this.radioGreater.TabStop = true;
+            this.radioGreater.Text = "Greater Than";
+            this.radioGreater.UseVisualStyleBackColor = true;
+            // 
             // label5
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(221, 0);
+            this.label5.Location = new System.Drawing.Point(219, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(65, 27);
             this.label5.TabIndex = 13;
@@ -339,27 +343,12 @@
             // 
             // txtCurrent
             // 
-            this.txtCurrent.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtCurrent.Location = new System.Drawing.Point(710, 3);
+            this.txtCurrent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtCurrent.Location = new System.Drawing.Point(721, 3);
             this.txtCurrent.Name = "txtCurrent";
             this.txtCurrent.ReadOnly = true;
-            this.txtCurrent.Size = new System.Drawing.Size(178, 20);
+            this.txtCurrent.Size = new System.Drawing.Size(176, 20);
             this.txtCurrent.TabIndex = 15;
-            // 
-            // label4
-            // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(476, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(48, 27);
-            this.label4.TabIndex = 12;
-            this.label4.Text = "Operator";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label6
             // 
@@ -367,7 +356,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(636, 0);
+            this.label6.Location = new System.Drawing.Point(647, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(68, 27);
             this.label6.TabIndex = 14;
@@ -552,7 +541,6 @@
         private System.Windows.Forms.DataGridView grdAlerts;
         private System.Windows.Forms.ComboBox cmbCoins;
         private System.Windows.Forms.TextBox txtPrice;
-        private System.Windows.Forms.ComboBox cmbOperator;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.TextBox txtReceiveAddress;
@@ -564,7 +552,6 @@
         private System.Windows.Forms.GroupBox grpContact;
         private System.Windows.Forms.GroupBox grpAlerts;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtCurrent;
@@ -582,5 +569,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn priceDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn operatorDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn Current;
+        private System.Windows.Forms.RadioButton radioGreater;
+        private System.Windows.Forms.RadioButton radioLess;
     }
 }

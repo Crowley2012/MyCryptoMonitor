@@ -1,7 +1,6 @@
 ﻿Catch all errors, offer reset
 Config file deleted when encrypted
 Donate form
-Tips
 
 New UI
 	Style

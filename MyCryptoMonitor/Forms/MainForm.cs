@@ -343,6 +343,7 @@ namespace MyCryptoMonitor.Forms
         {
             coinsToolStripMenuItem.Enabled = false;
             UserConfigService.Currency = cbCurrency.Text;
+            RemoveLines();
         }
 
         #region File Menu

@@ -99,7 +99,7 @@
             this.lblOverallTotal.TabIndex = 0;
             this.lblOverallTotal.Text = "$0.00";
             this.lblOverallTotal.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.toolTips.SetToolTip(this.lblOverallTotal, "Overall Total");
+            this.toolTips.SetToolTip(this.lblOverallTotal, "Current portfolio value");
             // 
             // tableLayoutPanel1
             // 
@@ -455,7 +455,7 @@
             this.label7.Size = new System.Drawing.Size(32, 13);
             this.label7.TabIndex = 18;
             this.label7.Text = "Coin";
-            this.toolTips.SetToolTip(this.label7, "Coin short code");
+            this.toolTips.SetToolTip(this.label7, "Coin name");
             // 
             // label8
             // 
@@ -477,7 +477,7 @@
             this.label9.Size = new System.Drawing.Size(47, 13);
             this.label9.TabIndex = 20;
             this.label9.Text = "Bought";
-            this.toolTips.SetToolTip(this.label9, "Amount of coin bought");
+            this.toolTips.SetToolTip(this.label9, "Amount of coin owned");
             // 
             // label10
             // 
@@ -488,7 +488,7 @@
             this.label10.Size = new System.Drawing.Size(36, 13);
             this.label10.TabIndex = 21;
             this.label10.Text = "Total";
-            this.toolTips.SetToolTip(this.label10, "(Price x Bought)");
+            this.toolTips.SetToolTip(this.label10, "Current value of coins (Price × Bought)");
             // 
             // label1
             // 
@@ -499,7 +499,7 @@
             this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 32;
             this.label1.Text = "Paid";
-            this.toolTips.SetToolTip(this.label1, "The amount of fiat paid");
+            this.toolTips.SetToolTip(this.label1, "Amount of fiat invested");
             // 
             // label16
             // 
@@ -510,7 +510,7 @@
             this.label16.Size = new System.Drawing.Size(37, 13);
             this.label16.TabIndex = 33;
             this.label16.Text = "Profit";
-            this.toolTips.SetToolTip(this.label16, "(Total - Paid)");
+            this.toolTips.SetToolTip(this.label16, "(Total − Paid)");
             // 
             // label17
             // 
@@ -521,7 +521,7 @@
             this.label17.Size = new System.Drawing.Size(69, 13);
             this.label17.TabIndex = 39;
             this.label17.Text = "Change ($)";
-            this.toolTips.SetToolTip(this.label17, "Change in dollars since reset");
+            this.toolTips.SetToolTip(this.label17, "Change since last reset");
             // 
             // label18
             // 
@@ -532,7 +532,7 @@
             this.label18.Size = new System.Drawing.Size(71, 13);
             this.label18.TabIndex = 45;
             this.label18.Text = "Change (%)";
-            this.toolTips.SetToolTip(this.label18, "Change in percent since reset");
+            this.toolTips.SetToolTip(this.label18, "Change since last reset");
             // 
             // menuStrip1
             // 
@@ -599,21 +599,21 @@
             // addToolStripMenuItem
             // 
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-            this.addToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.addToolStripMenuItem.Text = "Add Coin";
             this.addToolStripMenuItem.Click += new System.EventHandler(this.AddCoin_Click);
             // 
             // removeToolStripMenuItem
             // 
             this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.removeToolStripMenuItem.Text = "Remove Coin";
             this.removeToolStripMenuItem.Click += new System.EventHandler(this.RemoveCoin_Click);
             // 
             // removeAllToolStripMenuItem
             // 
             this.removeAllToolStripMenuItem.Name = "removeAllToolStripMenuItem";
-            this.removeAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.removeAllToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.removeAllToolStripMenuItem.Text = "Remove All";
             this.removeAllToolStripMenuItem.Click += new System.EventHandler(this.RemoveAllCoins_Click);
             // 
@@ -697,7 +697,7 @@
             this.label2.Size = new System.Drawing.Size(52, 13);
             this.label2.TabIndex = 47;
             this.label2.Text = "1/hr (%)";
-            this.toolTips.SetToolTip(this.label2, "Change in percent for the last hour");
+            this.toolTips.SetToolTip(this.label2, "Change in the last hour");
             // 
             // label3
             // 
@@ -708,7 +708,7 @@
             this.label3.Size = new System.Drawing.Size(59, 13);
             this.label3.TabIndex = 48;
             this.label3.Text = "24/hr (%)";
-            this.toolTips.SetToolTip(this.label3, "Change in percent for the last 24 hours");
+            this.toolTips.SetToolTip(this.label3, "Change in the last 24 hours");
             // 
             // label5
             // 
@@ -719,8 +719,8 @@
             this.label5.Size = new System.Drawing.Size(80, 13);
             this.label5.TabIndex = 49;
             this.label5.Text = "Bought Price";
-            this.toolTips.SetToolTip(this.label5, "Price coin was bought at. If multiple payments, this will be average bought price" +
-        ". (Paid / Bought)");
+            this.toolTips.SetToolTip(this.label5, "Price of coin when bought. If multiple payments, this will be average bought pric" +
+        "e. (Paid ÷ Bought)");
             // 
             // label6
             // 
@@ -731,7 +731,7 @@
             this.label6.Size = new System.Drawing.Size(48, 13);
             this.label6.TabIndex = 50;
             this.label6.Text = "7/d (%)";
-            this.toolTips.SetToolTip(this.label6, "Change in percent for the last 7 days");
+            this.toolTips.SetToolTip(this.label6, "Change in the last 7 days");
             // 
             // label12
             // 
@@ -742,7 +742,7 @@
             this.label12.Size = new System.Drawing.Size(37, 13);
             this.label12.TabIndex = 51;
             this.label12.Text = "Ratio";
-            this.toolTips.SetToolTip(this.label12, "(Profit / Paid)");
+            this.toolTips.SetToolTip(this.label12, "(Profit ÷ Paid)");
             // 
             // MainForm
             // 

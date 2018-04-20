@@ -14,6 +14,7 @@ namespace MyCryptoMonitor.Forms
         #region Private Variables
         private List<Coin> _coins;
         private List<AlertDataSource> _otherAlerts;
+        private AlertService.Operators _operator => radioGreater.Checked ? AlertService.Operators.GreaterThan : AlertService.Operators.LessThan;
         #endregion
 
         #region Constructor
@@ -38,14 +39,14 @@ namespace MyCryptoMonitor.Forms
             AlertService.Save();
         }
 
-        private bool CheckValidAlert(decimal currentPrice, decimal checkPrice, AlertService.Operators op)
+        private bool CheckValidAlert(decimal currentPrice, decimal checkPrice)
         {
-            if (op == AlertService.Operators.GreaterThan && currentPrice > checkPrice)
+            if (_operator == AlertService.Operators.GreaterThan && currentPrice > checkPrice)
             {
                 MessageBox.Show("Current price is already greater than check price");
                 return false;
             }
-            else if(op == AlertService.Operators.LessThan && currentPrice < checkPrice)
+            else if(_operator == AlertService.Operators.LessThan && currentPrice < checkPrice)
             {
                 MessageBox.Show("Current price is already less than check price");
                 return false;
@@ -60,7 +61,7 @@ namespace MyCryptoMonitor.Forms
         {
             AlertService.Load();
 
-            cmbCoins.DataSource = _coins.Select(c => c.ShortName).ToList();
+            cmbCoins.DataSource = _coins.OrderBy(c =>c.ShortName).Select(c => c.ShortName).ToList();
 
             txtCurrent.Text = _coins.Where(c => c.ShortName.Equals(cmbCoins.Text.ToUpper())).Select(c => c.Price).FirstOrDefault().ToString();
 
@@ -68,11 +69,6 @@ namespace MyCryptoMonitor.Forms
                 .Cast<Enum>()
                 .Select(value => new { (Attribute.GetCustomAttribute(value.GetType().GetField(value.ToString()), typeof(DescriptionAttribute)) as DescriptionAttribute).Description, value })
                 .OrderBy(d => d.Description)
-                .ToList();
-
-            cmbOperator.DataSource = Enum.GetValues(typeof(AlertService.Operators))
-                .Cast<Enum>()
-                .Select(value => new { (Attribute.GetCustomAttribute(value.GetType().GetField(value.ToString()), typeof(DescriptionAttribute)) as DescriptionAttribute).Description, value })
                 .ToList();
 
             //Setup inputs
@@ -108,13 +104,11 @@ namespace MyCryptoMonitor.Forms
                 MessageBox.Show("Coin not selected or price is not a valid number.");
                 return;
             }
-
-            //Check if condition is valid
-            Enum.TryParse(cmbOperator.SelectedValue.ToString(), out AlertService.Operators op);
-            if (!CheckValidAlert(Convert.ToDecimal(txtCurrent.Text), Convert.ToDecimal(txtPrice.Text), op))
+            
+            if (!CheckValidAlert(Convert.ToDecimal(txtCurrent.Text), Convert.ToDecimal(txtPrice.Text)))
                 return;
 
-            bsAlerts.Add(new AlertDataSource { Coin = cmbCoins.Text, Current = Convert.ToDecimal(txtCurrent.Text), Operator = (AlertService.Operators)cmbOperator.SelectedValue, Price = Convert.ToDecimal(txtPrice.Text), Currency = UserConfigService.Currency });
+            bsAlerts.Add(new AlertDataSource { Coin = cmbCoins.Text, Current = Convert.ToDecimal(txtCurrent.Text), Operator = _operator, Price = Convert.ToDecimal(txtPrice.Text), Currency = UserConfigService.Currency });
             bsAlerts.DataSource = ((List<AlertDataSource>)bsAlerts.DataSource).OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();
         }
 
