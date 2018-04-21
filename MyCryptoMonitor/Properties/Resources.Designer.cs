@@ -63,9 +63,9 @@ namespace MyCryptoMonitor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ripple_qr {
+        internal static System.Drawing.Bitmap ltc_qr {
             get {
-                object obj = ResourceManager.GetObject("ripple_qr", resourceCulture);
+                object obj = ResourceManager.GetObject("ltc_qr", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,29 @@ namespace MyCryptoMonitor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap stellar_qr {
+        internal static System.Drawing.Bitmap xby_qr {
             get {
-                object obj = ResourceManager.GetObject("stellar_qr", resourceCulture);
+                object obj = ResourceManager.GetObject("xby_qr", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap xlm_qr {
+            get {
+                object obj = ResourceManager.GetObject("xlm_qr", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap xrp_qr {
+            get {
+                object obj = ResourceManager.GetObject("xrp_qr", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

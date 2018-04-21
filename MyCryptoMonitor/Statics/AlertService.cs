@@ -35,7 +35,11 @@ namespace MyCryptoMonitor.Statics
         #region Manage
         public static void Create()
         {
-            File.WriteAllText(FILENAME, JsonConvert.SerializeObject(new AlertConfig()));
+            if(UserConfigService.Encrypted)
+                File.WriteAllText(FILENAME, EncryptionService.AesEncryptString(JsonConvert.SerializeObject(new AlertConfig())));
+            else
+                File.WriteAllText(FILENAME, JsonConvert.SerializeObject(new AlertConfig()));
+
             Load();
         }
 

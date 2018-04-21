@@ -180,8 +180,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.ico" />
-    <Content Include="Resources\ripple_qr.png" />
-    <None Include="Resources\stellar_qr.png" />
+    <Content Include="Resources\ltc_qr.png" />
+    <Content Include="Resources\xrp_qr.png" />
+    <None Include="Resources\xlm_qr.png" />
+    <Content Include="Resources\xby_qr.png" />
     <Content Include="ToDo.txt" />
   </ItemGroup>
   <ItemGroup />

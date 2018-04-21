@@ -47,7 +47,7 @@ namespace MyCryptoMonitor.Forms
             thread.Start();
         }
 
-        private void DownloadData()
+        private void GetCoinData()
         {
             while (true)
             {
@@ -74,7 +74,7 @@ namespace MyCryptoMonitor.Forms
             }
         }
 
-        private void TimerThread()
+        private void Timers()
         {
             while (true)
             {
@@ -323,15 +323,26 @@ namespace MyCryptoMonitor.Forms
         #region Events
         private void MainForm_Load(object sender, EventArgs e)
         {
-            MainService.Startup();
+            try
+            {
+                MainService.Startup();
 
-            _coinConfigs = PortfolioService.LoadStartup();
-            cbCurrency.Text = UserConfigService.Currency;
-            SetupPortfolioMenu();
+                _coinConfigs = PortfolioService.LoadStartup();
+                cbCurrency.Text = UserConfigService.Currency;
+                SetupPortfolioMenu();
 
-            ThreadStarter(new Thread(new ThreadStart(DownloadData)));
-            ThreadStarter(new Thread(new ThreadStart(TimerThread)));
-            ThreadStarter(new Thread(new ThreadStart(CheckUpdate)));
+                ThreadStarter(new Thread(new ThreadStart(CheckUpdate)));
+                ThreadStarter(new Thread(new ThreadStart(Timers)));
+                ThreadStarter(new Thread(new ThreadStart(GetCoinData)));
+            }
+            catch (Exception)
+            {
+                if (MessageBox.Show($"There was an error starting up. Would you like to reset? \nThis will remove encryption and delete all portfolios and alerts.", "Error on startup", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
+                {
+                    MainService.Reset();
+                    Close();
+                }
+            }
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

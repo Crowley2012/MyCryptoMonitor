@@ -1,8 +1,4 @@
-﻿Catch all errors, offer reset
-Config file deleted when encrypted
-Donate form
-
-New UI
+﻿New UI
 	Style
 		Fancy
 		Compressed
@@ -19,9 +15,11 @@ Mobile / Web version
 Running Change log
 **[FEATURE]** Portfolio Manager: create unlimted number of portfolios, custom names, and set a startup portfolio
 **[FEATURE]** Choose your conversion currency
-**[FEATURE]** Open program working directory via the file menu
+**[FEATURE]** Open program working directory via file > open
+**[FEATURE]** Delete all config and portfolio files via file > reset
 **[FEATURE]** Currency specific alerts
 **[ADDED]** Profit ratio column (Profit / Paid)
 **[ADDED]** Checkmark placed next to currently loaded portfolio
 **[UPDATED]** About form
+**[UPDATED]** Donate form
 **[UPDATED]** Application icon
