@@ -7,6 +7,7 @@ Main features of the application:
 - Manage an unlimited number of portfolios
 - Add any coin that is featured on Coin Market Cap
 - Monitor profits and changes in coin prices
+- Choose your conversion currency (USD, EUR, CAD, etc.)
 - Encrypt your portfolios and other files with a password
 - Alerts based on changes in coin price
 - Alerts sent via popup, email or text
