@@ -1,18 +1,17 @@
-# MyCryptoMonitor
+# My Crypto Monitor
 
 ## Summary
 The goal of this application is to have a quick, easy and lightweight method of monitoring your crypto investments.
 
 Main features of the application:
-- Save and load portfolios
-- Add and remove coins
-- Monitor profits
-- Coin stats
+- Manage an unlimited number of portfolios
+- Add any coin that is featured on Coin Market Cap
+- Monitor profits and changes in coin prices
 - Encrypt your portfolios and other files with a password
-- Setup alerts for coin prices. Can be notified via popup, email, or text
-- Choose an API to pull coin data from
+- Alerts based on changes in coin price
+- Alerts sent via popup, email or text
 
-![Program](https://i.imgur.com/FuPMgW9.png)
+![Program](https://i.imgur.com/MHAcvOl.png)
 
 ## Install
 - Download the latest Release.zip [https://github.com/Crowley2012/MyCryptoMonitor/releases/latest]
