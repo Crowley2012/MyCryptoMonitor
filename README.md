@@ -12,7 +12,7 @@ Main features of the application:
 - Alerts based on changes in coin price
 - Alerts sent via popup, email or text
 
-![Program](https://i.imgur.com/MHAcvOl.png)
+![Program](https://i.imgur.com/WwUZ8xM.png)
 
 ## Install
 - Download the latest Release.zip [https://github.com/Crowley2012/MyCryptoMonitor/releases/latest]
