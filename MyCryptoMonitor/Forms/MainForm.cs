@@ -218,6 +218,7 @@ namespace MyCryptoMonitor.Forms
             _refreshTime = DateTime.Now;
             _loadLines = false;
             UpdateStatus("Sleeping");
+            SetHeight(false);
 
             var totalProfitColor = totalOverall - totalPaid >= 0 ? Color.Green : Color.Red;
             var totalProfitLabel = $"{MainService.CurrencySymbol}{totalOverall - totalPaid:0.00}";
@@ -247,7 +248,6 @@ namespace MyCryptoMonitor.Forms
                 newLine.BoughtTextBox.Text = coinConfig.Bought.ToString();
                 newLine.PaidTextBox.Text = coinConfig.Paid.ToString();
 
-                Height += 25;
                 Controls.Add(newLine.Table);
                 _coinLines.Add(newLine);
             });
@@ -260,13 +260,11 @@ namespace MyCryptoMonitor.Forms
                 UpdateStatus("Loading");
                 
                 foreach (var line in _coinLines)
-                {
-                    Height -= 25;
                     line.Dispose();
-                }
-
+                
                 _coinLines = new List<CoinLine>();
                 _loadLines = true;
+                SetHeight(true);
             });
         }
 
@@ -311,6 +309,14 @@ namespace MyCryptoMonitor.Forms
 
             foreach (ToolStripMenuItem item in loadPortfolioMenu.DropDownItems.OfType<ToolStripMenuItem>())
                 item.Checked = item.Text.Equals(portfolio);
+        }
+
+        private void SetHeight(bool reset)
+        {
+            Invoke((MethodInvoker)delegate
+            {
+                Height = reset ? 170 : 170 + _coinConfigs.Count * 25;
+            });
         }
         #endregion
 

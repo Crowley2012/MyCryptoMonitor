@@ -97,7 +97,7 @@
             this.lblOverallTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblOverallTotal.Location = new System.Drawing.Point(3, 0);
             this.lblOverallTotal.Name = "lblOverallTotal";
-            this.lblOverallTotal.Size = new System.Drawing.Size(307, 24);
+            this.lblOverallTotal.Size = new System.Drawing.Size(308, 24);
             this.lblOverallTotal.TabIndex = 0;
             this.lblOverallTotal.Text = "0.00";
             this.lblOverallTotal.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -129,12 +129,12 @@
             this.tableLayoutPanel5.ColumnCount = 1;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel6, 0, 0);
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(641, 3);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(643, 3);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 2;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33332F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(316, 61);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(314, 61);
             this.tableLayoutPanel5.TabIndex = 51;
             // 
             // tableLayoutPanel6
@@ -152,7 +152,7 @@
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 1;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(312, 26);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(310, 26);
             this.tableLayoutPanel6.TabIndex = 52;
             // 
             // cbCurrency
@@ -279,7 +279,7 @@
             "YER",
             "ZAR",
             "ZMK"});
-            this.cbCurrency.Location = new System.Drawing.Point(225, 2);
+            this.cbCurrency.Location = new System.Drawing.Point(223, 2);
             this.cbCurrency.Margin = new System.Windows.Forms.Padding(2);
             this.cbCurrency.Name = "cbCurrency";
             this.cbCurrency.Size = new System.Drawing.Size(85, 21);
@@ -293,7 +293,7 @@
             this.label11.Location = new System.Drawing.Point(2, 0);
             this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(219, 26);
+            this.label11.Size = new System.Drawing.Size(217, 26);
             this.label11.TabIndex = 51;
             this.label11.Text = "Currency:";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -314,7 +314,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33332F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(313, 61);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(314, 61);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
             // lblResetTime
@@ -323,7 +323,7 @@
             this.lblResetTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblResetTime.Location = new System.Drawing.Point(3, 0);
             this.lblResetTime.Name = "lblResetTime";
-            this.lblResetTime.Size = new System.Drawing.Size(307, 20);
+            this.lblResetTime.Size = new System.Drawing.Size(308, 20);
             this.lblResetTime.TabIndex = 18;
             this.lblResetTime.Text = "Time since reset: 00:00";
             this.lblResetTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -334,7 +334,7 @@
             this.lblRefreshTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblRefreshTime.Location = new System.Drawing.Point(3, 20);
             this.lblRefreshTime.Name = "lblRefreshTime";
-            this.lblRefreshTime.Size = new System.Drawing.Size(307, 20);
+            this.lblRefreshTime.Size = new System.Drawing.Size(308, 20);
             this.lblRefreshTime.TabIndex = 19;
             this.lblRefreshTime.Text = "Time since refresh: 00:00";
             this.lblRefreshTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -345,7 +345,7 @@
             this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStatus.Location = new System.Drawing.Point(3, 40);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(307, 21);
+            this.lblStatus.Size = new System.Drawing.Size(308, 21);
             this.lblStatus.TabIndex = 8;
             this.lblStatus.Text = "Status: Loading";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -360,13 +360,13 @@
             this.tableLayoutPanel3.Controls.Add(this.lblTotalProfit, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.lblOverallTotal, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 2);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(322, 3);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(323, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 3;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(313, 61);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(314, 61);
             this.tableLayoutPanel3.TabIndex = 2;
             // 
             // lblTotalProfit
@@ -376,7 +376,7 @@
             this.lblTotalProfit.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalProfit.Location = new System.Drawing.Point(3, 26);
             this.lblTotalProfit.Name = "lblTotalProfit";
-            this.lblTotalProfit.Size = new System.Drawing.Size(307, 13);
+            this.lblTotalProfit.Size = new System.Drawing.Size(308, 13);
             this.lblTotalProfit.TabIndex = 1;
             this.lblTotalProfit.Text = "0.00";
             this.lblTotalProfit.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -398,7 +398,7 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(307, 13);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(308, 13);
             this.tableLayoutPanel4.TabIndex = 48;
             // 
             // lblTotalPositiveProfit
@@ -410,7 +410,7 @@
             this.lblTotalPositiveProfit.Location = new System.Drawing.Point(161, 0);
             this.lblTotalPositiveProfit.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.lblTotalPositiveProfit.Name = "lblTotalPositiveProfit";
-            this.lblTotalPositiveProfit.Size = new System.Drawing.Size(143, 13);
+            this.lblTotalPositiveProfit.Size = new System.Drawing.Size(144, 13);
             this.lblTotalPositiveProfit.TabIndex = 50;
             this.lblTotalPositiveProfit.Text = "0.00";
             this.lblTotalPositiveProfit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
