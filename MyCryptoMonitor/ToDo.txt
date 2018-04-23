@@ -13,3 +13,8 @@
 Mobile / Web version
 
 Running Change log
+**[FEATURE]** Window can now be resized
+**[FIXED]** Incorrect formatting for different cultures
+**[FIXED]** Currency symbol not changing when selected currency changes
+**[FIXED]** Add coin menu not selecting correct coin
+**[FIXED]** Potential crash when adding coin
