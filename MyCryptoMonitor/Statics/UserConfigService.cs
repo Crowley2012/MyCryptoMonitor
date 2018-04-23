@@ -7,7 +7,7 @@ namespace MyCryptoMonitor.Statics
     public class UserConfigService
     {
         #region Public Variables
-        public static string Currency { get { return UserConfig.Currency; } set { UserConfig.Currency = value; Save(); } }
+        public static string Currency { get { return UserConfig.Currency; } set { UserConfig.Currency = value.ToUpper(); Save(); MainService.SetCurrencySymbol(); } }
         public static bool Encrypted { get { return UserConfig.Encrypted; } set { UserConfig.Encrypted = value; Save(); } }
         public static string StartupPortfolio { get { return UserConfig.StartupPortfolio; } set { UserConfig.StartupPortfolio = value; Save(); } }
         public static string EncryptionCheck { get { return UserConfig.EncryptionCheck; } set { UserConfig.EncryptionCheck = value; Save(); } }

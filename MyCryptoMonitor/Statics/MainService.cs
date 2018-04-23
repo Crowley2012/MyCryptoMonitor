@@ -1,6 +1,7 @@
 ﻿using MyCryptoMonitor.DataSources;
 using MyCryptoMonitor.Objects;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -10,9 +11,9 @@ namespace MyCryptoMonitor.Statics
     {
         public static string CurrencySymbol { get; private set; }
 
-        public static void SetCurrencySymbol(string currency)
+        public static void SetCurrencySymbol()
         {
-            switch (currency)
+            switch (UserConfigService.Currency)
             {
                 case "ALL": CurrencySymbol = "\u004c"; break;
                 case "AFN": CurrencySymbol = "\u060b"; break;
@@ -128,6 +129,9 @@ namespace MyCryptoMonitor.Statics
         
         public static void Startup()
         {
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
+            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("en-US");
+
             UserConfigService.Load();
 
             if (UserConfigService.Encrypted)

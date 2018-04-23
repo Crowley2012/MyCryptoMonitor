@@ -55,16 +55,14 @@ namespace MyCryptoMonitor.Forms
 
                 try
                 {
-                    string currency = (string)cbCurrency.Invoke(new Func<string>(() => cbCurrency.Text));
-                    string cryptoCompareAddress = string.Format(API_CRYPTO_COMPARE, currency);
-
-                    MainService.SetCurrencySymbol(currency);
+                    string cryptoCompareAddress = string.Format(API_CRYPTO_COMPARE, UserConfigService.Currency);
+                    string coinMarketCapAddress = string.Format(API_COIN_MARKET_CAP, UserConfigService.Currency);
 
                     foreach (var coinConfig in _coinConfigs)
                         cryptoCompareAddress += $"{coinConfig.Name},";
 
                     using (var webClient = new WebClient())
-                        UpdateCoins(webClient.DownloadString(cryptoCompareAddress), webClient.DownloadString(string.Format(API_COIN_MARKET_CAP, currency)));
+                        UpdateCoins(webClient.DownloadString(cryptoCompareAddress), webClient.DownloadString(coinMarketCapAddress));
                 }
                 catch (WebException)
                 {
@@ -228,6 +226,7 @@ namespace MyCryptoMonitor.Forms
 
             Invoke((MethodInvoker)delegate
             {
+                lblDebug1.Text = Thread.CurrentThread.CurrentCulture.Name + " " + Thread.CurrentThread.CurrentUICulture;
                 lblTotalProfit.ForeColor = totalProfitColor;
                 lblTotalProfit.Text = totalProfitLabel;
                 lblTotalNegativeProfit.Text = totalNegativeProfitLabel;
@@ -325,6 +324,7 @@ namespace MyCryptoMonitor.Forms
         {
             try
             {
+                lblDebug2.Text = Thread.CurrentThread.CurrentCulture.Name + " " + Thread.CurrentThread.CurrentUICulture;
                 MainService.Startup();
 
                 _coinConfigs = PortfolioService.LoadStartup();
