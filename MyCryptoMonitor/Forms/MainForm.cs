@@ -159,6 +159,12 @@ namespace MyCryptoMonitor.Forms
 
             foreach (CoinConfig coinConfig in _coinConfigs)
             {
+                if (!_coins.Any(c => c.ShortName == coinConfig.Name))
+                {
+                    RemoveLines();
+                    return;
+                }
+
                 Coin coin = _coins.Find(c => c.ShortName == coinConfig.Name);
 
                 if (_loadLines)
@@ -233,7 +239,7 @@ namespace MyCryptoMonitor.Forms
 
         private void AddLine(CoinConfig coinConfig, Coin coin, int lineIndex)
         {
-            CoinLine newLine = new CoinLine(coin.ShortName, coinConfig.Index, lineIndex);
+            CoinLine newLine = new CoinLine(coin.ShortName, coinConfig.Index, lineIndex, Width);
             coinConfig.StartupPrice = coin.Price;
 
             Invoke((MethodInvoker)delegate
@@ -242,21 +248,7 @@ namespace MyCryptoMonitor.Forms
                 newLine.PaidTextBox.Text = coinConfig.Paid.ToString();
 
                 Height += 25;
-                Controls.Add(newLine.CoinIndexLabel);
-                Controls.Add(newLine.CoinLabel);
-                Controls.Add(newLine.PriceLabel);
-                Controls.Add(newLine.BoughtTextBox);
-                Controls.Add(newLine.BoughtPriceLabel);
-                Controls.Add(newLine.TotalLabel);
-                Controls.Add(newLine.PaidTextBox);
-                Controls.Add(newLine.ProfitLabel);
-                Controls.Add(newLine.RatioLabel);
-                Controls.Add(newLine.ChangeDollarLabel);
-                Controls.Add(newLine.ChangePercentLabel);
-                Controls.Add(newLine.Change1HrPercentLabel);
-                Controls.Add(newLine.Change24HrPercentLabel);
-                Controls.Add(newLine.Change7DayPercentLabel);
-
+                Controls.Add(newLine.Table);
                 _coinLines.Add(newLine);
             });
         }

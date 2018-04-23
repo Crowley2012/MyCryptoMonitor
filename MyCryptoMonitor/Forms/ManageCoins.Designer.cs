@@ -36,10 +36,9 @@
             // 
             // btnSubmit
             // 
-            this.btnSubmit.Location = new System.Drawing.Point(325, 14);
-            this.btnSubmit.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSubmit.Location = new System.Drawing.Point(244, 11);
             this.btnSubmit.Name = "btnSubmit";
-            this.btnSubmit.Size = new System.Drawing.Size(100, 26);
+            this.btnSubmit.Size = new System.Drawing.Size(75, 21);
             this.btnSubmit.TabIndex = 2;
             this.btnSubmit.Text = "Add";
             this.btnSubmit.UseVisualStyleBackColor = true;
@@ -50,10 +49,9 @@
             this.cbCoins.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cbCoins.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbCoins.FormattingEnabled = true;
-            this.cbCoins.Location = new System.Drawing.Point(13, 14);
-            this.cbCoins.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbCoins.Location = new System.Drawing.Point(10, 11);
             this.cbCoins.Name = "cbCoins";
-            this.cbCoins.Size = new System.Drawing.Size(233, 24);
+            this.cbCoins.Size = new System.Drawing.Size(176, 21);
             this.cbCoins.TabIndex = 0;
             this.cbCoins.SelectedIndexChanged += new System.EventHandler(this.cbCoins_SelectedIndexChanged);
             // 
@@ -61,23 +59,22 @@
             // 
             this.cbCoinIndex.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbCoinIndex.FormattingEnabled = true;
-            this.cbCoinIndex.Location = new System.Drawing.Point(253, 14);
-            this.cbCoinIndex.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbCoinIndex.Location = new System.Drawing.Point(190, 11);
             this.cbCoinIndex.Name = "cbCoinIndex";
-            this.cbCoinIndex.Size = new System.Drawing.Size(63, 24);
+            this.cbCoinIndex.Size = new System.Drawing.Size(48, 21);
             this.cbCoinIndex.TabIndex = 1;
             // 
             // ManageCoins
             // 
             this.AcceptButton = this.btnSubmit;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(441, 49);
+            this.ClientSize = new System.Drawing.Size(331, 40);
             this.Controls.Add(this.cbCoinIndex);
             this.Controls.Add(this.cbCoins);
             this.Controls.Add(this.btnSubmit);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ManageCoins";
             this.Text = "Add Coin";
             this.ResumeLayout(false);

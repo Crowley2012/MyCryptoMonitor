@@ -13,8 +13,10 @@ namespace MyCryptoMonitor.Gui
         public Label CoinLabel;
         public Label CoinIndexLabel;
         public Label PriceLabel;
+        public TextBox BoughtTextBox;
         public Label BoughtPriceLabel;
         public Label TotalLabel;
+        public TextBox PaidTextBox;
         public Label ProfitLabel;
         public Label RatioLabel;
         public Label ChangeDollarLabel;
@@ -22,21 +24,14 @@ namespace MyCryptoMonitor.Gui
         public Label Change1HrPercentLabel;
         public Label Change24HrPercentLabel;
         public Label Change7DayPercentLabel;
-        public TextBox BoughtTextBox;
-        public TextBox PaidTextBox;
-        #endregion
-
-        #region Private Variables
-        private const int StartY = 122;
-        private const int Spacing = 18;
+        public TableLayoutPanel Table;
         #endregion
 
         #region Constructor
-        public CoinLine(string coin, int coinIndex, int index)
+        public CoinLine(string coin, int coinIndex, int index, int width)
         {
             CoinName = coin;
             CoinIndex = coinIndex;
-            int yindex = StartY + index * 25;
 
             CoinIndexLabel = new Label();
             CoinLabel = new Label();
@@ -52,51 +47,85 @@ namespace MyCryptoMonitor.Gui
             Change1HrPercentLabel = new Label();
             Change24HrPercentLabel = new Label();
             Change7DayPercentLabel = new Label();
+            Table = new TableLayoutPanel();
 
-            CoinIndexLabel.AutoSize = true;
-            CoinLabel.AutoSize = true;
-            PriceLabel.AutoSize = true;
-            BoughtPriceLabel.AutoSize = true;
-            TotalLabel.AutoSize = true;
-            ProfitLabel.AutoSize = true;
-            RatioLabel.AutoSize = true;
-            ChangeDollarLabel.AutoSize = true;
-            ChangePercentLabel.AutoSize = true;
-            Change1HrPercentLabel.AutoSize = true;
-            Change24HrPercentLabel.AutoSize = true;
-            Change7DayPercentLabel.AutoSize = true;
+            CoinIndexLabel.AutoSize = false;
+            CoinLabel.AutoSize = false;
+            PriceLabel.AutoSize = false;
+            BoughtPriceLabel.AutoSize = false;
+            TotalLabel.AutoSize = false;
+            ProfitLabel.AutoSize = false;
+            RatioLabel.AutoSize = false;
+            ChangeDollarLabel.AutoSize = false;
+            ChangePercentLabel.AutoSize = false;
+            Change1HrPercentLabel.AutoSize = false;
+            Change24HrPercentLabel.AutoSize = false;
+            Change7DayPercentLabel.AutoSize = false;
+
+            CoinIndexLabel.TextAlign = ContentAlignment.MiddleLeft;
+            CoinLabel.TextAlign = ContentAlignment.MiddleLeft;
+            PriceLabel.TextAlign = ContentAlignment.MiddleLeft;
+            BoughtPriceLabel.TextAlign = ContentAlignment.MiddleLeft;
+            TotalLabel.TextAlign = ContentAlignment.MiddleLeft;
+            ProfitLabel.TextAlign = ContentAlignment.MiddleLeft;
+            RatioLabel.TextAlign = ContentAlignment.MiddleLeft;
+            ChangeDollarLabel.TextAlign = ContentAlignment.MiddleLeft;
+            ChangePercentLabel.TextAlign = ContentAlignment.MiddleLeft;
+            Change1HrPercentLabel.TextAlign = ContentAlignment.MiddleLeft;
+            Change24HrPercentLabel.TextAlign = ContentAlignment.MiddleLeft;
+            Change7DayPercentLabel.TextAlign = ContentAlignment.MiddleLeft;
+
+            CoinIndexLabel.Dock = DockStyle.Fill;
+            CoinLabel.Dock = DockStyle.Fill;
+            PriceLabel.Dock = DockStyle.Fill;
+            BoughtPriceLabel.Dock = DockStyle.Fill;
+            TotalLabel.Dock = DockStyle.Fill;
+            ProfitLabel.Dock = DockStyle.Fill;
+            RatioLabel.Dock = DockStyle.Fill;
+            ChangeDollarLabel.Dock = DockStyle.Fill;
+            ChangePercentLabel.Dock = DockStyle.Fill;
+            Change1HrPercentLabel.Dock = DockStyle.Fill;
+            Change24HrPercentLabel.Dock = DockStyle.Fill;
+            Change7DayPercentLabel.Dock = DockStyle.Fill;
+            BoughtTextBox.Dock = DockStyle.Fill;
+            PaidTextBox.Dock = DockStyle.Fill;
 
             CoinIndexLabel.Font = new Font(CoinIndexLabel.Font.FontFamily, 6f);
 
-            CoinIndexLabel.Size = new Size(15, 13);
-            CoinLabel.Size = new Size(38, 13);
-            PriceLabel.Size = new Size(58, 13);
-            BoughtTextBox.Size = new Size(80, 20);
-            BoughtPriceLabel.Size = new Size(78, 13);
-            TotalLabel.Size = new Size(58, 13);
-            PaidTextBox.Size = new Size(80, 20);
-            ProfitLabel.Size = new Size(58, 13);
-            RatioLabel.Size = new Size(58, 13);
-            ChangeDollarLabel.Size = new Size(58, 13);
-            ChangePercentLabel.Size = new Size(54, 13);
-            Change1HrPercentLabel.Size = new Size(42, 13);
-            Change24HrPercentLabel.Size = new Size(52, 13);
-            Change7DayPercentLabel.Size = new Size(52, 13);
-
-            CoinIndexLabel.Location = new Point(3, yindex + 2);
-            CoinLabel.Location = new Point(12, yindex);
-            PriceLabel.Location = new Point(CoinLabel.Location.X + CoinLabel.Width + Spacing, yindex);
-            BoughtTextBox.Location = new Point(PriceLabel.Location.X + PriceLabel.Width + Spacing, yindex -3);
-            BoughtPriceLabel.Location = new Point(BoughtTextBox.Location.X + BoughtTextBox.Width + Spacing, yindex);
-            TotalLabel.Location = new Point(BoughtPriceLabel.Location.X + BoughtPriceLabel.Width + Spacing, yindex);
-            PaidTextBox.Location = new Point(TotalLabel.Location.X + TotalLabel.Width + Spacing, yindex - 3);
-            ProfitLabel.Location = new Point(PaidTextBox.Location.X + PaidTextBox.Width + Spacing, yindex);
-            RatioLabel.Location = new Point(ProfitLabel.Location.X + ProfitLabel.Width + Spacing - 5, yindex);
-            ChangeDollarLabel.Location = new Point(RatioLabel.Location.X + RatioLabel.Width + Spacing - 15, yindex);
-            ChangePercentLabel.Location = new Point(ChangeDollarLabel.Location.X + ChangeDollarLabel.Width + Spacing, yindex);
-            Change1HrPercentLabel.Location = new Point(ChangePercentLabel.Location.X + ChangePercentLabel.Width + Spacing, yindex);
-            Change24HrPercentLabel.Location = new Point(Change1HrPercentLabel.Location.X + Change1HrPercentLabel.Width + Spacing, yindex);
-            Change7DayPercentLabel.Location = new Point(Change24HrPercentLabel.Location.X + Change24HrPercentLabel.Width + Spacing, yindex);
+            Table.RowCount = 1;
+            Table.ColumnCount = 14;
+            Table.Anchor = ((AnchorStyles.Top | AnchorStyles.Left) | AnchorStyles.Right);
+            Table.Location = new Point(0, 123 + 25 * index);
+            Table.Size = new Size(width - 15, 23);
+            Table.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            Table.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 19F));
+            Table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5.109272F));
+            Table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 9.196688F));
+            Table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 8.180848F));
+            Table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 9.989424F));
+            Table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 7.522156F));
+            Table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 7.522156F));
+            Table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 7.522156F));
+            Table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 7.522156F));
+            Table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 8.247383F));
+            Table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 8.247383F));
+            Table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 6.980124F));
+            Table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 6.980124F));
+            Table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 6.980124F));
+            Table.Controls.Add(Change7DayPercentLabel, 13, 0);
+            Table.Controls.Add(Change24HrPercentLabel, 12, 0);
+            Table.Controls.Add(Change1HrPercentLabel, 11, 0);
+            Table.Controls.Add(ChangePercentLabel, 10, 0);
+            Table.Controls.Add(ChangeDollarLabel, 9, 0);
+            Table.Controls.Add(RatioLabel, 8, 0);
+            Table.Controls.Add(ProfitLabel, 7, 0);
+            Table.Controls.Add(PaidTextBox, 6, 0);
+            Table.Controls.Add(TotalLabel, 5, 0);
+            Table.Controls.Add(BoughtPriceLabel, 4, 0);
+            Table.Controls.Add(BoughtTextBox, 3, 0);
+            Table.Controls.Add(PriceLabel, 2, 0);
+            Table.Controls.Add(CoinLabel, 1, 0);
+            Table.Controls.Add(CoinIndexLabel, 0, 0);
 
             ProfitLabel.TextChanged += new EventHandler(label_TextChanged);
             RatioLabel.TextChanged += new EventHandler(label_TextChanged);
@@ -125,6 +154,7 @@ namespace MyCryptoMonitor.Gui
             Change1HrPercentLabel.Dispose();
             Change24HrPercentLabel.Dispose();
             Change7DayPercentLabel.Dispose();
+            Table.Dispose();
         }
         #endregion
 
