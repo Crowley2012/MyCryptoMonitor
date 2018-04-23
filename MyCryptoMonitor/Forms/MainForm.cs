@@ -58,6 +58,8 @@ namespace MyCryptoMonitor.Forms
                     string currency = (string)cbCurrency.Invoke(new Func<string>(() => cbCurrency.Text));
                     string cryptoCompareAddress = string.Format(API_CRYPTO_COMPARE, currency);
 
+                    MainService.SetCurrencySymbol(currency);
+
                     foreach (var coinConfig in _coinConfigs)
                         cryptoCompareAddress += $"{coinConfig.Name},";
 
@@ -179,12 +181,12 @@ namespace MyCryptoMonitor.Forms
 
                 var coinIndexLabel = _coinConfigs.Count(c => c.Name.Equals(coinConfig.Name)) > 1 ? $"[{coinConfig.Index + 1}]" : string.Empty;
                 var coinLabel = coin.ShortName;
-                var priceLabel = $"${coin.Price.ConvertToString(7)}";
-                var boughtLabel = $"${bought.SafeDivision(paid).ConvertToString(7)}";
-                var totalLabel = $"${total:0.00}";
-                var profitLabel = $"${profit:0.00}";
+                var priceLabel = $"{MainService.CurrencySymbol}{coin.Price.ConvertToString(7)}";
+                var boughtLabel = $"{MainService.CurrencySymbol}{bought.SafeDivision(paid).ConvertToString(7)}";
+                var totalLabel = $"{MainService.CurrencySymbol}{total:0.00}";
+                var profitLabel = $"{MainService.CurrencySymbol}{profit:0.00}";
                 var ratioLabel = paid != 0 ? $"{profit / paid:0.00}" : "0.00";
-                var changeDollarLabel = $"${(coin.Price - coinConfig.StartupPrice):0.000000}";
+                var changeDollarLabel = $"{MainService.CurrencySymbol}{(coin.Price - coinConfig.StartupPrice):0.000000}";
                 var changePercentLabel = $"{coinConfig.StartupPrice.SafeDivision(coin.Price - coinConfig.StartupPrice) * 100:0.00}%";
                 var change1HrLabel = $"{coin.Change1HourPercent:0.00}%";
                 var change24HrLabel = $"{coin.Change24HourPercent:0.00}%";
@@ -212,10 +214,10 @@ namespace MyCryptoMonitor.Forms
             UpdateStatus("Sleeping");
 
             var totalProfitColor = totalOverall - totalPaid >= 0 ? Color.Green : Color.Red;
-            var totalProfitLabel = $"${totalOverall - totalPaid:0.00}";
-            var totalNegativeProfitLabel = $"${totalNegativeProfits:0.00}";
-            var totalPositiveProfitLabel = $"${totalPostivieProfits:0.00}";
-            var totalOverallLabel = $"${totalOverall:0.00}";
+            var totalProfitLabel = $"{MainService.CurrencySymbol}{totalOverall - totalPaid:0.00}";
+            var totalNegativeProfitLabel = $"{MainService.CurrencySymbol}{totalNegativeProfits:0.00}";
+            var totalPositiveProfitLabel = $"{MainService.CurrencySymbol}{totalPostivieProfits:0.00}";
+            var totalOverallLabel = $"{MainService.CurrencySymbol}{totalOverall:0.00}";
 
             Invoke((MethodInvoker)delegate
             {
