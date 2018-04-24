@@ -33,6 +33,9 @@
             this.lblOverallTotal = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblDebug1 = new System.Windows.Forms.Label();
+            this.lblDebug2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.cbCurrency = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -80,18 +83,15 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblDebug1 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblDebug2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
+            this.tableLayoutPanel8.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
-            this.tableLayoutPanel8.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblOverallTotal
@@ -141,6 +141,37 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
             this.tableLayoutPanel5.Size = new System.Drawing.Size(314, 61);
             this.tableLayoutPanel5.TabIndex = 51;
+            // 
+            // tableLayoutPanel8
+            // 
+            this.tableLayoutPanel8.ColumnCount = 2;
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel8.Controls.Add(this.lblDebug1, 0, 0);
+            this.tableLayoutPanel8.Controls.Add(this.lblDebug2, 1, 0);
+            this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(3, 33);
+            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
+            this.tableLayoutPanel8.RowCount = 1;
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(308, 25);
+            this.tableLayoutPanel8.TabIndex = 53;
+            // 
+            // lblDebug1
+            // 
+            this.lblDebug1.AutoSize = true;
+            this.lblDebug1.Location = new System.Drawing.Point(3, 0);
+            this.lblDebug1.Name = "lblDebug1";
+            this.lblDebug1.Size = new System.Drawing.Size(0, 13);
+            this.lblDebug1.TabIndex = 53;
+            // 
+            // lblDebug2
+            // 
+            this.lblDebug2.AutoSize = true;
+            this.lblDebug2.Location = new System.Drawing.Point(157, 0);
+            this.lblDebug2.Name = "lblDebug2";
+            this.lblDebug2.Size = new System.Drawing.Size(0, 13);
+            this.lblDebug2.TabIndex = 54;
             // 
             // tableLayoutPanel6
             // 
@@ -289,6 +320,7 @@
             this.cbCurrency.Name = "cbCurrency";
             this.cbCurrency.Size = new System.Drawing.Size(85, 21);
             this.cbCurrency.TabIndex = 0;
+            this.toolTips.SetToolTip(this.cbCurrency, "This will change the currency used.");
             this.cbCurrency.SelectedIndexChanged += new System.EventHandler(this.Currency_SelectedIndexChanged);
             // 
             // label11
@@ -302,6 +334,7 @@
             this.label11.TabIndex = 51;
             this.label11.Text = "Currency:";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTips.SetToolTip(this.label11, "This will change the currency used.");
             // 
             // tableLayoutPanel2
             // 
@@ -330,8 +363,10 @@
             this.lblResetTime.Name = "lblResetTime";
             this.lblResetTime.Size = new System.Drawing.Size(308, 20);
             this.lblResetTime.TabIndex = 18;
-            this.lblResetTime.Text = "Time since reset: 00:00";
+            this.lblResetTime.Text = "Running Timer: 00:00";
             this.lblResetTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.toolTips.SetToolTip(this.lblResetTime, "The length of time that the current portfolio has been running. Loading a new por" +
+        "tfolio will reset this timer.");
             // 
             // lblRefreshTime
             // 
@@ -341,8 +376,11 @@
             this.lblRefreshTime.Name = "lblRefreshTime";
             this.lblRefreshTime.Size = new System.Drawing.Size(308, 20);
             this.lblRefreshTime.TabIndex = 19;
-            this.lblRefreshTime.Text = "Time since refresh: 00:00";
+            this.lblRefreshTime.Text = "Refresh Timer: 00:00";
             this.lblRefreshTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.toolTips.SetToolTip(this.lblRefreshTime, "New data is loaded every 5 seconds. After data is refreshed this timer will reset" +
+        ". If the refresh is taking longer than 5 seconds there could be a connection iss" +
+        "ue.");
             // 
             // lblStatus
             // 
@@ -354,6 +392,7 @@
             this.lblStatus.TabIndex = 8;
             this.lblStatus.Text = "Status: Loading";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.toolTips.SetToolTip(this.lblStatus, "Current status of the monitor.");
             // 
             // tableLayoutPanel3
             // 
@@ -711,6 +750,13 @@
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.toolTips.SetToolTip(this.label2, "Change in the last hour");
             // 
+            // toolTips
+            // 
+            this.toolTips.AutomaticDelay = 1500;
+            this.toolTips.AutoPopDelay = 15000;
+            this.toolTips.InitialDelay = 250;
+            this.toolTips.ReshowDelay = 0;
+            // 
             // label3
             // 
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -799,42 +845,11 @@
             this.tableLayoutPanel7.Size = new System.Drawing.Size(984, 16);
             this.tableLayoutPanel7.TabIndex = 52;
             // 
-            // lblDebug1
-            // 
-            this.lblDebug1.AutoSize = true;
-            this.lblDebug1.Location = new System.Drawing.Point(3, 0);
-            this.lblDebug1.Name = "lblDebug1";
-            this.lblDebug1.Size = new System.Drawing.Size(0, 13);
-            this.lblDebug1.TabIndex = 53;
-            // 
-            // tableLayoutPanel8
-            // 
-            this.tableLayoutPanel8.ColumnCount = 2;
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel8.Controls.Add(this.lblDebug1, 0, 0);
-            this.tableLayoutPanel8.Controls.Add(this.lblDebug2, 1, 0);
-            this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(3, 33);
-            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
-            this.tableLayoutPanel8.RowCount = 1;
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(308, 25);
-            this.tableLayoutPanel8.TabIndex = 53;
-            // 
-            // lblDebug2
-            // 
-            this.lblDebug2.AutoSize = true;
-            this.lblDebug2.Location = new System.Drawing.Point(157, 0);
-            this.lblDebug2.Name = "lblDebug2";
-            this.lblDebug2.Size = new System.Drawing.Size(0, 13);
-            this.lblDebug2.TabIndex = 54;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 131);
+            this.ClientSize = new System.Drawing.Size(984, 126);
             this.Controls.Add(this.tableLayoutPanel7);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.menuStrip1);
@@ -846,6 +861,8 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
+            this.tableLayoutPanel8.ResumeLayout(false);
+            this.tableLayoutPanel8.PerformLayout();
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
@@ -855,8 +872,6 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.tableLayoutPanel7.ResumeLayout(false);
-            this.tableLayoutPanel8.ResumeLayout(false);
-            this.tableLayoutPanel8.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

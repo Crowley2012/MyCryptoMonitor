@@ -80,8 +80,8 @@ namespace MyCryptoMonitor.Forms
             {
                 TimeSpan spanReset = DateTime.Now.Subtract(_resetTime);
                 TimeSpan spanRefresh = DateTime.Now.Subtract(_refreshTime);
-                string resetTime = $"Time since reset: {spanReset.Hours}:{spanReset.Minutes:00}:{spanReset.Seconds:00}";
-                string refreshTime = $"Time since refresh: {spanRefresh.Minutes}:{spanRefresh.Seconds:00}";
+                string resetTime = $"Running Timer: {spanReset.Hours}:{spanReset.Minutes:00}:{spanReset.Seconds:00}";
+                string refreshTime = $"Refresh Timer: {spanRefresh.Minutes}:{spanRefresh.Seconds:00}";
                 
                 UpdateTimers(resetTime, refreshTime);
 
@@ -168,7 +168,7 @@ namespace MyCryptoMonitor.Forms
                 if (_loadLines)
                     AddLine(coinConfig, coin, lineIndex++);
 
-                CoinLine line = (from c in _coinLines where c.CoinName.Equals(coin.ShortName) && c.CoinIndex == coinConfig.Index select c).First();
+                CoinLine line = (from c in _coinLines where c.CoinName.ExtEquals(coin.ShortName) && c.CoinIndex == coinConfig.Index select c).First();
 
                 decimal bought = line.BoughtTextBox.Text.ConvertToDecimal();
                 decimal paid = line.PaidTextBox.Text.ConvertToDecimal();
@@ -183,7 +183,7 @@ namespace MyCryptoMonitor.Forms
                 else
                     totalNegativeProfits += profit;
 
-                var coinIndexLabel = _coinConfigs.Count(c => c.Name.Equals(coinConfig.Name)) > 1 ? $"[{coinConfig.Index + 1}]" : string.Empty;
+                var coinIndexLabel = _coinConfigs.Count(c => c.Name.ExtEquals(coinConfig.Name)) > 1 ? $"[{coinConfig.Index + 1}]" : string.Empty;
                 var coinLabel = coin.ShortName;
                 var priceLabel = $"{MainService.CurrencySymbol}{coin.Price.ConvertToString(7)}";
                 var boughtLabel = $"{MainService.CurrencySymbol}{bought.SafeDivision(paid).ConvertToString(7)}";
@@ -226,7 +226,6 @@ namespace MyCryptoMonitor.Forms
 
             Invoke((MethodInvoker)delegate
             {
-                lblDebug1.Text = Thread.CurrentThread.CurrentCulture.Name + " " + Thread.CurrentThread.CurrentUICulture;
                 lblTotalProfit.ForeColor = totalProfitColor;
                 lblTotalProfit.Text = totalProfitLabel;
                 lblTotalNegativeProfit.Text = totalNegativeProfitLabel;
@@ -244,8 +243,8 @@ namespace MyCryptoMonitor.Forms
 
             Invoke((MethodInvoker)delegate
             {
-                newLine.BoughtTextBox.Text = coinConfig.Bought.ToString();
-                newLine.PaidTextBox.Text = coinConfig.Paid.ToString();
+                newLine.SetBoughtText(coinConfig.Bought.ToString());
+                newLine.SetPaidText(coinConfig.Paid.ToString());
 
                 Controls.Add(newLine.Table);
                 _coinLines.Add(newLine);
@@ -275,8 +274,8 @@ namespace MyCryptoMonitor.Forms
             var config = _coinLines.Select(coinLine => new CoinConfig
             {
                 Name = coinLine.CoinLabel.Text,
-                Bought = Convert.ToDecimal(coinLine.BoughtTextBox.Text),
-                Paid = Convert.ToDecimal(coinLine.PaidTextBox.Text),
+                Bought = coinLine.BoughtTextBox.Text.ConvertToDecimal(),
+                Paid = coinLine.PaidTextBox.Text.ConvertToDecimal(),
                 Index = coinLine.CoinIndex
             }).ToList();
 
@@ -294,27 +293,28 @@ namespace MyCryptoMonitor.Forms
         {
             foreach (var portfolio in PortfolioService.GetPortfolios())
             {
-                savePortfolioMenu.DropDownItems.Add(new ToolStripMenuItem(portfolio.Name, null, SavePortfolio_Click) { Name = portfolio.Name, Checked = PortfolioService.CurrentPortfolio.Equals(portfolio.Name) });
-                loadPortfolioMenu.DropDownItems.Add(new ToolStripMenuItem(portfolio.Name, null, LoadPortfolio_Click) { Name = portfolio.Name, Checked = PortfolioService.CurrentPortfolio.Equals(portfolio.Name) });
+                savePortfolioMenu.DropDownItems.Add(new ToolStripMenuItem(portfolio.Name, null, SavePortfolio_Click) { Name = portfolio.Name, Checked = PortfolioService.CurrentPortfolio.ExtEquals(portfolio.Name) });
+                loadPortfolioMenu.DropDownItems.Add(new ToolStripMenuItem(portfolio.Name, null, LoadPortfolio_Click) { Name = portfolio.Name, Checked = PortfolioService.CurrentPortfolio.ExtEquals(portfolio.Name) });
             }
         }
 
         private void SelectPortfolio(string portfolio)
         {
+            MainService.Unsaved = string.IsNullOrWhiteSpace(portfolio);
             PortfolioService.CurrentPortfolio = portfolio;
 
             foreach (ToolStripMenuItem item in savePortfolioMenu.DropDownItems.OfType<ToolStripMenuItem>())
-                item.Checked = item.Text.Equals(portfolio);
+                item.Checked = item.Text.ExtEquals(portfolio);
 
             foreach (ToolStripMenuItem item in loadPortfolioMenu.DropDownItems.OfType<ToolStripMenuItem>())
-                item.Checked = item.Text.Equals(portfolio);
+                item.Checked = item.Text.ExtEquals(portfolio);
         }
 
         private void SetHeight(bool reset)
         {
             Invoke((MethodInvoker)delegate
             {
-                Height = reset ? 170 : 170 + _coinConfigs.Count * 25;
+                Height = reset ? 165 : 165 + _coinConfigs.Count * 25;
             });
         }
         #endregion
@@ -324,7 +324,6 @@ namespace MyCryptoMonitor.Forms
         {
             try
             {
-                lblDebug2.Text = Thread.CurrentThread.CurrentCulture.Name + " " + Thread.CurrentThread.CurrentUICulture;
                 MainService.Startup();
 
                 _coinConfigs = PortfolioService.LoadStartup();
@@ -347,6 +346,12 @@ namespace MyCryptoMonitor.Forms
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (MainService.Unsaved && MessageBox.Show("Current portfolio has not been saved. Are you sure you want to close?", "Portfolio not saved", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.No)
+            {
+                e.Cancel = true;
+                return;
+            }
+
             Environment.Exit(Environment.ExitCode);
         }
 
@@ -391,7 +396,7 @@ namespace MyCryptoMonitor.Forms
                 if (form.ShowDialog() != DialogResult.OK)
                     return;
                 
-                if (!_coinNames.Any(c => c.Equals(form.InputText)))
+                if (!_coinNames.Any(c => c.ExtEquals(form.InputText)))
                 {
                     MessageBox.Show("Coin does not exist.", "Error");
                     return;
@@ -403,7 +408,7 @@ namespace MyCryptoMonitor.Forms
                     Bought = 0,
                     Paid = 0,
                     StartupPrice = 0,
-                    Index = _coinConfigs.Count(c => c.Name.Equals(form.InputText))
+                    Index = _coinConfigs.Count(c => c.Name.ExtEquals(form.InputText))
                 });
 
                 RemoveLines();
@@ -418,7 +423,7 @@ namespace MyCryptoMonitor.Forms
                 if (form.ShowDialog() != DialogResult.OK)
                     return;
                 
-                _coinConfigs.RemoveAll(a => a.Name.Equals(form.InputText) && a.Index == form.CoinIndex);
+                _coinConfigs.RemoveAll(a => a.Name.ExtEquals(form.InputText) && a.Index == form.CoinIndex);
 
                 //Reset coin indexes
                 foreach (CoinConfig coinConfig in _coinConfigs)

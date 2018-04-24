@@ -10,6 +10,7 @@ namespace MyCryptoMonitor.Statics
     public class MainService
     {
         public static string CurrencySymbol { get; private set; }
+        public static bool Unsaved { get; set; }
 
         public static void SetCurrencySymbol()
         {
@@ -161,7 +162,7 @@ namespace MyCryptoMonitor.Statics
 
             foreach (AlertDataSource alert in AlertService.Alerts)
             {
-                var coinData = coins.Where(c => c.ShortName.Equals(alert.Coin) && UserConfigService.Currency.Equals(alert.Currency)).FirstOrDefault();
+                var coinData = coins.Where(c => c.ShortName.ExtEquals(alert.Coin) && UserConfigService.Currency.ExtEquals(alert.Currency)).FirstOrDefault();
 
                 if (coinData == null)
                     continue;

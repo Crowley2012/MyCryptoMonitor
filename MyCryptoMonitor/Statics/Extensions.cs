@@ -4,20 +4,7 @@ namespace MyCryptoMonitor.Statics
 {
     public static class Extensions
     {
-        public static bool ExtContains(this string source, string toCheck)
-        {
-            return source?.IndexOf(toCheck, StringComparison.OrdinalIgnoreCase) >= 0;
-        }
-
-        public static bool ExtContains(this int source, string toCheck)
-        {
-            return source.ToString().IndexOf(toCheck, StringComparison.OrdinalIgnoreCase) >= 0;
-        }
-
-        public static bool ExtContains(this Enum source, string toCheck)
-        {
-            return source.ToString().IndexOf(toCheck, StringComparison.OrdinalIgnoreCase) >= 0;
-        }
+        public static bool ExtEquals(this string source, string toCheck) => source?.Equals(toCheck, StringComparison.OrdinalIgnoreCase) ?? false;
 
         public static decimal ConvertToDecimal(this string source) => string.IsNullOrWhiteSpace(source) ? 0 : decimal.Parse(source);
 
@@ -32,7 +19,7 @@ namespace MyCryptoMonitor.Statics
                 return Decimal.Round(source, maxDecimalPlaces).ToString();
 
             if (places < 2 || index == -1)
-                return Decimal.Round(source, 2).ToString();
+                return Decimal.Round(source, 2).ToString("0.00");
 
             return Decimal.Round(source, places).ToString();
         }

@@ -101,7 +101,7 @@ namespace MyCryptoMonitor.Statics
                     {
                         Name = name,
                         FileName = fileName,
-                        Startup = UserConfigService.StartupPortfolio.Equals(name)
+                        Startup = UserConfigService.StartupPortfolio.ExtEquals(name)
                     })
                     .OrderBy(p => p.Name)
                     .ToList();

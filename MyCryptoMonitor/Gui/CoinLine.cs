@@ -28,9 +28,9 @@ namespace MyCryptoMonitor.Gui
         #endregion
 
         #region Constructor
-        public CoinLine(string coin, int coinIndex, int index, int width)
+        public CoinLine(string coinName, int coinIndex, int lineIndex, int formWidth)
         {
-            CoinName = coin;
+            CoinName = coinName;
             CoinIndex = coinIndex;
 
             CoinIndexLabel = new Label();
@@ -95,8 +95,8 @@ namespace MyCryptoMonitor.Gui
             Table.RowCount = 1;
             Table.ColumnCount = 14;
             Table.Anchor = ((AnchorStyles.Top | AnchorStyles.Left) | AnchorStyles.Right);
-            Table.Location = new Point(0, 123 + 25 * index);
-            Table.Size = new Size(width - 15, 23);
+            Table.Location = new Point(0, 123 + 25 * lineIndex);
+            Table.Size = new Size(formWidth - 15, 23);
             Table.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             Table.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 19F));
             Table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5.109272F));
@@ -127,17 +127,33 @@ namespace MyCryptoMonitor.Gui
             Table.Controls.Add(Change24HrPercentLabel, 12, 0);
             Table.Controls.Add(Change7DayPercentLabel, 13, 0);
 
-            ProfitLabel.TextChanged += new EventHandler(label_TextChanged);
-            RatioLabel.TextChanged += new EventHandler(label_TextChanged);
-            ChangeDollarLabel.TextChanged += new EventHandler(label_TextChanged);
-            ChangePercentLabel.TextChanged += new EventHandler(labelBold_TextChanged);
-            Change1HrPercentLabel.TextChanged += new EventHandler(labelBold_TextChanged);
-            Change24HrPercentLabel.TextChanged += new EventHandler(labelBold_TextChanged);
-            Change7DayPercentLabel.TextChanged += new EventHandler(labelBold_TextChanged);
+            ProfitLabel.TextChanged += new EventHandler(Label_TextChanged);
+            RatioLabel.TextChanged += new EventHandler(Label_TextChanged);
+            ChangeDollarLabel.TextChanged += new EventHandler(Label_TextChanged);
+            ChangePercentLabel.TextChanged += new EventHandler(LabelBold_TextChanged);
+            Change1HrPercentLabel.TextChanged += new EventHandler(LabelBold_TextChanged);
+            Change24HrPercentLabel.TextChanged += new EventHandler(LabelBold_TextChanged);
+            Change7DayPercentLabel.TextChanged += new EventHandler(LabelBold_TextChanged);
+            BoughtTextBox.TextChanged += new EventHandler(Input_TextChanged);
+            PaidTextBox.TextChanged += new EventHandler(Input_TextChanged);
         }
         #endregion
 
         #region Methods
+        public void SetBoughtText(string bought)
+        {
+            BoughtTextBox.TextChanged -= new EventHandler(Input_TextChanged);
+            BoughtTextBox.Text = bought;
+            BoughtTextBox.TextChanged += new EventHandler(Input_TextChanged);
+        }
+
+        public void SetPaidText(string paid)
+        {
+            PaidTextBox.TextChanged -= new EventHandler(Input_TextChanged);
+            PaidTextBox.Text = paid;
+            PaidTextBox.TextChanged += new EventHandler(Input_TextChanged);
+        }
+
         public void Dispose()
         {
             CoinIndexLabel.Dispose();
@@ -159,7 +175,12 @@ namespace MyCryptoMonitor.Gui
         #endregion
 
         #region Events
-        private void label_TextChanged(object sender, EventArgs e)
+        private void Input_TextChanged(object sender, EventArgs e)
+        {
+            MainService.Unsaved = true;
+        }
+
+        private void Label_TextChanged(object sender, EventArgs e)
         {
             Label label = (Label)sender;
             decimal changePercent = Convert.ToDecimal(label.Text.Replace("%", string.Empty).Replace(MainService.CurrencySymbol, string.Empty));
@@ -167,7 +188,7 @@ namespace MyCryptoMonitor.Gui
             label.ForeColor = changePercent >= 0 ? Color.Green : Color.Red;
         }
 
-        private void labelBold_TextChanged(object sender, EventArgs e)
+        private void LabelBold_TextChanged(object sender, EventArgs e)
         {
             Label label = (Label)sender;
             decimal changePercent = Convert.ToDecimal(label.Text.Replace("%", string.Empty).Replace(MainService.CurrencySymbol, string.Empty));

@@ -26,7 +26,7 @@ namespace MyCryptoMonitor.Forms
             var newValue = e.FormattedValue.ToString();
 
             //No change
-            if(oldValue != null && oldValue.ToString().Equals(newValue))
+            if(oldValue != null && oldValue.ToString().ExtEquals(newValue))
                 return;
 
             //New row
@@ -37,7 +37,7 @@ namespace MyCryptoMonitor.Forms
             }
 
             //Updating row
-            else if (oldValue != null && !string.IsNullOrEmpty(newValue) && !oldValue.ToString().Equals(newValue))
+            else if (oldValue != null && !string.IsNullOrEmpty(newValue) && !oldValue.ToString().ExtEquals(newValue))
             {
                 //Name is empty
                 if (grid[0, e.RowIndex].Value == null || string.IsNullOrEmpty(grid[0, e.RowIndex].Value.ToString()))

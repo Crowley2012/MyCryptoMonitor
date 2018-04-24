@@ -63,7 +63,7 @@ namespace MyCryptoMonitor.Forms
 
             cmbCoins.DataSource = _coins.OrderBy(c =>c.ShortName).Select(c => c.ShortName).ToList();
 
-            txtCurrent.Text = _coins.Where(c => c.ShortName.Equals(cmbCoins.Text.ToUpper())).Select(c => c.Price).FirstOrDefault().ToString();
+            txtCurrent.Text = _coins.Where(c => c.ShortName.ExtEquals(cmbCoins.Text)).Select(c => c.Price).FirstOrDefault().ToString();
 
             cmbReceiveType.DataSource = Enum.GetValues(typeof(AlertService.Types))
                 .Cast<Enum>()
@@ -80,15 +80,15 @@ namespace MyCryptoMonitor.Forms
             //Set the current price for alerts
             foreach (AlertDataSource alert in AlertService.Alerts)
             {
-                if (_coins.Any(c => c.ShortName.Equals(alert.Coin)))
-                    alert.Current = _coins.Where(c => c.ShortName.Equals(alert.Coin)).Select(c => c.Price).First();
+                if (_coins.Any(c => c.ShortName.ExtEquals(alert.Coin)))
+                    alert.Current = _coins.Where(c => c.ShortName.ExtEquals(alert.Coin)).Select(c => c.Price).First();
             }
 
             //Store other currency alerts
-            _otherAlerts = AlertService.Alerts.Where(a => !a.Currency.Equals(UserConfigService.Currency) || !_coins.Any(c => c.ShortName.Equals(a.Coin))).OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();
+            _otherAlerts = AlertService.Alerts.Where(a => !a.Currency.ExtEquals(UserConfigService.Currency) || !_coins.Any(c => c.ShortName.ExtEquals(a.Coin))).OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();
 
             //Show current currency alerts
-            bsAlerts.DataSource = AlertService.Alerts.Where(a => a.Currency.Equals(UserConfigService.Currency) && _coins.Any(c => c.ShortName.Equals(a.Coin))).OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();
+            bsAlerts.DataSource = AlertService.Alerts.Where(a => a.Currency.ExtEquals(UserConfigService.Currency) && _coins.Any(c => c.ShortName.ExtEquals(a.Coin))).OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();
 
             if (!UserConfigService.Encrypted)
             {
@@ -120,10 +120,8 @@ namespace MyCryptoMonitor.Forms
 
         private void cmbCoins_Validated(object sender, EventArgs e)
         {
-            cmbCoins.Text = cmbCoins.Text.ToUpper();
-
             //Set the coin price
-            var currentPrice = _coins.Where(c => c.ShortName.Equals(cmbCoins.Text)).Select(c => c.Price).FirstOrDefault().ToString();
+            var currentPrice = _coins.Where(c => c.ShortName.ExtEquals(cmbCoins.Text)).Select(c => c.Price).FirstOrDefault().ToString();
             txtPrice.Text = currentPrice;
             txtCurrent.Text = currentPrice;
         }

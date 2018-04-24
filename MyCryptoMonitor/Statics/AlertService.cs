@@ -78,7 +78,7 @@ namespace MyCryptoMonitor.Statics
         public static void Remove(List<AlertDataSource> alerts)
         {
             foreach (AlertDataSource alert in alerts)
-                Alerts.RemoveAll(c => c.Coin.Equals(alert.Coin) && c.Operator.Equals(alert.Operator) && c.Price.Equals(alert.Price));
+                Alerts.RemoveAll(c => c.Coin.ExtEquals(alert.Coin) && c.Operator.Equals(alert.Operator) && c.Price.Equals(alert.Price));
 
             Save();
         }

@@ -18,7 +18,7 @@ namespace MyCryptoMonitor.Statics
         #region Methods
         public static bool ValidatePassword(string password)
         {
-            return AesDecryptString(UserConfigService.EncryptionCheck, password).Equals(CHECKVALUE);
+            return AesDecryptString(UserConfigService.EncryptionCheck, password).ExtEquals(CHECKVALUE);
         }
 
         public static void Unlock()

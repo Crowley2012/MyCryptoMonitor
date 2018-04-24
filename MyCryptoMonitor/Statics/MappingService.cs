@@ -44,10 +44,10 @@ namespace MyCryptoMonitor.Statics
                 list.Add(new Coin
                 {
                     ShortName = cryptoCompareCoin.FROMSYMBOL,
-                    LongName = coinMarketCapCoins.Where(c => c.ShortName.Equals(cryptoCompareCoin.FROMSYMBOL)).Select(c => c.LongName).FirstOrDefault(),
-                    Change1HourPercent = coinMarketCapCoins.Where(c => c.ShortName.Equals(cryptoCompareCoin.FROMSYMBOL)).Select(c => c.Change1HourPercent).FirstOrDefault(),
+                    LongName = coinMarketCapCoins.Where(c => c.ShortName.ExtEquals(cryptoCompareCoin.FROMSYMBOL)).Select(c => c.LongName).FirstOrDefault(),
+                    Change1HourPercent = coinMarketCapCoins.Where(c => c.ShortName.ExtEquals(cryptoCompareCoin.FROMSYMBOL)).Select(c => c.Change1HourPercent).FirstOrDefault(),
                     Change24HourPercent = cryptoCompareCoin.CHANGEPCT24HOUR.ConvertToDecimal(),
-                    Change7DayPercent = coinMarketCapCoins.Where(c => c.ShortName.Equals(cryptoCompareCoin.FROMSYMBOL)).Select(c => c.Change7DayPercent).FirstOrDefault(),
+                    Change7DayPercent = coinMarketCapCoins.Where(c => c.ShortName.ExtEquals(cryptoCompareCoin.FROMSYMBOL)).Select(c => c.Change7DayPercent).FirstOrDefault(),
                     MarketCap = cryptoCompareCoin.MKTCAP.ConvertToDecimal(),
                     Price = cryptoCompareCoin.PRICE.ConvertToDecimal(),
                     Supply = cryptoCompareCoin.SUPPLY.ConvertToDecimal()

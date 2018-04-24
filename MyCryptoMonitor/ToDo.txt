@@ -14,6 +14,8 @@ Mobile / Web version
 
 Running Change log
 **[FEATURE]** Window can now be resized
+**[FEATURE]** Warning if current portfolio has not been saved
+**[ADDED]** Tooltips to all UI elements
 **[FIXED]** Incorrect formatting for different cultures
 **[FIXED]** Currency symbol not changing when selected currency changes
 **[FIXED]** Add coin menu not selecting correct coin
