@@ -158,15 +158,14 @@ namespace MyCryptoMonitor.Forms
             foreach (CoinConfig coinConfig in _coinConfigs)
             {
                 if (!_coins.Any(c => c.ShortName == coinConfig.Name))
-                {
-                    RemoveLines();
-                    return;
-                }
+                    continue;
 
                 Coin coin = _coins.Find(c => c.ShortName == coinConfig.Name);
 
-                if (_loadLines)
-                    AddLine(coinConfig, coin, lineIndex++);
+                if (_loadLines || coinConfig.Setup)
+                    AddLine(coinConfig, coin, lineIndex);
+
+                lineIndex++;
 
                 CoinLine line = (from c in _coinLines where c.CoinName.ExtEquals(coin.ShortName) && c.CoinIndex == coinConfig.Index select c).First();
 
@@ -240,6 +239,7 @@ namespace MyCryptoMonitor.Forms
         {
             CoinLine newLine = new CoinLine(coin.ShortName, coinConfig.Index, lineIndex, Width);
             coinConfig.StartupPrice = coin.Price;
+            coinConfig.Setup = false;
 
             Invoke((MethodInvoker)delegate
             {
@@ -268,9 +268,6 @@ namespace MyCryptoMonitor.Forms
 
         private void SavePortfolio(string portfolio)
         {
-            if (_coinLines.Count <= 0)
-                return;
-
             var config = _coinLines.Select(coinLine => new CoinConfig
             {
                 Name = coinLine.CoinLabel.Text,
@@ -401,17 +398,18 @@ namespace MyCryptoMonitor.Forms
                     MessageBox.Show("Coin does not exist.", "Error");
                     return;
                 }
-                
+
                 _coinConfigs.Add(new CoinConfig
                 {
                     Name = form.InputText,
                     Bought = 0,
                     Paid = 0,
                     StartupPrice = 0,
-                    Index = _coinConfigs.Count(c => c.Name.ExtEquals(form.InputText))
+                    Index = _coinConfigs.Count(c => c.Name.ExtEquals(form.InputText)),
+                    Setup = true
                 });
 
-                RemoveLines();
+                //RemoveLines();
                 SelectPortfolio(string.Empty);
             }
         }
@@ -438,7 +436,7 @@ namespace MyCryptoMonitor.Forms
                 }
             }
 
-            RemoveLines();
+            //RemoveLines();
             SelectPortfolio(string.Empty);
         }
 

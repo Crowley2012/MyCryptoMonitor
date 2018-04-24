@@ -320,7 +320,7 @@
             this.cbCurrency.Name = "cbCurrency";
             this.cbCurrency.Size = new System.Drawing.Size(85, 21);
             this.cbCurrency.TabIndex = 0;
-            this.toolTips.SetToolTip(this.cbCurrency, "This will change the currency used.");
+            this.toolTips.SetToolTip(this.cbCurrency, "This will change the display currency.");
             this.cbCurrency.SelectedIndexChanged += new System.EventHandler(this.Currency_SelectedIndexChanged);
             // 
             // label11
@@ -334,7 +334,7 @@
             this.label11.TabIndex = 51;
             this.label11.Text = "Currency:";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTips.SetToolTip(this.label11, "This will change the currency used.");
+            this.toolTips.SetToolTip(this.label11, "This will change the display currency.");
             // 
             // tableLayoutPanel2
             // 
