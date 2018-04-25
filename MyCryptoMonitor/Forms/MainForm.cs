@@ -162,7 +162,7 @@ namespace MyCryptoMonitor.Forms
 
                 Coin coin = _coins.Find(c => c.ShortName == coinConfig.Name);
 
-                if (_loadLines || coinConfig.Setup)
+                if (_loadLines)
                     AddLine(coinConfig, coin, lineIndex);
 
                 lineIndex++;
@@ -173,6 +173,9 @@ namespace MyCryptoMonitor.Forms
                 decimal paid = line.PaidTextBox.Text.ConvertToDecimal();
                 decimal total = bought * coin.Price;
                 decimal profit = total - paid;
+
+                coinConfig.Bought = bought;
+                coinConfig.Paid = paid;
 
                 totalPaid += paid;
                 totalOverall += paid + profit;
@@ -239,7 +242,6 @@ namespace MyCryptoMonitor.Forms
         {
             CoinLine newLine = new CoinLine(coin.ShortName, coinConfig.Index, lineIndex, Width);
             coinConfig.StartupPrice = coin.Price;
-            coinConfig.Setup = false;
 
             Invoke((MethodInvoker)delegate
             {
@@ -405,11 +407,10 @@ namespace MyCryptoMonitor.Forms
                     Bought = 0,
                     Paid = 0,
                     StartupPrice = 0,
-                    Index = _coinConfigs.Count(c => c.Name.ExtEquals(form.InputText)),
-                    Setup = true
+                    Index = _coinConfigs.Count(c => c.Name.ExtEquals(form.InputText))
                 });
 
-                //RemoveLines();
+                RemoveLines();
                 SelectPortfolio(string.Empty);
             }
         }
@@ -436,7 +437,7 @@ namespace MyCryptoMonitor.Forms
                 }
             }
 
-            //RemoveLines();
+            RemoveLines();
             SelectPortfolio(string.Empty);
         }
 
