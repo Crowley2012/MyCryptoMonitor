@@ -13,6 +13,7 @@ using MyCryptoMonitor.Statics;
 using MyCryptoMonitor.Gui;
 using MyCryptoMonitor.Configs;
 using MyCryptoMonitor.Objects;
+using System.Threading.Tasks;
 
 namespace MyCryptoMonitor.Forms
 {
@@ -55,14 +56,15 @@ namespace MyCryptoMonitor.Forms
 
                 try
                 {
+                    var coinConfigs = _coinConfigs;
                     string cryptoCompareAddress = string.Format(API_CRYPTO_COMPARE, UserConfigService.Currency);
                     string coinMarketCapAddress = string.Format(API_COIN_MARKET_CAP, UserConfigService.Currency);
 
-                    foreach (var coinConfig in _coinConfigs)
+                    foreach (var coinConfig in coinConfigs)
                         cryptoCompareAddress += $"{coinConfig.Name},";
 
                     using (var webClient = new WebClient())
-                        UpdateCoins(webClient.DownloadString(cryptoCompareAddress), webClient.DownloadString(coinMarketCapAddress));
+                        UpdateCoins(webClient.DownloadString(cryptoCompareAddress), webClient.DownloadString(coinMarketCapAddress), coinConfigs);
                 }
                 catch (WebException)
                 {
@@ -142,27 +144,35 @@ namespace MyCryptoMonitor.Forms
             });
         }
 
-        private void UpdateCoins(string cryptoCompareResponse, string coinMarketCapResponse)
+        private void UpdateCoins(string cryptoCompareResponse, string coinMarketCapResponse, List<CoinConfig> coinConfigs)
         {
-            int lineIndex = 0;
+            List<CoinConfig> removeConfigs = new List<CoinConfig>();
             decimal totalPaid = 0;
             decimal totalOverall = 0;
             decimal totalNegativeProfits = 0;
             decimal totalPostivieProfits = 0;
-
+            int lineIndex = 0;
+            
             _coinNames = MappingService.CoinMarketCap(coinMarketCapResponse).OrderBy(c => c.ShortName).Select(c => c.ShortName).ToList();
             _coins = MappingService.MapCombination(cryptoCompareResponse, coinMarketCapResponse);
 
             MainService.CheckAlerts(_coins);
 
-            foreach (CoinConfig coinConfig in _coinConfigs)
+            if (_loadLines)
+                RemoveLines();
+
+            foreach (CoinConfig coinConfig in coinConfigs)
             {
                 if (!_coins.Any(c => c.ShortName == coinConfig.Name))
+                {
+                    Task.Factory.StartNew(() => { MessageBox.Show($"Sorry, Crypto Compare does not have any data for {coinConfig.Name}."); });
+                    removeConfigs.Add(coinConfig);
                     continue;
+                }
 
                 Coin coin = _coins.Find(c => c.ShortName == coinConfig.Name);
 
-                if (_loadLines)
+                if (_loadLines || !_coinLines.Any(c => c.CoinName.ExtEquals(coin.ShortName) && c.CoinIndex == coinConfig.Index))
                     AddLine(coinConfig, coin, lineIndex);
 
                 lineIndex++;
@@ -185,7 +195,7 @@ namespace MyCryptoMonitor.Forms
                 else
                     totalNegativeProfits += profit;
 
-                var coinIndexLabel = _coinConfigs.Count(c => c.Name.ExtEquals(coinConfig.Name)) > 1 ? $"[{coinConfig.Index + 1}]" : string.Empty;
+                var coinIndexLabel = coinConfigs.Count(c => c.Name.ExtEquals(coinConfig.Name)) > 1 ? $"[{coinConfig.Index + 1}]" : string.Empty;
                 var coinLabel = coin.ShortName;
                 var priceLabel = $"{MainService.CurrencySymbol}{coin.Price.ConvertToString(7)}";
                 var boughtLabel = $"{MainService.CurrencySymbol}{bought.SafeDivision(paid).ConvertToString(7)}";
@@ -214,6 +224,10 @@ namespace MyCryptoMonitor.Forms
                     line.Change7DayPercentLabel.Text = change7DayLabel;
                 });
             }
+
+            //Remove unsupported coins
+            foreach (var coinConfig in removeConfigs)
+                _coinConfigs.Remove(coinConfig);
 
             _refreshTime = DateTime.Now;
             _loadLines = false;
@@ -263,7 +277,6 @@ namespace MyCryptoMonitor.Forms
                     line.Dispose();
                 
                 _coinLines = new List<CoinLine>();
-                _loadLines = true;
                 SetHeight(true);
             });
         }
@@ -284,8 +297,7 @@ namespace MyCryptoMonitor.Forms
         private void LoadPortfolio(string portfolio)
         {
             _coinConfigs = PortfolioService.Load(portfolio);
-
-            RemoveLines();
+            _loadLines = true;
         }
 
         private void SetupPortfolioMenu()
@@ -358,7 +370,7 @@ namespace MyCryptoMonitor.Forms
         {
             coinsToolStripMenuItem.Enabled = false;
             UserConfigService.Currency = cbCurrency.Text;
-            RemoveLines();
+            _loadLines = true;
         }
 
         #region File Menu
@@ -410,7 +422,7 @@ namespace MyCryptoMonitor.Forms
                     Index = _coinConfigs.Count(c => c.Name.ExtEquals(form.InputText))
                 });
 
-                RemoveLines();
+                _loadLines = true;
                 SelectPortfolio(string.Empty);
             }
         }
@@ -437,14 +449,14 @@ namespace MyCryptoMonitor.Forms
                 }
             }
 
-            RemoveLines();
+            _loadLines = true;
             SelectPortfolio(string.Empty);
         }
 
         private void RemoveAllCoins_Click(object sender, EventArgs e)
         {
             _coinConfigs = new List<CoinConfig>();
-            RemoveLines();
+            _loadLines = true;
             SelectPortfolio(string.Empty);
         }
         #endregion
