@@ -183,7 +183,7 @@ namespace MyCryptoMonitor.Gui
         private void Label_TextChanged(object sender, EventArgs e)
         {
             Label label = (Label)sender;
-            decimal changePercent = Convert.ToDecimal(label.Text.Replace("%", string.Empty).Replace(MainService.CurrencySymbol, string.Empty));
+            decimal changePercent = label.Text.Replace("%", string.Empty).Replace(MainService.CurrencySymbol, string.Empty).ConvertToDecimal();
 
             label.ForeColor = changePercent >= 0 ? Color.Green : Color.Red;
         }
@@ -191,7 +191,7 @@ namespace MyCryptoMonitor.Gui
         private void LabelBold_TextChanged(object sender, EventArgs e)
         {
             Label label = (Label)sender;
-            decimal changePercent = Convert.ToDecimal(label.Text.Replace("%", string.Empty).Replace(MainService.CurrencySymbol, string.Empty));
+            decimal changePercent = label.Text.Replace("%", string.Empty).Replace(MainService.CurrencySymbol, string.Empty).ConvertToDecimal();
 
             label.ForeColor = changePercent >= 0 ? Color.Green : Color.Red;
             label.Font = changePercent >= 10 || changePercent <= -10 ? new Font(label.Font, FontStyle.Bold) : new Font(label.Font, FontStyle.Regular);

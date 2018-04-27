@@ -255,7 +255,9 @@ namespace MyCryptoMonitor.Forms
         private void AddLine(CoinConfig coinConfig, Coin coin, int lineIndex)
         {
             CoinLine newLine = new CoinLine(coin.ShortName, coinConfig.Index, lineIndex, Width);
-            coinConfig.StartupPrice = coin.Price;
+
+            if(coinConfig.StartupPrice == 0)
+                coinConfig.StartupPrice = coin.Price;
 
             Invoke((MethodInvoker)delegate
             {
@@ -264,6 +266,7 @@ namespace MyCryptoMonitor.Forms
 
                 Controls.Add(newLine.Table);
                 _coinLines.Add(newLine);
+                Globals.SetTheme(this);
             });
         }
 
@@ -333,6 +336,8 @@ namespace MyCryptoMonitor.Forms
         #region Events
         private void MainForm_Load(object sender, EventArgs e)
         {
+            Globals.SetTheme(this);
+
             try
             {
                 MainService.Startup();

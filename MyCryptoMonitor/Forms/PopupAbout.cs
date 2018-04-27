@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Windows.Forms;
 using System.Diagnostics;
+using MyCryptoMonitor.Statics;
 
 namespace MyCryptoMonitor.Forms
 {
@@ -17,6 +18,7 @@ namespace MyCryptoMonitor.Forms
         #region Events
         private void PopupAbout_Load(object sender, EventArgs e)
         {
+            Globals.SetTheme(this);
             txtVersion.Text = $"Version: {Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
         }
 

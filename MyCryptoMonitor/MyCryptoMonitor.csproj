@@ -104,12 +104,6 @@
     </Compile>
     <Compile Include="Statics\MainService.cs" />
     <Compile Include="Statics\MappingService.cs" />
-    <Compile Include="Forms\NewUI.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\NewUI.Designer.cs">
-      <DependentUpon>NewUI.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Unlock.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -147,9 +141,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\NewUI.resx">
-      <DependentUpon>NewUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Unlock.resx">
       <DependentUpon>Unlock.cs</DependentUpon>

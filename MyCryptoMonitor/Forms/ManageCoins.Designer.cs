@@ -77,6 +77,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ManageCoins";
             this.Text = "Add Coin";
+            this.Load += new System.EventHandler(this.ManageCoins_Load);
             this.ResumeLayout(false);
 
         }

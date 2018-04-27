@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using MyCryptoMonitor.Statics;
+using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Forms
 {
@@ -8,6 +9,13 @@ namespace MyCryptoMonitor.Forms
         public PopupDonate()
         {
             InitializeComponent();
+        }
+        #endregion
+
+        #region Events
+        private void PopupDonate_Load(object sender, System.EventArgs e)
+        {
+            Globals.SetTheme(this);
         }
         #endregion
     }

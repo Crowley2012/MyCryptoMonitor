@@ -74,6 +74,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Unlock";
             this.Text = "Unlock";
+            this.Load += new System.EventHandler(this.Unlock_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -16,6 +16,7 @@ namespace MyCryptoMonitor.Forms
         #region Events
         private void PortfolioManager_Load(object sender, EventArgs e)
         {
+            Globals.SetTheme(this);
             bsPortfolios.DataSource = PortfolioService.GetPortfolios();
         }
 

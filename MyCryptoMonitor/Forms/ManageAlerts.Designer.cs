@@ -31,11 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ManageAlerts));
             this.grdAlerts = new System.Windows.Forms.DataGridView();
-            this.coinDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.operatorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Current = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bsAlerts = new System.Windows.Forms.BindingSource(this.components);
             this.cmbCoins = new System.Windows.Forms.ComboBox();
             this.txtPrice = new System.Windows.Forms.TextBox();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -63,8 +59,11 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.coinDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.operatorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bsAlerts = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.grdAlerts)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bsAlerts)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.grpContact.SuspendLayout();
@@ -72,6 +71,7 @@
             this.grpEmail.SuspendLayout();
             this.tblEmailInput.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bsAlerts)).BeginInit();
             this.SuspendLayout();
             // 
             // grdAlerts
@@ -90,14 +90,393 @@
             this.operatorDataGridViewTextBoxColumn,
             this.Current});
             this.grdAlerts.DataSource = this.bsAlerts;
-            this.grdAlerts.Location = new System.Drawing.Point(8, 60);
-            this.grdAlerts.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.grdAlerts.Location = new System.Drawing.Point(6, 49);
             this.grdAlerts.MultiSelect = false;
             this.grdAlerts.Name = "grdAlerts";
             this.grdAlerts.RowHeadersVisible = false;
             this.grdAlerts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.grdAlerts.Size = new System.Drawing.Size(1473, 453);
+            this.grdAlerts.Size = new System.Drawing.Size(1105, 368);
             this.grdAlerts.TabIndex = 7;
+            // 
+            // Current
+            // 
+            this.Current.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Current.DataPropertyName = "Current";
+            this.Current.HeaderText = "Current Price";
+            this.Current.Name = "Current";
+            this.Current.ReadOnly = true;
+            // 
+            // cmbCoins
+            // 
+            this.cmbCoins.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cmbCoins.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cmbCoins.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbCoins.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCoins.FormattingEnabled = true;
+            this.cmbCoins.Location = new System.Drawing.Point(37, 3);
+            this.cmbCoins.Name = "cmbCoins";
+            this.cmbCoins.Size = new System.Drawing.Size(174, 21);
+            this.cmbCoins.TabIndex = 0;
+            this.cmbCoins.Validated += new System.EventHandler(this.cmbCoins_Validated);
+            // 
+            // txtPrice
+            // 
+            this.txtPrice.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtPrice.Location = new System.Drawing.Point(288, 3);
+            this.txtPrice.Name = "txtPrice";
+            this.txtPrice.Size = new System.Drawing.Size(174, 20);
+            this.txtPrice.TabIndex = 1;
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDelete.Location = new System.Drawing.Point(997, 3);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(105, 21);
+            this.btnDelete.TabIndex = 6;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAdd.Location = new System.Drawing.Point(897, 3);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(94, 21);
+            this.btnAdd.TabIndex = 5;
+            this.btnAdd.Text = "Add";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            // 
+            // txtReceiveAddress
+            // 
+            this.txtReceiveAddress.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtReceiveAddress.Location = new System.Drawing.Point(84, 3);
+            this.txtReceiveAddress.Name = "txtReceiveAddress";
+            this.txtReceiveAddress.Size = new System.Drawing.Size(586, 20);
+            this.txtReceiveAddress.TabIndex = 10;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.ColumnCount = 4;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 81F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 37F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tableLayoutPanel1.Controls.Add(this.cmbReceiveType, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.txtReceiveAddress, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label1, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(6, 19);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1105, 27);
+            this.tableLayoutPanel1.TabIndex = 9;
+            // 
+            // cmbReceiveType
+            // 
+            this.cmbReceiveType.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbReceiveType.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cmbReceiveType.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cmbReceiveType.DisplayMember = "Description";
+            this.cmbReceiveType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbReceiveType.FormattingEnabled = true;
+            this.cmbReceiveType.Items.AddRange(new object[] {
+            "Email",
+            "Verizon",
+            "AT&T",
+            "Sprint",
+            "Boost",
+            "Virgin"});
+            this.cmbReceiveType.Location = new System.Drawing.Point(713, 3);
+            this.cmbReceiveType.Name = "cmbReceiveType";
+            this.cmbReceiveType.Size = new System.Drawing.Size(389, 21);
+            this.cmbReceiveType.TabIndex = 11;
+            this.cmbReceiveType.ValueMember = "value";
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(676, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(31, 27);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Type";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(75, 27);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "Email / Phone";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel2.ColumnCount = 10;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 111F));
+            this.tableLayoutPanel2.Controls.Add(this.radioLess, 5, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label3, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.cmbCoins, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.radioGreater, 4, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label5, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.txtPrice, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnDelete, 9, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnAdd, 8, 0);
+            this.tableLayoutPanel2.Controls.Add(this.txtCurrent, 7, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label6, 6, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(6, 19);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1105, 27);
+            this.tableLayoutPanel2.TabIndex = 10;
+            // 
+            // radioLess
+            // 
+            this.radioLess.AutoSize = true;
+            this.radioLess.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radioLess.Location = new System.Drawing.Point(562, 3);
+            this.radioLess.Name = "radioLess";
+            this.radioLess.Size = new System.Drawing.Size(75, 21);
+            this.radioLess.TabIndex = 3;
+            this.radioLess.Text = "Less Than";
+            this.radioLess.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(28, 27);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "Coin";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // radioGreater
+            // 
+            this.radioGreater.AutoSize = true;
+            this.radioGreater.Checked = true;
+            this.radioGreater.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radioGreater.Location = new System.Drawing.Point(468, 3);
+            this.radioGreater.Name = "radioGreater";
+            this.radioGreater.Size = new System.Drawing.Size(88, 21);
+            this.radioGreater.TabIndex = 2;
+            this.radioGreater.TabStop = true;
+            this.radioGreater.Text = "Greater Than";
+            this.radioGreater.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(217, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(65, 27);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "Check Price";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // txtCurrent
+            // 
+            this.txtCurrent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtCurrent.Location = new System.Drawing.Point(717, 3);
+            this.txtCurrent.Name = "txtCurrent";
+            this.txtCurrent.ReadOnly = true;
+            this.txtCurrent.Size = new System.Drawing.Size(174, 20);
+            this.txtCurrent.TabIndex = 4;
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(643, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(68, 27);
+            this.label6.TabIndex = 14;
+            this.label6.Text = "Current Price";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // grpContact
+            // 
+            this.grpContact.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpContact.Controls.Add(this.tableLayoutPanel1);
+            this.grpContact.Location = new System.Drawing.Point(9, 615);
+            this.grpContact.Name = "grpContact";
+            this.grpContact.Size = new System.Drawing.Size(1117, 57);
+            this.grpContact.TabIndex = 11;
+            this.grpContact.TabStop = false;
+            this.grpContact.Text = "Contact Information";
+            // 
+            // grpAlerts
+            // 
+            this.grpAlerts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpAlerts.Controls.Add(this.tableLayoutPanel2);
+            this.grpAlerts.Controls.Add(this.grdAlerts);
+            this.grpAlerts.Location = new System.Drawing.Point(9, 12);
+            this.grpAlerts.Name = "grpAlerts";
+            this.grpAlerts.Size = new System.Drawing.Size(1117, 426);
+            this.grpAlerts.TabIndex = 12;
+            this.grpAlerts.TabStop = false;
+            this.grpAlerts.Text = "Alerts";
+            // 
+            // grpEmail
+            // 
+            this.grpEmail.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpEmail.Controls.Add(this.tblEmailInput);
+            this.grpEmail.Location = new System.Drawing.Point(9, 552);
+            this.grpEmail.Name = "grpEmail";
+            this.grpEmail.Size = new System.Drawing.Size(1117, 57);
+            this.grpEmail.TabIndex = 12;
+            this.grpEmail.TabStop = false;
+            this.grpEmail.Text = "Email Credentials";
+            // 
+            // tblEmailInput
+            // 
+            this.tblEmailInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tblEmailInput.ColumnCount = 5;
+            this.tblEmailInput.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 81F));
+            this.tblEmailInput.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblEmailInput.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 61F));
+            this.tblEmailInput.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblEmailInput.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 105F));
+            this.tblEmailInput.Controls.Add(this.btnSet, 4, 0);
+            this.tblEmailInput.Controls.Add(this.txtSendPassword, 3, 0);
+            this.tblEmailInput.Controls.Add(this.txtSendAddress, 1, 0);
+            this.tblEmailInput.Controls.Add(this.label7, 2, 0);
+            this.tblEmailInput.Controls.Add(this.label8, 0, 0);
+            this.tblEmailInput.Location = new System.Drawing.Point(6, 24);
+            this.tblEmailInput.Name = "tblEmailInput";
+            this.tblEmailInput.RowCount = 1;
+            this.tblEmailInput.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tblEmailInput.Size = new System.Drawing.Size(1105, 27);
+            this.tblEmailInput.TabIndex = 9;
+            // 
+            // btnSet
+            // 
+            this.btnSet.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSet.Location = new System.Drawing.Point(1003, 3);
+            this.btnSet.Name = "btnSet";
+            this.btnSet.Size = new System.Drawing.Size(99, 21);
+            this.btnSet.TabIndex = 14;
+            this.btnSet.Text = "Set";
+            this.btnSet.UseVisualStyleBackColor = true;
+            this.btnSet.Click += new System.EventHandler(this.btnSet_Click);
+            // 
+            // txtSendPassword
+            // 
+            this.txtSendPassword.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSendPassword.Location = new System.Drawing.Point(574, 3);
+            this.txtSendPassword.Name = "txtSendPassword";
+            this.txtSendPassword.PasswordChar = '•';
+            this.txtSendPassword.Size = new System.Drawing.Size(423, 20);
+            this.txtSendPassword.TabIndex = 9;
+            // 
+            // txtSendAddress
+            // 
+            this.txtSendAddress.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSendAddress.Location = new System.Drawing.Point(84, 3);
+            this.txtSendAddress.Name = "txtSendAddress";
+            this.txtSendAddress.Size = new System.Drawing.Size(423, 20);
+            this.txtSendAddress.TabIndex = 8;
+            // 
+            // label7
+            // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(513, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(55, 27);
+            this.label7.TabIndex = 9;
+            this.label7.Text = "Password";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label8
+            // 
+            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(3, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(75, 27);
+            this.label8.TabIndex = 10;
+            this.label8.Text = "Email Address";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label9
+            // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label9.Location = new System.Drawing.Point(9, 16);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(1099, 83);
+            this.label9.TabIndex = 13;
+            this.label9.Text = resources.GetString("label9.Text");
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Location = new System.Drawing.Point(9, 444);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(1117, 102);
+            this.groupBox1.TabIndex = 13;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Instructions";
             // 
             // coinDataGridViewTextBoxColumn
             // 
@@ -122,439 +501,26 @@
             this.operatorDataGridViewTextBoxColumn.Name = "operatorDataGridViewTextBoxColumn";
             this.operatorDataGridViewTextBoxColumn.ReadOnly = true;
             // 
-            // Current
-            // 
-            this.Current.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Current.DataPropertyName = "Current";
-            this.Current.HeaderText = "Current Price";
-            this.Current.Name = "Current";
-            this.Current.ReadOnly = true;
-            // 
             // bsAlerts
             // 
             this.bsAlerts.DataSource = typeof(MyCryptoMonitor.DataSources.AlertDataSourceList);
             // 
-            // cmbCoins
-            // 
-            this.cmbCoins.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cmbCoins.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbCoins.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbCoins.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCoins.FormattingEnabled = true;
-            this.cmbCoins.Location = new System.Drawing.Point(48, 4);
-            this.cmbCoins.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.cmbCoins.Name = "cmbCoins";
-            this.cmbCoins.Size = new System.Drawing.Size(237, 24);
-            this.cmbCoins.TabIndex = 0;
-            this.cmbCoins.Validated += new System.EventHandler(this.cmbCoins_Validated);
-            // 
-            // txtPrice
-            // 
-            this.txtPrice.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtPrice.Location = new System.Drawing.Point(384, 4);
-            this.txtPrice.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.txtPrice.Name = "txtPrice";
-            this.txtPrice.Size = new System.Drawing.Size(237, 22);
-            this.txtPrice.TabIndex = 1;
-            // 
-            // btnDelete
-            // 
-            this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDelete.Location = new System.Drawing.Point(1333, 4);
-            this.btnDelete.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(136, 25);
-            this.btnDelete.TabIndex = 6;
-            this.btnDelete.Text = "Delete";
-            this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
-            // 
-            // btnAdd
-            // 
-            this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAdd.Location = new System.Drawing.Point(1200, 4);
-            this.btnAdd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(125, 25);
-            this.btnAdd.TabIndex = 5;
-            this.btnAdd.Text = "Add";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-            // 
-            // txtReceiveAddress
-            // 
-            this.txtReceiveAddress.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtReceiveAddress.Location = new System.Drawing.Point(112, 4);
-            this.txtReceiveAddress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.txtReceiveAddress.Name = "txtReceiveAddress";
-            this.txtReceiveAddress.Size = new System.Drawing.Size(781, 22);
-            this.txtReceiveAddress.TabIndex = 10;
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel1.ColumnCount = 4;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 108F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 49F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tableLayoutPanel1.Controls.Add(this.cmbReceiveType, 3, 0);
-            this.tableLayoutPanel1.Controls.Add(this.txtReceiveAddress, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(8, 23);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1473, 33);
-            this.tableLayoutPanel1.TabIndex = 9;
-            // 
-            // cmbReceiveType
-            // 
-            this.cmbReceiveType.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbReceiveType.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cmbReceiveType.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbReceiveType.DisplayMember = "Description";
-            this.cmbReceiveType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbReceiveType.FormattingEnabled = true;
-            this.cmbReceiveType.Items.AddRange(new object[] {
-            "Email",
-            "Verizon",
-            "AT&T",
-            "Sprint",
-            "Boost",
-            "Virgin"});
-            this.cmbReceiveType.Location = new System.Drawing.Point(950, 4);
-            this.cmbReceiveType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.cmbReceiveType.Name = "cmbReceiveType";
-            this.cmbReceiveType.Size = new System.Drawing.Size(519, 24);
-            this.cmbReceiveType.TabIndex = 11;
-            this.cmbReceiveType.ValueMember = "value";
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(901, 0);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 33);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "Type";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(4, 0);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(100, 33);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "Email / Phone";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel2.ColumnCount = 10;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 133F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 143F));
-            this.tableLayoutPanel2.Controls.Add(this.radioLess, 5, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label3, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.cmbCoins, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.radioGreater, 4, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label5, 2, 0);
-            this.tableLayoutPanel2.Controls.Add(this.txtPrice, 3, 0);
-            this.tableLayoutPanel2.Controls.Add(this.btnDelete, 9, 0);
-            this.tableLayoutPanel2.Controls.Add(this.btnAdd, 8, 0);
-            this.tableLayoutPanel2.Controls.Add(this.txtCurrent, 7, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label6, 6, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(8, 23);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1473, 33);
-            this.tableLayoutPanel2.TabIndex = 10;
-            // 
-            // radioLess
-            // 
-            this.radioLess.AutoSize = true;
-            this.radioLess.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.radioLess.Location = new System.Drawing.Point(752, 4);
-            this.radioLess.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.radioLess.Name = "radioLess";
-            this.radioLess.Size = new System.Drawing.Size(96, 25);
-            this.radioLess.TabIndex = 3;
-            this.radioLess.Text = "Less Than";
-            this.radioLess.UseVisualStyleBackColor = true;
-            // 
-            // label3
-            // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(4, 0);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(36, 33);
-            this.label3.TabIndex = 11;
-            this.label3.Text = "Coin";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // radioGreater
-            // 
-            this.radioGreater.AutoSize = true;
-            this.radioGreater.Checked = true;
-            this.radioGreater.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.radioGreater.Location = new System.Drawing.Point(629, 4);
-            this.radioGreater.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.radioGreater.Name = "radioGreater";
-            this.radioGreater.Size = new System.Drawing.Size(115, 25);
-            this.radioGreater.TabIndex = 2;
-            this.radioGreater.TabStop = true;
-            this.radioGreater.Text = "Greater Than";
-            this.radioGreater.UseVisualStyleBackColor = true;
-            // 
-            // label5
-            // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(293, 0);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(83, 33);
-            this.label5.TabIndex = 13;
-            this.label5.Text = "Check Price";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // txtCurrent
-            // 
-            this.txtCurrent.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtCurrent.Location = new System.Drawing.Point(955, 4);
-            this.txtCurrent.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.txtCurrent.Name = "txtCurrent";
-            this.txtCurrent.ReadOnly = true;
-            this.txtCurrent.Size = new System.Drawing.Size(237, 22);
-            this.txtCurrent.TabIndex = 4;
-            // 
-            // label6
-            // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(856, 0);
-            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(91, 33);
-            this.label6.TabIndex = 14;
-            this.label6.Text = "Current Price";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // grpContact
-            // 
-            this.grpContact.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpContact.Controls.Add(this.tableLayoutPanel1);
-            this.grpContact.Location = new System.Drawing.Point(12, 757);
-            this.grpContact.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.grpContact.Name = "grpContact";
-            this.grpContact.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.grpContact.Size = new System.Drawing.Size(1489, 70);
-            this.grpContact.TabIndex = 11;
-            this.grpContact.TabStop = false;
-            this.grpContact.Text = "Contact Information";
-            // 
-            // grpAlerts
-            // 
-            this.grpAlerts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpAlerts.Controls.Add(this.tableLayoutPanel2);
-            this.grpAlerts.Controls.Add(this.grdAlerts);
-            this.grpAlerts.Location = new System.Drawing.Point(12, 15);
-            this.grpAlerts.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.grpAlerts.Name = "grpAlerts";
-            this.grpAlerts.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.grpAlerts.Size = new System.Drawing.Size(1489, 524);
-            this.grpAlerts.TabIndex = 12;
-            this.grpAlerts.TabStop = false;
-            this.grpAlerts.Text = "Alerts";
-            // 
-            // grpEmail
-            // 
-            this.grpEmail.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpEmail.Controls.Add(this.tblEmailInput);
-            this.grpEmail.Location = new System.Drawing.Point(12, 679);
-            this.grpEmail.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.grpEmail.Name = "grpEmail";
-            this.grpEmail.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.grpEmail.Size = new System.Drawing.Size(1489, 70);
-            this.grpEmail.TabIndex = 12;
-            this.grpEmail.TabStop = false;
-            this.grpEmail.Text = "Email Credentials";
-            // 
-            // tblEmailInput
-            // 
-            this.tblEmailInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tblEmailInput.ColumnCount = 5;
-            this.tblEmailInput.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 108F));
-            this.tblEmailInput.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tblEmailInput.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 81F));
-            this.tblEmailInput.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tblEmailInput.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
-            this.tblEmailInput.Controls.Add(this.btnSet, 4, 0);
-            this.tblEmailInput.Controls.Add(this.txtSendPassword, 3, 0);
-            this.tblEmailInput.Controls.Add(this.txtSendAddress, 1, 0);
-            this.tblEmailInput.Controls.Add(this.label7, 2, 0);
-            this.tblEmailInput.Controls.Add(this.label8, 0, 0);
-            this.tblEmailInput.Location = new System.Drawing.Point(8, 30);
-            this.tblEmailInput.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tblEmailInput.Name = "tblEmailInput";
-            this.tblEmailInput.RowCount = 1;
-            this.tblEmailInput.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tblEmailInput.Size = new System.Drawing.Size(1473, 33);
-            this.tblEmailInput.TabIndex = 9;
-            // 
-            // btnSet
-            // 
-            this.btnSet.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSet.Location = new System.Drawing.Point(1337, 4);
-            this.btnSet.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.btnSet.Name = "btnSet";
-            this.btnSet.Size = new System.Drawing.Size(132, 25);
-            this.btnSet.TabIndex = 14;
-            this.btnSet.Text = "Set";
-            this.btnSet.UseVisualStyleBackColor = true;
-            this.btnSet.Click += new System.EventHandler(this.btnSet_Click);
-            // 
-            // txtSendPassword
-            // 
-            this.txtSendPassword.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSendPassword.Location = new System.Drawing.Point(765, 4);
-            this.txtSendPassword.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.txtSendPassword.Name = "txtSendPassword";
-            this.txtSendPassword.PasswordChar = '•';
-            this.txtSendPassword.Size = new System.Drawing.Size(564, 22);
-            this.txtSendPassword.TabIndex = 9;
-            // 
-            // txtSendAddress
-            // 
-            this.txtSendAddress.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSendAddress.Location = new System.Drawing.Point(112, 4);
-            this.txtSendAddress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.txtSendAddress.Name = "txtSendAddress";
-            this.txtSendAddress.Size = new System.Drawing.Size(564, 22);
-            this.txtSendAddress.TabIndex = 8;
-            // 
-            // label7
-            // 
-            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(684, 0);
-            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(73, 33);
-            this.label7.TabIndex = 9;
-            this.label7.Text = "Password";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label8
-            // 
-            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(4, 0);
-            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(100, 33);
-            this.label8.TabIndex = 10;
-            this.label8.Text = "Email Address";
-            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label9
-            // 
-            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label9.Location = new System.Drawing.Point(12, 20);
-            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(1465, 102);
-            this.label9.TabIndex = 13;
-            this.label9.Text = resources.GetString("label9.Text");
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Location = new System.Drawing.Point(12, 546);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.groupBox1.Size = new System.Drawing.Size(1489, 126);
-            this.groupBox1.TabIndex = 13;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Instructions";
-            // 
             // ManageAlerts
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1517, 837);
+            this.ClientSize = new System.Drawing.Size(1138, 680);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.grpEmail);
             this.Controls.Add(this.grpAlerts);
             this.Controls.Add(this.grpContact);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ManageAlerts";
             this.Text = "Alerts";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Alerts_FormClosed);
             this.Load += new System.EventHandler(this.Alerts_Load);
             ((System.ComponentModel.ISupportInitialize)(this.grdAlerts)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bsAlerts)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -565,6 +531,7 @@
             this.tblEmailInput.ResumeLayout(false);
             this.tblEmailInput.PerformLayout();
             this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.bsAlerts)).EndInit();
             this.ResumeLayout(false);
 
         }

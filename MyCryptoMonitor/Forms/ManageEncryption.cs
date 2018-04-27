@@ -29,6 +29,7 @@ namespace MyCryptoMonitor.Forms
         #region Events
         private void Encrypt_Load(object sender, EventArgs e)
         {
+            Globals.SetTheme(this);
             Setup();
         }
 

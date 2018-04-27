@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Linq;
 using MyCryptoMonitor.Configs;
+using MyCryptoMonitor.Statics;
 
 namespace MyCryptoMonitor.Forms
 {
@@ -45,6 +46,11 @@ namespace MyCryptoMonitor.Forms
         #endregion
 
         #region Events
+        private void ManageCoins_Load(object sender, EventArgs e)
+        {
+            Globals.SetTheme(this);
+        }
+
         private void Submit_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;

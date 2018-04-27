@@ -1,16 +1,7 @@
-﻿New UI
-	Style
-		Fancy
-		Compressed
-		Detailed
-	Themes
-		Light
-		Dark
-	Sort buttons
-	Remove button
-	Resizeable window
-
-Mobile / Web version
+﻿Alerts disabled and re-enabled when condition is valid again
+Tutorial
+Themes
+Port to Mac and Linux
 
 Running Change log
 **[FEATURE]** Window can now be resized

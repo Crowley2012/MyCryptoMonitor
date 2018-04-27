@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using MyCryptoMonitor.Statics;
+using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Forms
 {
@@ -16,6 +17,11 @@ namespace MyCryptoMonitor.Forms
         #endregion
 
         #region Events
+        private void Unlock_Load(object sender, System.EventArgs e)
+        {
+            Globals.SetTheme(this);
+        }
+
         private void btnUnlock_Click(object sender, System.EventArgs e)
         {
             DialogResult = DialogResult.OK;

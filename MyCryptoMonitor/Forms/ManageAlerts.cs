@@ -95,6 +95,8 @@ namespace MyCryptoMonitor.Forms
                 grpEmail.Enabled = false;
                 grpContact.Enabled = false;
             }
+
+            Globals.SetTheme(this);
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -105,10 +107,10 @@ namespace MyCryptoMonitor.Forms
                 return;
             }
             
-            if (!CheckValidAlert(Convert.ToDecimal(txtCurrent.Text), Convert.ToDecimal(txtPrice.Text)))
+            if (!CheckValidAlert(txtCurrent.Text.ConvertToDecimal(), txtPrice.Text.ConvertToDecimal()))
                 return;
 
-            bsAlerts.Add(new AlertDataSource { Coin = cmbCoins.Text, Current = Convert.ToDecimal(txtCurrent.Text), Operator = _operator, Price = Convert.ToDecimal(txtPrice.Text), Currency = UserConfigService.Currency });
+            bsAlerts.Add(new AlertDataSource { Coin = cmbCoins.Text, Current = txtCurrent.Text.ConvertToDecimal(), Operator = _operator, Price = txtPrice.Text.ConvertToDecimal(), Currency = UserConfigService.Currency });
             bsAlerts.DataSource = ((List<AlertDataSource>)bsAlerts.DataSource).OrderBy(a => a.Coin).ThenByDescending(a => a.Price).ToList();
         }
 
