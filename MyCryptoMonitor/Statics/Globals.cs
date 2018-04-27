@@ -36,6 +36,24 @@ namespace MyCryptoMonitor.Statics
                     PositiveColor = "#008000";
                     NegativeColor = "#FF0000";
                     break;
+                case "Royal":
+                    BackgroundColor = "#000019";
+                    InputBackgroundColor = "#000032";
+                    ButtonColor = "#000023";
+                    DisabledBackgroundColor = "#333333";
+                    FontColor = "#94979c";
+                    PositiveColor = "#ff0";
+                    NegativeColor = "#FF0000";
+                    break;
+                case "Highlight":
+                    BackgroundColor = "#212121";
+                    InputBackgroundColor = "#333333";
+                    ButtonColor = "#333333";
+                    DisabledBackgroundColor = "#333333";
+                    FontColor = "#94979c";
+                    PositiveColor = "#ff80ab";
+                    NegativeColor = "#ff1744";
+                    break;
             }
         }
 

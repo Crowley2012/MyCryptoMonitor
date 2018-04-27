@@ -516,6 +516,16 @@ namespace MyCryptoMonitor.Forms
         }
         #endregion
 
+        #region Encrypt Menu
+        private void Themes_Click(object sender, EventArgs e)
+        {
+            UserConfigService.Theme = UserConfigService.Theme == "Default" ? "Highlight" : "Default";
+            Globals.SetupTheme();
+            RemoveLines();
+            Globals.SetTheme(this);
+        }
+        #endregion
+
         #region Donate Menu
         private void Donate_Click(object sender, EventArgs e)
         {
@@ -531,6 +541,7 @@ namespace MyCryptoMonitor.Forms
                 form.ShowDialog();
         }
         #endregion
+
         #endregion
     }
 }
