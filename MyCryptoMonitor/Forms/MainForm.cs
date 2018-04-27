@@ -234,7 +234,7 @@ namespace MyCryptoMonitor.Forms
             UpdateStatus("Sleeping");
             SetHeight(false);
 
-            var totalProfitColor = totalOverall - totalPaid >= 0 ? Color.Green : Color.Red;
+            var totalProfitColor = totalOverall - totalPaid >= 0 ? ColorTranslator.FromHtml(Globals.PositiveColor) : ColorTranslator.FromHtml(Globals.NegativeColor);
             var totalProfitLabel = $"{MainService.CurrencySymbol}{totalOverall - totalPaid:0.00}";
             var totalNegativeProfitLabel = $"{MainService.CurrencySymbol}{totalNegativeProfits:0.00}";
             var totalPositiveProfitLabel = $"{MainService.CurrencySymbol}{totalPostivieProfits:0.00}";
@@ -256,7 +256,7 @@ namespace MyCryptoMonitor.Forms
         {
             CoinLine newLine = new CoinLine(coin.ShortName, coinConfig.Index, lineIndex, Width);
 
-            if(coinConfig.StartupPrice == 0)
+            if (coinConfig.StartupPrice == 0)
                 coinConfig.StartupPrice = coin.Price;
 
             Invoke((MethodInvoker)delegate
@@ -266,7 +266,8 @@ namespace MyCryptoMonitor.Forms
 
                 Controls.Add(newLine.Table);
                 _coinLines.Add(newLine);
-                Globals.SetTheme(this);
+
+                Globals.SetTheme(newLine.Table);
             });
         }
 
@@ -336,11 +337,10 @@ namespace MyCryptoMonitor.Forms
         #region Events
         private void MainForm_Load(object sender, EventArgs e)
         {
-            Globals.SetTheme(this);
-
             try
             {
                 MainService.Startup();
+                Globals.SetTheme(this);
 
                 _coinConfigs = PortfolioService.LoadStartup();
                 cbCurrency.Text = UserConfigService.Currency;

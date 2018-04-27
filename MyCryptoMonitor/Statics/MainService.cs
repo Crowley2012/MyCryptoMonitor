@@ -139,6 +139,7 @@ namespace MyCryptoMonitor.Statics
                 EncryptionService.Unlock();
 
             AlertService.Load();
+            Globals.SetupTheme();
         }
 
         public static void Reset()
