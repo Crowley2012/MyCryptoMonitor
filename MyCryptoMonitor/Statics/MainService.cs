@@ -139,14 +139,13 @@ namespace MyCryptoMonitor.Statics
                 EncryptionService.Unlock();
 
             AlertService.Load();
-            Globals.SetupTheme();
         }
 
         public static void Reset()
         {
-            PortfolioService.DeleteAll();
-            AlertService.Delete();
             UserConfigService.Delete();
+            AlertService.Delete();
+            PortfolioService.DeleteAll();
         }
 
         public static bool ConfirmReset()

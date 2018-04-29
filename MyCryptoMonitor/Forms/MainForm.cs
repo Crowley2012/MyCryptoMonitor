@@ -234,7 +234,7 @@ namespace MyCryptoMonitor.Forms
             UpdateStatus("Sleeping");
             SetHeight(false);
 
-            var totalProfitColor = totalOverall - totalPaid >= 0 ? ColorTranslator.FromHtml(Globals.PositiveColor) : ColorTranslator.FromHtml(Globals.NegativeColor);
+            var totalProfitColor = totalOverall - totalPaid >= 0 ? ColorTranslator.FromHtml(UserConfigService.Theme.PositiveColor) : ColorTranslator.FromHtml(UserConfigService.Theme.NegativeColor);
             var totalProfitLabel = $"{MainService.CurrencySymbol}{totalOverall - totalPaid:0.00}";
             var totalNegativeProfitLabel = $"{MainService.CurrencySymbol}{totalNegativeProfits:0.00}";
             var totalPositiveProfitLabel = $"{MainService.CurrencySymbol}{totalPostivieProfits:0.00}";
@@ -353,10 +353,9 @@ namespace MyCryptoMonitor.Forms
             catch (Exception)
             {
                 if (MessageBox.Show($"There was an error starting up. Would you like to reset? \nThis will remove encryption and delete all portfolios and alerts.", "Error on startup", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
-                {
                     MainService.Reset();
-                    Close();
-                }
+
+                Close();
             }
         }
 
@@ -519,8 +518,9 @@ namespace MyCryptoMonitor.Forms
         #region Encrypt Menu
         private void Themes_Click(object sender, EventArgs e)
         {
-            UserConfigService.Theme = UserConfigService.Theme == "Default" ? "Highlight" : "Default";
-            Globals.SetupTheme();
+            using (ManageTheme form = new ManageTheme())
+                form.ShowDialog();
+
             RemoveLines();
             Globals.SetTheme(this);
         }

@@ -1,4 +1,5 @@
 ﻿using MyCryptoMonitor.Configs;
+using MyCryptoMonitor.Objects;
 using Newtonsoft.Json;
 using System.IO;
 
@@ -9,7 +10,7 @@ namespace MyCryptoMonitor.Statics
         #region Public Variables
         public static string Currency { get { return UserConfig.Currency; } set { UserConfig.Currency = value; Save(); MainService.SetCurrencySymbol(); } }
         public static string StartupPortfolio { get { return UserConfig.StartupPortfolio; } set { UserConfig.StartupPortfolio = value; Save(); } }
-        public static string Theme { get { return UserConfig.Theme; } set { UserConfig.Theme = value; Save(); } }
+        public static Theme Theme { get { return UserConfig.Theme; } set { UserConfig.Theme = value; Save(); } }
         public static bool Encrypted { get { return UserConfig.Encrypted; } set { UserConfig.Encrypted = value; Save(); } }
         public static string EncryptionCheck { get { return UserConfig.EncryptionCheck; } set { UserConfig.EncryptionCheck = value; Save(); } }
         #endregion

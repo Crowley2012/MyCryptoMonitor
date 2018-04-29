@@ -53,6 +53,12 @@
   <ItemGroup>
     <Compile Include="Api\CoinMarketCap.cs" />
     <Compile Include="Api\CryptoCompare.cs" />
+    <Compile Include="Forms\ManageTheme.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ManageTheme.Designer.cs">
+      <DependentUpon>ManageTheme.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\PopupAbout.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,6 +103,7 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Objects\Theme.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -126,6 +133,9 @@
     <Compile Include="Statics\UserConfigService.cs" />
     <EmbeddedResource Include="Forms\ManageAlerts.resx">
       <DependentUpon>ManageAlerts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ManageTheme.resx">
+      <DependentUpon>ManageTheme.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PopupAbout.resx">
       <DependentUpon>PopupAbout.cs</DependentUpon>
