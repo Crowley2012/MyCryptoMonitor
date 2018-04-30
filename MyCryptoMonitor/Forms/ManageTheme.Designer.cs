@@ -329,6 +329,7 @@
             this.Controls.Add(this.txtDisabled);
             this.Controls.Add(this.txtInput);
             this.Controls.Add(this.txtBackground);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ManageTheme";
             this.Text = "Theme";

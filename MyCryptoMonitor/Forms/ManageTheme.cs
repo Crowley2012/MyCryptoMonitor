@@ -19,13 +19,13 @@ namespace MyCryptoMonitor.Forms
         {
             Globals.SetTheme(this);
 
-            txtBackground.Text = UserConfigService.Theme.BackgroundColor.ToUpper();
-            txtInput.Text = UserConfigService.Theme.InputColor.ToUpper();
-            txtButton.Text = UserConfigService.Theme.ButtonColor.ToUpper();
-            txtDisabled.Text = UserConfigService.Theme.DisabledColor.ToUpper();
-            txtFont.Text = UserConfigService.Theme.FontColor.ToUpper();
-            txtPositive.Text = UserConfigService.Theme.PositiveColor.ToUpper();
-            txtNegative.Text = UserConfigService.Theme.NegativeColor.ToUpper();
+            txtBackground.Text = UserConfigService.Theme.BackgroundColor.ToUpper().Replace("#", string.Empty);
+            txtInput.Text = UserConfigService.Theme.InputColor.ToUpper().Replace("#", string.Empty);
+            txtButton.Text = UserConfigService.Theme.ButtonColor.ToUpper().Replace("#", string.Empty);
+            txtDisabled.Text = UserConfigService.Theme.DisabledColor.ToUpper().Replace("#", string.Empty);
+            txtFont.Text = UserConfigService.Theme.FontColor.ToUpper().Replace("#", string.Empty);
+            txtPositive.Text = UserConfigService.Theme.PositiveColor.ToUpper().Replace("#", string.Empty);
+            txtNegative.Text = UserConfigService.Theme.NegativeColor.ToUpper().Replace("#", string.Empty);
         }
 
         private void btnDefault_Click(object sender, EventArgs e)
