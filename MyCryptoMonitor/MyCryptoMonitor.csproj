@@ -65,6 +65,12 @@
     <Compile Include="Forms\PopupAbout.Designer.cs">
       <DependentUpon>PopupAbout.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Tutorial.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tutorial.Designer.cs">
+      <DependentUpon>Tutorial.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\CoinLine.cs" />
     <Compile Include="Configs\AlertConfig.cs" />
     <Compile Include="DataSources\AlertDataSource.cs" />
@@ -152,6 +158,9 @@
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tutorial.resx">
+      <DependentUpon>Tutorial.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Unlock.resx">
       <DependentUpon>Unlock.cs</DependentUpon>
     </EmbeddedResource>
@@ -182,6 +191,13 @@
   <ItemGroup>
     <Content Include="app.ico" />
     <Content Include="Resources\ltc_qr.png" />
+    <Content Include="Resources\tut_add.png" />
+    <Content Include="Resources\tut_alerts.png" />
+    <Content Include="Resources\tut_encrypt.png" />
+    <Content Include="Resources\tut_main.png" />
+    <Content Include="Resources\tut_portfolios.png" />
+    <Content Include="Resources\tut_remove.png" />
+    <Content Include="Resources\tut_theme.png" />
     <Content Include="Resources\xrp_qr.png" />
     <None Include="Resources\xlm_qr.png" />
     <Content Include="Resources\xby_qr.png" />

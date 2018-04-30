@@ -537,6 +537,14 @@ namespace MyCryptoMonitor.Forms
         }
         #endregion
 
+        #region Help Menu
+        private void Help_Click(object sender, EventArgs e)
+        {
+            using (Tutorial form = new Tutorial())
+                form.ShowDialog();
+        }
+        #endregion
+
         #region About Menu
         private void About_Click(object sender, EventArgs e)
         {

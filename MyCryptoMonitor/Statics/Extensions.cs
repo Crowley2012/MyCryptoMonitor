@@ -6,7 +6,13 @@ namespace MyCryptoMonitor.Statics
     {
         public static bool ExtEquals(this string source, string toCheck) => source?.Equals(toCheck, StringComparison.OrdinalIgnoreCase) ?? false;
 
-        public static decimal ConvertToDecimal(this string source) => string.IsNullOrWhiteSpace(source) ? 0 : source.Contains("E") ? (decimal)Math.Pow(Convert.ToDouble(source.Substring(0, source.IndexOf("E"))), Convert.ToDouble(source.Substring(source.IndexOf("E") + 1))) : decimal.Parse(source);
+        public static decimal ConvertToDecimal(this string source) {
+            if (string.IsNullOrWhiteSpace(source))
+                return 0;
+
+            decimal.TryParse(source, System.Globalization.NumberStyles.Float, null, out decimal result);
+            return result;
+        }
 
         public static decimal SafeDivision(this decimal source, decimal numerator) => source == 0 ? 0 : numerator / source;
 

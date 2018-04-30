@@ -1,11 +1,11 @@
 ﻿Alerts disabled and re-enabled when condition is valid again
 Tutorial
-Port to Mac and Linux
 
 Running Change log
 **[FEATURE]** Themes have been added: Dark, Royal, and Highlight
 **[FEATURE]** Custom themes
 **[FEATURE]** Window can now be resized
+**[FEATURE]** Tutorial window for first startup, can be accessed in the menu via Help
 **[FEATURE]** Warning if the current portfolio has not been saved
 **[ADDED]** Tooltips to all UI elements
 **[FIXED]** Incorrect formatting for different cultures
