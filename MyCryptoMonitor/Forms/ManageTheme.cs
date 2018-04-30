@@ -1,6 +1,7 @@
 ﻿using MyCryptoMonitor.Objects;
 using MyCryptoMonitor.Statics;
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Forms
@@ -74,6 +75,22 @@ namespace MyCryptoMonitor.Forms
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            try
+            {
+                ColorTranslator.FromHtml($"#{txtBackground.Text}".ToUpper());
+                ColorTranslator.FromHtml($"#{txtInput.Text}".ToUpper());
+                ColorTranslator.FromHtml($"#{txtButton.Text}".ToUpper());
+                ColorTranslator.FromHtml($"#{txtDisabled.Text}".ToUpper());
+                ColorTranslator.FromHtml($"#{txtFont.Text}".ToUpper());
+                ColorTranslator.FromHtml($"#{txtPositive.Text}".ToUpper());
+                ColorTranslator.FromHtml($"#{txtNegative.Text}".ToUpper());
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Not a valid hex color.");
+                return;
+            }
+
             UserConfigService.Theme = new Theme
             {
                 BackgroundColor = $"#{txtBackground.Text}".ToUpper(),
@@ -85,7 +102,7 @@ namespace MyCryptoMonitor.Forms
                 NegativeColor = $"#{txtNegative.Text}".ToUpper()
             };
 
-            Close();
+            DialogResult = DialogResult.OK;
         }
         #endregion
     }

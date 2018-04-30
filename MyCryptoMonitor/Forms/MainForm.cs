@@ -515,14 +515,17 @@ namespace MyCryptoMonitor.Forms
         }
         #endregion
 
-        #region Encrypt Menu
+        #region Themes Menu
         private void Themes_Click(object sender, EventArgs e)
         {
             using (ManageTheme form = new ManageTheme())
-                form.ShowDialog();
-
-            RemoveLines();
-            Globals.SetTheme(this);
+            {
+                if(form.ShowDialog() == DialogResult.OK)
+                {
+                    RemoveLines();
+                    Globals.SetTheme(this);
+                }
+            }
         }
         #endregion
 

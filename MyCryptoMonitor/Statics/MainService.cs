@@ -9,9 +9,12 @@ namespace MyCryptoMonitor.Statics
 {
     public class MainService
     {
+        #region Public Variables
         public static string CurrencySymbol { get; private set; }
         public static bool Unsaved { get; set; }
+        #endregion
 
+        #region Methods
         public static void SetCurrencySymbol()
         {
             switch (UserConfigService.Currency)
@@ -176,5 +179,6 @@ namespace MyCryptoMonitor.Statics
 
             AlertService.Remove(removeAlerts);
         }
+        #endregion
     }
 }
