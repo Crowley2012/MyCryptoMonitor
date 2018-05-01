@@ -163,8 +163,6 @@ namespace MyCryptoMonitor.Statics
 
         public static void CheckAlerts(List<Coin> coins)
         {
-            List<AlertDataSource> removeAlerts = new List<AlertDataSource>();
-
             if (AlertService.Alerts.Count <= 0)
                 return;
 
@@ -175,14 +173,16 @@ namespace MyCryptoMonitor.Statics
                 if (coinData == null)
                     continue;
 
-                if ((alert.Operator == AlertService.Operators.GreaterThan && coinData.Price > alert.Price) || (alert.Operator == AlertService.Operators.LessThan && coinData.Price < alert.Price))
+                if ((alert.Operator == AlertService.Operators.GreaterThan && coinData.Price > alert.Price && alert.Enabled)
+                    || (alert.Operator == AlertService.Operators.LessThan && coinData.Price < alert.Price && alert.Enabled))
                 {
                     AlertService.SendAlert(alert);
-                    removeAlerts.Add(alert);
+                    alert.Enabled = false;
                 }
+                else if ((alert.Operator == AlertService.Operators.GreaterThan && coinData.Price < alert.Price && !alert.Enabled)
+                   || (alert.Operator == AlertService.Operators.LessThan && coinData.Price > alert.Price && !alert.Enabled))
+                    alert.Enabled = true;
             }
-
-            AlertService.Remove(removeAlerts);
         }
         #endregion
     }

@@ -82,10 +82,10 @@ namespace MyCryptoMonitor.Forms
             {
                 TimeSpan spanReset = DateTime.Now.Subtract(_resetTime);
                 TimeSpan spanRefresh = DateTime.Now.Subtract(_refreshTime);
-                string resetTime = $"Running Timer: {spanReset.Hours}:{spanReset.Minutes:00}:{spanReset.Seconds:00}";
+                string runningTime = spanReset.Days > 0 ? $"Running Timer: {spanReset.Days} days {spanReset.Hours}:{spanReset.Minutes:00}:{spanReset.Seconds:00}" : $"Running Timer: {spanReset.Hours}:{spanReset.Minutes:00}:{spanReset.Seconds:00}";
                 string refreshTime = $"Refresh Timer: {spanRefresh.Minutes}:{spanRefresh.Seconds:00}";
                 
-                UpdateTimers(resetTime, refreshTime);
+                UpdateTimers(runningTime, refreshTime);
 
                 Thread.Sleep(500);
             }
@@ -135,11 +135,11 @@ namespace MyCryptoMonitor.Forms
             });
         }
 
-        private void UpdateTimers(string resetTime, string refreshTime)
+        private void UpdateTimers(string runningTime, string refreshTime)
         {
             Invoke((MethodInvoker)delegate
             {
-                lblResetTime.Text = resetTime;
+                lblRunningTime.Text = runningTime;
                 lblRefreshTime.Text = refreshTime;
             });
         }

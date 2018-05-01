@@ -40,7 +40,7 @@
             this.cbCurrency = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblResetTime = new System.Windows.Forms.Label();
+            this.lblRunningTime = new System.Windows.Forms.Label();
             this.lblRefreshTime = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -345,7 +345,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.lblResetTime, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblRunningTime, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblRefreshTime, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.lblStatus, 0, 2);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
@@ -357,17 +357,17 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(314, 61);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
-            // lblResetTime
+            // lblRunningTime
             // 
-            this.lblResetTime.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblResetTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblResetTime.Location = new System.Drawing.Point(3, 0);
-            this.lblResetTime.Name = "lblResetTime";
-            this.lblResetTime.Size = new System.Drawing.Size(308, 20);
-            this.lblResetTime.TabIndex = 18;
-            this.lblResetTime.Text = "Running Timer: 00:00";
-            this.lblResetTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.toolTips.SetToolTip(this.lblResetTime, "The length of time that the current portfolio has been running. Loading a new por" +
+            this.lblRunningTime.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblRunningTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRunningTime.Location = new System.Drawing.Point(3, 0);
+            this.lblRunningTime.Name = "lblRunningTime";
+            this.lblRunningTime.Size = new System.Drawing.Size(308, 20);
+            this.lblRunningTime.TabIndex = 18;
+            this.lblRunningTime.Text = "Running Timer: 00:00";
+            this.lblRunningTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.toolTips.SetToolTip(this.lblRunningTime, "The length of time that the current portfolio has been running. Loading a new por" +
         "tfolio will reset this timer.");
             // 
             // lblRefreshTime
@@ -902,7 +902,7 @@
         private System.Windows.Forms.Label lblOverallTotal;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label lblStatus;
-        private System.Windows.Forms.Label lblResetTime;
+        private System.Windows.Forms.Label lblRunningTime;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;

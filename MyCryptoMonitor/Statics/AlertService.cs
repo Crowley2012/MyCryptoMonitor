@@ -74,14 +74,6 @@ namespace MyCryptoMonitor.Statics
             if (File.Exists(FILENAME))
                 File.Delete(FILENAME);
         }
-
-        public static void Remove(List<AlertDataSource> alerts)
-        {
-            foreach (AlertDataSource alert in alerts)
-                Alerts.RemoveAll(c => c.Coin.ExtEquals(alert.Coin) && c.Operator.Equals(alert.Operator) && c.Price.Equals(alert.Price));
-
-            Save();
-        }
         #endregion
 
         #region Methods

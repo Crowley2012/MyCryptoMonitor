@@ -71,6 +71,7 @@
             this.Controls.Add(this.btnForgot);
             this.Controls.Add(this.btnUnlock);
             this.Controls.Add(this.txtPassword);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Unlock";
             this.Text = "Unlock";
