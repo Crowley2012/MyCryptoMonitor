@@ -552,7 +552,6 @@ namespace MyCryptoMonitor.Forms
                 form.ShowDialog();
         }
         #endregion
-
         #endregion
     }
 }

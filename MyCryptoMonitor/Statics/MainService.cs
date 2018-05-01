@@ -1,4 +1,5 @@
 ﻿using MyCryptoMonitor.DataSources;
+using MyCryptoMonitor.Forms;
 using MyCryptoMonitor.Objects;
 using System.Collections.Generic;
 using System.Globalization;
@@ -142,6 +143,10 @@ namespace MyCryptoMonitor.Statics
                 EncryptionService.Unlock();
 
             AlertService.Load();
+
+            if(!UserConfigService.TutorialCompleted)
+                using (Tutorial form = new Tutorial())
+                    form.ShowDialog();
         }
 
         public static void Reset()

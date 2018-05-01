@@ -9,5 +9,6 @@ namespace MyCryptoMonitor.Configs
         public Theme Theme { get; set; } = new Theme();
         public bool Encrypted { get; set; } = false;
         public string EncryptionCheck { get; set; } = string.Empty;
+        public bool TutorialCompleted { get; set; } = false;
     }
 }
