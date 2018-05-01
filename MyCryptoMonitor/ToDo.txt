@@ -1,17 +1,1 @@
 ﻿Running Change log
-**[FEATURE]** Themes have been added: Dark, Royal, and Highlight
-**[FEATURE]** Custom themes
-**[FEATURE]** Window can now be resized
-**[FEATURE]** Tutorial window for first startup, can be accessed in the menu via Help
-**[FEATURE]** Warning if the current portfolio has not been saved
-**[UPDATED]** When an alert condition is met it will be disabled until it is valid again
-**[ADDED]** Tooltips to all UI elements
-**[FIXED]** Incorrect formatting for different cultures
-**[FIXED]** Coin paid and bought values being reset when adding and removing coins
-**[FIXED]** Coin paid and bought values being reset when switching currency
-**[FIXED]** Currency symbol not changing when selected currency changes
-**[FIXED]** Days are displayed in running timer
-**[FIXED]** Add coin menu not selecting the correct coin
-**[FIXED]** Potential crash when adding a coin
-**[FIXED]** Crash for small coin prices
-**[FIXED]** Handle coins that are not supported by Crypto Compare
