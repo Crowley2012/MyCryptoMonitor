@@ -56,7 +56,9 @@ namespace MyCryptoMonitor.Forms
 
                 try
                 {
-                    var coinConfigs = _coinConfigs;
+                    List<CoinConfig> coinConfigs = new List<CoinConfig>();
+                    coinConfigs.AddRange(_coinConfigs);
+
                     string cryptoCompareAddress = string.Format(API_CRYPTO_COMPARE, UserConfigService.Currency);
                     string coinMarketCapAddress = string.Format(API_COIN_MARKET_CAP, UserConfigService.Currency);
 
@@ -169,10 +171,9 @@ namespace MyCryptoMonitor.Forms
                     removeConfigs.Add(coinConfig);
                     continue;
                 }
-
                 Coin coin = _coins.Find(c => c.ShortName == coinConfig.Name);
 
-                if (_loadLines || !_coinLines.Any(c => c.CoinName.ExtEquals(coin.ShortName) && c.CoinIndex == coinConfig.Index))
+                if (_loadLines || (!_coinLines.Any(c => c.CoinName.ExtEquals(coin.ShortName) && c.CoinIndex == coinConfig.Index)))
                     AddLine(coinConfig, coin, lineIndex);
 
                 lineIndex++;
@@ -232,7 +233,7 @@ namespace MyCryptoMonitor.Forms
             _refreshTime = DateTime.Now;
             _loadLines = false;
             UpdateStatus("Sleeping");
-            SetHeight(false);
+            SetHeight(coinConfigs.Count);
 
             var totalProfitColor = totalOverall - totalPaid >= 0 ? ColorTranslator.FromHtml(UserConfigService.Theme.PositiveColor) : ColorTranslator.FromHtml(UserConfigService.Theme.NegativeColor);
             var totalProfitLabel = $"{MainService.CurrencySymbol}{totalOverall - totalPaid:0.00}";
@@ -281,7 +282,7 @@ namespace MyCryptoMonitor.Forms
                     line.Dispose();
                 
                 _coinLines = new List<CoinLine>();
-                SetHeight(true);
+                SetHeight(0);
             });
         }
 
@@ -325,11 +326,11 @@ namespace MyCryptoMonitor.Forms
                 item.Checked = item.Text.ExtEquals(portfolio);
         }
 
-        private void SetHeight(bool reset)
+        private void SetHeight(int lines)
         {
             Invoke((MethodInvoker)delegate
             {
-                Height = reset ? 165 : 165 + _coinConfigs.Count * 25;
+                Height = 165 + lines * 25;
             });
         }
         #endregion
