@@ -200,6 +200,8 @@
             this.cbCurrency.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cbCurrency.FormattingEnabled = true;
             this.cbCurrency.Items.AddRange(new object[] {
+            "BTC",
+            "ETH",
             "AED",
             "AFN",
             "ALL",

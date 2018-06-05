@@ -198,8 +198,8 @@ namespace MyCryptoMonitor.Forms
 
                 var coinIndexLabel = coinConfigs.Count(c => c.Name.ExtEquals(coinConfig.Name)) > 1 ? $"[{coinConfig.Index + 1}]" : string.Empty;
                 var coinLabel = coin.ShortName;
-                var priceLabel = $"{MainService.CurrencySymbol}{coin.Price.ConvertToString(7)}";
-                var boughtLabel = $"{MainService.CurrencySymbol}{bought.SafeDivision(paid).ConvertToString(7)}";
+                var priceLabel = $"{MainService.CurrencySymbol}{coin.Price.ConvertToString(8)}";
+                var boughtLabel = $"{MainService.CurrencySymbol}{bought.SafeDivision(paid).ConvertToString(8)}";
                 var totalLabel = $"{MainService.CurrencySymbol}{total:0.00}";
                 var profitLabel = $"{MainService.CurrencySymbol}{profit:0.00}";
                 var ratioLabel = paid != 0 ? $"{profit / paid:0.00}" : "0.00";

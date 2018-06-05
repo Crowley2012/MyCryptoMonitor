@@ -20,6 +20,8 @@ namespace MyCryptoMonitor.Statics
         {
             switch (UserConfigService.Currency)
             {
+                case "BTC": CurrencySymbol = "\u0E3F"; break;
+                case "ETH": CurrencySymbol = "\u039E"; break;
                 case "ALL": CurrencySymbol = "\u004c"; break;
                 case "AFN": CurrencySymbol = "\u060b"; break;
                 case "ARS": CurrencySymbol = "\u0024"; break;
