@@ -53,7 +53,12 @@ namespace MyCryptoMonitor.Statics
             CurrentPortfolio = portfolio;
             portfolio += FILEEXTENSION;
 
-            return File.Exists(portfolio) ? (UserConfigService.Encrypted ? LoadEncrypted(portfolio) : LoadUnencrypted(portfolio)) : new List<CoinConfig>();
+            var coinConfigs = File.Exists(portfolio) ? (UserConfigService.Encrypted ? LoadEncrypted(portfolio) : LoadUnencrypted(portfolio)) : new List<CoinConfig>();
+
+            //Get currency from portfolio
+            UserConfigService.Currency = coinConfigs.FirstOrDefault().Currency ?? UserConfigService.Currency;
+
+            return coinConfigs;
         }
 
         private static List<CoinConfig> LoadEncrypted(string portfolio)

@@ -2,9 +2,10 @@
 Checkbox to delete alerts after triggered
 Single alert message for multiple alerts
 Fix bought paid text not updating when switching portfolios
-Change not clearing when chaging currencies
-Change label not changing based on selected currency
-Currency saved to portfolio not user config
 
 Running Change log
 **[FEATURE]** BTC and ETH have been added to the selection of conversion currencies, useful for trading
+**[UPDATE]** Currencies are now portfolio specific
+**[FIXED]** Change $/% columns are properly cleared when switching currencies
+**[FIXED]** Removed currencies that were not supported by the api's
+**[FIXED]** Added missing currency symbols

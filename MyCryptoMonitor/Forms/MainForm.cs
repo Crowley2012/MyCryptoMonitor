@@ -32,6 +32,8 @@ namespace MyCryptoMonitor.Forms
         private DateTime _resetTime = DateTime.Now;
         private DateTime _refreshTime = DateTime.Now;
         private bool _loadLines = true;
+        private bool _resetStartupPrice = false;
+        private bool _cleanReset = false;
         #endregion
 
         #region Constructor
@@ -161,7 +163,10 @@ namespace MyCryptoMonitor.Forms
             MainService.CheckAlerts(_coins);
 
             if (_loadLines)
+            {
+                _cleanReset = true;
                 RemoveLines();
+            }
 
             foreach (CoinConfig coinConfig in coinConfigs)
             {
@@ -173,8 +178,13 @@ namespace MyCryptoMonitor.Forms
                 }
                 Coin coin = _coins.Find(c => c.ShortName == coinConfig.Name);
 
-                if (_loadLines || (!_coinLines.Any(c => c.CoinName.ExtEquals(coin.ShortName) && c.CoinIndex == coinConfig.Index)))
+                if ((_cleanReset && _loadLines) || (!_coinLines.Any(c => c.CoinName.ExtEquals(coin.ShortName) && c.CoinIndex == coinConfig.Index)))
+                {
+                    if (_resetStartupPrice)
+                        coinConfig.StartupPrice = 0;
+
                     AddLine(coinConfig, coin, lineIndex);
+                }
 
                 lineIndex++;
 
@@ -230,8 +240,13 @@ namespace MyCryptoMonitor.Forms
             foreach (var coinConfig in removeConfigs)
                 _coinConfigs.Remove(coinConfig);
 
+            if (_cleanReset)
+            {
+                _loadLines = false;
+                _resetStartupPrice = false;
+            }
+
             _refreshTime = DateTime.Now;
-            _loadLines = false;
             UpdateStatus("Sleeping");
             SetHeight(coinConfigs.Count);
 
@@ -293,7 +308,8 @@ namespace MyCryptoMonitor.Forms
                 Name = coinLine.CoinLabel.Text,
                 Bought = coinLine.BoughtTextBox.Text.ConvertToDecimal(),
                 Paid = coinLine.PaidTextBox.Text.ConvertToDecimal(),
-                Index = coinLine.CoinIndex
+                Index = coinLine.CoinIndex,
+                Currency = cbCurrency.Text
             }).ToList();
 
             PortfolioService.Save(portfolio, config);
@@ -302,6 +318,7 @@ namespace MyCryptoMonitor.Forms
         private void LoadPortfolio(string portfolio)
         {
             _coinConfigs = PortfolioService.Load(portfolio);
+            cbCurrency.Text = UserConfigService.Currency;
             _loadLines = true;
         }
 
@@ -375,6 +392,7 @@ namespace MyCryptoMonitor.Forms
         {
             coinsToolStripMenuItem.Enabled = false;
             UserConfigService.Currency = cbCurrency.Text;
+            _resetStartupPrice = true;
             _loadLines = true;
         }
 

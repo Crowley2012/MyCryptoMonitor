@@ -7,5 +7,6 @@
         public decimal Bought { get; set; }
         public decimal Paid { get; set; }
         public decimal StartupPrice { get; set; }
+        public string Currency { get; set; }
     }
 }

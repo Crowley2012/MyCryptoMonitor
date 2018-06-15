@@ -198,6 +198,7 @@
             this.cbCurrency.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cbCurrency.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbCurrency.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cbCurrency.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbCurrency.FormattingEnabled = true;
             this.cbCurrency.Items.AddRange(new object[] {
             "BTC",
@@ -205,7 +206,6 @@
             "AED",
             "AFN",
             "ALL",
-            "AMD",
             "ARS",
             "AUD",
             "AZN",
@@ -219,29 +219,22 @@
             "BRL",
             "BWP",
             "BYR",
-            "BZD",
             "CAD",
-            "CDF",
             "CHF",
             "CLP",
             "CNY",
             "COP",
             "CRC",
-            "CVE",
             "CZK",
-            "DJF",
             "DKK",
             "DOP",
             "DZD",
-            "EEK",
             "EGP",
-            "ERN",
             "ETB",
             "EUR",
             "GBP",
             "GEL",
             "GHS",
-            "GNF",
             "GTQ",
             "HKD",
             "HNL",
@@ -258,19 +251,14 @@
             "JPY",
             "KES",
             "KHR",
-            "KMF",
             "KRW",
             "KWD",
             "KZT",
             "LBP",
             "LKR",
-            "LTL",
-            "LVL",
-            "LYD",
             "MAD",
             "MDL",
             "MGA",
-            "MKD",
             "MMK",
             "MOP",
             "MUR",
@@ -296,10 +284,8 @@
             "RUB",
             "RWF",
             "SAR",
-            "SDG",
             "SEK",
             "SGD",
-            "SOS",
             "THB",
             "TND",
             "TOP",
@@ -316,15 +302,13 @@
             "VND",
             "XAF",
             "XOF",
-            "YER",
-            "ZAR",
-            "ZMK"});
+            "ZAR"});
             this.cbCurrency.Location = new System.Drawing.Point(223, 2);
             this.cbCurrency.Margin = new System.Windows.Forms.Padding(2);
             this.cbCurrency.Name = "cbCurrency";
             this.cbCurrency.Size = new System.Drawing.Size(85, 21);
             this.cbCurrency.TabIndex = 0;
-            this.toolTips.SetToolTip(this.cbCurrency, "This will change the display currency.");
+            this.toolTips.SetToolTip(this.cbCurrency, "Changes the conversion currency.");
             this.cbCurrency.SelectedIndexChanged += new System.EventHandler(this.Currency_SelectedIndexChanged);
             // 
             // label11
