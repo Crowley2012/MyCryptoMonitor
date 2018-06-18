@@ -77,12 +77,26 @@ namespace MyCryptoMonitor.Statics
         #endregion
 
         #region Methods
-        public static void SendAlert(AlertDataSource alert)
+        public static void SendAlert(List<AlertDataSource> alerts)
         {
+            if (alerts.Count <= 0)
+                return;
+
             Task.Factory.StartNew(() => {
-                string message = $"{alert.Coin} is {alert.Operator} than {alert.Price}";
+                string message = string.Empty;
+
+                foreach (var alert in alerts)
+                {
+                    string op = alert.Operator == Operators.GreaterThan ? "greater than" : "less than";
+                    message += $"{alert.Coin} is {op} than {alert.Price}\r\n";
+
+                    if (UserConfigService.DeleteAlerts)
+                        Alerts.Remove(alert);
+                }
+
                 MessageBox.Show(message, "Alert");
                 SendEmail(message);
+                Save();
             });
         }
 

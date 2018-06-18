@@ -13,6 +13,7 @@ namespace MyCryptoMonitor.Statics
         public static Theme Theme { get { return UserConfig.Theme; } set { UserConfig.Theme = value; Save(); } }
         public static bool Encrypted { get { return UserConfig.Encrypted; } set { UserConfig.Encrypted = value; Save(); } }
         public static string EncryptionCheck { get { return UserConfig.EncryptionCheck; } set { UserConfig.EncryptionCheck = value; Save(); } }
+        public static bool DeleteAlerts { get { return UserConfig.DeleteAlerts; } set { UserConfig.DeleteAlerts = value; Save(); } }
         public static bool TutorialCompleted { get { return UserConfig.TutorialCompleted; } set { UserConfig.TutorialCompleted = value; Save(); } }
         #endregion
 

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using MyCryptoMonitor.DataSources;
+using MyCryptoMonitor.Objects;
+using MyCryptoMonitor.Statics;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Collections.Generic;
-using MyCryptoMonitor.DataSources;
-using MyCryptoMonitor.Statics;
-using MyCryptoMonitor.Objects;
+using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Forms
 {
@@ -29,13 +29,16 @@ namespace MyCryptoMonitor.Forms
         #region Methods
         private void SaveAlerts()
         {
+            if (grdAlerts.Rows.Count > 0)
+                grdAlerts.CurrentCell = grdAlerts.Rows[0].Cells[0];
+
+            UserConfigService.DeleteAlerts = cbDeleteAlerts.Checked;
             AlertService.SendAddress = txtSendAddress.Text;
             AlertService.SendPassword = txtSendPassword.Text;
             AlertService.ReceiveAddress = txtReceiveAddress.Text;
             AlertService.ReceiveType = cmbReceiveType.Text;
             AlertService.Alerts = bsAlerts.DataSource as List<AlertDataSource>;
             AlertService.Alerts.AddRange(_otherAlerts);
-
             AlertService.Save();
         }
 
@@ -63,7 +66,7 @@ namespace MyCryptoMonitor.Forms
 
             cmbCoins.DataSource = _coins.OrderBy(c =>c.ShortName).Select(c => c.ShortName).ToList();
 
-            txtCurrent.Text = _coins.Where(c => c.ShortName.ExtEquals(cmbCoins.Text)).Select(c => c.Price).FirstOrDefault().ToString();
+            txtPrice.Text = txtCurrent.Text = _coins.Where(c => c.ShortName.ExtEquals(cmbCoins.Text)).Select(c => c.Price).FirstOrDefault().ToString();
 
             cmbReceiveType.DataSource = Enum.GetValues(typeof(AlertService.Types))
                 .Cast<Enum>()
@@ -72,6 +75,7 @@ namespace MyCryptoMonitor.Forms
                 .ToList();
 
             //Setup inputs
+            cbDeleteAlerts.Checked = UserConfigService.DeleteAlerts;
             txtSendAddress.Text = AlertService.SendAddress;
             txtSendPassword.Text = AlertService.SendPassword;
             txtReceiveAddress.Text = AlertService.ReceiveAddress;

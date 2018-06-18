@@ -193,6 +193,8 @@ namespace MyCryptoMonitor.Statics
             if (AlertService.Alerts.Count <= 0)
                 return;
 
+            var triggeredAlerts = new List<AlertDataSource>();
+
             foreach (AlertDataSource alert in AlertService.Alerts)
             {
                 var coinData = coins.Where(c => c.ShortName.ExtEquals(alert.Coin) && UserConfigService.Currency.ExtEquals(alert.Currency)).FirstOrDefault();
@@ -203,13 +205,15 @@ namespace MyCryptoMonitor.Statics
                 if ((alert.Operator == AlertService.Operators.GreaterThan && coinData.Price > alert.Price && alert.Enabled)
                     || (alert.Operator == AlertService.Operators.LessThan && coinData.Price < alert.Price && alert.Enabled))
                 {
-                    AlertService.SendAlert(alert);
+                    triggeredAlerts.Add(alert);
                     alert.Enabled = false;
                 }
                 else if ((alert.Operator == AlertService.Operators.GreaterThan && coinData.Price < alert.Price && !alert.Enabled)
                    || (alert.Operator == AlertService.Operators.LessThan && coinData.Price > alert.Price && !alert.Enabled))
                     alert.Enabled = true;
             }
+
+            AlertService.SendAlert(triggeredAlerts);
         }
         #endregion
     }
