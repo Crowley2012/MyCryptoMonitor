@@ -190,6 +190,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.ico" />
+    <Content Include="Resources\app.png" />
     <Content Include="Resources\ltc_qr.png" />
     <Content Include="Resources\tut_add.png" />
     <Content Include="Resources\tut_alerts.png" />

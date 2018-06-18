@@ -368,7 +368,7 @@ namespace MyCryptoMonitor.Forms
                 ThreadStarter(new Thread(new ThreadStart(Timers)));
                 ThreadStarter(new Thread(new ThreadStart(GetCoinData)));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 if (MessageBox.Show($"There was an error starting up. Would you like to reset? \nThis will remove encryption and delete all portfolios and alerts.", "Error on startup", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
                     MainService.Reset();

@@ -29,7 +29,7 @@ namespace MyCryptoMonitor.Forms
 
         private void btnFreepik_Click(object sender, EventArgs e)
         {
-            Process.Start("https://www.freepik.com");
+            Process.Start("https://www.freepik.com/free-icon/coin-stack_778388.htm");
         }
         #endregion
     }

@@ -56,7 +56,7 @@ namespace MyCryptoMonitor.Statics
             var coinConfigs = File.Exists(portfolio) ? (UserConfigService.Encrypted ? LoadEncrypted(portfolio) : LoadUnencrypted(portfolio)) : new List<CoinConfig>();
 
             //Get currency from portfolio
-            UserConfigService.Currency = coinConfigs.FirstOrDefault().Currency ?? UserConfigService.Currency;
+            UserConfigService.Currency = coinConfigs.FirstOrDefault()?.Currency ?? UserConfigService.Currency;
 
             return coinConfigs;
         }
