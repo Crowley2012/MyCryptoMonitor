@@ -390,6 +390,9 @@ namespace MyCryptoMonitor.Forms
 
         private void Currency_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (cbCurrency.Text.Contains("-"))
+                cbCurrency.Text = "USD";
+
             coinsToolStripMenuItem.Enabled = false;
             UserConfigService.Currency = cbCurrency.Text;
             _resetStartupPrice = true;

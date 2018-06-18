@@ -14,6 +14,18 @@ The goal of this application is to have a quick, easy and lightweight method of 
 - Choose from the default themes or create your own
 - Tutorial explaining how to use the monitor
 
+## Requirements
+- .Net 4.7.1 [https://www.microsoft.com/en-us/download/details.aspx?id=56116]
+
+## Install
+- Download the latest Release.zip [https://github.com/Crowley2012/MyCryptoMonitor/releases/latest]
+- Extract the zip file and run the executable
+
+## Softpedia 100% Free Award
+- The Softpedia team has tested and verified that my program is safe and delivers on its promises. Feel free to download the latest tested release from their site.
+- "My Crypto Monitor has been tested in the Softpedia labs using several industry-leading security solutions and found to be completely clean of adware/spyware components. We are impressed with the quality of your product and encourage you to keep these high standards in the future.To assure our visitors that My Crypto Monitor is clean, we have granted it with the "100% FREE" Softpedia award."
+- http://www.softpedia.com/get/PORTABLE-SOFTWARE/Personal-Finances/My-Crypto-Monitor.shtml#status
+
 ## Images
 <p align="center">
   <img src="https://i.imgur.com/SU3bvCW.png"><br/>
@@ -23,10 +35,3 @@ The goal of this application is to have a quick, easy and lightweight method of 
   <img src="https://i.imgur.com/5ASTnyv.png"><br/>
   <img src="https://i.imgur.com/E7AC0Xs.png">
 </p>
-
-## Install
-- Download the latest Release.zip [https://github.com/Crowley2012/MyCryptoMonitor/releases/latest]
-- Extract the zip file and run the executable
-
-## Requirements
-- .Net 4.7.1 [https://www.microsoft.com/en-us/download/details.aspx?id=56116]

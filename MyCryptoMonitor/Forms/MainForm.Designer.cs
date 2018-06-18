@@ -181,15 +181,15 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel6.ColumnCount = 2;
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 71.58775F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 28.41226F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 65F));
             this.tableLayoutPanel6.Controls.Add(this.cbCurrency, 1, 0);
             this.tableLayoutPanel6.Controls.Add(this.label11, 0, 0);
             this.tableLayoutPanel6.Location = new System.Drawing.Point(2, 2);
             this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 1;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel6.Size = new System.Drawing.Size(310, 26);
             this.tableLayoutPanel6.TabIndex = 52;
             // 
@@ -203,6 +203,7 @@
             this.cbCurrency.Items.AddRange(new object[] {
             "BTC",
             "ETH",
+            "------------",
             "AED",
             "AFN",
             "ALL",
@@ -303,10 +304,10 @@
             "XAF",
             "XOF",
             "ZAR"});
-            this.cbCurrency.Location = new System.Drawing.Point(223, 2);
+            this.cbCurrency.Location = new System.Drawing.Point(247, 2);
             this.cbCurrency.Margin = new System.Windows.Forms.Padding(2);
             this.cbCurrency.Name = "cbCurrency";
-            this.cbCurrency.Size = new System.Drawing.Size(85, 21);
+            this.cbCurrency.Size = new System.Drawing.Size(61, 21);
             this.cbCurrency.TabIndex = 0;
             this.toolTips.SetToolTip(this.cbCurrency, "Changes the conversion currency.");
             this.cbCurrency.SelectedIndexChanged += new System.EventHandler(this.Currency_SelectedIndexChanged);
@@ -318,7 +319,7 @@
             this.label11.Location = new System.Drawing.Point(2, 0);
             this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(217, 26);
+            this.label11.Size = new System.Drawing.Size(241, 26);
             this.label11.TabIndex = 51;
             this.label11.Text = "Currency:";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
