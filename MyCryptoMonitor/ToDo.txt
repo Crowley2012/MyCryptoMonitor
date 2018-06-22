@@ -1,12 +1,4 @@
 ﻿Running Change log
-**[FEATURE]** BTC and ETH have been added to the selection of conversion currencies, useful for trading
-**[FEATURE]** Choose to delete or disable alert when triggered in the manage alerts screen
-**[FEATURE]** Enable and disable alerts in the manage alerts screen
-**[UPDATE]** New app icon, should be easier to see on dark backgrounds
-**[UPDATE]** Currencies are now portfolio specific
-**[UPDATE]** Alerts are combined into a single popup when triggered
-**[FIXED]** Change $/% columns are properly cleared when switching currencies
-**[FIXED]** Removed currencies that were not supported by the api's
-**[FIXED]** Added missing currency symbols
-**[FIXED]** Enabled flag being reset for alerts causing them to trigger multiple times
-**[FIXED]** Fixed bought/paid inputs not updating when switching portfolios
+**[FEATURE]** Text box has been added to main screen to change the refresh interval (seconds)
+**[FEATURE]** The encryption salt key has been added into the user config allowing a custom key to be used
+**[FIXED]** API updated XRB to NANO

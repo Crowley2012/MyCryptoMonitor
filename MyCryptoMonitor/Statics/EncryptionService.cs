@@ -10,7 +10,6 @@ namespace MyCryptoMonitor.Statics
     public class EncryptionService
     {
         #region Private Variables
-        private const string SALT = "QM4436DL3A259EFXYNZEW4TCVVY5QZJG9CXFEKFW";
         private const string CHECKVALUE = "Success";
         private static string _password = string.Empty;
         #endregion
@@ -73,12 +72,12 @@ namespace MyCryptoMonitor.Statics
         #region Encrypt
         public static string AesEncryptString(string clearText)
         {
-            return AesEncryptString(clearText, _password, SALT);
+            return AesEncryptString(clearText, _password, UserConfigService.SaltKey);
         }
 
         public static string AesEncryptString(string clearText, string passText)
         {
-            return AesEncryptString(clearText, passText, SALT);
+            return AesEncryptString(clearText, passText, UserConfigService.SaltKey);
         }
 
         public static string AesEncryptString(string clearText, string passText, string saltText)
@@ -125,12 +124,12 @@ namespace MyCryptoMonitor.Statics
         #region Decrypt
         public static string AesDecryptString(string cryptText)
         {
-            return AesDecryptString(cryptText, _password, SALT);
+            return AesDecryptString(cryptText, _password, UserConfigService.SaltKey);
         }
 
         public static string AesDecryptString(string cryptText, string passText)
         {
-            return AesDecryptString(cryptText, passText, SALT);
+            return AesDecryptString(cryptText, passText, UserConfigService.SaltKey);
         }
 
         public static string AesDecryptString(string cryptText, string passText, string saltText)

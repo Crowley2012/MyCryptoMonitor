@@ -20,7 +20,7 @@ namespace MyCryptoMonitor.Statics
 
             return JsonConvert.DeserializeObject<List<ApiCoinMarketCap>>(response, settings).Select(c => new Coin
             {
-                ShortName = c.symbol == "NANO" ? "XRB" : c.symbol,
+                ShortName = c.symbol,
                 LongName = c.name,
                 Change1HourPercent = c.percent_change_1h.ConvertToDecimal(),
                 Change24HourPercent = c.percent_change_24h.ConvertToDecimal(),

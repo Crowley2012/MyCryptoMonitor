@@ -14,6 +14,15 @@ namespace MyCryptoMonitor.Statics
             return result;
         }
 
+        public static int ConvertToInt(this string source)
+        {
+            if (string.IsNullOrWhiteSpace(source))
+                return 0;
+
+            Int32.TryParse(source, System.Globalization.NumberStyles.Integer, null, out Int32 result);
+            return result;
+        }
+
         public static decimal SafeDivision(this decimal source, decimal numerator) => source == 0 ? 0 : numerator / source;
 
         public static string ConvertToString(this decimal source, int maxDecimalPlaces)

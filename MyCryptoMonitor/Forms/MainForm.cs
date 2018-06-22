@@ -76,7 +76,7 @@ namespace MyCryptoMonitor.Forms
                 }
 
                 UpdateStatus("Sleeping");
-                Thread.Sleep(5000);
+                Thread.Sleep(UserConfigService.RefreshTime);
             }
         }
 
@@ -88,7 +88,13 @@ namespace MyCryptoMonitor.Forms
                 TimeSpan spanRefresh = DateTime.Now.Subtract(_refreshTime);
                 string runningTime = spanReset.Days > 0 ? $"Running Timer: {spanReset.Days} days {spanReset.Hours}:{spanReset.Minutes:00}:{spanReset.Seconds:00}" : $"Running Timer: {spanReset.Hours}:{spanReset.Minutes:00}:{spanReset.Seconds:00}";
                 string refreshTime = $"Refresh Timer: {spanRefresh.Minutes}:{spanRefresh.Seconds:00}";
-                
+
+                if (string.IsNullOrWhiteSpace(txtRefreshTime.Text) || txtRefreshTime.Text.ConvertToInt() < 1)
+                    UpdateRefreshTime("5");
+
+                if (UserConfigService.RefreshTime / 1000 != txtRefreshTime.Text.ConvertToInt())
+                    UserConfigService.RefreshTime = txtRefreshTime.Text.ConvertToInt() * 1000;
+
                 UpdateTimers(runningTime, refreshTime);
 
                 Thread.Sleep(500);
@@ -145,6 +151,14 @@ namespace MyCryptoMonitor.Forms
             {
                 lblRunningTime.Text = runningTime;
                 lblRefreshTime.Text = refreshTime;
+            });
+        }
+
+        private void UpdateRefreshTime(string time)
+        {
+            Invoke((MethodInvoker)delegate
+            {
+                txtRefreshTime.Text = time;
             });
         }
 
@@ -362,13 +376,14 @@ namespace MyCryptoMonitor.Forms
 
                 _coinConfigs = PortfolioService.LoadStartup();
                 cbCurrency.Text = UserConfigService.Currency;
+                txtRefreshTime.Text = (UserConfigService.RefreshTime / 1000).ToString();
                 SetupPortfolioMenu();
 
                 ThreadStarter(new Thread(new ThreadStart(CheckUpdate)));
                 ThreadStarter(new Thread(new ThreadStart(Timers)));
                 ThreadStarter(new Thread(new ThreadStart(GetCoinData)));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (MessageBox.Show($"There was an error starting up. Would you like to reset? \nThis will remove encryption and delete all portfolios and alerts.", "Error on startup", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
                     MainService.Reset();
