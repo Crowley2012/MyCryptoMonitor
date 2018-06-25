@@ -270,7 +270,7 @@ namespace MyCryptoMonitor.Forms
             var totalPositiveProfitLabel = $"{MainService.CurrencySymbol}{totalPostivieProfits:0.00}";
             var totalOverallLabel = $"{MainService.CurrencySymbol}{totalOverall:0.00}";
             var totalInvested = $"{MainService.CurrencySymbol}{totalPaid:0.00}";
-            var profitPercentage = $"{Math.Abs((1 - (totalOverall.SafeDivision(totalPaid))) * 100):0.00}%";
+            var profitPercentage = $"{Math.Abs(((1 - totalPaid.SafeDivision(totalOverall))) * 100):0.00}%";
 
             Invoke((MethodInvoker)delegate
             {

@@ -564,7 +564,7 @@
             this.lblProfitPercentage.Tag = "NegativeProfit";
             this.lblProfitPercentage.Text = "0.00";
             this.lblProfitPercentage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.toolTips.SetToolTip(this.lblProfitPercentage, "Profit Percentage (1 - (Portfolio Value ÷ Total Invested)) ⋅ 100");
+            this.toolTips.SetToolTip(this.lblProfitPercentage, "Profit Percentage ((1 - (Portfolio Value ÷ Total Invested)) ⋅ 100)");
             // 
             // label7
             // 
