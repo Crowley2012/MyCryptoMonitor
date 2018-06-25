@@ -4,6 +4,7 @@
 The goal of this application is to have a quick, easy and lightweight method of monitoring your crypto investments.
 
 ## Features
+- Data is gathered from over 100 exchanges [https://www.cryptocompare.com/exchanges/#/overview]
 - Manage an unlimited number of portfolios
 - Add any coin that is featured on Coin Market Cap
 - Monitor profits and changes in coin prices
@@ -28,8 +29,8 @@ The goal of this application is to have a quick, easy and lightweight method of 
 
 ## Images
 <p align="center">
-  <img src="https://i.imgur.com/SU3bvCW.png"><br/>
-  <img src="https://i.imgur.com/Gq8V7J1.png"><br/>
+  <img src="https://i.imgur.com/YqmWuCS.png"><br/>
+  <img src="https://i.imgur.com/PP39d3F.png"><br/>
   <img src="https://i.imgur.com/Gu2Ur4C.png"><br/>
   <img src="https://i.imgur.com/qzU2bjK.png"><br/>
   <img src="https://i.imgur.com/5ASTnyv.png"><br/>
