@@ -269,14 +269,19 @@ namespace MyCryptoMonitor.Forms
             var totalNegativeProfitLabel = $"{MainService.CurrencySymbol}{totalNegativeProfits:0.00}";
             var totalPositiveProfitLabel = $"{MainService.CurrencySymbol}{totalPostivieProfits:0.00}";
             var totalOverallLabel = $"{MainService.CurrencySymbol}{totalOverall:0.00}";
+            var totalInvested = $"{MainService.CurrencySymbol}{totalPaid:0.00}";
+            var profitPercentage = $"{Math.Abs((1 - (totalOverall / totalPaid)) * 100):0.00}%";
 
             Invoke((MethodInvoker)delegate
             {
                 lblTotalProfit.ForeColor = totalProfitColor;
+                lblProfitPercentage.ForeColor = totalProfitColor;
                 lblTotalProfit.Text = totalProfitLabel;
                 lblTotalNegativeProfit.Text = totalNegativeProfitLabel;
                 lblTotalPositiveProfit.Text = totalPositiveProfitLabel;
                 lblOverallTotal.Text = totalOverallLabel;
+                lblTotalInvested.Text = totalInvested;
+                lblProfitPercentage.Text = profitPercentage;
                 alertsToolStripMenuItem.Enabled = true;
                 coinsToolStripMenuItem.Enabled = true;
             });

@@ -1,4 +1,1 @@
 ﻿Running Change log
-**[FEATURE]** Text box has been added to main screen to change the refresh interval (seconds)
-**[FEATURE]** The encryption salt key has been added into the user config allowing a custom key to be used
-**[FIXED]** API updated XRB to NANO
