@@ -1,4 +1,5 @@
 ﻿using MyCryptoMonitor.Api;
+using MyCryptoMonitor.Configs;
 using MyCryptoMonitor.Objects;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -31,7 +32,7 @@ namespace MyCryptoMonitor.Statics
             }).ToList();
         }
 
-        public static List<Coin> MapCombination(string responseCryptoCompare, string responseCoinMarketCap)
+        public static List<Coin> MapCombination(string responseCryptoCompare, string responseCoinMarketCap, List<CoinConfig> coinConfigs)
         {
             List<Coin> list = new List<Coin>();
             var cryptoCompareCoins = JObject.Parse(responseCryptoCompare).First.First.Children<JProperty>();
@@ -49,10 +50,22 @@ namespace MyCryptoMonitor.Statics
                     Change24HourPercent = cryptoCompareCoin.CHANGEPCT24HOUR.ConvertToDecimal(),
                     Change7DayPercent = coinMarketCapCoins.Where(c => c.ShortName.ExtEquals(cryptoCompareCoin.FROMSYMBOL)).Select(c => c.Change7DayPercent).FirstOrDefault(),
                     MarketCap = cryptoCompareCoin.MKTCAP.ConvertToDecimal(),
-                    Price = cryptoCompareCoin.PRICE.ConvertToDecimal(),
+                    Price = cryptoCompareCoin.PRICE?.ConvertToDecimal() ?? coinMarketCapCoins.First(c => c.ShortName == cryptoCompareCoin.FROMSYMBOL).Price,
                     Supply = cryptoCompareCoin.SUPPLY.ConvertToDecimal()
                 });
             }
+
+            foreach(var config in coinConfigs)
+            {
+                if (!list.Any(c => c.ShortName == config.Name))
+                {
+                    var cmc = coinMarketCapCoins.Where(c => c.ShortName == config.Name).FirstOrDefault();
+
+                    if(cmc != null)
+                        list.Add(cmc);
+                }
+            }
+
             return list;
         }
         #endregion

@@ -172,7 +172,7 @@ namespace MyCryptoMonitor.Forms
             int lineIndex = 0;
             
             _coinNames = MappingService.CoinMarketCap(coinMarketCapResponse).OrderBy(c => c.ShortName).Select(c => c.ShortName).ToList();
-            _coins = MappingService.MapCombination(cryptoCompareResponse, coinMarketCapResponse);
+            _coins = MappingService.MapCombination(cryptoCompareResponse, coinMarketCapResponse, coinConfigs);
 
             MainService.CheckAlerts(_coins);
 
