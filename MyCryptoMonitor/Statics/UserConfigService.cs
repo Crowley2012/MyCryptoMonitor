@@ -1,7 +1,9 @@
 ﻿using MyCryptoMonitor.Configs;
 using MyCryptoMonitor.Objects;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace MyCryptoMonitor.Statics
 {
@@ -17,6 +19,7 @@ namespace MyCryptoMonitor.Statics
         public static bool TutorialCompleted { get { return UserConfig.TutorialCompleted; } set { UserConfig.TutorialCompleted = value; Save(); } }
         public static int RefreshTime { get { return UserConfig.RefreshTime; } set { UserConfig.RefreshTime = value; Save(); } }
         public static string SaltKey { get => UserConfig.SaltKey; }
+        public static List<string> CustomCoins { get => UserConfig.CustomCoins.ToList(); }
         #endregion
 
         #region Private Variables

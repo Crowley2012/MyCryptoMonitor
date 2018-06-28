@@ -22,6 +22,7 @@ namespace MyCryptoMonitor.Forms
         #region Constant Variables
         private const string API_COIN_MARKET_CAP = "https://api.coinmarketcap.com/v1/ticker/?limit=9999&convert={0}";
         private const string API_CRYPTO_COMPARE = "https://min-api.cryptocompare.com/data/pricemultifull?tsyms={0}&fsyms=";
+        private const string API_CRYPTO_COMPARE_COINS = "https://min-api.cryptocompare.com/data/all/coinlist";
         #endregion
 
         #region Private Variables
@@ -68,7 +69,7 @@ namespace MyCryptoMonitor.Forms
                         cryptoCompareAddress += $"{coinConfig.Name},";
 
                     using (var webClient = new WebClient())
-                        UpdateCoins(webClient.DownloadString(cryptoCompareAddress), webClient.DownloadString(coinMarketCapAddress), coinConfigs);
+                        UpdateCoins(webClient.DownloadString(cryptoCompareAddress), webClient.DownloadString(API_CRYPTO_COMPARE_COINS), webClient.DownloadString(coinMarketCapAddress), coinConfigs);
                 }
                 catch (WebException)
                 {
@@ -162,7 +163,7 @@ namespace MyCryptoMonitor.Forms
             });
         }
 
-        private void UpdateCoins(string cryptoCompareResponse, string coinMarketCapResponse, List<CoinConfig> coinConfigs)
+        private void UpdateCoins(string cryptoCompareResponse, string cryptoCompareCoinsResponse, string coinMarketCapResponse, List<CoinConfig> coinConfigs)
         {
             List<CoinConfig> removeConfigs = new List<CoinConfig>();
             decimal totalPaid = 0;
@@ -170,8 +171,8 @@ namespace MyCryptoMonitor.Forms
             decimal totalNegativeProfits = 0;
             decimal totalPostivieProfits = 0;
             int lineIndex = 0;
-            
-            _coinNames = MappingService.CoinMarketCap(coinMarketCapResponse).OrderBy(c => c.ShortName).Select(c => c.ShortName).ToList();
+
+            _coinNames = MappingService.CryptoCompareCoinList(cryptoCompareCoinsResponse);
             _coins = MappingService.MapCombination(cryptoCompareResponse, coinMarketCapResponse, coinConfigs);
 
             MainService.CheckAlerts(_coins);
@@ -186,7 +187,7 @@ namespace MyCryptoMonitor.Forms
             {
                 if (!_coins.Any(c => c.ShortName == coinConfig.Name))
                 {
-                    Task.Factory.StartNew(() => { MessageBox.Show($"Sorry, Crypto Compare does not have any data for {coinConfig.Name}."); });
+                    Task.Factory.StartNew(() => { MessageBox.Show($"Sorry, Crypto Compare and Coin Market Cap does not have any data for {coinConfig.Name}."); });
                     removeConfigs.Add(coinConfig);
                     continue;
                 }

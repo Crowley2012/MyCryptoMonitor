@@ -32,6 +32,16 @@ namespace MyCryptoMonitor.Statics
             }).ToList();
         }
 
+        public static List<string> CryptoCompareCoinList(string response)
+        {
+            var coinData = JsonConvert.DeserializeObject<List<Dictionary<string, ApiCryptoCompareCoin>>>($"[{(JObject.Parse(response)["Data"]).ToString()}]");
+
+            var coinList = coinData[0].Keys.ToList();
+            coinList.AddRange(UserConfigService.CustomCoins);
+
+            return coinList.OrderBy(k => k).ToList();
+        }
+
         public static List<Coin> MapCombination(string responseCryptoCompare, string responseCoinMarketCap, List<CoinConfig> coinConfigs)
         {
             List<Coin> list = new List<Coin>();

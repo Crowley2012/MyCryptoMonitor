@@ -1,1 +1,4 @@
-﻿Running Change log
+﻿Current Change log
+**[FEATURE]** Coin list is now being retrieved from Crypto Compare API (Request didn't exist before and had to get list from Coin Market Cap).
+**[FEATURE]** A Custom Coin list has been added to the User Config. If for some reason your coin is not listed, you can manually add it to this list and it will be added to the coin list. The monitor will attempt to retrieve the coin data from Coin Market Cap.
+**[FIXED]** Fixed discrepancies between multiple coins with the same symbols, for example CAT.
