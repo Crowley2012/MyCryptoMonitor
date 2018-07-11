@@ -172,6 +172,12 @@ namespace MyCryptoMonitor.Forms
             decimal totalPostivieProfits = 0;
             int lineIndex = 0;
 
+            if(string.IsNullOrWhiteSpace(cryptoCompareResponse) || string.IsNullOrWhiteSpace(cryptoCompareCoinsResponse) || string.IsNullOrWhiteSpace(coinMarketCapResponse))
+            {
+                MessageBox.Show("The API webservice is having issues at the moment. Please try again in a few minutes.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit();
+            }
+
             _coinNames = MappingService.CryptoCompareCoinList(cryptoCompareCoinsResponse);
             _coins = MappingService.MapCombination(cryptoCompareResponse, coinMarketCapResponse, coinConfigs);
 
