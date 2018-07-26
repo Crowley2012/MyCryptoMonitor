@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -83,7 +84,10 @@ namespace MyCryptoMonitor.Statics
                 return;
 
             Task.Factory.StartNew(() => {
-                string message = string.Empty;
+                var first = alerts.FirstOrDefault();
+                var oeprator = first.Operator == Operators.GreaterThan ? ">" : "<";
+                var title = $"{first.Coin} {oeprator} {first.Price}";
+                var message = string.Empty;
 
                 foreach (var alert in alerts)
                 {
@@ -94,7 +98,7 @@ namespace MyCryptoMonitor.Statics
                         Alerts.Remove(alert);
                 }
 
-                MessageBox.Show(message, "Alert");
+                MessageBox.Show(message, title);
                 SendEmail(message);
                 Save();
             });
