@@ -48,30 +48,30 @@
             this.cbDeleteAlerts = new System.Windows.Forms.CheckBox();
             this.grpContact = new System.Windows.Forms.GroupBox();
             this.grpAlerts = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
             this.cmbOperators = new System.Windows.Forms.ComboBox();
             this.grpEmail = new System.Windows.Forms.GroupBox();
             this.btnSet = new System.Windows.Forms.Button();
             this.txtSendPassword = new System.Windows.Forms.TextBox();
-            this.txtSendAddress = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtSendAddress = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.coinDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.operatorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bsAlerts = new System.Windows.Forms.BindingSource(this.components);
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.grdAlerts)).BeginInit();
             this.grpContact.SuspendLayout();
             this.grpAlerts.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.grpEmail.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bsAlerts)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bsAlerts)).BeginInit();
             this.SuspendLayout();
             // 
             // grdAlerts
@@ -96,7 +96,7 @@
             this.grdAlerts.Name = "grdAlerts";
             this.grdAlerts.RowHeadersVisible = false;
             this.grdAlerts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.grdAlerts.Size = new System.Drawing.Size(887, 325);
+            this.grdAlerts.Size = new System.Drawing.Size(564, 325);
             this.grdAlerts.TabIndex = 7;
             // 
             // Current
@@ -134,7 +134,7 @@
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(6, 246);
+            this.btnDelete.Location = new System.Drawing.Point(6, 250);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(200, 30);
             this.btnDelete.TabIndex = 6;
@@ -144,7 +144,7 @@
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(6, 210);
+            this.btnAdd.Location = new System.Drawing.Point(6, 214);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(200, 30);
             this.btnAdd.TabIndex = 5;
@@ -159,7 +159,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtReceiveAddress.Location = new System.Drawing.Point(86, 23);
             this.txtReceiveAddress.Name = "txtReceiveAddress";
-            this.txtReceiveAddress.Size = new System.Drawing.Size(461, 20);
+            this.txtReceiveAddress.Size = new System.Drawing.Size(302, 20);
             this.txtReceiveAddress.TabIndex = 10;
             // 
             // cmbReceiveType
@@ -181,7 +181,7 @@
             "Virgin"});
             this.cmbReceiveType.Location = new System.Drawing.Point(86, 49);
             this.cmbReceiveType.Name = "cmbReceiveType";
-            this.cmbReceiveType.Size = new System.Drawing.Size(461, 21);
+            this.cmbReceiveType.Size = new System.Drawing.Size(302, 21);
             this.cmbReceiveType.TabIndex = 11;
             this.cmbReceiveType.ValueMember = "value";
             // 
@@ -276,9 +276,9 @@
             this.grpContact.Controls.Add(this.txtReceiveAddress);
             this.grpContact.Controls.Add(this.label2);
             this.grpContact.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpContact.Location = new System.Drawing.Point(561, 3);
+            this.grpContact.Location = new System.Drawing.Point(403, 3);
             this.grpContact.Name = "grpContact";
-            this.grpContact.Size = new System.Drawing.Size(553, 110);
+            this.grpContact.Size = new System.Drawing.Size(394, 102);
             this.grpContact.TabIndex = 11;
             this.grpContact.TabStop = false;
             this.grpContact.Text = "Contact Information";
@@ -292,10 +292,29 @@
             this.grpAlerts.Controls.Add(this.grdAlerts);
             this.grpAlerts.Location = new System.Drawing.Point(9, 12);
             this.grpAlerts.Name = "grpAlerts";
-            this.grpAlerts.Size = new System.Drawing.Size(1117, 353);
+            this.grpAlerts.Size = new System.Drawing.Size(794, 353);
             this.grpAlerts.TabIndex = 12;
             this.grpAlerts.TabStop = false;
             this.grpAlerts.Text = "Alerts";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.btnDelete);
+            this.groupBox2.Controls.Add(this.cmbOperators);
+            this.groupBox2.Controls.Add(this.btnAdd);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.cmbCoins);
+            this.groupBox2.Controls.Add(this.txtPrice);
+            this.groupBox2.Controls.Add(this.txtCurrent);
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Location = new System.Drawing.Point(6, 58);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(212, 286);
+            this.groupBox2.TabIndex = 18;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Manage";
             // 
             // label4
             // 
@@ -331,17 +350,15 @@
             this.grpEmail.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpEmail.Location = new System.Drawing.Point(3, 3);
             this.grpEmail.Name = "grpEmail";
-            this.grpEmail.Size = new System.Drawing.Size(552, 110);
+            this.grpEmail.Size = new System.Drawing.Size(394, 102);
             this.grpEmail.TabIndex = 12;
             this.grpEmail.TabStop = false;
             this.grpEmail.Text = "Email Credentials";
             // 
             // btnSet
             // 
-            this.btnSet.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSet.Location = new System.Drawing.Point(446, 83);
+            this.btnSet.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSet.Location = new System.Drawing.Point(288, 75);
             this.btnSet.Name = "btnSet";
             this.btnSet.Size = new System.Drawing.Size(100, 21);
             this.btnSet.TabIndex = 14;
@@ -357,31 +374,8 @@
             this.txtSendPassword.Location = new System.Drawing.Point(88, 49);
             this.txtSendPassword.Name = "txtSendPassword";
             this.txtSendPassword.PasswordChar = '•';
-            this.txtSendPassword.Size = new System.Drawing.Size(458, 20);
+            this.txtSendPassword.Size = new System.Drawing.Size(300, 20);
             this.txtSendPassword.TabIndex = 9;
-            // 
-            // txtSendAddress
-            // 
-            this.txtSendAddress.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSendAddress.Location = new System.Drawing.Point(88, 23);
-            this.txtSendAddress.Name = "txtSendAddress";
-            this.txtSendAddress.Size = new System.Drawing.Size(458, 20);
-            this.txtSendAddress.TabIndex = 8;
-            // 
-            // label7
-            // 
-            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(9, 52);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(53, 13);
-            this.label7.TabIndex = 9;
-            this.label7.Text = "Password";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label8
             // 
@@ -396,6 +390,29 @@
             this.label8.Text = "Email Address";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // label7
+            // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(9, 52);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(53, 13);
+            this.label7.TabIndex = 9;
+            this.label7.Text = "Password";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // txtSendAddress
+            // 
+            this.txtSendAddress.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSendAddress.Location = new System.Drawing.Point(88, 23);
+            this.txtSendAddress.Name = "txtSendAddress";
+            this.txtSendAddress.Size = new System.Drawing.Size(300, 20);
+            this.txtSendAddress.TabIndex = 8;
+            // 
             // label9
             // 
             this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -403,7 +420,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label9.Location = new System.Drawing.Point(9, 16);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(1099, 83);
+            this.label9.Size = new System.Drawing.Size(776, 56);
             this.label9.TabIndex = 13;
             this.label9.Text = resources.GetString("label9.Text");
             // 
@@ -414,29 +431,27 @@
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Location = new System.Drawing.Point(9, 371);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1117, 102);
+            this.groupBox1.Size = new System.Drawing.Size(794, 75);
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Instructions";
             // 
-            // groupBox2
+            // tableLayoutPanel2
             // 
-            this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.btnDelete);
-            this.groupBox2.Controls.Add(this.cmbOperators);
-            this.groupBox2.Controls.Add(this.btnAdd);
-            this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Controls.Add(this.cmbCoins);
-            this.groupBox2.Controls.Add(this.txtPrice);
-            this.groupBox2.Controls.Add(this.txtCurrent);
-            this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Location = new System.Drawing.Point(6, 62);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(212, 282);
-            this.groupBox2.TabIndex = 18;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Manage";
+            this.tableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Controls.Add(this.grpEmail, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.grpContact, 1, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(6, 452);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 108F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(800, 108);
+            this.tableLayoutPanel2.TabIndex = 14;
             // 
             // coinDataGridViewTextBoxColumn
             // 
@@ -465,26 +480,11 @@
             // 
             this.bsAlerts.DataSource = typeof(MyCryptoMonitor.DataSources.AlertDataSourceList);
             // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Controls.Add(this.grpEmail, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.grpContact, 1, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(9, 479);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1117, 116);
-            this.tableLayoutPanel2.TabIndex = 14;
-            // 
             // ManageAlerts
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1138, 607);
+            this.ClientSize = new System.Drawing.Size(815, 567);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.grpAlerts);
@@ -499,13 +499,13 @@
             this.grpContact.PerformLayout();
             this.grpAlerts.ResumeLayout(false);
             this.grpAlerts.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.grpEmail.ResumeLayout(false);
             this.grpEmail.PerformLayout();
             this.groupBox1.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bsAlerts)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.bsAlerts)).EndInit();
             this.ResumeLayout(false);
 
         }

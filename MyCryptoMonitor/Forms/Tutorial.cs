@@ -29,9 +29,9 @@ namespace MyCryptoMonitor.Forms
                         "\u2022 This is the main screen of the monitor. Here you can see all the coins in your portfolio with calculated profits and changes in coin price.\r\n" +
                         "\u2022 The bought column is the number of coins you own and the paid column is how much you paid for those coins. \r\n" +
                         "\u2022 These fields will need to be in the following format (1,000.00).\r\n" +
-                        "\u2022 The timers to the top left show how long the monitor has been running and how long the refresh is taking. The refresh starts every 5 seconds.\r\n" +
-                        "\u2022 You can change the currency the monitor uses to the top right.\r\n" +
-                        "\u2022 If you want to know more about a column or how it is calculated hover over it for a tooltip with more information.";
+                        "\u2022 The timers to the top left show how long the monitor has been running and how long the refresh is taking.\r\n" +
+                        "\u2022 You can change the refresh interval and currency the monitor uses to the top right.\r\n" +
+                        "\u2022 If you want to know how a column is calculated, hover over it for a tooltip with more information.";
                     pictureBox.Image = Resources.tut_main;
                     btnPrevious.Enabled = false;
                     break;
@@ -76,7 +76,7 @@ namespace MyCryptoMonitor.Forms
                         "\u2022 You can also setup email alerts at the bottom of the screen if you have encryption enabled. This will allow you to send a text message or an email to an address.\r\n" +
                         "\u2022 In order for this to work you must use a gmail account with 'Allow less secure apps' enabled.\r\n" +
                         "\u2022 WARNING: Do not use your primary email account, create a new gmail for this monitor. Your email and password will be saved to a file. Although the file is encrypted there is still the possibility of it being cracked.";
-                    pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                     pictureBox.Image = Resources.tut_alerts;
                     btnNext.Text = "Next";
                     break;

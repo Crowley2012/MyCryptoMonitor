@@ -127,11 +127,9 @@
     <value>17, 17</value>
   </metadata>
   <data name="label9.Text" xml:space="preserve">
-    <value>Alerts can be used to notify you when the price of a coin is greater than or less than a specified value. When an alert condition is met a window will pop up to notify you.
+    <value>When an alert condition is triggered a window will popup with more details. External alerts can be setup to send a text message or email when an alert is triggered.
 
-You also have the option to send an external alert to a phone number or email address. To enable this feature you will first have to enable encryption. This will encrypt your email address and password. I recommend not using your primary email address and creating a new one for this application, just to be safe. This currently only works for gmail accounts, and you will have to enable "allow less secure apps" in gmail [myaccount.google.com/lesssecureapps].
-
-Once encryption is enabled you will be able to type in your email credentials and choose a contact address, which can be either a phone number or an email.</value>
+To set up external alerts, you will need to enable encryption. This will encrypt your email address and password locally. DO NOT use your primary email, create a new throwaway gmail for this application. Next, enable "Allow Less Secure Apps" for your gmail account [myaccount.google.com/lesssecureapps].</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

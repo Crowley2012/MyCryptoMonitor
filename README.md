@@ -32,7 +32,7 @@ The goal of this application is to have a quick, easy and lightweight method of 
   <img src="https://i.imgur.com/zpSfCxu.png"><br/>
   <img src="https://i.imgur.com/ezCORa9.png"><br/>
   <img src="https://i.imgur.com/Gu2Ur4C.png"><br/>
-  <img src="https://i.imgur.com/qzU2bjK.png"><br/>
+  <img src="https://i.imgur.com/3qCHeEQ.png"><br/>
   <img src="https://i.imgur.com/5ASTnyv.png"><br/>
   <img src="https://i.imgur.com/E7AC0Xs.png">
 </p>
