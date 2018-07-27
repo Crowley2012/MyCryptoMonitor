@@ -17,7 +17,7 @@ namespace MyCryptoMonitor.Statics
     {
         #region Enums
         public enum Types {[Description("Email")] Email, [Description("Verizon")] Verizon, [Description("AT&T")] ATT, [Description("Sprint")] Sprint, [Description("Boost Mobile")] Boost, [Description("T-Mobile")] TMobile, [Description("US Cellular")] USCellular, [Description("Virgin Mobile")] VirginMobile }
-        public enum Operators {[Description("Greater Than")] GreaterThan, [Description("Less Than")] LessThan }
+        public enum Operators {[Description("Greater Than")] GreaterThan, [Description("Less Than")] LessThan, [Description("Both")] Both }
         #endregion
 
         #region Public Variables
@@ -68,6 +68,8 @@ namespace MyCryptoMonitor.Statics
                     : JsonConvert.DeserializeObject<AlertConfig>(File.ReadAllText(FILENAME));
             else
                 Create();
+
+            AlertConfig.Alerts.ForEach(x => x.LastOperator = null);
         }
 
         public static void Delete()
@@ -85,14 +87,14 @@ namespace MyCryptoMonitor.Statics
 
             Task.Factory.StartNew(() => {
                 var first = alerts.FirstOrDefault();
-                var oeprator = first.Operator == Operators.GreaterThan ? ">" : "<";
-                var title = $"{first.Coin} {oeprator} {first.Price}";
+                var op = first.LastOperator == Operators.GreaterThan ? ">" : first.Operator == Operators.GreaterThan ? ">" : "<";
+                var title = $"{first.Coin} {op} {first.Price}";
                 var message = string.Empty;
 
                 foreach (var alert in alerts)
                 {
-                    string op = alert.Operator == Operators.GreaterThan ? "greater than" : "less than";
-                    message += $"{alert.Coin} is {op} than {alert.Price}\r\n";
+                    string condition = alert.LastOperator == Operators.GreaterThan ? "greater than" : alert.Operator == Operators.GreaterThan ? "greater than" : "less than";
+                    message += $"{alert.Coin} is {condition} than {alert.Price}\r\n";
 
                     if (UserConfigService.DeleteAlerts)
                         Alerts.Remove(alert);

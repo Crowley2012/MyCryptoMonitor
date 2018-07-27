@@ -210,7 +210,27 @@ namespace MyCryptoMonitor.Statics
                 }
                 else if ((alert.Operator == AlertService.Operators.GreaterThan && coinData.Price < alert.Price && !alert.Enabled)
                    || (alert.Operator == AlertService.Operators.LessThan && coinData.Price > alert.Price && !alert.Enabled))
+                {
                     alert.Enabled = true;
+                }
+                else if (alert.Operator == AlertService.Operators.Both && alert.LastOperator == AlertService.Operators.LessThan && coinData.Price > alert.Price && alert.Enabled)
+                {
+                    alert.LastOperator = AlertService.Operators.GreaterThan;
+                    triggeredAlerts.Add(alert);
+                }
+                else if (alert.Operator == AlertService.Operators.Both && alert.LastOperator == AlertService.Operators.GreaterThan && coinData.Price < alert.Price && alert.Enabled)
+                {
+                    alert.LastOperator = AlertService.Operators.LessThan;
+                    triggeredAlerts.Add(alert);
+                }
+                else if (alert.Operator == AlertService.Operators.Both && alert.LastOperator == null && coinData.Price > alert.Price && alert.Enabled)
+                {
+                    alert.LastOperator = AlertService.Operators.GreaterThan;
+                }
+                else if (alert.Operator == AlertService.Operators.Both && alert.LastOperator == null && coinData.Price < alert.Price && alert.Enabled)
+                {
+                    alert.LastOperator = AlertService.Operators.LessThan;
+                }
             }
 
             AlertService.SendAlert(triggeredAlerts);

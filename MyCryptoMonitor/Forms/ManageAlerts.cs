@@ -14,7 +14,7 @@ namespace MyCryptoMonitor.Forms
         #region Private Variables
         private List<Coin> _coins;
         private List<AlertDataSource> _otherAlerts;
-        private AlertService.Operators _operator => radioGreater.Checked ? AlertService.Operators.GreaterThan : AlertService.Operators.LessThan;
+        private AlertService.Operators _operator => (AlertService.Operators)cmbOperators.SelectedValue;
         #endregion
 
         #region Constructor
@@ -67,6 +67,12 @@ namespace MyCryptoMonitor.Forms
             cmbCoins.DataSource = _coins.OrderBy(c =>c.ShortName).Select(c => c.ShortName).ToList();
 
             txtPrice.Text = txtCurrent.Text = _coins.Where(c => c.ShortName.ExtEquals(cmbCoins.Text)).Select(c => c.Price).FirstOrDefault().ToString();
+
+            cmbOperators.DataSource = Enum.GetValues(typeof(AlertService.Operators))
+                .Cast<Enum>()
+                .Select(value => new { (Attribute.GetCustomAttribute(value.GetType().GetField(value.ToString()), typeof(DescriptionAttribute)) as DescriptionAttribute).Description, value })
+                .OrderBy(d => d.Description)
+                .ToList();
 
             cmbReceiveType.DataSource = Enum.GetValues(typeof(AlertService.Types))
                 .Cast<Enum>()
