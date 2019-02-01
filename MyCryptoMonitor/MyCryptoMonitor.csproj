@@ -59,6 +59,12 @@
     <Compile Include="Forms\ManageTheme.Designer.cs">
       <DependentUpon>ManageTheme.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\MinefulForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MinefulForm.Designer.cs">
+      <DependentUpon>MinefulForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\PopupAbout.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -142,6 +148,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ManageTheme.resx">
       <DependentUpon>ManageTheme.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MinefulForm.resx">
+      <DependentUpon>MinefulForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PopupAbout.resx">
       <DependentUpon>PopupAbout.cs</DependentUpon>

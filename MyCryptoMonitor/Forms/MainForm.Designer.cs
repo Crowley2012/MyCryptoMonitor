@@ -90,6 +90,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.minefulToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
@@ -674,6 +675,7 @@
             this.loadPortfolioMenu,
             this.encryptToolStripMenuItem,
             this.themesToolStripMenuItem,
+            this.minefulToolStripMenuItem,
             this.donateToolStripMenuItem,
             this.helpToolStripMenuItem,
             this.aboutToolStripMenuItem});
@@ -939,6 +941,13 @@
             this.tableLayoutPanel7.Size = new System.Drawing.Size(984, 16);
             this.tableLayoutPanel7.TabIndex = 52;
             // 
+            // minefulToolStripMenuItem
+            // 
+            this.minefulToolStripMenuItem.Name = "minefulToolStripMenuItem";
+            this.minefulToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
+            this.minefulToolStripMenuItem.Text = "Mineful";
+            this.minefulToolStripMenuItem.Click += new System.EventHandler(this.minefulToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1035,6 +1044,7 @@
         private System.Windows.Forms.Label lblTotalInvested;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.ToolStripMenuItem minefulToolStripMenuItem;
     }
 }
 

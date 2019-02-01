@@ -271,6 +271,12 @@ namespace MyCryptoMonitor.Forms
             SetupPortfolioMenu();
         }
 
+        private void minefulToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var form = new MinefulForm())
+                form.ShowDialog();
+        }
+
         private void Open_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start(Directory.GetCurrentDirectory());
