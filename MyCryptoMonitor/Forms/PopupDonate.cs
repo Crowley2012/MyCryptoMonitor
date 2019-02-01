@@ -5,18 +5,22 @@ namespace MyCryptoMonitor.Forms
 {
     public partial class PopupDonate : Form
     {
-        #region Constructor
+        #region Public Constructors
+
         public PopupDonate()
         {
             InitializeComponent();
         }
-        #endregion
 
-        #region Events
+        #endregion Public Constructors
+
+        #region Private Methods
+
         private void PopupDonate_Load(object sender, System.EventArgs e)
         {
             Globals.SetTheme(this);
         }
-        #endregion
+
+        #endregion Private Methods
     }
 }

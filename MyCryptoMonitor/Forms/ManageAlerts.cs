@@ -11,60 +11,42 @@ namespace MyCryptoMonitor.Forms
 {
     public partial class ManageAlerts : Form
     {
-        #region Private Variables
-        private List<Coin> _coins;
-        private List<AlertDataSource> _otherAlerts;
-        private AlertService.Operators _operator => (AlertService.Operators)cmbOperators.SelectedValue;
-        #endregion
+        #region Private Fields
 
-        #region Constructor
+        private readonly List<Coin> _coins;
+        private List<AlertDataSource> _otherAlerts;
+
+        #endregion Private Fields
+
+        #region Public Constructors
+
         public ManageAlerts(List<Coin> coins)
         {
             InitializeComponent();
 
             _coins = coins;
         }
-        #endregion
 
-        #region Methods
-        private void SaveAlerts()
+        #endregion Public Constructors
+
+        #region Private Properties
+
+        private AlertService.Operators _operator => (AlertService.Operators)cmbOperators.SelectedValue;
+
+        #endregion Private Properties
+
+        #region Private Methods
+
+        private void Alerts_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if (grdAlerts.Rows.Count > 0)
-                grdAlerts.CurrentCell = grdAlerts.Rows[0].Cells[0];
-
-            UserConfigService.DeleteAlerts = cbDeleteAlerts.Checked;
-            AlertService.SendAddress = txtSendAddress.Text;
-            AlertService.SendPassword = txtSendPassword.Text;
-            AlertService.ReceiveAddress = txtReceiveAddress.Text;
-            AlertService.ReceiveType = cmbReceiveType.Text;
-            AlertService.Alerts = bsAlerts.DataSource as List<AlertDataSource>;
-            AlertService.Alerts.AddRange(_otherAlerts);
-            AlertService.Save();
+            SaveAlerts();
         }
 
-        private bool CheckValidAlert(decimal currentPrice, decimal checkPrice)
-        {
-            if (_operator == AlertService.Operators.GreaterThan && currentPrice > checkPrice)
-            {
-                MessageBox.Show("Current price is already greater than check price");
-                return false;
-            }
-            else if(_operator == AlertService.Operators.LessThan && currentPrice < checkPrice)
-            {
-                MessageBox.Show("Current price is already less than check price");
-                return false;
-            }
-
-            return true;
-        }
-        #endregion
-
-        #region Events
         private void Alerts_Load(object sender, EventArgs e)
         {
             AlertService.Load();
 
-            cmbCoins.DataSource = _coins.OrderBy(c =>c.ShortName).Select(c => c.ShortName).ToList();
+            cmbCoins.DataSource = _coins.OrderBy(c => c.ShortName).Select(c => c.ShortName).ToList();
 
             txtPrice.Text = txtCurrent.Text = _coins.Where(c => c.ShortName.ExtEquals(cmbCoins.Text)).Select(c => c.Price).FirstOrDefault().ToString();
 
@@ -116,7 +98,7 @@ namespace MyCryptoMonitor.Forms
                 MessageBox.Show("Coin not selected or price is not a valid number.");
                 return;
             }
-            
+
             if (!CheckValidAlert(txtCurrent.Text.ConvertToDecimal(), txtPrice.Text.ConvertToDecimal()))
                 return;
 
@@ -130,6 +112,27 @@ namespace MyCryptoMonitor.Forms
                 bsAlerts.Remove((AlertDataSource)grdAlerts.SelectedCells[0].OwningRow.DataBoundItem);
         }
 
+        private void btnSet_Click(object sender, EventArgs e)
+        {
+            SaveAlerts();
+        }
+
+        private bool CheckValidAlert(decimal currentPrice, decimal checkPrice)
+        {
+            if (_operator == AlertService.Operators.GreaterThan && currentPrice > checkPrice)
+            {
+                MessageBox.Show("Current price is already greater than check price");
+                return false;
+            }
+            else if (_operator == AlertService.Operators.LessThan && currentPrice < checkPrice)
+            {
+                MessageBox.Show("Current price is already less than check price");
+                return false;
+            }
+
+            return true;
+        }
+
         private void cmbCoins_Validated(object sender, EventArgs e)
         {
             //Set the coin price
@@ -138,15 +141,21 @@ namespace MyCryptoMonitor.Forms
             txtCurrent.Text = currentPrice;
         }
 
-        private void btnSet_Click(object sender, EventArgs e)
+        private void SaveAlerts()
         {
-            SaveAlerts();
+            if (grdAlerts.Rows.Count > 0)
+                grdAlerts.CurrentCell = grdAlerts.Rows[0].Cells[0];
+
+            UserConfigService.DeleteAlerts = cbDeleteAlerts.Checked;
+            AlertService.SendAddress = txtSendAddress.Text;
+            AlertService.SendPassword = txtSendPassword.Text;
+            AlertService.ReceiveAddress = txtReceiveAddress.Text;
+            AlertService.ReceiveType = cmbReceiveType.Text;
+            AlertService.Alerts = bsAlerts.DataSource as List<AlertDataSource>;
+            AlertService.Alerts.AddRange(_otherAlerts);
+            AlertService.Save();
         }
 
-        private void Alerts_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            SaveAlerts();
-        }
-        #endregion
+        #endregion Private Methods
     }
 }

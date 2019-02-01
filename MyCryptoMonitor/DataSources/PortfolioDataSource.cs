@@ -4,9 +4,13 @@ namespace MyCryptoMonitor.DataSources
 {
     public class PortfolioDataSource
     {
-        public string Name { get; set; }
+        #region Public Properties
+
         public string FileName { get; set; }
+        public string Name { get; set; }
         public bool Startup { get; set; }
+
+        #endregion Public Properties
     }
 
     public class PortfolioDataSourceList : BindingList<PortfolioDataSource> { }

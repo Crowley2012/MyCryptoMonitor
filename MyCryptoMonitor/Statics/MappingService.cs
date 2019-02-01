@@ -10,7 +10,8 @@ namespace MyCryptoMonitor.Statics
 {
     public class MappingService
     {
-        #region Methods
+        #region Public Methods
+
         public static List<Coin> CoinMarketCap(string response)
         {
             JsonSerializerSettings settings = new JsonSerializerSettings
@@ -65,19 +66,20 @@ namespace MyCryptoMonitor.Statics
                 });
             }
 
-            foreach(var config in coinConfigs)
+            foreach (var config in coinConfigs)
             {
                 if (!list.Any(c => c.ShortName == config.Name))
                 {
                     var cmc = coinMarketCapCoins.Where(c => c.ShortName == config.Name).FirstOrDefault();
 
-                    if(cmc != null)
+                    if (cmc != null)
                         list.Add(cmc);
                 }
             }
 
             return list;
         }
-        #endregion
+
+        #endregion Public Methods
     }
 }

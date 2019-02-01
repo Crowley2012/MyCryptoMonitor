@@ -15,33 +15,64 @@ namespace MyCryptoMonitor.Statics
 {
     public class AlertService
     {
-        #region Enums
-        public enum Types {[Description("Email")] Email, [Description("Verizon")] Verizon, [Description("AT&T")] ATT, [Description("Sprint")] Sprint, [Description("Boost Mobile")] Boost, [Description("T-Mobile")] TMobile, [Description("US Cellular")] USCellular, [Description("Virgin Mobile")] VirginMobile }
-        public enum Operators {[Description("Greater Than")] GreaterThan, [Description("Less Than")] LessThan, [Description("Both")] Both }
-        #endregion
+        #region Private Fields
 
-        #region Public Variables
-        public static string SendAddress { get { return AlertConfig.SendAddress; } set { AlertConfig.SendAddress = value; } }
-        public static string SendPassword { get { return AlertConfig.SendPassword; } set { AlertConfig.SendPassword = value; } }
+        private const string FILENAME = "Alert.config";
+
+        #endregion Private Fields
+
+        #region Public Enums
+
+        public enum Operators {[Description("Greater Than")] GreaterThan, [Description("Less Than")] LessThan, [Description("Both")] Both }
+
+        public enum Types {[Description("Email")] Email, [Description("Verizon")] Verizon, [Description("AT&T")] ATT, [Description("Sprint")] Sprint, [Description("Boost Mobile")] Boost, [Description("T-Mobile")] TMobile, [Description("US Cellular")] USCellular, [Description("Virgin Mobile")] VirginMobile }
+
+        #endregion Public Enums
+
+        #region Public Properties
+
+        public static List<AlertDataSource> Alerts { get { return AlertConfig.Alerts; } set { AlertConfig.Alerts = value; } }
         public static string ReceiveAddress { get { return AlertConfig.ReceiveAddress; } set { AlertConfig.ReceiveAddress = value; } }
         public static string ReceiveType { get { return AlertConfig.ReceiveType; } set { AlertConfig.ReceiveType = value; } }
-        public static List<AlertDataSource> Alerts { get { return AlertConfig.Alerts; } set { AlertConfig.Alerts = value; } }
-        #endregion
+        public static string SendAddress { get { return AlertConfig.SendAddress; } set { AlertConfig.SendAddress = value; } }
+        public static string SendPassword { get { return AlertConfig.SendPassword; } set { AlertConfig.SendPassword = value; } }
 
-        #region Private Variables
+        #endregion Public Properties
+
+        #region Private Properties
+
         private static AlertConfig AlertConfig { get; set; }
-        private const string FILENAME = "Alert.config";
-        #endregion
 
-        #region Manage
+        #endregion Private Properties
+
+        #region Public Methods
+
         public static void Create()
         {
-            if(UserConfigService.Encrypted)
+            if (UserConfigService.Encrypted)
                 File.WriteAllText(FILENAME, EncryptionService.AesEncryptString(JsonConvert.SerializeObject(new AlertConfig())));
             else
                 File.WriteAllText(FILENAME, JsonConvert.SerializeObject(new AlertConfig()));
 
             Load();
+        }
+
+        public static void Delete()
+        {
+            if (File.Exists(FILENAME))
+                File.Delete(FILENAME);
+        }
+
+        public static void Load()
+        {
+            if (File.Exists(FILENAME))
+                AlertConfig = UserConfigService.Encrypted
+                    ? JsonConvert.DeserializeObject<AlertConfig>(EncryptionService.AesDecryptString(File.ReadAllText(FILENAME)))
+                    : JsonConvert.DeserializeObject<AlertConfig>(File.ReadAllText(FILENAME));
+            else
+                Create();
+
+            AlertConfig.Alerts.ForEach(x => x.LastOperator = null);
         }
 
         public static void Save()
@@ -60,32 +91,13 @@ namespace MyCryptoMonitor.Statics
             }
         }
 
-        public static void Load()
-        {
-            if (File.Exists(FILENAME))
-                AlertConfig = UserConfigService.Encrypted 
-                    ? JsonConvert.DeserializeObject<AlertConfig>(EncryptionService.AesDecryptString(File.ReadAllText(FILENAME))) 
-                    : JsonConvert.DeserializeObject<AlertConfig>(File.ReadAllText(FILENAME));
-            else
-                Create();
-
-            AlertConfig.Alerts.ForEach(x => x.LastOperator = null);
-        }
-
-        public static void Delete()
-        {
-            if (File.Exists(FILENAME))
-                File.Delete(FILENAME);
-        }
-        #endregion
-
-        #region Methods
         public static void SendAlert(List<AlertDataSource> alerts)
         {
             if (alerts.Count <= 0)
                 return;
 
-            Task.Factory.StartNew(() => {
+            Task.Factory.StartNew(() =>
+            {
                 var first = alerts.FirstOrDefault();
                 var op = first.LastOperator == Operators.GreaterThan ? ">" : first.Operator == Operators.GreaterThan ? ">" : "<";
                 var title = $"{first.Coin} {op} {first.Price}";
@@ -104,6 +116,43 @@ namespace MyCryptoMonitor.Statics
                 SendEmail(message);
                 Save();
             });
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private static string GetContactAddress(string address, string type)
+        {
+            switch ((Types)Enum.Parse(typeof(Types), type))
+            {
+                case Types.Email:
+                    return address;
+
+                case Types.ATT:
+                    return $"{address}@txt.att.net";
+
+                case Types.Boost:
+                    return $"{address}@myboostmobile.com";
+
+                case Types.Sprint:
+                    return $"{address}@messaging.sprintpcs.com";
+
+                case Types.Verizon:
+                    return $"{address}@vtext.com";
+
+                case Types.TMobile:
+                    return $"{address}@tmomail.net";
+
+                case Types.USCellular:
+                    return $"{address}@email.uscc.net";
+
+                case Types.VirginMobile:
+                    return $"{address}@vmobl.com";
+
+                default:
+                    return string.Empty;
+            }
         }
 
         private static void SendEmail(string alertMessage)
@@ -138,30 +187,6 @@ namespace MyCryptoMonitor.Statics
             }
         }
 
-        private static string GetContactAddress(string address, string type)
-        {
-            switch ((Types)Enum.Parse(typeof(Types), type))
-            {
-                case Types.Email:
-                    return address;
-                case Types.ATT:
-                    return $"{address}@txt.att.net";
-                case Types.Boost:
-                    return $"{address}@myboostmobile.com";
-                case Types.Sprint:
-                    return $"{address}@messaging.sprintpcs.com";
-                case Types.Verizon:
-                    return $"{address}@vtext.com";
-                case Types.TMobile:
-                    return $"{address}@tmomail.net";
-                case Types.USCellular:
-                    return $"{address}@email.uscc.net";
-                case Types.VirginMobile:
-                    return $"{address}@vmobl.com";
-                default:
-                    return string.Empty;
-            }
-        }
-        #endregion
+        #endregion Private Methods
     }
 }

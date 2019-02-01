@@ -1,5 +1,4 @@
-﻿using MyCryptoMonitor.Objects;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -7,6 +6,21 @@ namespace MyCryptoMonitor.Statics
 {
     public class Globals
     {
+        #region Public Methods
+
+        public static IEnumerable<Control> GetAllTextBoxControls(Control container)
+        {
+            List<Control> controlList = new List<Control>();
+
+            foreach (Control c in container.Controls)
+            {
+                controlList.AddRange(GetAllTextBoxControls(c));
+                controlList.Add(c);
+            }
+
+            return controlList;
+        }
+
         public static void SetTheme(Control container)
         {
             container.BackColor = ColorTranslator.FromHtml(UserConfigService.Theme.BackgroundColor);
@@ -45,17 +59,6 @@ namespace MyCryptoMonitor.Statics
             }
         }
 
-        public static IEnumerable<Control> GetAllTextBoxControls(Control container)
-        {
-            List<Control> controlList = new List<Control>();
-
-            foreach (Control c in container.Controls)
-            {
-                controlList.AddRange(GetAllTextBoxControls(c));
-                controlList.Add(c);
-            }
-
-            return controlList;
-        }
+        #endregion Public Methods
     }
 }

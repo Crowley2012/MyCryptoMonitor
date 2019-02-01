@@ -1,24 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Linq;
-using MyCryptoMonitor.Configs;
+﻿using MyCryptoMonitor.Configs;
 using MyCryptoMonitor.Statics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Forms
 {
     public partial class ManageCoins : Form
     {
-        #region Public Variables
-        public string InputText { get => cbCoins.Text.ToUpper(); }
-        public int CoinIndex { get => !string.IsNullOrEmpty(cbCoinIndex.Text) ? Convert.ToInt32(cbCoinIndex.Text) - 1 : 0; }
-        #endregion
+        #region Public Constructors
 
-        #region Private Variables
-        private List<CoinConfig> _coinConfigs { get; set; }
-        #endregion
-
-        #region Constructor
         public ManageCoins(List<string> coins)
         {
             InitializeComponent();
@@ -43,9 +35,32 @@ namespace MyCryptoMonitor.Forms
             cbCoins.DataSource = coinsConfig.OrderBy(c => c.Name).Select(c => c.Name).Distinct().ToList();
             cbCoinIndex.DataSource = (from c in _coinConfigs where c.Name == cbCoins.Text select c.Index + 1).ToList();
         }
-        #endregion
 
-        #region Events
+        #endregion Public Constructors
+
+        #region Public Properties
+
+        public int CoinIndex { get => !string.IsNullOrEmpty(cbCoinIndex.Text) ? Convert.ToInt32(cbCoinIndex.Text) - 1 : 0; }
+        public string InputText { get => cbCoins.Text.ToUpper(); }
+
+        #endregion Public Properties
+
+        #region Private Properties
+
+        private List<CoinConfig> _coinConfigs { get; set; }
+
+        #endregion Private Properties
+
+        #region Private Methods
+
+        private void cbCoins_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_coinConfigs == null)
+                return;
+
+            cbCoinIndex.DataSource = (from c in _coinConfigs where c.Name == cbCoins.Text select c.Index + 1).ToList();
+        }
+
         private void ManageCoins_Load(object sender, EventArgs e)
         {
             Globals.SetTheme(this);
@@ -56,13 +71,6 @@ namespace MyCryptoMonitor.Forms
             DialogResult = DialogResult.OK;
         }
 
-        private void cbCoins_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (_coinConfigs == null)
-                return;
-
-            cbCoinIndex.DataSource = (from c in _coinConfigs where c.Name == cbCoins.Text select c.Index + 1).ToList();
-        }
-        #endregion
+        #endregion Private Methods
     }
 }

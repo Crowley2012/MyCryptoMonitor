@@ -7,27 +7,30 @@ namespace MyCryptoMonitor.Gui
 {
     public sealed class CoinLine : IDisposable
     {
-        #region Public Variables
-        public string CoinName;
-        public int CoinIndex;
-        public Label CoinLabel;
-        public Label CoinIndexLabel;
-        public Label PriceLabel;
-        public TextBox BoughtTextBox;
+        #region Public Fields
+
         public Label BoughtPriceLabel;
-        public Label TotalLabel;
-        public TextBox PaidTextBox;
-        public Label ProfitLabel;
-        public Label RatioLabel;
-        public Label ChangeDollarLabel;
-        public Label ChangePercentLabel;
+        public TextBox BoughtTextBox;
         public Label Change1HrPercentLabel;
         public Label Change24HrPercentLabel;
         public Label Change7DayPercentLabel;
+        public Label ChangeDollarLabel;
+        public Label ChangePercentLabel;
+        public int CoinIndex;
+        public Label CoinIndexLabel;
+        public Label CoinLabel;
+        public string CoinName;
+        public TextBox PaidTextBox;
+        public Label PriceLabel;
+        public Label ProfitLabel;
+        public Label RatioLabel;
         public TableLayoutPanel Table;
-        #endregion
+        public Label TotalLabel;
 
-        #region Constructor
+        #endregion Public Fields
+
+        #region Public Constructors
+
         public CoinLine(string coinName, int coinIndex, int lineIndex, int formWidth)
         {
             CoinName = coinName;
@@ -127,32 +130,20 @@ namespace MyCryptoMonitor.Gui
             Table.Controls.Add(Change24HrPercentLabel, 12, 0);
             Table.Controls.Add(Change7DayPercentLabel, 13, 0);
 
-            ProfitLabel.TextChanged += new EventHandler(Label_TextChanged);
-            RatioLabel.TextChanged += new EventHandler(Label_TextChanged);
-            ChangeDollarLabel.TextChanged += new EventHandler(Label_TextChanged);
-            ChangePercentLabel.TextChanged += new EventHandler(LabelBold_TextChanged);
-            Change1HrPercentLabel.TextChanged += new EventHandler(LabelBold_TextChanged);
-            Change24HrPercentLabel.TextChanged += new EventHandler(LabelBold_TextChanged);
-            Change7DayPercentLabel.TextChanged += new EventHandler(LabelBold_TextChanged);
-            BoughtTextBox.TextChanged += new EventHandler(Input_TextChanged);
-            PaidTextBox.TextChanged += new EventHandler(Input_TextChanged);
-        }
-        #endregion
-
-        #region Methods
-        public void SetBoughtText(string bought)
-        {
-            BoughtTextBox.TextChanged -= new EventHandler(Input_TextChanged);
-            BoughtTextBox.Text = bought;
-            BoughtTextBox.TextChanged += new EventHandler(Input_TextChanged);
+            ProfitLabel.TextChanged += Label_TextChanged;
+            RatioLabel.TextChanged += Label_TextChanged;
+            ChangeDollarLabel.TextChanged += Label_TextChanged;
+            ChangePercentLabel.TextChanged += LabelBold_TextChanged;
+            Change1HrPercentLabel.TextChanged += LabelBold_TextChanged;
+            Change24HrPercentLabel.TextChanged += LabelBold_TextChanged;
+            Change7DayPercentLabel.TextChanged += LabelBold_TextChanged;
+            BoughtTextBox.TextChanged += Input_TextChanged;
+            PaidTextBox.TextChanged += Input_TextChanged;
         }
 
-        public void SetPaidText(string paid)
-        {
-            PaidTextBox.TextChanged -= new EventHandler(Input_TextChanged);
-            PaidTextBox.Text = paid;
-            PaidTextBox.TextChanged += new EventHandler(Input_TextChanged);
-        }
+        #endregion Public Constructors
+
+        #region Public Methods
 
         public void Dispose()
         {
@@ -172,9 +163,25 @@ namespace MyCryptoMonitor.Gui
             Change7DayPercentLabel.Dispose();
             Table.Dispose();
         }
-        #endregion
 
-        #region Events
+        public void SetBoughtText(string bought)
+        {
+            BoughtTextBox.TextChanged -= Input_TextChanged;
+            BoughtTextBox.Text = bought;
+            BoughtTextBox.TextChanged += Input_TextChanged;
+        }
+
+        public void SetPaidText(string paid)
+        {
+            PaidTextBox.TextChanged -= Input_TextChanged;
+            PaidTextBox.Text = paid;
+            PaidTextBox.TextChanged += Input_TextChanged;
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
         private void Input_TextChanged(object sender, EventArgs e)
         {
             MainService.Unsaved = true;
@@ -196,6 +203,7 @@ namespace MyCryptoMonitor.Gui
             label.ForeColor = changePercent >= 0 ? ColorTranslator.FromHtml(UserConfigService.Theme.PositiveColor) : ColorTranslator.FromHtml(UserConfigService.Theme.NegativeColor);
             label.Font = changePercent >= 10 || changePercent <= -10 ? new Font(label.Font, FontStyle.Bold) : new Font(label.Font, FontStyle.Regular);
         }
-        #endregion
+
+        #endregion Private Methods
     }
 }

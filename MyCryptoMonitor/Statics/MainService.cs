@@ -10,12 +10,75 @@ namespace MyCryptoMonitor.Statics
 {
     public class MainService
     {
-        #region Public Variables
+        #region Public Properties
+
         public static string CurrencySymbol { get; private set; }
         public static bool Unsaved { get; set; }
-        #endregion
 
-        #region Methods
+        #endregion Public Properties
+
+        #region Public Methods
+
+        public static void CheckAlerts(List<Coin> coins)
+        {
+            if (AlertService.Alerts.Count <= 0)
+                return;
+
+            var triggeredAlerts = new List<AlertDataSource>();
+
+            foreach (AlertDataSource alert in AlertService.Alerts)
+            {
+                var coinData = coins.Where(c => c.ShortName.ExtEquals(alert.Coin) && UserConfigService.Currency.ExtEquals(alert.Currency)).FirstOrDefault();
+
+                if (coinData == null)
+                    continue;
+
+                if ((alert.Operator == AlertService.Operators.GreaterThan && coinData.Price > alert.Price && alert.Enabled)
+                    || (alert.Operator == AlertService.Operators.LessThan && coinData.Price < alert.Price && alert.Enabled))
+                {
+                    triggeredAlerts.Add(alert);
+                    alert.Enabled = false;
+                }
+                else if ((alert.Operator == AlertService.Operators.GreaterThan && coinData.Price < alert.Price && !alert.Enabled)
+                   || (alert.Operator == AlertService.Operators.LessThan && coinData.Price > alert.Price && !alert.Enabled))
+                {
+                    alert.Enabled = true;
+                }
+                else if (alert.Operator == AlertService.Operators.Both && alert.LastOperator == AlertService.Operators.LessThan && coinData.Price > alert.Price && alert.Enabled)
+                {
+                    alert.LastOperator = AlertService.Operators.GreaterThan;
+                    triggeredAlerts.Add(alert);
+                }
+                else if (alert.Operator == AlertService.Operators.Both && alert.LastOperator == AlertService.Operators.GreaterThan && coinData.Price < alert.Price && alert.Enabled)
+                {
+                    alert.LastOperator = AlertService.Operators.LessThan;
+                    triggeredAlerts.Add(alert);
+                }
+                else if (alert.Operator == AlertService.Operators.Both && alert.LastOperator == null && coinData.Price > alert.Price && alert.Enabled)
+                {
+                    alert.LastOperator = AlertService.Operators.GreaterThan;
+                }
+                else if (alert.Operator == AlertService.Operators.Both && alert.LastOperator == null && coinData.Price < alert.Price && alert.Enabled)
+                {
+                    alert.LastOperator = AlertService.Operators.LessThan;
+                }
+            }
+
+            AlertService.SendAlert(triggeredAlerts);
+        }
+
+        public static bool ConfirmReset()
+        {
+            return MessageBox.Show($"This will delete all saved files (portfolios, alerts, etc) and remove encryption. Do you want to continue?", "Reset", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes;
+        }
+
+        public static void Reset()
+        {
+            UserConfigService.Delete();
+            AlertService.Delete();
+            PortfolioService.DeleteAll();
+        }
+
         public static void SetCurrencySymbol()
         {
             switch (UserConfigService.Currency)
@@ -158,7 +221,7 @@ namespace MyCryptoMonitor.Statics
                 default: CurrencySymbol = string.Empty; break;
             }
         }
-        
+
         public static void Startup()
         {
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
@@ -171,70 +234,11 @@ namespace MyCryptoMonitor.Statics
 
             AlertService.Load();
 
-            if(!UserConfigService.TutorialCompleted)
+            if (!UserConfigService.TutorialCompleted)
                 using (Tutorial form = new Tutorial())
                     form.ShowDialog();
         }
 
-        public static void Reset()
-        {
-            UserConfigService.Delete();
-            AlertService.Delete();
-            PortfolioService.DeleteAll();
-        }
-
-        public static bool ConfirmReset()
-        {
-            return MessageBox.Show($"This will delete all saved files (portfolios, alerts, etc) and remove encryption. Do you want to continue?", "Reset", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes;
-        }
-
-        public static void CheckAlerts(List<Coin> coins)
-        {
-            if (AlertService.Alerts.Count <= 0)
-                return;
-
-            var triggeredAlerts = new List<AlertDataSource>();
-
-            foreach (AlertDataSource alert in AlertService.Alerts)
-            {
-                var coinData = coins.Where(c => c.ShortName.ExtEquals(alert.Coin) && UserConfigService.Currency.ExtEquals(alert.Currency)).FirstOrDefault();
-
-                if (coinData == null)
-                    continue;
-
-                if ((alert.Operator == AlertService.Operators.GreaterThan && coinData.Price > alert.Price && alert.Enabled)
-                    || (alert.Operator == AlertService.Operators.LessThan && coinData.Price < alert.Price && alert.Enabled))
-                {
-                    triggeredAlerts.Add(alert);
-                    alert.Enabled = false;
-                }
-                else if ((alert.Operator == AlertService.Operators.GreaterThan && coinData.Price < alert.Price && !alert.Enabled)
-                   || (alert.Operator == AlertService.Operators.LessThan && coinData.Price > alert.Price && !alert.Enabled))
-                {
-                    alert.Enabled = true;
-                }
-                else if (alert.Operator == AlertService.Operators.Both && alert.LastOperator == AlertService.Operators.LessThan && coinData.Price > alert.Price && alert.Enabled)
-                {
-                    alert.LastOperator = AlertService.Operators.GreaterThan;
-                    triggeredAlerts.Add(alert);
-                }
-                else if (alert.Operator == AlertService.Operators.Both && alert.LastOperator == AlertService.Operators.GreaterThan && coinData.Price < alert.Price && alert.Enabled)
-                {
-                    alert.LastOperator = AlertService.Operators.LessThan;
-                    triggeredAlerts.Add(alert);
-                }
-                else if (alert.Operator == AlertService.Operators.Both && alert.LastOperator == null && coinData.Price > alert.Price && alert.Enabled)
-                {
-                    alert.LastOperator = AlertService.Operators.GreaterThan;
-                }
-                else if (alert.Operator == AlertService.Operators.Both && alert.LastOperator == null && coinData.Price < alert.Price && alert.Enabled)
-                {
-                    alert.LastOperator = AlertService.Operators.LessThan;
-                }
-            }
-
-            AlertService.SendAlert(triggeredAlerts);
-        }
-        #endregion
+        #endregion Public Methods
     }
 }

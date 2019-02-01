@@ -6,19 +6,16 @@ namespace MyCryptoMonitor.Forms
 {
     public partial class ManagePortfolios : Form
     {
-        #region Constructor
+        #region Public Constructors
+
         public ManagePortfolios()
         {
             InitializeComponent();
         }
-        #endregion
 
-        #region Events
-        private void PortfolioManager_Load(object sender, EventArgs e)
-        {
-            Globals.SetTheme(this);
-            bsPortfolios.DataSource = PortfolioService.GetPortfolios();
-        }
+        #endregion Public Constructors
+
+        #region Private Methods
 
         private void grdPortfolios_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
@@ -27,11 +24,11 @@ namespace MyCryptoMonitor.Forms
             var newValue = e.FormattedValue.ToString();
 
             //No change
-            if(oldValue != null && oldValue.ToString().ExtEquals(newValue))
+            if (oldValue != null && oldValue.ToString().ExtEquals(newValue))
                 return;
 
             //New row
-            else if(oldValue == null && !string.IsNullOrEmpty(newValue))
+            else if (oldValue == null && !string.IsNullOrEmpty(newValue))
             {
                 if (!PortfolioService.Create(newValue))
                     grid.CancelEdit();
@@ -48,7 +45,7 @@ namespace MyCryptoMonitor.Forms
                 }
 
                 //Rename portfolio
-                if(e.ColumnIndex == 0)
+                if (e.ColumnIndex == 0)
                 {
                     PortfolioService.Rename(oldValue.ToString(), newValue);
 
@@ -77,7 +74,7 @@ namespace MyCryptoMonitor.Forms
                 grid.CancelEdit();
 
             //Existing row empty name
-            else if(oldValue != null && string.IsNullOrEmpty(newValue))
+            else if (oldValue != null && string.IsNullOrEmpty(newValue))
                 grid[0, e.RowIndex].Value = oldValue;
         }
 
@@ -88,9 +85,16 @@ namespace MyCryptoMonitor.Forms
 
         private void PortfolioManager_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if(grdPortfolios.Rows.Count > 0)
+            if (grdPortfolios.Rows.Count > 0)
                 grdPortfolios.CurrentCell = grdPortfolios.Rows[0].Cells[0];
         }
-        #endregion
+
+        private void PortfolioManager_Load(object sender, EventArgs e)
+        {
+            Globals.SetTheme(this);
+            bsPortfolios.DataSource = PortfolioService.GetPortfolios();
+        }
+
+        #endregion Private Methods
     }
 }

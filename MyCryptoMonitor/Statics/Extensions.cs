@@ -4,9 +4,10 @@ namespace MyCryptoMonitor.Statics
 {
     public static class Extensions
     {
-        public static bool ExtEquals(this string source, string toCheck) => source?.Equals(toCheck, StringComparison.OrdinalIgnoreCase) ?? false;
+        #region Public Methods
 
-        public static decimal ConvertToDecimal(this string source) {
+        public static decimal ConvertToDecimal(this string source)
+        {
             if (string.IsNullOrWhiteSpace(source))
                 return 0;
 
@@ -23,14 +24,12 @@ namespace MyCryptoMonitor.Statics
             return result;
         }
 
-        public static decimal SafeDivision(this decimal source, decimal numerator) => source == 0 ? 0 : numerator / source;
-
         public static string ConvertToString(this decimal source, int maxDecimalPlaces)
         {
             var index = source.ToString().IndexOf(".");
             int places = source.ToString().Substring(index + 1).Length;
 
-            if(places > maxDecimalPlaces)
+            if (places > maxDecimalPlaces)
                 return Decimal.Round(source, maxDecimalPlaces).ToString();
 
             if (places < 2 || index == -1)
@@ -38,5 +37,11 @@ namespace MyCryptoMonitor.Statics
 
             return Decimal.Round(source, places).ToString();
         }
+
+        public static bool ExtEquals(this string source, string toCheck) => source?.Equals(toCheck, StringComparison.OrdinalIgnoreCase) ?? false;
+
+        public static decimal SafeDivision(this decimal source, decimal numerator) => source == 0 ? 0 : numerator / source;
+
+        #endregion Public Methods
     }
 }

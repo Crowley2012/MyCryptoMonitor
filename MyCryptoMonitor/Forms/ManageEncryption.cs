@@ -7,31 +7,16 @@ namespace MyCryptoMonitor.Forms
 {
     public partial class ManageEncryption : Form
     {
-        #region Constructor
+        #region Public Constructors
+
         public ManageEncryption()
         {
             InitializeComponent();
         }
-        #endregion
 
-        #region Methods
-        private void Setup()
-        {
-            cbEnableEncryption.Checked = UserConfigService.Encrypted;
-            btnEncrypt.Text = UserConfigService.Encrypted ? "Decrypt" : "Encrypt";
-            cbEnableEncryption.ForeColor = UserConfigService.Encrypted ? Color.Green : Color.Crimson;
-            btnEncrypt.Enabled = true;
-            txtPassword.Enabled = true;
-            Cursor.Current = Cursors.Default;
-        }
-        #endregion
+        #endregion Public Constructors
 
-        #region Events
-        private void Encrypt_Load(object sender, EventArgs e)
-        {
-            Globals.SetTheme(this);
-            Setup();
-        }
+        #region Private Methods
 
         private void btnEncrypt_Click(object sender, EventArgs e)
         {
@@ -51,6 +36,23 @@ namespace MyCryptoMonitor.Forms
 
             Setup();
         }
-        #endregion
+
+        private void Encrypt_Load(object sender, EventArgs e)
+        {
+            Globals.SetTheme(this);
+            Setup();
+        }
+
+        private void Setup()
+        {
+            cbEnableEncryption.Checked = UserConfigService.Encrypted;
+            btnEncrypt.Text = UserConfigService.Encrypted ? "Decrypt" : "Encrypt";
+            cbEnableEncryption.ForeColor = UserConfigService.Encrypted ? Color.Green : Color.Crimson;
+            btnEncrypt.Enabled = true;
+            txtPassword.Enabled = true;
+            Cursor.Current = Cursors.Default;
+        }
+
+        #endregion Private Methods
     }
 }

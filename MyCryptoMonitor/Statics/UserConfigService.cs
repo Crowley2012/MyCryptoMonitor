@@ -9,34 +9,47 @@ namespace MyCryptoMonitor.Statics
 {
     public class UserConfigService
     {
-        #region Public Variables
+        #region Private Fields
+
+        private const string FILENAME = "User.config";
+
+        #endregion Private Fields
+
+        #region Public Properties
+
         public static string Currency { get { return UserConfig.Currency; } set { UserConfig.Currency = value; Save(); MainService.SetCurrencySymbol(); } }
-        public static string StartupPortfolio { get { return UserConfig.StartupPortfolio; } set { UserConfig.StartupPortfolio = value; Save(); } }
-        public static Theme Theme { get { return UserConfig.Theme; } set { UserConfig.Theme = value; Save(); } }
+        public static List<string> CustomCoins { get => UserConfig.CustomCoins.ToList(); }
+        public static bool DeleteAlerts { get { return UserConfig.DeleteAlerts; } set { UserConfig.DeleteAlerts = value; Save(); } }
         public static bool Encrypted { get { return UserConfig.Encrypted; } set { UserConfig.Encrypted = value; Save(); } }
         public static string EncryptionCheck { get { return UserConfig.EncryptionCheck; } set { UserConfig.EncryptionCheck = value; Save(); } }
-        public static bool DeleteAlerts { get { return UserConfig.DeleteAlerts; } set { UserConfig.DeleteAlerts = value; Save(); } }
-        public static bool TutorialCompleted { get { return UserConfig.TutorialCompleted; } set { UserConfig.TutorialCompleted = value; Save(); } }
         public static int RefreshTime { get { return UserConfig.RefreshTime; } set { UserConfig.RefreshTime = value; Save(); } }
         public static string SaltKey { get => UserConfig.SaltKey; }
-        public static List<string> CustomCoins { get => UserConfig.CustomCoins.ToList(); }
-        #endregion
+        public static string StartupPortfolio { get { return UserConfig.StartupPortfolio; } set { UserConfig.StartupPortfolio = value; Save(); } }
+        public static Theme Theme { get { return UserConfig.Theme; } set { UserConfig.Theme = value; Save(); } }
+        public static bool TutorialCompleted { get { return UserConfig.TutorialCompleted; } set { UserConfig.TutorialCompleted = value; Save(); } }
 
-        #region Private Variables
+        #endregion Public Properties
+
+        #region Private Properties
+
         private static UserConfig UserConfig { get; set; }
-        private const string FILENAME = "User.config";
-        #endregion
 
-        #region Manage
+        #endregion Private Properties
+
+        #region Public Methods
+
         public static void Create()
         {
             File.WriteAllText(FILENAME, JsonConvert.SerializeObject(new UserConfig()));
             Load();
         }
 
-        private static void Save()
+        public static void Delete()
         {
-            File.WriteAllText(FILENAME, JsonConvert.SerializeObject(UserConfig));
+            if (File.Exists(FILENAME))
+                File.Delete(FILENAME);
+
+            Create();
         }
 
         public static void Load()
@@ -47,13 +60,15 @@ namespace MyCryptoMonitor.Statics
                 Create();
         }
 
-        public static void Delete()
-        {
-            if (File.Exists(FILENAME))
-                File.Delete(FILENAME);
+        #endregion Public Methods
 
-            Create();
+        #region Private Methods
+
+        private static void Save()
+        {
+            File.WriteAllText(FILENAME, JsonConvert.SerializeObject(UserConfig));
         }
-        #endregion
+
+        #endregion Private Methods
     }
 }

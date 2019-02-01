@@ -7,18 +7,35 @@ namespace MyCryptoMonitor.Forms
 {
     public partial class Tutorial : Form
     {
-        #region Private Variables
-        private int step;
-        #endregion
+        #region Private Fields
 
-        #region Constructor
+        private int step;
+
+        #endregion Private Fields
+
+        #region Public Constructors
+
         public Tutorial()
         {
             InitializeComponent();
         }
-        #endregion
 
-        #region Methods
+        #endregion Public Constructors
+
+        #region Private Methods
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            step++;
+            ChangeStep();
+        }
+
+        private void btnPrevious_Click(object sender, EventArgs e)
+        {
+            step--;
+            ChangeStep();
+        }
+
         private void ChangeStep()
         {
             switch (step)
@@ -35,6 +52,7 @@ namespace MyCryptoMonitor.Forms
                     pictureBox.Image = Resources.tut_main;
                     btnPrevious.Enabled = false;
                     break;
+
                 case 1:
                     lblName.Text = "Add Coin";
                     lblInfo.Text = "\u2022 Accessed from the main screen via Coins > Add Coin Menu\r\n\r\n" +
@@ -43,6 +61,7 @@ namespace MyCryptoMonitor.Forms
                     pictureBox.Image = Resources.tut_add;
                     btnPrevious.Enabled = true;
                     break;
+
                 case 2:
                     lblName.Text = "Remove Coin";
                     lblInfo.Text = "\u2022 Accessed from the main screen via Coins > Remove Coin Menu\r\n\r\n" +
@@ -50,6 +69,7 @@ namespace MyCryptoMonitor.Forms
                         "\u2022 If multiple of the same coin exists, you can choose the one you want to remove from the second drop down.";
                     pictureBox.Image = Resources.tut_remove;
                     break;
+
                 case 3:
                     lblName.Text = "Portfolio Management";
                     lblInfo.Text = "\u2022 Accessed from the main screen via Save/Load Portfolio > Manage Portfolios Menu\r\n\r\n" +
@@ -59,6 +79,7 @@ namespace MyCryptoMonitor.Forms
                         "\u2022 To load a portfolio on startup, select the checkbox.";
                     pictureBox.Image = Resources.tut_portfolios;
                     break;
+
                 case 4:
                     lblName.Text = "Encryption";
                     lblInfo.Text = "\u2022 Accessed from the main screen via Encrypt Menu\r\n\r\n" +
@@ -68,6 +89,7 @@ namespace MyCryptoMonitor.Forms
                     pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
                     pictureBox.Image = Resources.tut_encrypt;
                     break;
+
                 case 5:
                     lblName.Text = "Alert Management";
                     lblInfo.Text = "\u2022 Accessed from the main screen via Alerts Menu\r\n\r\n" +
@@ -80,6 +102,7 @@ namespace MyCryptoMonitor.Forms
                     pictureBox.Image = Resources.tut_alerts;
                     btnNext.Text = "Next";
                     break;
+
                 case 6:
                     lblName.Text = "Themes";
                     lblInfo.Text = "\u2022 Accessed from the main screen via Themes Menu\r\n\r\n" +
@@ -89,18 +112,11 @@ namespace MyCryptoMonitor.Forms
                     pictureBox.Image = Resources.tut_theme;
                     btnNext.Text = "Finish";
                     break;
+
                 case 7:
                     Close();
                     break;
             }
-        }
-        #endregion
-
-        #region Events
-        private void Tutorial_Load(object sender, EventArgs e)
-        {
-            ChangeStep();
-            Globals.SetTheme(this);
         }
 
         private void Tutorial_FormClosing(object sender, FormClosingEventArgs e)
@@ -108,17 +124,12 @@ namespace MyCryptoMonitor.Forms
             UserConfigService.TutorialCompleted = true;
         }
 
-        private void btnNext_Click(object sender, EventArgs e)
+        private void Tutorial_Load(object sender, EventArgs e)
         {
-            step++;
             ChangeStep();
+            Globals.SetTheme(this);
         }
 
-        private void btnPrevious_Click(object sender, EventArgs e)
-        {
-            step--;
-            ChangeStep();
-        }
-        #endregion
+        #endregion Private Methods
     }
 }

@@ -5,10 +5,14 @@ namespace MyCryptoMonitor.Configs
 {
     public class AlertConfig
     {
-        public string SendAddress { get; set; } = string.Empty;
-        public string SendPassword { get; set; } = string.Empty;
+        #region Public Properties
+
+        public List<AlertDataSource> Alerts { get; set; } = new List<AlertDataSource>();
         public string ReceiveAddress { get; set; } = string.Empty;
         public string ReceiveType { get; set; } = string.Empty;
-        public List<AlertDataSource> Alerts { get; set; } = new List<AlertDataSource>();
+        public string SendAddress { get; set; } = string.Empty;
+        public string SendPassword { get; set; } = string.Empty;
+
+        #endregion Public Properties
     }
 }
