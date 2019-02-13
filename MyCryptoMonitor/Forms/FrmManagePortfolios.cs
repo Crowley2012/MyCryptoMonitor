@@ -4,11 +4,11 @@ using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Forms
 {
-    public partial class ManagePortfolios : Form
+    public partial class FrmManagePortfolios : Form
     {
         #region Public Constructors
 
-        public ManagePortfolios()
+        public FrmManagePortfolios()
         {
             InitializeComponent();
         }

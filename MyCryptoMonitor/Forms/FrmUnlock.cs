@@ -3,11 +3,11 @@ using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Forms
 {
-    public partial class Unlock : Form
+    public partial class FrmUnlock : Form
     {
         #region Public Constructors
 
-        public Unlock()
+        public FrmUnlock()
         {
             InitializeComponent();
         }

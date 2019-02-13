@@ -3,7 +3,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace MyCryptoMonitor.Gui
+namespace MyCryptoMonitor.GUI
 {
     public sealed class CoinLine : IDisposable
     {

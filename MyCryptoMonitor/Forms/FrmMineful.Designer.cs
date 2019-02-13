@@ -1,6 +1,6 @@
 ﻿namespace MyCryptoMonitor.Forms
 {
-    partial class MinefulForm
+    partial class FrmMineful
     {
         /// <summary>
         /// Required designer variable.
@@ -28,11 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MinefulForm));
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMineful));
             this.label1 = new System.Windows.Forms.Label();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.bsViewModel = new System.Windows.Forms.BindingSource(this.components);
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bsViewModel)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -47,32 +51,55 @@
             // 
             // trackBar1
             // 
-            this.trackBar1.Location = new System.Drawing.Point(105, 123);
+            this.trackBar1.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.bsViewModel, "PowerPercentage", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.trackBar1.Location = new System.Drawing.Point(83, 119);
+            this.trackBar1.Maximum = 100;
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(330, 45);
+            this.trackBar1.Size = new System.Drawing.Size(374, 45);
             this.trackBar1.TabIndex = 1;
+            this.trackBar1.TickFrequency = 10;
+            // 
+            // bsViewModel
+            // 
+            this.bsViewModel.DataSource = typeof(MyCryptoMonitor.ViewModels.FrmMinefulViewModel);
             // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(15, 123);
+            this.checkBox1.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this.bsViewModel, "Enabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.checkBox1.Location = new System.Drawing.Point(12, 111);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(65, 17);
             this.checkBox1.TabIndex = 2;
             this.checkBox1.Text = "Enabled";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // MinefulForm
+            // textBox1
+            // 
+            this.textBox1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bsViewModel, "PowerPercentageDisplay", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.textBox1.Location = new System.Drawing.Point(12, 134);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(65, 20);
+            this.textBox1.TabIndex = 3;
+            // 
+            // FrmMineful
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(469, 166);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.label1);
-            this.Name = "MinefulForm";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "FrmMineful";
             this.Text = "Mineful";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MinefulForm_FormClosing);
+            this.Load += new System.EventHandler(this.MinefulForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bsViewModel)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -83,5 +110,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.BindingSource bsViewModel;
     }
 }

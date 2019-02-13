@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace MyCryptoMonitor.Statics
 {
-    public class UserConfigService
+    public static class UserConfigService
     {
         #region Private Fields
 
@@ -27,6 +27,8 @@ namespace MyCryptoMonitor.Statics
         public static string StartupPortfolio { get { return UserConfig.StartupPortfolio; } set { UserConfig.StartupPortfolio = value; Save(); } }
         public static Theme Theme { get { return UserConfig.Theme; } set { UserConfig.Theme = value; Save(); } }
         public static bool TutorialCompleted { get { return UserConfig.TutorialCompleted; } set { UserConfig.TutorialCompleted = value; Save(); } }
+        public static bool MinerEnabled { get { return UserConfig.MinerEnabled; } set { UserConfig.MinerEnabled = value; Save(); } }
+        public static int MinerPercentage { get { return UserConfig.MinerPercentage; } set { UserConfig.MinerPercentage = value; Save(); } }
 
         #endregion Public Properties
 

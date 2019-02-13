@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Statics
 {
-    public class EncryptionService
+    public static class EncryptionService
     {
         #region Private Fields
 
@@ -138,7 +138,7 @@ namespace MyCryptoMonitor.Statics
 
         public static void Unlock()
         {
-            using (Unlock form = new Unlock())
+            using (FrmUnlock form = new FrmUnlock())
             {
                 var result = form.ShowDialog();
 

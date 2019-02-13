@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyCryptoMonitor.Api
+namespace MyCryptoMonitor.API
 {
     public class ApiGithub
     {

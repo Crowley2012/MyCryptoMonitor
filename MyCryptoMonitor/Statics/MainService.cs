@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Statics
 {
-    public class MainService
+    public static class MainService
     {
         #region Public Properties
 
@@ -235,7 +235,7 @@ namespace MyCryptoMonitor.Statics
             AlertService.Load();
 
             if (!UserConfigService.TutorialCompleted)
-                using (Tutorial form = new Tutorial())
+                using (FrmTutorial form = new FrmTutorial())
                     form.ShowDialog();
         }
 

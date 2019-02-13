@@ -1,4 +1,4 @@
-﻿using MyCryptoMonitor.Api;
+﻿using MyCryptoMonitor.API;
 using MyCryptoMonitor.Configs;
 using MyCryptoMonitor.Objects;
 using Newtonsoft.Json;
@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace MyCryptoMonitor.Statics
 {
-    public class MappingService
+    public static class MappingService
     {
         #region Public Methods
 

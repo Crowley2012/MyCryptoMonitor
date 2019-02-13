@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace MyCryptoMonitor.Statics
 {
-    public class PortfolioService
+    public static class PortfolioService
     {
         #region Private Fields
 

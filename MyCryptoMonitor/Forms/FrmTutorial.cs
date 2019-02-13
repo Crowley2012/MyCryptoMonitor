@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Forms
 {
-    public partial class Tutorial : Form
+    public partial class FrmTutorial : Form
     {
         #region Private Fields
 
@@ -15,7 +15,7 @@ namespace MyCryptoMonitor.Forms
 
         #region Public Constructors
 
-        public Tutorial()
+        public FrmTutorial()
         {
             InitializeComponent();
         }

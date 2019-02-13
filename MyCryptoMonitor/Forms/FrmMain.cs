@@ -1,6 +1,6 @@
-﻿using MyCryptoMonitor.Api;
+﻿using MyCryptoMonitor.API;
 using MyCryptoMonitor.Configs;
-using MyCryptoMonitor.Gui;
+using MyCryptoMonitor.GUI;
 using MyCryptoMonitor.Objects;
 using MyCryptoMonitor.Statics;
 using Newtonsoft.Json;
@@ -17,7 +17,7 @@ using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Forms
 {
-    public partial class MainForm : Form
+    public partial class FrmMain : Form
     {
         #region Private Fields
 
@@ -39,7 +39,7 @@ namespace MyCryptoMonitor.Forms
 
         #region Public Constructors
 
-        public MainForm()
+        public FrmMain()
         {
             InitializeComponent();
         }
@@ -50,13 +50,13 @@ namespace MyCryptoMonitor.Forms
 
         private void About_Click(object sender, EventArgs e)
         {
-            using (PopupAbout form = new PopupAbout())
+            using (FrmAbout form = new FrmAbout())
                 form.ShowDialog();
         }
 
         private void AddCoin_Click(object sender, EventArgs e)
         {
-            using (ManageCoins form = new ManageCoins(_coinNames))
+            using (FrmManageCoins form = new FrmManageCoins(_coinNames))
             {
                 if (form.ShowDialog() != DialogResult.OK)
                     return;
@@ -102,7 +102,7 @@ namespace MyCryptoMonitor.Forms
 
         private void Alerts_Click(object sender, EventArgs e)
         {
-            using (ManageAlerts form = new ManageAlerts(_coins))
+            using (FrmManageAlerts form = new FrmManageAlerts(_coins))
                 form.ShowDialog();
         }
 
@@ -153,13 +153,13 @@ namespace MyCryptoMonitor.Forms
 
         private void Donate_Click(object sender, EventArgs e)
         {
-            using (PopupDonate form = new PopupDonate())
+            using (FrmDonate form = new FrmDonate())
                 form.ShowDialog();
         }
 
         private void Encrypt_Click(object sender, EventArgs e)
         {
-            using (ManageEncryption form = new ManageEncryption())
+            using (FrmManageEncryption form = new FrmManageEncryption())
                 form.ShowDialog();
         }
 
@@ -200,7 +200,7 @@ namespace MyCryptoMonitor.Forms
 
         private void Help_Click(object sender, EventArgs e)
         {
-            using (Tutorial form = new Tutorial())
+            using (FrmTutorial form = new FrmTutorial())
                 form.ShowDialog();
         }
 
@@ -265,7 +265,7 @@ namespace MyCryptoMonitor.Forms
                 loadPortfolioMenu.DropDownItems.RemoveByKey(portfolio.Name);
             }
 
-            using (ManagePortfolios form = new ManagePortfolios())
+            using (FrmManagePortfolios form = new FrmManagePortfolios())
                 form.ShowDialog();
 
             SetupPortfolioMenu();
@@ -273,7 +273,7 @@ namespace MyCryptoMonitor.Forms
 
         private void minefulToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var form = new MinefulForm())
+            using (var form = new FrmMineful())
                 form.ShowDialog();
         }
 
@@ -291,7 +291,7 @@ namespace MyCryptoMonitor.Forms
 
         private void RemoveCoin_Click(object sender, EventArgs e)
         {
-            using (ManageCoins form = new ManageCoins(_coinConfigs))
+            using (FrmManageCoins form = new FrmManageCoins(_coinConfigs))
             {
                 if (form.ShowDialog() != DialogResult.OK)
                     return;
@@ -396,7 +396,7 @@ namespace MyCryptoMonitor.Forms
 
         private void Themes_Click(object sender, EventArgs e)
         {
-            using (ManageTheme form = new ManageTheme())
+            using (FrmManageTheme form = new FrmManageTheme())
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {

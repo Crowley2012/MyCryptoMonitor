@@ -1,6 +1,6 @@
 ﻿namespace MyCryptoMonitor.Forms
 {
-    partial class ManageAlerts
+    partial class FrmManageAlerts
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ManageAlerts));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmManageAlerts));
             this.grdAlerts = new System.Windows.Forms.DataGridView();
             this.Current = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Enabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();

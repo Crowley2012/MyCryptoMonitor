@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Statics
 {
-    public class Globals
+    public static class Globals
     {
         #region Public Methods
 

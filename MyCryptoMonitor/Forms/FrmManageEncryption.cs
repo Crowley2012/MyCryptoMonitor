@@ -5,11 +5,11 @@ using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Forms
 {
-    public partial class ManageEncryption : Form
+    public partial class FrmManageEncryption : Form
     {
         #region Public Constructors
 
-        public ManageEncryption()
+        public FrmManageEncryption()
         {
             InitializeComponent();
         }

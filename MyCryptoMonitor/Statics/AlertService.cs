@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Statics
 {
-    public class AlertService
+    public static class AlertService
     {
         #region Private Fields
 

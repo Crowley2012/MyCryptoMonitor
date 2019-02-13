@@ -3,11 +3,11 @@ using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Forms
 {
-    public partial class PopupDonate : Form
+    public partial class FrmDonate : Form
     {
         #region Public Constructors
 
-        public PopupDonate()
+        public FrmDonate()
         {
             InitializeComponent();
         }

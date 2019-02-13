@@ -6,11 +6,11 @@ using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Forms
 {
-    public partial class PopupAbout : Form
+    public partial class FrmAbout : Form
     {
         #region Public Constructors
 
-        public PopupAbout()
+        public FrmAbout()
         {
             InitializeComponent();
         }

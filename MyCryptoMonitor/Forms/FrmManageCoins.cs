@@ -7,11 +7,11 @@ using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Forms
 {
-    public partial class ManageCoins : Form
+    public partial class FrmManageCoins : Form
     {
         #region Public Constructors
 
-        public ManageCoins(List<string> coins)
+        public FrmManageCoins(List<string> coins)
         {
             InitializeComponent();
 
@@ -22,7 +22,7 @@ namespace MyCryptoMonitor.Forms
             cbCoins.DataSource = coins.ToList();
         }
 
-        public ManageCoins(List<CoinConfig> coinsConfig)
+        public FrmManageCoins(List<CoinConfig> coinsConfig)
         {
             InitializeComponent();
 

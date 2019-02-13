@@ -6,11 +6,11 @@ using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Forms
 {
-    public partial class ManageTheme : Form
+    public partial class FrmManageTheme : Form
     {
         #region Public Constructors
 
-        public ManageTheme()
+        public FrmManageTheme()
         {
             InitializeComponent();
         }

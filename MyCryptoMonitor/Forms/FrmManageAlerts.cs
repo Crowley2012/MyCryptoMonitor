@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace MyCryptoMonitor.Forms
 {
-    public partial class ManageAlerts : Form
+    public partial class FrmManageAlerts : Form
     {
         #region Private Fields
 
@@ -20,7 +20,7 @@ namespace MyCryptoMonitor.Forms
 
         #region Public Constructors
 
-        public ManageAlerts(List<Coin> coins)
+        public FrmManageAlerts(List<Coin> coins)
         {
             InitializeComponent();
 

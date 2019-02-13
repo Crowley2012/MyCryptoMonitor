@@ -1,6 +1,6 @@
 ﻿namespace MyCryptoMonitor.Forms
 {
-    partial class Unlock
+    partial class FrmUnlock
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Unlock));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmUnlock));
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.btnUnlock = new System.Windows.Forms.Button();
             this.btnForgot = new System.Windows.Forms.Button();
