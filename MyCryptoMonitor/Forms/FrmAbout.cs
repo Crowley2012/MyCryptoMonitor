@@ -32,7 +32,7 @@ namespace MyCryptoMonitor.Forms
         private void PopupAbout_Load(object sender, EventArgs e)
         {
             Globals.SetTheme(this);
-            txtVersion.Text = $"Version: {Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
+            txtVersion.Text = $"Version: {Assembly.GetExecutingAssembly().GetName().Version}";
         }
 
         #endregion Private Methods
