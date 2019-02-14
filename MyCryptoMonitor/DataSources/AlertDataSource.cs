@@ -1,4 +1,4 @@
-﻿using MyCryptoMonitor.Statics;
+﻿using MyCryptoMonitor.Objects;
 using System.ComponentModel;
 
 namespace MyCryptoMonitor.DataSources
@@ -11,8 +11,8 @@ namespace MyCryptoMonitor.DataSources
         public string Currency { get; set; }
         public decimal Current { get; set; }
         public bool Enabled { get; set; } = true;
-        public AlertService.Operators? LastOperator { get; set; }
-        public AlertService.Operators Operator { get; set; }
+        public Constants.Operators? LastOperator { get; set; }
+        public Constants.Operators Operator { get; set; }
         public decimal Price { get; set; }
 
         #endregion Public Properties

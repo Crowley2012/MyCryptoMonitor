@@ -31,7 +31,7 @@ namespace MyCryptoMonitor.Forms
 
         #region Private Properties
 
-        private AlertService.Operators _operator => (AlertService.Operators)cmbOperators.SelectedValue;
+        private Constants.Operators _operator => (Constants.Operators)cmbOperators.SelectedValue;
 
         #endregion Private Properties
 
@@ -50,13 +50,13 @@ namespace MyCryptoMonitor.Forms
 
             txtPrice.Text = txtCurrent.Text = _coins.Where(c => c.ShortName.ExtEquals(cmbCoins.Text)).Select(c => c.Price).FirstOrDefault().ToString();
 
-            cmbOperators.DataSource = Enum.GetValues(typeof(AlertService.Operators))
+            cmbOperators.DataSource = Enum.GetValues(typeof(Constants.Operators))
                 .Cast<Enum>()
                 .Select(value => new { (Attribute.GetCustomAttribute(value.GetType().GetField(value.ToString()), typeof(DescriptionAttribute)) as DescriptionAttribute).Description, value })
                 .OrderBy(d => d.Description)
                 .ToList();
 
-            cmbReceiveType.DataSource = Enum.GetValues(typeof(AlertService.Types))
+            cmbReceiveType.DataSource = Enum.GetValues(typeof(Constants.Types))
                 .Cast<Enum>()
                 .Select(value => new { (Attribute.GetCustomAttribute(value.GetType().GetField(value.ToString()), typeof(DescriptionAttribute)) as DescriptionAttribute).Description, value })
                 .OrderBy(d => d.Description)
@@ -67,7 +67,7 @@ namespace MyCryptoMonitor.Forms
             txtSendAddress.Text = AlertService.SendAddress;
             txtSendPassword.Text = AlertService.SendPassword;
             txtReceiveAddress.Text = AlertService.ReceiveAddress;
-            cmbReceiveType.Text = AlertService.ReceiveType;
+            cmbReceiveType.Text = AlertService.ReceiveType.ToString();
 
             //Set the current price for alerts
             foreach (AlertDataSource alert in AlertService.Alerts)
@@ -119,12 +119,12 @@ namespace MyCryptoMonitor.Forms
 
         private bool CheckValidAlert(decimal currentPrice, decimal checkPrice)
         {
-            if (_operator == AlertService.Operators.GreaterThan && currentPrice > checkPrice)
+            if (_operator == Constants.Operators.GreaterThan && currentPrice > checkPrice)
             {
                 MessageBox.Show("Current price is already greater than check price");
                 return false;
             }
-            else if (_operator == AlertService.Operators.LessThan && currentPrice < checkPrice)
+            else if (_operator == Constants.Operators.LessThan && currentPrice < checkPrice)
             {
                 MessageBox.Show("Current price is already less than check price");
                 return false;
@@ -150,7 +150,7 @@ namespace MyCryptoMonitor.Forms
             AlertService.SendAddress = txtSendAddress.Text;
             AlertService.SendPassword = txtSendPassword.Text;
             AlertService.ReceiveAddress = txtReceiveAddress.Text;
-            AlertService.ReceiveType = cmbReceiveType.Text;
+            //AlertService.ReceiveType = (Constants.Types)cmbReceiveType.Text;
             AlertService.Alerts = bsAlerts.DataSource as List<AlertDataSource>;
             AlertService.Alerts.AddRange(_otherAlerts);
             AlertService.Save();

@@ -10,7 +10,7 @@ namespace MyCryptoMonitor.Services
         public string GetCryptoCompareCoins()
         {
             using (var webClient = new WebClient())
-                return webClient.DownloadString(Addresses.API_CRYPTO_COMPARE_COINS);
+                return webClient.DownloadString(Constants.API_CRYPTO_COMPARE_COINS);
         }
 
         #endregion Public Methods

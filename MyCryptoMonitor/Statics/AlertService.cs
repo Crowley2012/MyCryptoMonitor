@@ -1,5 +1,6 @@
 ﻿using MyCryptoMonitor.Configs;
 using MyCryptoMonitor.DataSources;
+using MyCryptoMonitor.Objects;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -21,19 +22,11 @@ namespace MyCryptoMonitor.Statics
 
         #endregion Private Fields
 
-        #region Public Enums
-
-        public enum Operators {[Description("Greater Than")] GreaterThan, [Description("Less Than")] LessThan, [Description("Both")] Both }
-
-        public enum Types {[Description("Email")] Email, [Description("Verizon")] Verizon, [Description("AT&T")] ATT, [Description("Sprint")] Sprint, [Description("Boost Mobile")] Boost, [Description("T-Mobile")] TMobile, [Description("US Cellular")] USCellular, [Description("Virgin Mobile")] VirginMobile }
-
-        #endregion Public Enums
-
         #region Public Properties
 
         public static List<AlertDataSource> Alerts { get { return AlertConfig.Alerts; } set { AlertConfig.Alerts = value; } }
         public static string ReceiveAddress { get { return AlertConfig.ReceiveAddress; } set { AlertConfig.ReceiveAddress = value; } }
-        public static string ReceiveType { get { return AlertConfig.ReceiveType; } set { AlertConfig.ReceiveType = value; } }
+        public static Constants.Types ReceiveType { get { return AlertConfig.ReceiveType; } set { AlertConfig.ReceiveType = value; } }
         public static string SendAddress { get { return AlertConfig.SendAddress; } set { AlertConfig.SendAddress = value; } }
         public static string SendPassword { get { return AlertConfig.SendPassword; } set { AlertConfig.SendPassword = value; } }
 
@@ -86,7 +79,7 @@ namespace MyCryptoMonitor.Statics
                 SendAddress = string.Empty;
                 SendPassword = string.Empty;
                 ReceiveAddress = string.Empty;
-                ReceiveType = string.Empty;
+                ReceiveType = Constants.Types.ATT;
                 File.WriteAllText(FILENAME, JsonConvert.SerializeObject(AlertConfig));
             }
         }
@@ -99,13 +92,13 @@ namespace MyCryptoMonitor.Statics
             Task.Factory.StartNew(() =>
             {
                 var first = alerts.FirstOrDefault();
-                var op = first.LastOperator == Operators.GreaterThan ? ">" : first.Operator == Operators.GreaterThan ? ">" : "<";
+                var op = first.LastOperator == Constants.Operators.GreaterThan ? ">" : first.Operator == Constants.Operators.GreaterThan ? ">" : "<";
                 var title = $"{first.Coin} {op} {first.Price}";
                 var message = string.Empty;
 
                 foreach (var alert in alerts)
                 {
-                    string condition = alert.LastOperator == Operators.GreaterThan ? "greater than" : alert.Operator == Operators.GreaterThan ? "greater than" : "less than";
+                    string condition = alert.LastOperator == Constants.Operators.GreaterThan ? "greater than" : alert.Operator == Constants.Operators.GreaterThan ? "greater than" : "less than";
                     message += $"{alert.Coin} is {condition} than {alert.Price}\r\n";
 
                     if (UserConfigService.DeleteAlerts)
@@ -122,32 +115,32 @@ namespace MyCryptoMonitor.Statics
 
         #region Private Methods
 
-        private static string GetContactAddress(string address, string type)
+        private static string GetContactAddress(string address, Constants.Types type)
         {
-            switch ((Types)Enum.Parse(typeof(Types), type))
+            switch (type)
             {
-                case Types.Email:
+                case Constants.Types.Email:
                     return address;
 
-                case Types.ATT:
+                case Constants.Types.ATT:
                     return $"{address}@txt.att.net";
 
-                case Types.Boost:
+                case Constants.Types.Boost:
                     return $"{address}@myboostmobile.com";
 
-                case Types.Sprint:
+                case Constants.Types.Sprint:
                     return $"{address}@messaging.sprintpcs.com";
 
-                case Types.Verizon:
+                case Constants.Types.Verizon:
                     return $"{address}@vtext.com";
 
-                case Types.TMobile:
+                case Constants.Types.TMobile:
                     return $"{address}@tmomail.net";
 
-                case Types.USCellular:
+                case Constants.Types.USCellular:
                     return $"{address}@email.uscc.net";
 
-                case Types.VirginMobile:
+                case Constants.Types.VirginMobile:
                     return $"{address}@vmobl.com";
 
                 default:
@@ -157,7 +150,7 @@ namespace MyCryptoMonitor.Statics
 
         private static void SendEmail(string alertMessage)
         {
-            if (string.IsNullOrEmpty(SendAddress) || string.IsNullOrEmpty(SendPassword) || string.IsNullOrEmpty(ReceiveAddress) || string.IsNullOrEmpty(ReceiveType))
+            if (string.IsNullOrEmpty(SendAddress) || string.IsNullOrEmpty(SendPassword) || string.IsNullOrEmpty(ReceiveAddress))
                 return;
 
             try

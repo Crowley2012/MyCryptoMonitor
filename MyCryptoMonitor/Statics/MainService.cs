@@ -33,34 +33,34 @@ namespace MyCryptoMonitor.Statics
                 if (coinData == null)
                     continue;
 
-                if ((alert.Operator == AlertService.Operators.GreaterThan && coinData.Price > alert.Price && alert.Enabled)
-                    || (alert.Operator == AlertService.Operators.LessThan && coinData.Price < alert.Price && alert.Enabled))
+                if ((alert.Operator == Constants.Operators.GreaterThan && coinData.Price > alert.Price && alert.Enabled)
+                    || (alert.Operator == Constants.Operators.LessThan && coinData.Price < alert.Price && alert.Enabled))
                 {
                     triggeredAlerts.Add(alert);
                     alert.Enabled = false;
                 }
-                else if ((alert.Operator == AlertService.Operators.GreaterThan && coinData.Price < alert.Price && !alert.Enabled)
-                   || (alert.Operator == AlertService.Operators.LessThan && coinData.Price > alert.Price && !alert.Enabled))
+                else if ((alert.Operator == Constants.Operators.GreaterThan && coinData.Price < alert.Price && !alert.Enabled)
+                   || (alert.Operator == Constants.Operators.LessThan && coinData.Price > alert.Price && !alert.Enabled))
                 {
                     alert.Enabled = true;
                 }
-                else if (alert.Operator == AlertService.Operators.Both && alert.LastOperator == AlertService.Operators.LessThan && coinData.Price > alert.Price && alert.Enabled)
+                else if (alert.Operator == Constants.Operators.Both && alert.LastOperator == Constants.Operators.LessThan && coinData.Price > alert.Price && alert.Enabled)
                 {
-                    alert.LastOperator = AlertService.Operators.GreaterThan;
+                    alert.LastOperator = Constants.Operators.GreaterThan;
                     triggeredAlerts.Add(alert);
                 }
-                else if (alert.Operator == AlertService.Operators.Both && alert.LastOperator == AlertService.Operators.GreaterThan && coinData.Price < alert.Price && alert.Enabled)
+                else if (alert.Operator == Constants.Operators.Both && alert.LastOperator == Constants.Operators.GreaterThan && coinData.Price < alert.Price && alert.Enabled)
                 {
-                    alert.LastOperator = AlertService.Operators.LessThan;
+                    alert.LastOperator = Constants.Operators.LessThan;
                     triggeredAlerts.Add(alert);
                 }
-                else if (alert.Operator == AlertService.Operators.Both && alert.LastOperator == null && coinData.Price > alert.Price && alert.Enabled)
+                else if (alert.Operator == Constants.Operators.Both && alert.LastOperator == null && coinData.Price > alert.Price && alert.Enabled)
                 {
-                    alert.LastOperator = AlertService.Operators.GreaterThan;
+                    alert.LastOperator = Constants.Operators.GreaterThan;
                 }
-                else if (alert.Operator == AlertService.Operators.Both && alert.LastOperator == null && coinData.Price < alert.Price && alert.Enabled)
+                else if (alert.Operator == Constants.Operators.Both && alert.LastOperator == null && coinData.Price < alert.Price && alert.Enabled)
                 {
-                    alert.LastOperator = AlertService.Operators.LessThan;
+                    alert.LastOperator = Constants.Operators.LessThan;
                 }
             }
 
