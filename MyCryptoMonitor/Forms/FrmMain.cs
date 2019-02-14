@@ -56,12 +56,12 @@ namespace MyCryptoMonitor.Forms
 
         private void AddCoin_Click(object sender, EventArgs e)
         {
-            using (FrmManageCoins form = new FrmManageCoins(_coinNames))
+            using (var form = new FrmManageCoins(true, _coinConfigs))
             {
                 if (form.ShowDialog() != DialogResult.OK)
                     return;
 
-                if (!_coinNames.Any(c => c.ExtEquals(form.InputText)))
+                if (!_coinNames.Any(c => c.ExtEquals(form.SelectedCoin)))
                 {
                     MessageBox.Show("Coin does not exist.", "Error");
                     return;
@@ -69,11 +69,11 @@ namespace MyCryptoMonitor.Forms
 
                 _coinConfigs.Add(new CoinConfig
                 {
-                    Name = form.InputText,
+                    Name = form.SelectedCoin,
                     Bought = 0,
                     Paid = 0,
                     StartupPrice = 0,
-                    Index = _coinConfigs.Count(c => c.Name.ExtEquals(form.InputText))
+                    Index = _coinConfigs.Count(c => c.Name.ExtEquals(form.SelectedCoin))
                 });
 
                 _loadLines = true;
@@ -291,23 +291,21 @@ namespace MyCryptoMonitor.Forms
 
         private void RemoveCoin_Click(object sender, EventArgs e)
         {
-            using (FrmManageCoins form = new FrmManageCoins(_coinConfigs))
+            using (var form = new FrmManageCoins(false, _coinConfigs))
             {
                 if (form.ShowDialog() != DialogResult.OK)
                     return;
 
-                _coinConfigs.RemoveAll(a => a.Name.ExtEquals(form.InputText) && a.Index == form.CoinIndex);
+                _coinConfigs.RemoveAll(a => a.Name.ExtEquals(form.SelectedCoin) && a.Index == form.SelectedCoinIndex);
+                _coinConfigs.ForEach(x => x.Index = 0);
 
                 //Reset coin indexes
-                foreach (CoinConfig coinConfig in _coinConfigs)
+                foreach (var coinName in _coinConfigs.Select(x => x.Name).Distinct().ToList())
                 {
-                    int index = 0;
+                    var index = 0;
 
-                    foreach (CoinConfig sameCoinConfig in _coinConfigs.Where(c => c.Name == coinConfig.Name).ToList())
-                    {
-                        sameCoinConfig.Index = index;
-                        index++;
-                    }
+                    foreach(var config in _coinConfigs.Where(x => x.Name == coinName).ToList())
+                        config.Index = index++;
                 }
             }
 
